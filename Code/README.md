@@ -1,2 +1,0 @@
-# Internship 
-Phage-Host Prediction
