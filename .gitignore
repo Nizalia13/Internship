@@ -3,13 +3,13 @@ Documents/
 Data/
 Papers/
 
-# Ignore all python and notebook files in this folder
-K Dimensions/*.py
-K Dimensions/*.ipynb
+# Ignore everything in "K Dimensions" folder
+**/K Dimensions/*.py
+**/K Dimensions/*.ipynb
 
-# EXCEPT for the ones I want to keep (the ones not green in my image)
-!K Dimensions/1_Radial_Splitting.ipynb
-!K Dimensions/2_Vertical_Horizontal_Strips.ipynb
-!K Dimensions/3_Radial_Splitting_Multiple_Hosts.ipynb
-!K Dimensions/4_Vertical_Horizontal_Strips_Multiple_...ipynb
-!K Dimensions/5_3D.ipynbS
+# Keep specific files (ensure names match exactly)
+!**/K Dimensions/1_Radial_Splitting.ipynb
+!**/K Dimensions/2_Vertical_Horizontal_Strips.ipynb
+!**/K Dimensions/3_Radial_Splitting_Multiple_Hosts.ipynb
+!**/K Dimensions/4_Vertical_Horizontal_Strips_Multiple_...ipynb
+!**/K Dimensions/5_3D.ipynb
