@@ -3,9 +3,12 @@ Documents/
 Data/
 Papers/
 
+
 # Ignore everything in "K Dimensions" folder
 **/K Dimensions/*.py
 **/K Dimensions/*.ipynb
+**/K Dimensions/*.png
+
 
 # Keep specific files (ensure names match exactly)
 !**/K Dimensions/1_Radial_Splitting.ipynb
