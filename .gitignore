@@ -11,6 +11,7 @@ Papers/
 
 
 # Keep specific files (ensure names match exactly)
+!**/K Dimensions/0_CSA_Paper_Method.ipynb
 !**/K Dimensions/1_Radial_Splitting.ipynb
 !**/K Dimensions/2_Vertical_Horizontal_Strips.ipynb
 !**/K Dimensions/3_Radial_Splitting_Multiple_Hosts.ipynb
