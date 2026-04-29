@@ -3,6 +3,7 @@ Documents/
 Data/
 Papers/
 
+**/*.png
 
 # Ignore everything in "K Dimensions" folder
 **/K Dimensions/*.py
