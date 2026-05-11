@@ -10,6 +10,10 @@ Papers/
 **/K Dimensions/*.ipynb
 **/K Dimensions/*.png
 
+Codes/Gram_Type_Classification_Three_Methods.ipynb
+Codes/Gram_Type_Classification_Mean.ipynb
+Codes/Gram_Type_Classification_Mean.ipynb
+
 
 # Keep specific files (ensure names match exactly)
 !**/K Dimensions/0_CSA_Paper_Method.ipynb
@@ -18,3 +22,4 @@ Papers/
 !**/K Dimensions/3_Radial_Splitting_Multiple_Hosts.ipynb
 !**/K Dimensions/4_Vertical_Horizontal_Strips_Multiple_...ipynb
 !**/K Dimensions/5_3D.ipynb
+
