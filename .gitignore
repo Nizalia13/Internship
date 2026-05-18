@@ -3,10 +3,12 @@ Documents/
 Data/
 Papers/
 Internship Documents/
-**/Internship_Thesis_Report.docx
+
 
 
 **/*.png
+
+**/Internship_Thesis_Report.docx
 
 # Ignore everything in "K Dimensions" folder
 **/K Dimensions/*.py
@@ -17,7 +19,7 @@ Internship Documents/
 **/Codes/Gram_Type_Classification_Mean.ipynb
 **/Codes/Gram_Type_Classification_Max.ipynb
 
-
+ 
 # Keep specific files (ensure names match exactly)
 !**/K Dimensions/0_CSA_Paper_Method.ipynb
 !**/K Dimensions/1_Radial_Splitting.ipynb
