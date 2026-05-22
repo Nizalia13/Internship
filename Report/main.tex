@@ -1,0 +1,28 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Load all configuration styles and packages ---
+\input{preamble.tex}
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+\setlength{\headheight}{14pt}
+
+% --- Document Metadata ---
+\title{My First VS Code LaTeX Report}
+\author{Your Name}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+This is a live test of my brand-new modular layout!
+
+\section{Testing Math Formulas}
+\begin{equation}
+    E = mc^2
+\end{equation}
+
+% --- Your Sub-Chapters ---
+\input{1_Introduction/introduction.tex}
+
+\end{document}
