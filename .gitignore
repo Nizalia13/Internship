@@ -16,10 +16,13 @@ Internship Documents/
 **/K Dimensions/*.ipynb
 **/K Dimensions/*.png
 
-**/Codes/Gram_Type_Classification_Three_Methods.ipynb
-**/Codes/Gram_Type_Classification_Mean.ipynb
-**/Codes/Gram_Type_Classification_Max.ipynb
-
+**/Codes/Gram Type Classification/Gram_Type_Classification_Three_Methods.ipynb
+**/Codes/Gram Type Classification/Gram_Type_Classification_Mean.ipynb
+**/Codes/Gram Type Classification/Gram_Type_Classification_Max.ipynb
+**/Codes/Gram Type Classification/Gram_Classification_1.ipynb
+**/Codes/Gram Type Classification/Gram_Classification_2.ipynb
+**/Codes/Gram Type Classification/Gram_Classification_3.ipynb
+**/Codes/Gram Type Classification/Gram_Classification_5.ipynb
  
 # Keep specific files (ensure names match exactly)
 !**/K Dimensions/0_CSA_Paper_Method.ipynb
