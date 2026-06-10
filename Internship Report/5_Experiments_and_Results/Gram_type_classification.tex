@@ -1,0 +1,24 @@
+\subsection{Gram Type Classification}
+% \noindent using the three envelopes ....
+% - Results: coverage by class, set size distribution, singleton accuracy
+% - analysis of hard cases: ambiguous gram-positive phages
+
+\subsubsection{Experimental Setup}
+\noindent - Data: split-0 phages only (80\% calibration, 20\% test), unknown host types excluded\\
+- Parameters: $\alpha = 0.1 , M=200$ directions (radial),
+M=20 bins (strip), 10 independent runs to estimate variance\\
+- The NC transformation used: keep scores as-is for one class, flip with 1 - s for the other 
+% (motivated by the empirical score semantics described in Chapter 4)
+
+\subsubsection{Results}
+\noindent - table: overall coverage, per-class coverage, average set size, empty set rate, size-2 rate, singleton accuracy std across 10 runs for all three methods\\
+- Bar charts: set size distribution, overall and per-class coverage
+
+
+% \subsubsection{Analysis of Hard Cases}
+
+% The minority class consistently has lower coverage than the majority class before the class-conditional fix — show this explicitly with a before/after comparison
+% Identify the ambiguous phages: those whose mean raw score falls in the range [0.3,0.7][0.3, 0.7]
+% [0.3,0.7] — these are phages for which the underlying classifiers are genuinely uncertain
+% Show that coverage on typical phages of each class is much higher than coverage on the ambiguous subset — this is a property of the data, not a flaw in the conformal framework
+% Discuss variance across runs: radial method has higher variance than strip and collapsed due to the random direction sampling

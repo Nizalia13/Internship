@@ -1,0 +1,12 @@
+\subsection{Protein to Phage Aggregation}
+\noindent - The raw data is at the protein level but conformal prediction operates at the phage level — aggregation is needed\\
+- NaN-aware mean pooling: for each phage and each functional score column, compute the mean across all proteins of that phage that have a non-NaN value for that column. Proteins with NaN for a given column are excluded from the mean for that column only\\
+- Why not replace NaN with zero before pooling: treating an unannotated protein as having zero evidence would push the phage's aggregated score artificially toward zero, misrepresenting its biology\\
+- After aggregation: result is a matrix of shape (number of phages) × 40, still with NaNs in cells where none of the phage's proteins were annotated with that function
+
+
+\subsubsection{NaN handling after aggregation}
+- After mean pooling, some phages still have NaN in certain columns -> this happens when none of their proteins were annotated with a particular function\\
+- Strategy: fill remaining NaNs using column-wise medians computed strictly on the training set (never the test set, to prevent data leakage)
+- The median cap: any training median above 0.6 is capped at 0.5 -> this prevents an imputed value from falsely pushing a phage toward a particular class
+- any remaining NaNs after median imputation are filled with 0.5 (neutral value)

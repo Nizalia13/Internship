@@ -1,0 +1,129 @@
+\subsection{Envelope constriction}
+
+\subsubsection{CSA Two-Stage Calibration}
+- training vectors are split into two disjoint halves $S_1$ and $S_2$ (50/50 random split)\\
+- $S_1$ (shape discovery): used to learn the geometry of the envelope\\
+- $S_2$ (size scaling): used to calibrate the scaling factor $\hat{t}$ that determines the final size of the envelope
+- The two stages must use disjoint data to preserve the exchangeability argument underlying the coverage guarantee
+
+\subsubsection{$\Tau$ computation}
+- Define $\tau(\mathbf{s}) = \inf\{t > 0 : \mathbf{s} \in t \cdot E\}$ the minimum scaling factor needed to include point $\mathbf{s}$ in the scaled envelope\\
+- The global scaling factor is then $\hat{t} = \tau_{\lceil(|S_2|+1)(1-\alpha)\rceil}$: $(1-\alpha)$ quantile of the $\tau$ values over $S_2$\\
+- Key contribution: for each of the three envelope geometries, $\tau(\mathbf{s})$ has a closed-form expression computable in a single pass — no iterative search required\\
+- Computational benefit: the entire calibration step reduces to one forward pass over $S_2$ followed by a sort, 
+% giving O(∣S2∣⋅K2)O(|S_2| \cdot K^2)
+% O(∣S2​∣⋅K2) complexity for the strip method and O(∣S2∣⋅M⋅K)O(|S_2| \cdot M \cdot K)
+% O(∣S2​∣⋅M⋅K) for the radial method
+ - Contrast with the original CSA paper which uses iterative binary search
+ 
+\subsubsection{Radial Method}
+
+\subsubsection{Strip Method}
+
+\subsubsection{1D}
+
+\subsubsection{Class specific $\hat t$ calculation}
+
+
+3.4.1 — CSA Two-Stage Calibration
+
+% Training NC vectors split 50/50 into S1S_1
+% S1​ and S2S_2
+% S2​
+% S1S_1
+% S1​: shape discovery — learn the geometry of the envelope
+% S2S_2
+% S2​: size scaling — calibrate t^\hat{t}
+% t^
+% Disjoint split required to preserve exchangeability
+
+% *3.4.2 — Analytical τ\tau
+% τ Computation* **(original contribution)**
+% Define τ(s)=inf⁡{t>0:s∈t⋅E}\tau(\mathbf{s}) = \inf\{t > 0 : \mathbf{s} \in t \cdot E\}
+% τ(s)=inf{t>0:s∈t⋅E}
+% Global scaling factor: t^=τ⌈(∣S2∣+1)(1−α)⌉\hat{t} = \tau_{\lceil(|S_2|+1)(1-\alpha)\rceil}
+% t^=τ⌈(∣S2​∣+1)(1−α)⌉​, the (1−α)(1-\alpha)
+% (1−α) quantile of τ\tau
+% τ-values over S2S_2
+% S2​
+% Key contribution: for each of the three envelope geometries, τ(s)\tau(\mathbf{s})
+% τ(s) has a closed-form expression — no iterative search required
+% Computational benefit: entire calibration reduces to one forward pass over S2S_2
+% S2​ followed by a sort
+% Explicit contrast with the original CSA paper which uses iterative binary search
+
+% 3.4.3 — Radial Method
+
+% Sample M=200M = 200
+% M=200 unit directions {um}\{\mathbf{u}_m\}
+% {um​} on positive orthant of unit sphere in RK\mathbb{R}^K
+% RK
+% Per-sector quantile q~m\tilde{q}_m
+% q~​m​: (1−α)(1-\alpha)
+% (1−α) quantile of magnitudes of S1S_1
+% S1​ points within δ=30°\delta = 30°
+% δ=30° of um\mathbf{u}_m
+% um​; global fallback if fewer than 5 points
+% τ\tau
+% τ formula: τ(s)=min⁡mmax⁡kskq~m⋅umk\tau(\mathbf{s}) = \min_m \max_k \frac{s_k}{\tilde{q}_m \cdot u_{mk}}
+% τ(s)=minm​maxk​q~​m​⋅umk​sk​​ over sectors covering s\mathbf{s}
+% s
+% Test-time membership: ∃m\exists m
+% ∃m such that sk≤t^⋅q~m⋅umks_k \leq \hat{t} \cdot \tilde{q}_m \cdot u_{mk}
+% sk​≤t^⋅q~​m​⋅umk​ for all kk
+% % k
+% 3.4.4 — Strip Method
+
+% Data-adaptive bin edges: M=20M = 20
+% M=20 equal-width bins per dimension using min/max of S1S_1
+% S1​
+% Per-(j,i,m)(j, i, m)
+% (j,i,m) quantile: (1−α)(1-\alpha)
+% (1−α) quantile of dimension ii
+% i among S1S_1
+% S1​ points in bin mm
+% m of dimension jj
+% j; global fallback if fewer than 3 points
+% Monotonicity propagation: sweep right to left, enforce limits[j,i,m]≥limits[j,i,m+1]\text{limits}[j,i,m] \geq \text{limits}[j,i,m+1]
+% limits[j,i,m]≥limits[j,i,m+1]
+% τ\tau
+% τ formula: τ(s)=max⁡j≠isilimits[j,i,binj(s)]\tau(\mathbf{s}) = \max_{j \neq i} \frac{s_i}{\text{limits}[j, i, \text{bin}_j(\mathbf{s})]}
+% τ(s)=maxj=i​limits[j,i,binj​(s)]si​​
+% Test-time membership: ∀j,∀i≠j:si≤t^⋅limits[j,i,binj(s)]\forall j, \forall i \neq j: s_i \leq \hat{t} \cdot \text{limits}[j, i, \text{bin}_j(\mathbf{s})]
+% ∀j,∀i=j:si​≤t^⋅limits[j,i,binj​(s)]
+% Why it is non-convex: the allowed range of dimension ii
+% i varies depending on where along dimension jj
+% j the point sits
+% 3.4.5 — Collapsed 1D Method
+
+% Reduce s\mathbf{s}
+% s to scalar: sˉ=1K∑ksk\bar{s} = \frac{1}{K}\sum_k s_k
+% sˉ=K1​∑k​sk​
+% q~\tilde{q}
+% q~​: (1−α)(1-\alpha)
+% (1−α) quantile of S1S_1
+% S1​ scalars
+% τ\tau
+% τ formula: τ(s)=sˉ/q~\tau(\mathbf{s}) = \bar{s} / \tilde{q}
+% τ(s)=sˉ/q~​
+% Test-time membership: sˉ≤t^⋅q~\bar{s} \leq \hat{t} \cdot \tilde{q}
+% sˉ≤t^⋅q~​
+% Trade-off: simplest method, unaffected by curse of dimensionality, but discards all geometric structure
+
+% *3.4.6 — Class-Conditional t^\hat{t}
+% t^ Calibration*
+
+% Problem: single t^\hat{t}
+% t^ gives marginal coverage, can under-cover minority classes
+% Fix: compute t^y\hat{t}_y
+% t^y​ separately per class from S2S_2
+% S2​ points with label yy
+% y, set t^=max⁡yt^y\hat{t} = \max_y \hat{t}_y
+% t^=maxy​t^y​
+% Formal statement: this ensures P(Y∈C(X)∣Y=y)≥1−αP(Y \in C(X) \mid Y = y) \geq 1 - \alpha
+% P(Y∈C(X)∣Y=y)≥1−α for each class individually
+% Computational cost: negligible — per-class sort of already-computed τ\tau
+% τ values
+% Formula: t^y=τ⌈(∣S2y∣+1)(1−α)⌉\hat{t}_y = \tau_{\lceil(|S_2^y|+1)(1-\alpha)\rceil}
+% t^y​=τ⌈(∣S2y​∣+1)(1−α)⌉​ where S2y={s∈S2:Y=y}S_2^y = \{\mathbf{s} \in S_2 : Y = y\}
+% S2y​={s∈S2​:Y=y}
