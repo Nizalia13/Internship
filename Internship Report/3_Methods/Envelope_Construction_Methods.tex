@@ -1,28 +1,33 @@
-\subsection{Envelope constriction}
+\subsection{Envelope Constriction}
 
 \subsubsection{CSA Two-Stage Calibration}
-- training vectors are split into two disjoint halves $S_1$ and $S_2$ (50/50 random split)\\
-- $S_1$ (shape discovery): used to learn the geometry of the envelope\\
-- $S_2$ (size scaling): used to calibrate the scaling factor $\hat{t}$ that determines the final size of the envelope
-- The two stages must use disjoint data to preserve the exchangeability argument underlying the coverage guarantee
+\begin{itemize}
+    \item Training vectors are split into two disjoint halves $S_1$ and $S_2$ (50/50 random split).
+    \item $S_1$ (shape discovery): used to learn the geometry of the envelope.
+    \item $S_2$ (size scaling): used to calibrate the scaling factor $\hat{t}$ that determines the final size of the envelope.
+    \item The two stages must use disjoint data to preserve the exchangeability argument underlying the coverage guarantee.
+\end{itemize}
 
-\subsubsection{$\Tau$ computation}
-- Define $\tau(\mathbf{s}) = \inf\{t > 0 : \mathbf{s} \in t \cdot E\}$ the minimum scaling factor needed to include point $\mathbf{s}$ in the scaled envelope\\
-- The global scaling factor is then $\hat{t} = \tau_{\lceil(|S_2|+1)(1-\alpha)\rceil}$: $(1-\alpha)$ quantile of the $\tau$ values over $S_2$\\
-- Key contribution: for each of the three envelope geometries, $\tau(\mathbf{s})$ has a closed-form expression computable in a single pass — no iterative search required\\
-- Computational benefit: the entire calibration step reduces to one forward pass over $S_2$ followed by a sort, 
-% giving O(∣S2∣⋅K2)O(|S_2| \cdot K^2)
-% O(∣S2​∣⋅K2) complexity for the strip method and O(∣S2∣⋅M⋅K)O(|S_2| \cdot M \cdot K)
-% O(∣S2​∣⋅M⋅K) for the radial method
- - Contrast with the original CSA paper which uses iterative binary search
- 
+\subsubsection{$\tau$ Computation}
+\begin{itemize}
+    \item Define $\tau(\mathbf{s}) = \inf\{t > 0 : \mathbf{s} \in t \cdot E\}$, the minimum scaling factor needed to include point $\mathbf{s}$ in the scaled envelope $E$.
+    \item The global scaling factor is then determined by the $(1-\alpha)$ quantile of the $\tau$ values over $S_2$:
+    \[
+    \hat{t} = \tau_{(k)} \quad \text{where} \quad k = \lceil(|S_2|+1)(1-\alpha)\rceil
+    \]
+    where $\tau_{(k)}$ denotes the $k$-th smallest value of $\tau$ in $S_2$.
+    \item Key contribution: for each of the three envelope geometries, $\tau(\mathbf{s})$ has a closed-form expression computable in a single pass — no iterative search required.
+    \item Computational benefit: the entire calibration step reduces to one forward pass over $S_2$ followed by a sort.
+    \item Contrast with the original CSA paper which uses iterative binary search.
+\end{itemize}
+
 \subsubsection{Radial Method}
 
 \subsubsection{Strip Method}
 
 \subsubsection{1D}
 
-\subsubsection{Class specific $\hat t$ calculation}
+\subsubsection{Class-Specific $\hat{t}$ Calculation}
 
 
 3.4.1 — CSA Two-Stage Calibration
