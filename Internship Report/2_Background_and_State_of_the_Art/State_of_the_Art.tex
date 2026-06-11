@@ -1,4 +1,5 @@
 \subsection{State of the Art}
+\label{sec2.2: state of the art}
 % State of the Art in Uncertainty Quantification for Biological Prediction
 \noindent already existing method for the phage host prediction
 
@@ -19,3 +20,38 @@ are insufficient: they produce calibrated probabilities but no formal finite-sam
 % - Protein-level machine learning: classifiers trained on functional annotations of phage proteins — lysins, tail fibres, capsid proteins, portal complexes — since these directly mediate host recognition\\
 % - How scores are produced in our setting: for each protein and each candidate host, a classifier outputs a score in [0,1] -> these are aggregated to phage level via mean pooling\\
 % - The fundamental limitation shared by all existing methods: they produce only point predictions with no uncertainty quantification
+
+
+
+
+% Your content for state of the art goes here
+
+
+% The problem of predicting which bacterial hosts a phage can infect from genomic data has been studied computationally 
+% for over a decade. Early approaches relied on sequence alignment between phage genomes and bacterial genomes, exploiting 
+% the co-evolutionary signal between phage tail proteins and bacterial surface receptors. These methods performed 
+% reasonably well when closely related phage-host pairs existed in reference databases, but struggled with novel phages 
+% that had no known close relatives.
+
+% More recent approaches framed the problem as a supervised classification task. Given a set of experimentally verified 
+% phage-host pairs, a classifier is trained to predict whether a new phage infects a given host based on features derived
+% from the phage genome. Among the most informative features are functional annotations of phage proteins: the presence 
+% and predicted function of proteins such as lysins, tail fibres, capsid proteins, and portal complexes, since these 
+% proteins directly mediate host recognition and cell lysis.
+
+% In this work, the predictions are produced at the protein level. For each protein in a phage genome and each candidate host
+% h∈Hh∈H, a classifier outputs a score s∈[0,1]s∈[0,1] reflecting the probability that the protein's function is consistent 
+% with infection of that host. Since a phage genome typically contains many proteins — ranging from roughly 10 to 50 in our
+% dataset — and each protein may be annotated with one or more functional categories, this yields a structured collection of 
+% scores indexed by (protein, host, function) triples. These protein-level scores are then aggregated to the phage level via 
+% NaN-aware mean pooling: for each (phage, host, function) combination, we take the mean score across all proteins of that 
+% phage annotated with that function, ignoring proteins with missing annotations for that function rather than treating them 
+% as zero evidence. The result is a phage-level score vector in [0,1]K[0,1]K, where KK is the number of (host, function) 
+% combinations with sufficient data coverage.
+
+% A central empirical observation, discovered during data exploration, is that for the gram-type classification task studied
+% in Chapter 5, all score dimensions consistently measure gram-positive evidence: phages known to infect gram-positive 
+% bacteria achieve mean scores of approximately 0.810.81 across all KK dimensions, while phages infecting gram-negative 
+% bacteria achieve mean scores of approximately 0.080.08. This strong and consistent separation is what makes the gram-type 
+% task tractable and serves as a proof-of-concept for the full multi-host framework.
+
