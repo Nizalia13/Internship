@@ -16,6 +16,9 @@ Internship Documents/
 **/K Dimensions/*.ipynb
 **/K Dimensions/*.png
 
+Codes/large_file.parquet
+Codes/master_scores_disk.dat
+
 # Explicitly ignore only these specific notebooks
 Codes/Gram Type Classification/Gram_Type_Classification_Three_Methods.ipynb
 # Codes/Gram Type Classification/Gram_Type_Classification_Mean.ipynb
@@ -24,6 +27,7 @@ Codes/Gram Type Classification/Gram_Classification_1.ipynb
 Codes/Gram Type Classification/Gram_Classification_2.ipynb
 Codes/Gram Type Classification/Gram_Classification_3.ipynb
 # Codes/Gram Type Classification/Gram_Classification_5.ipynb
+
 
  
 # Keep specific files (ensure names match exactly)
