@@ -1,27 +1,19 @@
 \begin{thebibliography}{1}
 
 \bibitem{ochoarivera2024conformal}
-E.~O. Rivera, Y.~Patel, and A.~Tewari, ``Conformal prediction for ensembles:
-  Improving efficiency via score-based aggregation,'' in {\em Advances in
-  Neural Information Processing Systems (NeurIPS)}, 2024.
+E.~O. Rivera, Y.~Patel, and A.~Tewari, ``Conformal prediction for ensembles: Improving efficiency via score-based aggregation,'' in {\em Advances in Neural Information Processing Systems (NeurIPS)}, 2024.
 \newblock \href{https://arxiv.org/abs/2405.16246}{[arXiv]}.
 
 \bibitem{dejonge2019molecular}
-P.~A. {de Jonge}, F.~L. Nobrega, S.~J.~J. Brouns, and B.~E. Dutilh, ``Molecular
-  and evolutionary determinants of bacteriophage host range,'' {\em Trends in
-  Microbiology}, vol.~27, no.~1, pp.~51--63, 2019.
+P.~A. {de Jonge}, F.~L. Nobrega, S.~J.~J. Brouns, and B.~E. Dutilh, ``Molecular and evolutionary determinants of bacteriophage host range,'' {\em Trends in Microbiology}, vol.~27, no.~1, pp.~51--63, 2019.
 \newblock \href{https://doi.org/10.1016/j.tim.2018.08.006}{[CellPress]}.
 
 \bibitem{holtappels2023drivers}
-D.~Holtappels, P.~Alfenas-Zerbini, and B.~Koskella, ``Drivers and consequences
-  of bacteriophage host range,'' {\em FEMS Microbiology Reviews}, vol.~47,
-  no.~4, p.~fuad038, 2023.
+D.~Holtappels, P.~Alfenas-Zerbini, and B.~Koskella, ``Drivers and consequences of bacteriophage host range,'' {\em FEMS Microbiology Reviews}, vol.~47, no.~4, p.~fuad038, 2023.
 \newblock \href{https://doi.org/10.1093/femsre/fuad038}{[OxfordPress]}.
 
 \bibitem{coclet2021global}
-C.~Coclet and S.~Roux, ``Global overview and major challenges of host
-  prediction methods for uncultivated phages,'' {\em Current Opinion in
-  Virology}, vol.~49, pp.~117--126, 2021.
+C.~Coclet and S.~Roux, ``Global overview and major challenges of host prediction methods for uncultivated phages,'' {\em Current Opinion in Virology}, vol.~49, pp.~117--126, 2021.
 \newblock \href{https://doi.org/10.1016/j.coviro.2021.05.003}{[ScienceDirect]}.
 
 \end{thebibliography}

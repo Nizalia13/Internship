@@ -4,42 +4,49 @@
 \contentsline {section}{\numberline {2}Background \& State of the Art}{3}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Bacteriophages and Host-Prediction Problem}{3}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}State of the Art}{4}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}Conformal Prediction}{4}{subsection.2.3}%
-\contentsline {subsubsection}{\numberline {2.3.1}Setup and nonconformity scores}{4}{subsubsection.2.3.1}%
-\contentsline {subsubsection}{\numberline {2.3.2}prediction set and coverage guarantee}{4}{subsubsection.2.3.2}%
-\contentsline {subsubsection}{\numberline {2.3.3}Split conformal prediction}{5}{subsubsection.2.3.3}%
-\contentsline {subsection}{\numberline {2.4}The CSA Method}{5}{subsection.2.4}%
-\contentsline {subsubsection}{\numberline {2.4.1}Motivation}{5}{subsubsection.2.4.1}%
-\contentsline {subsubsection}{\numberline {2.4.2}Two-stage calibration}{5}{subsubsection.2.4.2}%
-\contentsline {subsubsection}{\numberline {2.4.3}The envelope concept}{5}{subsubsection.2.4.3}%
-\contentsline {subsubsection}{\numberline {2.4.4}Limitations of the original method}{5}{subsubsection.2.4.4}%
-\contentsline {section}{\numberline {3}Methods}{6}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Problem Formalization}{6}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Non Convex envelope for classification}{6}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Score Transformation}{6}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Envelope Constriction}{6}{subsection.3.4}%
-\contentsline {subsubsection}{\numberline {3.4.1}CSA Two-Stage Calibration}{6}{subsubsection.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.4.2}$\tau $ Computation}{7}{subsubsection.3.4.2}%
-\contentsline {subsubsection}{\numberline {3.4.3}Radial Method}{7}{subsubsection.3.4.3}%
-\contentsline {subsubsection}{\numberline {3.4.4}Strip Method}{7}{subsubsection.3.4.4}%
-\contentsline {subsubsection}{\numberline {3.4.5}1D}{7}{subsubsection.3.4.5}%
-\contentsline {subsubsection}{\numberline {3.4.6}Class-Specific $\hat {t}$ Calculation}{7}{subsubsection.3.4.6}%
-\contentsline {subsection}{\numberline {3.5}$\hat t$ Calculation}{7}{subsection.3.5}%
-\contentsline {section}{\numberline {4}Data ....}{8}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Data Description}{8}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Protein to Phage Aggregation}{8}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}NaN handling after aggregation}{8}{subsubsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.3}Train-Test Split}{9}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Experiments and Results}{10}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Synthetic Data Validation}{10}{subsection.5.1}%
-\contentsline {subsubsection}{\numberline {5.1.1}Puspose and setup}{10}{subsubsection.5.1.1}%
-\contentsline {subsubsection}{\numberline {5.1.2}2D Experimenats}{10}{subsubsection.5.1.2}%
-\contentsline {subsubsection}{\numberline {5.1.3}Extension to K Dimensions}{10}{subsubsection.5.1.3}%
-\contentsline {subsubsection}{\numberline {5.1.4}Multiple Hosts}{10}{subsubsection.5.1.4}%
-\contentsline {subsection}{\numberline {5.2}Gram Type Classification}{11}{subsection.5.2}%
-\contentsline {subsubsection}{\numberline {5.2.1}Experimental Setup}{11}{subsubsection.5.2.1}%
-\contentsline {subsubsection}{\numberline {5.2.2}Results}{11}{subsubsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.3}Host Classification}{11}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Conclusion and Future Work}{12}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Summary.....}{12}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Limitations}{12}{subsection.6.2}%
+\contentsline {subsection}{\numberline {2.3}State of the Art in Computational Host Prediction}{4}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Sequence-Similarity and Homology-Based Heuristics}{4}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}Protein-Content and Classical Machine Learning Paradigm}{5}{subsubsection.2.3.2}%
+\contentsline {subsubsection}{\numberline {2.3.3}Deep Language Models and Protein Embeddings}{5}{subsubsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.4}The Critical Deficiency: Failure of Uncertainty Quantification}{6}{subsection.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}Why Bayesian Formulations Are Unsuitable}{6}{subsubsection.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}Why Standard Calibration Methods Are Insufficient}{6}{subsubsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.5}Conformal Prediction}{7}{subsection.2.5}%
+\contentsline {subsubsection}{\numberline {2.5.1}Setup and nonconformity scores}{7}{subsubsection.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.5.2}prediction set and coverage guarantee}{7}{subsubsection.2.5.2}%
+\contentsline {subsubsection}{\numberline {2.5.3}Split conformal prediction}{7}{subsubsection.2.5.3}%
+\contentsline {subsection}{\numberline {2.6}The CSA Method}{7}{subsection.2.6}%
+\contentsline {subsubsection}{\numberline {2.6.1}Motivation}{7}{subsubsection.2.6.1}%
+\contentsline {subsubsection}{\numberline {2.6.2}Two-stage calibration}{8}{subsubsection.2.6.2}%
+\contentsline {subsubsection}{\numberline {2.6.3}The envelope concept}{8}{subsubsection.2.6.3}%
+\contentsline {subsubsection}{\numberline {2.6.4}Limitations of the original method}{8}{subsubsection.2.6.4}%
+\contentsline {section}{\numberline {3}Methods}{9}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Problem Formalization}{9}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Non Convex envelope for classification}{9}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Score Transformation}{9}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Envelope Constriction}{9}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}CSA Two-Stage Calibration}{9}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}$\tau $ Computation}{10}{subsubsection.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.3}Radial Method}{10}{subsubsection.3.4.3}%
+\contentsline {subsubsection}{\numberline {3.4.4}Strip Method}{10}{subsubsection.3.4.4}%
+\contentsline {subsubsection}{\numberline {3.4.5}1D}{10}{subsubsection.3.4.5}%
+\contentsline {subsubsection}{\numberline {3.4.6}Class-Specific $\hat {t}$ Calculation}{10}{subsubsection.3.4.6}%
+\contentsline {subsection}{\numberline {3.5}$\hat t$ Calculation}{10}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Data ....}{11}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Data Description}{11}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Protein to Phage Aggregation}{11}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}NaN handling after aggregation}{11}{subsubsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.3}Train-Test Split}{12}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Experiments and Results}{13}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Synthetic Data Validation}{13}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Puspose and setup}{13}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}2D Experimenats}{13}{subsubsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.3}Extension to K Dimensions}{13}{subsubsection.5.1.3}%
+\contentsline {subsubsection}{\numberline {5.1.4}Multiple Hosts}{13}{subsubsection.5.1.4}%
+\contentsline {subsection}{\numberline {5.2}Gram Type Classification}{14}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Experimental Setup}{14}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Results}{14}{subsubsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.3}Host Classification}{14}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Conclusion and Future Work}{15}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Summary.....}{15}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Limitations}{15}{subsection.6.2}%
