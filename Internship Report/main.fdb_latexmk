@@ -1,18 +1,18 @@
 # Fdb version 4
-["bibtex main"] 1782114399.76226 "main.aux" "main.bbl" "main" 1782114404.72808 0
+["bibtex main"] 1783377857.9726 "main.aux" "main.bbl" "main" 1783377861.62447 0
   "./references.bib" 1781254797 1570 a25ad007394b5551071f83296e147fc1 ""
   "c:/texlive/2026/texmf-dist/bibtex/bst/base/ieeetr.bst" 1779803305 18361 1a00e58565e7f19bf2b3e1bfb82254ae ""
-  "main.aux" 1782114403 9414 188fe6ea7f10d2acdedee01aff981a65 "pdflatex"
+  "main.aux" 1783377860 7656 4cbdb9be62977bf72d0e0fbbc56e717e "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1782114400.56202 "c:/Users/PMLS/Desktop/Internship/Internship Report/main.tex" "main.pdf" "main" 1782114404.72889 0
+["pdflatex"] 1783377858.56731 "c:/Users/PMLS/Desktop/Internship/Internship Report/main.tex" "main.pdf" "main" 1783377861.62496 0
   "1_Introduction/1_Introduction.tex" 1781102852 5465 98b9e89a65ae95d9a7be5248fbdb2365 ""
   "2_Background_and_State_of_the_Art/Background.tex" 1782114383 4948 54699ed0d9f14cc2d2769dee57a5fc57 ""
   "2_Background_and_State_of_the_Art/CSA_Method.tex" 1781254797 792 048603128868e563c34172a3bf84f7a2 ""
   "2_Background_and_State_of_the_Art/Conformal_Prediction.tex" 1781254797 1090 836d850c24be1a4cfc3a48112bedddcb ""
-  "2_Background_and_State_of_the_Art/State_of_the_Art.tex" 1781994829 12320 413ec87937a0c7e53a7fa5b6541eb947 ""
+  "2_Background_and_State_of_the_Art/State_of_the_Art.tex" 1783377844 12394 e576c246274f6e60e40b177b2e74586a ""
   "3_Methods/Envelope_Construction_Methods.tex" 1781166498 5805 8223549079749c41fa08c74eb5fb2a48 ""
   "3_Methods/Non Convex.tex" 1781130418 1055 9a0e008f3afbac71bc2bd1040e009644 ""
   "3_Methods/Problem.tex" 1781102852 547 26d0d5c0b5e0966c77674979c39eca74 ""
@@ -316,11 +316,11 @@
   "c:/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt" 1779836539 3651027 c29cdc331aa84ea8f8acaabd4acafee3 ""
   "c:/texlive/2026/texmf.cnf" 1779836426 713 e69b156964470283e0530f5060668171 ""
   "logo_ensimag_uga.png" 1781102852 40343 23779089993a3d2b1adfc7124a189f1d ""
-  "main.aux" 1782114403 9414 188fe6ea7f10d2acdedee01aff981a65 "pdflatex"
-  "main.bbl" 1782114400 1231 ba342ec630912762828e66a14f8cd731 "bibtex main"
-  "main.out" 1782114403 9521 49d99be897f3883c7caa72a5a1e69e61 "pdflatex"
+  "main.aux" 1783377860 7656 4cbdb9be62977bf72d0e0fbbc56e717e "pdflatex"
+  "main.bbl" 1783377858 1231 ba342ec630912762828e66a14f8cd731 "bibtex main"
+  "main.out" 1783377860 7225 f263c3ece1c957bb87321fc6e193d5b5 "pdflatex"
   "main.tex" 1781254797 1811 ff0e0ef4126519944509b5514c28c570 ""
-  "main.toc" 1782114403 4831 84070d3429922b4d1b6510656e5a7803 "pdflatex"
+  "main.toc" 1783377860 3961 b8cc6a8843d5bfaa195585cccd81ab8d "pdflatex"
   "preamble.tex" 1781254797 3639 84d728a2c0c57f38d9e2b12f20b83439 ""
   (generated)
   "main.aux"

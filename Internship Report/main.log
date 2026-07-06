@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.27)  22 JUN 2026 09:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.27)  7 JUL 2026 00:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -938,7 +938,7 @@ Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count382
 (./Title_Page.tex
-<logo_ensimag_uga.png, id=212, 276.3123pt x 95.6373pt>
+<logo_ensimag_uga.png, id=183, 276.3123pt x 95.6373pt>
 File: logo_ensimag_uga.png Graphic file (type png)
 <use logo_ensimag_uga.png>
 Package pdftex.def Info: logo_ensimag_uga.png  used on input line 25.
@@ -1013,44 +1013,11 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has b
 <to be read again> 
                    \relax 
 l.46 
-      [3]) (./2_Background_and_State_of_the_Art/State_of_the_Art.tex
-
-LaTeX Warning: Citation `galiez2017wish' on page 4 undefined on input line 68.
-
-
-LaTeX Warning: Citation `steinegger2017mmseqs2' on page 4 undefined on input line 68.
-
-
-LaTeX Warning: Citation `cook2021infrastructure' on page 4 undefined on input line 68.
-
-[4{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-
-LaTeX Warning: Citation `coutinho2021rafah' on page 5 undefined on input line 71.
-
-
-LaTeX Warning: Citation `elnaggar2022prottrans' on page 5 undefined on input line 74.
-
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 78.
-(c:/texlive/2026/texmf-dist/tex/latex/lm/ts1lmr.fd
+      [3]) (./2_Background_and_State_of_the_Art/State_of_the_Art.tex) (./2_Background_and_State_of_the_Art/Conformal_Prediction.tex) (./2_Background_and_State_of_the_Art/CSA_Method.tex [4{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]) [5] (./3_Methods/Problem.tex) (./3_Methods/Non Convex.tex) (./3_Methods/Score Transformation.tex) (./3_Methods/Envelope_Construction_Methods.tex
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 5.
+ (c:/texlive/2026/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-
-LaTeX Warning: Citation `boulay2025empathi' on page 5 undefined on input line 78.
-
-
-LaTeX Warning: Citation `boulay2025sublyme' on page 5 undefined on input line 79.
-
-
-LaTeX Warning: Citation `gonzales2023protein' on page 5 undefined on input line 80.
-
-
-LaTeX Warning: Citation `du2026high' on page 5 undefined on input line 80.
-
-[5{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
-
-LaTeX Warning: Citation `steinegger2017mmseqs2' on page 6 undefined on input line 92.
-
-[6]) (./2_Background_and_State_of_the_Art/Conformal_Prediction.tex) (./2_Background_and_State_of_the_Art/CSA_Method.tex [7]) [8] (./3_Methods/Problem.tex) (./3_Methods/Non Convex.tex) (./3_Methods/Score Transformation.tex) (./3_Methods/Envelope_Construction_Methods.tex [9]
+) [6{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 11.
@@ -1087,36 +1054,32 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1.
 
-) [10] (./4_Data/Description.tex) (./4_Data/Protein_to_Phage_Aggregation.tex) (./4_Data/Train_test_split.tex)
+) [7] (./4_Data/Description.tex) (./4_Data/Protein_to_Phage_Aggregation.tex) (./4_Data/Train_test_split.tex)
 Underfull \hbox (badness 10000) in paragraph at lines 2--50
 
  []
 
-[11] [12] (./5_Experiments_and_Results/Validation.tex) (./5_Experiments_and_Results/Gram_type_classification.tex [13]) (./5_Experiments_and_Results/Host Classification.tex) [14] (./6_Conclusion/Summary.tex) (./6_Conclusion/limitations.tex) [15] (./main.bbl) [16] (./main.aux)
+[8] [9] (./5_Experiments_and_Results/Validation.tex) (./5_Experiments_and_Results/Gram_type_classification.tex [10]) (./5_Experiments_and_Results/Host Classification.tex) [11] (./6_Conclusion/Summary.tex) (./6_Conclusion/limitations.tex) [12] (./main.bbl) [13] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-05-15>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 49D99BE897F3883C7CAA72A5A1E69E61;9521.
+(rerunfilecheck)             Checksum: F263C3ECE1C957BB87321FC6E193D5B5;7225.
  ) 
 Here is how much of TeX's memory you used:
- 40489 strings out of 467340
- 897004 string characters out of 5419566
- 1424746 words of memory out of 5000000
- 68723 multiletter control sequences out of 15000+600000
+ 40458 strings out of 467340
+ 896464 string characters out of 5419566
+ 1424744 words of memory out of 5000000
+ 68708 multiletter control sequences out of 15000+600000
  715878 words of font info for 112 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 122i,13n,134p,1118b,1022s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 122i,13n,134p,1092b,1022s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmmi12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (21 pages, 288154 bytes).
+Output written on main.pdf (18 pages, 272935 bytes).
 PDF statistics:
- 483 PDF objects out of 1000 (max. 8388607)
- 426 compressed objects within 5 object streams
- 85 named destinations out of 1000 (max. 500000)
- 426 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 422 PDF objects out of 1000 (max. 8388607)
+ 369 compressed objects within 4 object streams
+ 69 named destinations out of 1000 (max. 500000)
+ 370 words of extra memory for PDF output out of 10000 (max. 10000000)
 
