@@ -5,7 +5,7 @@
 \contentsline {subsection}{\numberline {2.1}Bacteriophages and Host-Prediction Problem}{3}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Current Computational Approaches and Limitations}{4}{subsection.2.2}%
 \contentsline {subsubsection}{\numberline {2.2.1}Sequence Similarity Approaches}{4}{subsubsection.2.2.1}%
-\contentsline {subsubsection}{\numberline {2.2.2}Protein Conetent Approaches}{5}{subsubsection.2.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.2}Protein Content Approaches}{5}{subsubsection.2.2.2}%
 \contentsline {subsubsection}{\numberline {2.2.3}Protein Language Models and Embedding Based Approaches}{5}{subsubsection.2.2.3}%
 \contentsline {subsubsection}{\numberline {2.2.4}Limitations of Existing Methods}{6}{subsubsection.2.2.4}%
 \contentsline {subsection}{\numberline {2.3}Conformal Prediction}{7}{subsection.2.3}%

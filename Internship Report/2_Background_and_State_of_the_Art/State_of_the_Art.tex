@@ -1,15 +1,16 @@
 \subsection{Current Computational Approaches and Limitations}
 \label{sec2.2: current approaches}
 % State of the Art in Uncertainty Quantification for Biological Prediction
-\noindent The problem of predicting which phage infects which host pacteria has been studied computationally. The host 
-prediction methods can be divided into three categories. These methods progress from simple genomic statistics to deep 
+\noindent The problem of predicting which phage infects which host bacteria has been studied computationally for over a decade. The host 
+prediction methods can be divided into categories, these methods progress from simple genomic statistics to deep 
 representation learning. Here we will summarize each family of methods and their underlying mathematical assumptions along with
 the common limitations that motivate us for this work.
 
+
 \subsubsection{Sequence Similarity Approaches}
 \label{sec2.2.1: SSA}
-\noindent The earliest host prediction tools relied on the genomic sequence of a phage and a bacterial host, assuming that similarity 
-between the two indicates  infection compatibility. This was motivated by the known transfer of genetic material between the 
+\noindent The earliest host prediction tools relied on sequence alignment between a phage and bacterial genomes, assuming that similarity 
+between the two indicates infection compatibility. This was motivated by the known transfer of genetic material between the 
 phages and their hosts through horizontal gene transfer.
 
 \vspace{0.15cm}
@@ -33,7 +34,7 @@ reference that is closely related. But for a new phage that is not very common a
 already there in the database, they degrade sharply. And this scenario is very common in metagenomic settings \cite{coclet2021global}.
 
 
-\subsubsection{Protein Conetent Approaches}
+\subsubsection{Protein Content Approaches}
 \label{sec2.2.2: PCA}
 \noindent Instead of comparing and aligning the whole genomes, like the methods in \ref{sec2.2.1: SSA} these methods 
 break down the phage genome into its constituent proteins and then analyze their specific features from their functional
@@ -52,6 +53,11 @@ maps the binary feature vector to a probability dostribution over the hosts $\ma
 \noindent RaFAH is also relevant to this report, since we also work with similar protein based cluster representation
 and the contamination problem discussed in \todo{add section reference} also arises exactly from this protein-cluster 
 construction.
+
+\vspace{0.15cm}
+\noindent These techniques are more robust to sequence divergence than the sequence alignment methods \ref{sec2.2.1: SSA}, but they rely on the availibility of explicit functional
+annotations, which are missing for a large percentage of the already discovered phage genomes.
+
 
 
 \subsubsection{Protein Language Models and Embedding Based Approaches}
@@ -101,95 +107,57 @@ and they do not provide us with any measure of uncertainity.
 are insufficient: they produce calibrated probabilities but no formal finite-sample guarantee\\
 - Why conformal prediction is the right choice: distribution-free, finite-sample guarantee, no assumptions beyond exchangeability, computationally lightweight
 
-% \subsection{Computational Approaches to Host Prediction}
-% \noindent - Early alignment-based methods: exploit co-evolutionary signal between phage tail proteins and bacterial surface receptors, limited to phages with known close relatives\\
-% - Composition-based methods: oligonucleotide similarity between phage and bacterial genomes\\=
-% - Protein-level machine learning: classifiers trained on functional annotations of phage proteins — lysins, tail fibres, capsid proteins, portal complexes — since these directly mediate host recognition\\
-% - How scores are produced in our setting: for each protein and each candidate host, a classifier outputs a score in [0,1] -> these are aggregated to phage level via mean pooling\\
-% - The fundamental limitation shared by all existing methods: they produce only point predictions with no uncertainty quantification
 
 
-
-
-% Your content for state of the art goes here
-
-
-% The problem of predicting which bacterial hosts a phage can infect from genomic data has been studied computationally 
-% for over a decade. Early approaches relied on sequence alignment between phage genomes and bacterial genomes, exploiting 
-% the co-evolutionary signal between phage tail proteins and bacterial surface receptors. These methods performed 
-% reasonably well when closely related phage-host pairs existed in reference databases, but struggled with novel phages 
-% that had no known close relatives.
-
-% More recent approaches framed the problem as a supervised classification task. Given a set of experimentally verified 
-% phage-host pairs, a classifier is trained to predict whether a new phage infects a given host based on features derived
-% from the phage genome. Among the most informative features are functional annotations of phage proteins: the presence 
-% and predicted function of proteins such as lysins, tail fibres, capsid proteins, and portal complexes, since these 
-% proteins directly mediate host recognition and cell lysis.
-
-% In this work, the predictions are produced at the protein level. For each protein in a phage genome and each candidate host
-% h∈Hh∈H, a classifier outputs a score s∈[0,1]s∈[0,1] reflecting the probability that the protein's function is consistent 
-% with infection of that host. Since a phage genome typically contains many proteins — ranging from roughly 10 to 50 in our
-% dataset — and each protein may be annotated with one or more functional categories, this yields a structured collection of 
-% scores indexed by (protein, host, function) triples. These protein-level scores are then aggregated to the phage level via 
-% NaN-aware mean pooling: for each (phage, host, function) combination, we take the mean score across all proteins of that 
-% phage annotated with that function, ignoring proteins with missing annotations for that function rather than treating them 
-% as zero evidence. The result is a phage-level score vector in [0,1]K[0,1]K, where KK is the number of (host, function) 
-% combinations with sufficient data coverage.
-
-% A central empirical observation, discovered during data exploration, is that for the gram-type classification task studied
-% in Chapter 5, all score dimensions consistently measure gram-positive evidence: phages known to infect gram-positive 
-% bacteria achieve mean scores of approximately 0.810.81 across all KK dimensions, while phages infecting gram-negative 
-% bacteria achieve mean scores of approximately 0.080.08. This strong and consistent separation is what makes the gram-type 
-% task tractable and serves as a proof-of-concept for the full multi-host framework.
-
-
-
-
-
-
-% \subsection{State of the Art in Computational Host Prediction}
-% \label{sec2.2:state_of_the_art}
-% \noindent Computational approaches to resolve $f$ have rapidly evolved across three distinct technological paradigms.
-
-% \subsubsection{Sequence-Similarity and Homology-Based Heuristics}
-% \noindent Early computational frameworks operated under the assumption that viral genomes retain significant evolutionary signatures of their hosts. Tools such as \textbf{WIsH} \cite{galiez2017wish} utilize Markov chains to model $k$-mer frequency trajectories, computing the log-likelihood of a short phage metagenomic contig originating from a host's genomic background. Concurrently, alignment-driven tools leverage software like \textbf{MMseqs2} \cite{steinegger2017mmseqs2} to cross-reference phage sequences against curated repositories like \textbf{INPHARED} \cite{cook2021infrastructure}, seeking localized homology matches. These include prophage sequences integrated into bacterial chromosomes or specific CRISPR spacer matches. While highly precise when a close reference genome exists, these alignment heuristics fail entirely when analyzing the "viral dark matter"—novel phages lacking sequence homology in public databases \cite{coclet2021global}.
-
-% \subsubsection{Protein-Content and Classical Machine Learning Paradigm}
-% \noindent To capture broader functional signals, a second generation of tools shifted focus from raw nucleotide sequences to translated protein profiles. \textbf{RaFAH} \cite{coutinho2021rafah} trains a Random Forest architecture on a large-scale viral protein cluster matrix, assigning host source probabilities based on the collective presence or absence of specific functional open reading frames (ORFs). Similarly, unified pipelines like \textbf{iPHoP} integrate host alignment signals, co-abundance profiles, and protein content scores into integrated classifiers. While more robust to sequence divergence than nucleotide alignment, these methods require explicit functional annotations, which are missing for a large percentage of discovered viral genes.
-
-% \subsubsection{Deep Language Models and Protein Embeddings}
-% \noindent The current frontier in host-range prediction leverages self-supervised Large Language Models (LLMs) trained on evolutionary scales of amino acid sequences. Foundation models like \textbf{ProtT5} \cite{elnaggar2022prottrans} map protein sequences into continuous, dense vector spaces ($\mathbb{R}^d$) that capture complex biochemical, biophysical, and structural features without requiring explicit sequence alignment. 
-
-% This embedding paradigm has yielded major performance gains:
-% \begin{itemize}
-%     \item \textbf{Empathi} \cite{boulay2025empathi} utilizes dense protein embeddings within a hierarchical classification setup to perform deep, automated functional annotations of highly divergent phage proteins.
-%     \item \textbf{SUBLYME} \cite{boulay2025sublyme}, embedded within the PhaLP 2.0 pipeline, applies specialized embedding representations to specifically discover and isolate functional phage lysins from diverse metagenomic data.
-%     \item Direct host-range predictors, such as the neural frameworks proposed by Gonzales et al. \cite{gonzales2023protein} and \textbf{Du et al. (2026)} \cite{du2026high}, feed these protein embeddings into deep neural networks to directly map phages to specific host strains, demonstrating that LLM representations can capture the structural constraints governing receptor-binding proteins.
-% \end{itemize}
 
 % \subsection{The Critical Deficiency: Failure of Uncertainty Quantification}
 % \label{sec2.3:failure_of_uq}
-% \noindent Despite their empirical success, all three generations of computational tools share a fundamental, systemic flaw: they operate exclusively as \textbf{point predictors}. For an input phage feature vector $\mathbf{x} \in \mathcal{X}$, these algorithms output a soft score vector $\mathbf{s}(\mathbf{x}) = \left(s_1(\mathbf{x}), \dots, s_K(\mathbf{x})\right) \in [0, 1]^K$, where $s_k(\mathbf{x})$ is interpreted as a heuristic confidence or empirical probability that the phage infects host $k$. Crucially, these scores completely lack rigorous **Uncertainty Quantification (UQ)**. They fail to decouple \textit{aleatoric uncertainty} (inherent stochasticity in the biological infection process) from \textit{epistemic uncertainty} (lack of model knowledge due to sparse training data) \cite{ochoarivera2024conformal}. 
+% \noindent Despite their empirical success, all three generations of computational tools share a fundamental, systemic flaw: 
+%they operate exclusively as \textbf{point predictors}. For an input phage feature vector $\mathbf{x} \in \mathcal{X}$, these 
+%algorithms output a soft score vector $\mathbf{s}(\mathbf{x}) = \left(s_1(\mathbf{x}), \dots, s_K(\mathbf{x})\right) \in [0, 1]^K$, 
+%where $s_k(\mathbf{x})$ is interpreted as a heuristic confidence or empirical probability that the phage infects host $k$. 
+%Crucially, these scores completely lack rigorous **Uncertainty Quantification (UQ)**. They fail to decouple 
+%\textit{aleatoric uncertainty} (inherent stochasticity in the biological infection process) from \textit{epistemic uncertainty} 
+%(lack of model knowledge due to sparse training data) \cite{ochoarivera2024conformal}. 
 
-% In clinical phage therapy, executing choices based on raw point predictions introduces severe risks. If a model yields $s_1(\mathbf{x}) = 0.51$ for Host 1 and $s_2(\mathbf{x}) = 0.49$ for Host 2, a point-prediction rule forces the selection of Host 1, despite the model being highly uncertain. To mitigate this risk, we analyze why standard statistical machine learning approaches fail to provide satisfactory guarantees.
+% In clinical phage therapy, executing choices based on raw point predictions introduces severe risks. If a model yields 
+%$s_1(\mathbf{x}) = 0.51$ for Host 1 and $s_2(\mathbf{x}) = 0.49$ for Host 2, a point-prediction rule forces the selection of 
+%Host 1, despite the model being highly uncertain. To mitigate this risk, we analyze why standard statistical machine learning
+%approaches fail to provide satisfactory guarantees.
 
 % \subsubsection{Why Bayesian Formulations Are Unsuitable}
-% \noindent A classical mathematical approach to UQ is the Bayesian paradigm, which targets the posterior predictive distribution $P(Y \mid X, \mathcal{D})$. While theoretically elegant, Bayesian methods are poorly suited for large-scale phage-host modeling for three reasons:
+% \noindent A classical mathematical approach to UQ is the Bayesian paradigm, which targets the posterior predictive distribution 
+%$P(Y \mid X, \mathcal{D})$. While theoretically elegant, Bayesian methods are poorly suited for large-scale phage-host modeling 
+%for three reasons:
 % \begin{enumerate}
-%     \item \textbf{Computational Intractability:} Evaluating the posterior distribution over high-dimensional protein embedding spaces requires complex Markov Chain Monte Carlo (MCMC) sampling or Variational Inference (VI). This is computationally prohibitive when scaled to massive matrices containing millions of bacterial and viral proteins \cite{steinegger2017mmseqs2}.
-%     \item \textbf{Prior Sensitivity:} In high-dimensional, sparse biological matrices, the calculated posterior distributions depend heavily on arbitrary choices of prior distributions, which lack biological or statistical justification.
-%     \item \textbf{Misspecification Vulnerability:} Bayesian guarantees are strictly asymptotic and rely on the structural assumption that the true data-generating distribution lies within the chosen model class ($\mathcal{M}$-closed setting). If the underlying model architecture is misspecified, the resulting credible intervals lose their validity.
+%     \item \textbf{Computational Intractability:} Evaluating the posterior distribution over high-dimensional protein embedding 
+            % spaces requires complex Markov Chain Monte Carlo (MCMC) sampling or Variational Inference (VI). This is computationally
+            % prohibitive when scaled to massive matrices containing millions of bacterial and viral proteins \cite{steinegger2017mmseqs2}.
+%     \item \textbf{Prior Sensitivity:} In high-dimensional, sparse biological matrices, the calculated posterior distributions depend 
+            % heavily on arbitrary choices of prior distributions, which lack biological or statistical justification.
+%     \item \textbf{Misspecification Vulnerability:} Bayesian guarantees are strictly asymptotic and rely on the structural assumption
+            % that the true data-generating distribution lies within the chosen model class ($\mathcal{M}$-closed setting). If the 
+            % underlying model architecture is misspecified, the resulting credible intervals lose their validity.
 % \end{enumerate}
 
 % \subsubsection{Why Standard Calibration Methods Are Insufficient}
-% \noindent Alternative frequentist methods focus on post-hoc calibration techniques, such as Platt Scaling or Temperature Scaling. These methods solve an optimization problem over an independent validation set to ensure that the output scores match empirical frequencies, meaning:
+% \noindent Alternative frequentist methods focus on post-hoc calibration techniques, such as Platt Scaling or Temperature Scaling. 
+% These methods solve an optimization problem over an independent validation set to ensure that the output scores match empirical 
+% frequencies, meaning:
 % \begin{equation}
 %     P\left(Y = k \mid s_k(X) = \hat{p}\right) \longrightarrow \hat{p} \quad \text{as } n \to \infty
 % \end{equation}
-% While calibration ensures that a confidence score of $0.90$ aligns with a $90\%$ long-run empirical success rate on average, it suffers from severe limitations:
+% While calibration ensures that a confidence score of $0.90$ aligns with a $90\%$ long-run empirical success rate on average, 
+% it suffers from severe limitations:
 % \begin{enumerate}
-%     \item \textbf{No Finite-Sample Guarantees:} Calibration metrics (such as the Expected Calibration Error, ECE) only provide asymptotic regularities. They offer no statistical safeguards when working with small, finite datasets or highly specialized clinical isolates.
-%     \item \textbf{Retention of the Point Prediction Paradigm:} Calibration alters the scale of the scalar outputs but does not change the core prediction format. It does not provide a mathematical mechanism to construct a discrete predictive set $C(\mathbf{x}) \subseteq \mathcal{Y}$ that controls the exact instance-level error rate.
+%     \item \textbf{No Finite-Sample Guarantees:} Calibration metrics (such as the Expected Calibration Error, ECE) only provide 
+            % asymptotic regularities. They offer no statistical safeguards when working with small, finite datasets or highly 
+            % specialized clinical isolates.
+%     \item \textbf{Retention of the Point Prediction Paradigm:} Calibration alters the scale of the scalar outputs but does not 
+            % change the core prediction format. It does not provide a mathematical mechanism to construct a discrete predictive 
+            % set $C(\mathbf{x}) \subseteq \mathcal{Y}$ that controls the exact instance-level error rate.
 % \end{enumerate}
 
-% This methodological gap demonstrates the need for a framework that is computationally lightweight, completely distribution-free, and capable of rendering exact, finite-sample statistical guarantees. This directly motivates our development of a **conformal prediction** pipeline.
+% This methodological gap demonstrates the need for a framework that is computationally lightweight, completely distribution-free, 
+% and capable of rendering exact, finite-sample statistical guarantees. This directly motivates our development of a **conformal 
+% prediction** pipeline.
