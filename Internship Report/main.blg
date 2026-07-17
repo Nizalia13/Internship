@@ -3,11 +3,9 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: ieeetr.bst
 Database file #1: references.bib
-Warning--I'm ignoring du2026high's extra "author" field
---line 141 of file references.bib
 You've used 14 entries,
             1876 wiz_defined-function locations,
-            584 strings with 7241 characters,
+            583 strings with 7203 characters,
 and the built_in function-call counts, 4972 in all, are:
 = -- 512
 > -- 244
@@ -46,4 +44,3 @@ warning$ -- 0
 while$ -- 39
 width$ -- 16
 write$ -- 179
-(There was 1 warning)
