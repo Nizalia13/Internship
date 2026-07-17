@@ -11,26 +11,26 @@
 To overcome this issue, researchers are going to alternative solutions, one of which is phage therapy. 
 Phage therapy relies on using the naturally occurring viruses to target and destroy the harmful bacteria.
 
-\vspace{0.2cm} 
+\vspace{0.15cm} 
 \noindent However, To make this therapy a viable alternative, we first need to understand the basic biology of these viruses.
 Bacteriophages, or phages are viruses that infect bacterial hosts that and are one of the most abundant entities on the planet.
 Each phage contains a collection of structural and functional proteins that collectively determine the bacterial strains that
 the phage can infect - this property is called the host range of the phage.
 
-\vspace{0.2cm} 
+\vspace{0.15cm} 
 \noindent These phages are highly host-specific: a phage which infects one bacterial host may have very little
 to no effect on another. This particular property of theirs has naturally generated interest in modelling and applications in the context of.......
 \todo{complete sentence (treatment???)}. Therefore a significant problem in the phage biology is the prediction of the bacterial
 hosts associated with a given phage. Accurate host-predictions can have applications in .....\todo{find applications}
 
-\vspace{0.2cm} 
+\vspace{0.15cm} 
 \noindent The host specificity of phages is one of phage therapy’s greatest advantage, but at the same time, it also 
 brings a very significant practical challenge. While it allows us to target specific harmful bacteria without 
 destroying the beneficial ones, it also causes probelms in finding exactly the appropriate phage for a specific infection. Doing
 this by only experimental screening can be time-consuming and expensive. This motivates the development of 
 reliable computational models that are capable of predicting these phage-host interactions directly from the protein level information.
 
-\vspace{0.2cm} 
+\vspace{0.15cm} 
 \noindent The existing computational tools, however have a very important limitation: they typically only produce
 point predictions, which are oftern represented as a scalar confidence score between 0 and 1 with no 
 associated measure of uncertainty. This lack of having an uncertainty quantification is problematic in 
@@ -38,13 +38,13 @@ clinical contexts, where failing to identify a true host could mean missing a li
 Consequently, to build trust in automated host prediction, we need a mathematical framework that is capable of 
 quantifying its own predictive uncertainty and provides reliable confidence guarantees.
 
-\vspace{0.2cm} 
+\vspace{0.15cm} 
 \noindent The primary objective of this report is to address this limitation by developing an uncertainty-aware framework
 for phage-host prediction using \textbf{Conformal Prediction}. Conformal prediction provides a
 distribution-free framework that allows us to transform standard point predictions into prediction
 sets that are guaranteed to contain the true bacterial host with a user-defined confidence level.
 
-\vspace{0.2cm} 
+\vspace{0.15cm} 
 \noindent In this project, we build our phage representations by aggregating collections of protein-level functional scores. 
 This process naturally produced high-dimensional, structured score vectors, as different proteins and functions vary 
 in their data availability. These score vectors also ofter contain missing or noisy information. To handle these 

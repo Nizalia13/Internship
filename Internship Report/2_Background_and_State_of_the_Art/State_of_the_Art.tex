@@ -1,7 +1,96 @@
-\subsection{Current Computational Approaches to Host Prediction}
+\subsection{Current Computational Approaches and Limitations}
 \label{sec2.2: current approaches}
 % State of the Art in Uncertainty Quantification for Biological Prediction
-\noindent already existing method for the phage host prediction
+\noindent The problem of predicting which phage infects which host pacteria has been studied computationally. The host 
+prediction methods can be divided into three categories. These methods progress from simple genomic statistics to deep 
+representation learning. Here we will summarize each family of methods and their underlying mathematical assumptions along with
+the common limitations that motivate us for this work.
+
+\subsubsection{Sequence Similarity Approaches}
+\label{sec2.2.1: SSA}
+\noindent The earliest host prediction tools relied on the genomic sequence of a phage and a bacterial host, assuming that similarity 
+between the two indicates  infection compatibility. This was motivated by the known transfer of genetic material between the 
+phages and their hosts through horizontal gene transfer.
+
+\vspace{0.15cm}
+\noindent One of the tools, HostPhinder \cite{villarroel2016hostphinder}, works by building a reference database of phage genomes with the
+known hosts. Then for a new phage in question, it assigns the host that is the host of its nearest neighbour under a k-mer similarity
+metric. Mathematically, let $f(g) \in \mathbb{R}^{4^k}$ be the normalised k-mer frequency vector of a genome $g$, then its 
+predicted host is:
+
+$$\hat{y} = \operatorname*{argmax}_{y \in \mathcal{Y}} \left\{ \operatorname{sim}(f(g_{\text{new}}), f(g_y)) \right\}$$
+
+\noindent where $g(y)$ is the reference phage genome with a knwon host $y$ and $\operatorname*{sim}$ is a similarity measure.
+
+\vspace{0.15cm}
+\noindent Another method, WIsH \cite{galiez2017wish}, uses a probabilistic approach by modelling the genome of each candidate
+host as a varaible order Markov chain and computing the likelihood of the new phage genome under each host model. The predicted
+host maximises this likelihood. 
+
+\vspace{0.15cm}
+\noindent Despite the fact that these methods are relitively simpler, they perform reasonably well when they have a phage
+reference that is closely related. But for a new phage that is not very common and is only a distant relative of the phages
+already there in the database, they degrade sharply. And this scenario is very common in metagenomic settings \cite{coclet2021global}.
+
+
+\subsubsection{Protein Conetent Approaches}
+\label{sec2.2.2: PCA}
+\noindent Instead of comparing and aligning the whole genomes, like the methods in \ref{sec2.2.1: SSA} these methods 
+break down the phage genome into its constituent proteins and then analyze their specific features from their functional
+or sequence properties. This approach is motivated by the fact that the proteins responsible for infecting a host are much
+more evolutionary conserved than the rest of the genome \cite{coutinho2021rafah}.
+
+\vspace{0.15cm}
+\noindent RaFAH \cite{coutinho2021rafah} (Random Forest with protein Amino acid compositions for phage Host prediction)
+works by clustering all the known phage proteins into protein clusters using MMseqs2 \cite{steinegger2017mmseqs2}.
+It computes the amino acid composition vector of each cluster's representative sequence amd then trains a random forest
+classifier to predict the host genus from the protein cluster membership profile of the new phage. Let $x \in \{0,1\}^M$
+encode which of the $M$ protein clusters are present in a given phage, thenn random forest $f: \{0,1\}^M \to \varDelta(\mathcal{Y})$ 
+maps the binary feature vector to a probability dostribution over the hosts $\mathcal{Y}$. 
+
+\vspace{0.15cm}
+\noindent RaFAH is also relevant to this report, since we also work with similar protein based cluster representation
+and the contamination problem discussed in \todo{add section reference} also arises exactly from this protein-cluster 
+construction.
+
+
+\subsubsection{Protein Language Models and Embedding Based Approaches}
+\label{sec2.2.3: PLMs}
+\noindent The latest host prediction methods use protein language models (pLMs) \cite{elnaggar2022prottrans, flamholz2024large}.
+Similar to how large language models (LLMs) are trained on massive text datasets, pLMs are neural networks trained on 
+millions of protein sequences through self-supervised learning.
+
+\vspace{0.15cm}
+\noindent For a protein sequence $a = (a_1, \dots, a_n) \in \mathcal{A}^n$, where $\mathcal{A}$ represents the standard
+amino acid alphabet of size 20, a pLM maps the sequence to a dense vector representation:
+$$z = \Phi(a) \in \mathbb{R}^d,$$
+where $d$ is the embedding dimension (typically 1024 or larger). This embedding vector, $z$, captures the sequence's
+biochemical, structural, and evolutionary properties. A primary foundational model in this domain is ProtTrans/ProtT5 
+\cite{elnaggar2022prottrans}, which is trained on hundreds of millions of UniRef protein sequences.
+
+\vspace{0.15cm}
+\noindent Several tools for phage protein protein annotation and host prediction have been developed using these embeddings.
+For instance, EMPATHI \cite{boulay2025empathi} uses a heirarchical classification pipeline to assigns functioal labels 
+to phage proteins. It embeds the sequences using ProtT5 and performs nearest neighbour retreival witihin the embedding space,
+mapping them to a biological function ontology. SUBLYME \cite{boulay2026phalp} then extends this methodology for metagenomics
+which enables lysin discovery directly from environmemtal samples. These tools are directly involved in this work as rhe 
+score matrix that is used as an input to this conformal framework is generated by a pipeline which is built on these annotations.
+
+\vspace{0.15cm}
+\noindent For host prediction, we can see in \cite{gonzales2023protein} that protein embeddings actually improve the 
+predictions for the phage host interactions compared to the sequence-similarity baselines \ref{sec2.2.1: SSA}. In 
+\cite{du2026high} Du et al. show that through some key protein embeddings LLMs can acheive high resolution host assignments.
+Such results support the theory that embedding represenations contain information that is sufficeint for an accurate 
+host-prediction. But at the same time, all these methods output point predictions, a single score ot a single host label,
+and they do not provide us with any measure of uncertainity.
+
+\subsubsection{Limitations of Existing Methods}
+
+
+
+
+
+\vspace{4cm}
 
 
  \noindent - Brief overview of existing approaches in machine learning\\
@@ -14,7 +103,7 @@ are insufficient: they produce calibrated probabilities but no formal finite-sam
 
 % \subsection{Computational Approaches to Host Prediction}
 % \noindent - Early alignment-based methods: exploit co-evolutionary signal between phage tail proteins and bacterial surface receptors, limited to phages with known close relatives\\
-% - Composition-based methods: oligonucleotide similarity between phage and bacterial genomes\\
+% - Composition-based methods: oligonucleotide similarity between phage and bacterial genomes\\=
 % - Protein-level machine learning: classifiers trained on functional annotations of phage proteins — lysins, tail fibres, capsid proteins, portal complexes — since these directly mediate host recognition\\
 % - How scores are produced in our setting: for each protein and each candidate host, a classifier outputs a score in [0,1] -> these are aggregated to phage level via mean pooling\\
 % - The fundamental limitation shared by all existing methods: they produce only point predictions with no uncertainty quantification
