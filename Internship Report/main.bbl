@@ -1,59 +1,96 @@
 \begin{thebibliography}{10}
 
 \bibitem{ochoarivera2024conformal}
-E.~O. Rivera, Y.~Patel, and A.~Tewari, ``Conformal prediction for ensembles: Improving efficiency via score-based aggregation,'' in {\em Advances in Neural Information Processing Systems (NeurIPS)}, 2024.
+E.~O. Rivera, Y.~Patel, and A.~Tewari, ``Conformal prediction for ensembles:
+  Improving efficiency via score-based aggregation,'' in {\em Advances in
+  Neural Information Processing Systems (NeurIPS)}, 2024.
 \newblock \href{https://arxiv.org/abs/2405.16246}{[arXiv]}.
 
 \bibitem{dejonge2019molecular}
-P.~A. {de Jonge}, F.~L. Nobrega, S.~J.~J. Brouns, and B.~E. Dutilh, ``Molecular and evolutionary determinants of bacteriophage host range,'' {\em Trends in Microbiology}, vol.~27, no.~1, pp.~51--63, 2019.
+P.~A. {de Jonge}, F.~L. Nobrega, S.~J.~J. Brouns, and B.~E. Dutilh, ``Molecular
+  and evolutionary determinants of bacteriophage host range,'' {\em Trends in
+  Microbiology}, vol.~27, no.~1, pp.~51--63, 2019.
 \newblock \href{https://doi.org/10.1016/j.tim.2018.08.006}{[CellPress]}.
 
 \bibitem{holtappels2023drivers}
-D.~Holtappels, P.~Alfenas-Zerbini, and B.~Koskella, ``Drivers and consequences of bacteriophage host range,'' {\em FEMS Microbiology Reviews}, vol.~47, no.~4, p.~fuad038, 2023.
+D.~Holtappels, P.~Alfenas-Zerbini, and B.~Koskella, ``Drivers and consequences
+  of bacteriophage host range,'' {\em FEMS Microbiology Reviews}, vol.~47,
+  no.~4, p.~fuad038, 2023.
 \newblock \href{https://doi.org/10.1093/femsre/fuad038}{[OxfordPress]}.
 
 \bibitem{coclet2021global}
-C.~Coclet and S.~Roux, ``Global overview and major challenges of host prediction methods for uncultivated phages,'' {\em Current Opinion in Virology}, vol.~49, pp.~117--126, 2021.
+C.~Coclet and S.~Roux, ``Global overview and major challenges of host
+  prediction methods for uncultivated phages,'' {\em Current Opinion in
+  Virology}, vol.~49, pp.~117--126, 2021.
 \newblock \href{https://doi.org/10.1016/j.coviro.2021.05.003}{[ScienceDirect]}.
 
 \bibitem{villarroel2016hostphinder}
-J.~Villarroel, K.~A. Kleinheinz, V.~I. Jurtz, H.~Zschach, O.~Lund, M.~Nielsen, and P.~Marcatili, ``Hostphinder: A phage host prediction tool,'' {\em Viruses}, vol.~8, no.~5, p.~116, 2016.
+J.~Villarroel, K.~A. Kleinheinz, V.~I. Jurtz, H.~Zschach, O.~Lund, M.~Nielsen,
+  and P.~Marcatili, ``Hostphinder: A phage host prediction tool,'' {\em
+  Viruses}, vol.~8, no.~5, p.~116, 2016.
 \newblock \href{https://doi.org/10.3390/v8050116}{[MDPI]}.
 
 \bibitem{galiez2017wish}
-C.~Galiez, M.~Siebert, F.~Enault, J.~Vincent, and J.~S{\"o}ding, ``Wish: who is the host? predicting prokaryotic hosts from metagenomic phage contigs,'' {\em Bioinformatics}, vol.~33, no.~19, pp.~3113--3114, 2017.
+C.~Galiez, M.~Siebert, F.~Enault, J.~Vincent, and J.~S{\"o}ding, ``Wish: who is
+  the host? predicting prokaryotic hosts from metagenomic phage contigs,'' {\em
+  Bioinformatics}, vol.~33, no.~19, pp.~3113--3114, 2017.
 \newblock \href{https://doi.org/10.1093/bioinformatics/btx383}{[OxfordPress]}.
 
 \bibitem{coutinho2021rafah}
-F.~H. Coutinho, A.~Zaragoza-Solas, M.~L{\'o}pez-P{\'e}rez, J.~Barylski, A.~Zielezinski, B.~E. Dutilh, R.~Edwards, and F.~Rodriguez-Valera, ``Rafah: Host prediction for viruses of bacteria and archaea based on protein content,'' {\em Patterns}, vol.~2, no.~7, p.~100274, 2021.
+F.~H. Coutinho, A.~Zaragoza-Solas, M.~L{\'o}pez-P{\'e}rez, J.~Barylski,
+  A.~Zielezinski, B.~E. Dutilh, R.~Edwards, and F.~Rodriguez-Valera, ``Rafah:
+  Host prediction for viruses of bacteria and archaea based on protein
+  content,'' {\em Patterns}, vol.~2, no.~7, p.~100274, 2021.
 \newblock \href{https://doi.org/10.1016/j.patter.2021.100274}{[ScienceDirect]}.
 
 \bibitem{steinegger2017mmseqs2}
-M.~Steinegger and J.~S{\"o}ding, ``Mmseqs2 enables sensitive protein sequence searching for the analysis of massive data sets,'' {\em Nature Biotechnology}, vol.~35, no.~11, pp.~1026--1028, 2017.
+M.~Steinegger and J.~S{\"o}ding, ``Mmseqs2 enables sensitive protein sequence
+  searching for the analysis of massive data sets,'' {\em Nature
+  Biotechnology}, vol.~35, no.~11, pp.~1026--1028, 2017.
 \newblock \href{https://doi.org/10.1038/nbt.3988}{[SpringerNature]}.
 
 \bibitem{elnaggar2022prottrans}
-A.~Elnaggar, M.~Heinzinger, C.~Dallago, G.~Rehawi, Y.~Wang, L.~Jones, T.~Gibbs, T.~Feher, C.~Angerer, M.~Steinegger, D.~Bhowmik, and B.~Rost, ``Prottrans: Toward understanding the language of life through self-supervised learning,'' {\em IEEE Transactions on Pattern Analysis and Machine Intelligence}, vol.~44, no.~10, pp.~7112--7127, 2022.
+A.~Elnaggar, M.~Heinzinger, C.~Dallago, G.~Rehawi, Y.~Wang, L.~Jones, T.~Gibbs,
+  T.~Feher, C.~Angerer, M.~Steinegger, D.~Bhowmik, and B.~Rost, ``Prottrans:
+  Toward understanding the language of life through self-supervised learning,''
+  {\em IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  vol.~44, no.~10, pp.~7112--7127, 2022.
 \newblock \href{https://doi.org/10.1109/TPAMI.2021.3095381}{[IEEE]}.
 
 \bibitem{flamholz2024large}
-Z.~N. Flamholz, S.~J. Biller, and L.~Kelly, ``Large language models improve annotation of prokaryotic viral proteins,'' {\em Nature Microbiology}, vol.~9, no.~2, pp.~537--549, 2024.
+Z.~N. Flamholz, S.~J. Biller, and L.~Kelly, ``Large language models improve
+  annotation of prokaryotic viral proteins,'' {\em Nature Microbiology},
+  vol.~9, no.~2, pp.~537--549, 2024.
 \newblock \href{https://doi.org/10.1038/s41564-023-01584-8}{[SpringerNature]}.
 
 \bibitem{boulay2025empathi}
-A.~Boulay, A.~Leprince, F.~Enault, E.~Rousseau, and C.~Galiez, ``Empathi: embedding-based phage protein annotation tool by hierarchical assignment,'' {\em Nature Communications}, vol.~16, no.~1, p.~9114, 2025.
+A.~Boulay, A.~Leprince, F.~Enault, E.~Rousseau, and C.~Galiez, ``Empathi:
+  embedding-based phage protein annotation tool by hierarchical assignment,''
+  {\em Nature Communications}, vol.~16, no.~1, p.~9114, 2025.
 \newblock \href{https://doi.org/10.1038/s41467-025-64177-5}{[SpringerNature]}.
 
 \bibitem{boulay2026phalp}
-A.~Boulay, V.~N{\'e}meth, B.~Criel, M.~Stock, B.~{De Baets}, C.~Galiez, E.~Rousseau, Y.~Briers, and R.~V{\'a}zquez, ``Phalp 2.0: extending the community-oriented phage lysin database with a sublyme pipeline for metagenomic discovery,'' {\em Database}, vol.~2026, p.~baag033, 2026.
+A.~Boulay, V.~N{\'e}meth, B.~Criel, M.~Stock, B.~{De Baets}, C.~Galiez,
+  E.~Rousseau, Y.~Briers, and R.~V{\'a}zquez, ``Phalp 2.0: extending the
+  community-oriented phage lysin database with a sublyme pipeline for
+  metagenomic discovery,'' {\em Database}, vol.~2026, p.~baag033, 2026.
 \newblock \href{https://doi.org/10.1093/database/baag033}{[OxfordPress]}.
 
 \bibitem{gonzales2023protein}
-M.~E.~M. Gonzales, J.~C. Ureta, and A.~M.~S. Shrestha, ``Protein embeddings improve phage-host interaction prediction,'' {\em PLOS ONE}, vol.~18, no.~7, p.~e0289030, 2023.
+M.~E.~M. Gonzales, J.~C. Ureta, and A.~M.~S. Shrestha, ``Protein embeddings
+  improve phage-host interaction prediction,'' {\em PLOS ONE}, vol.~18, no.~7,
+  p.~e0289030, 2023.
 \newblock \href{https://doi.org/10.1371/journal.pone.0289030}{[PLOS]}.
 
 \bibitem{du2026high}
-Z.~Du, M.~L. tastes, K.~Lin, J.~Li, J.~Li, and M.~Xiao, ``High-resolution phage-host assignment through key proteins using large language models,'' {\em Nature Communications}, vol.~17, no.~1, p.~4439, 2026.
+Z.~Du, M.~L. tastes, K.~Lin, J.~Li, J.~Li, and M.~Xiao, ``High-resolution
+  phage-host assignment through key proteins using large language models,''
+  {\em Nature Communications}, vol.~17, no.~1, p.~4439, 2026.
 \newblock \href{https://doi.org/10.1038/s41467-026-70613-x}{[SpringerNature]}.
+
+\bibitem{vovk2005algorithmic}
+V.~Vovk, A.~Gammerman, and G.~Shafer, {\em Algorithmic Learning in a Random
+  World}.
+\newblock Springer Science \& Business Media, 2005.
 
 \end{thebibliography}
