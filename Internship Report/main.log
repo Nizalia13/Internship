@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  21 JUL 2026 15:11
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  21 JUL 2026 17:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -930,7 +930,7 @@ Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count357
 (./Title_Page.tex
-<logo_ensimag_uga.png, id=175, 276.3123pt x 95.6373pt>
+<logo_ensimag_uga.png, id=179, 276.3123pt x 95.6373pt>
 File: logo_ensimag_uga.png Graphic file (type png)
 <use logo_ensimag_uga.png>
 Package pdftex.def Info: logo_ensimag_uga.png  used on input line 25.
@@ -991,11 +991,6 @@ Package hyperref Info: bookmark level for unknown todo defaults to 0 on input li
 LaTeX Warning: Marginpar on page 1 moved.
 
 
-Overfull \hbox (15.08302pt too wide) in paragraph at lines 42--47
-\T1/lmr/m/n/12 The pri-mary ob-jec-tive of this re-port is to ad-dress this lim-i-ta-tion by de-vel-op-ing an uncertainty-
- []
-
-
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
@@ -1006,13 +1001,6 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has b
                    \relax 
 l.32 \newpage
               [2] (./2_Background_and_State_of_the_Art/2.1_Background.tex
-
-LaTeX Warning: Reference `sec2.3: CSA method' on page 3 undefined on input line 11.
-
-
-LaTeX Warning: Reference `sec2.4: conformal prediction' on page 3 undefined on input line 11.
-
-
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
@@ -1021,23 +1009,11 @@ l.47
 
 LaTeX Warning: Marginpar on page 6 moved.
 
-[6] [7]) (./2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex [8]) (./2_Background_and_State_of_the_Art/2.4_CSA_Method.tex) [9] (./3_Methods/Problem.tex) (./3_Methods/Non Convex.tex) (./3_Methods/Score Transformation.tex) (./3_Methods/Envelope_Construction_Methods.tex
+[6] [7]) (./2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex [8]) (./2_Background_and_State_of_the_Art/2.4_CSA_Method.tex [9]) [10] (./3_Methods/Problem.tex) (./3_Methods/Non Convex.tex) (./3_Methods/Score Transformation.tex) (./3_Methods/Envelope_Construction_Methods.tex
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 5.
  (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [10]
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 11.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\tau' on input line 11.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 11.
-
+) [11]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 30.
@@ -1062,31 +1038,28 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1.
 
-) [11] (./4_Data/Description.tex) (./4_Data/Protein_to_Phage_Aggregation.tex) (./4_Data/Train_test_split.tex)
+) [12] (./4_Data/Description.tex) (./4_Data/Protein_to_Phage_Aggregation.tex) (./4_Data/Train_test_split.tex)
 Underfull \hbox (badness 10000) in paragraph at lines 2--50
 
  []
 
-[12] [13] (./5_Experiments_and_Results/Validation.tex) (./5_Experiments_and_Results/Gram_type_classification.tex [14]) (./5_Experiments_and_Results/Host Classification.tex) [15] (./6_Conclusion/Summary.tex) (./6_Conclusion/limitations.tex) [16] (./main.bbl [17]) [18] (./main.aux)
-
-LaTeX Warning: There were undefined references.
-
+[13] [14] (./5_Experiments_and_Results/Validation.tex) (./5_Experiments_and_Results/Gram_type_classification.tex [15]) (./5_Experiments_and_Results/Host Classification.tex) [16] (./6_Conclusion/Summary.tex) (./6_Conclusion/limitations.tex) [17] (./main.bbl [18]) [19] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 6649C1D23995AF5C43E53ACE12D66FF1;7470.
+(rerunfilecheck)             Checksum: A82C47E9F413BEDB798DB7A524C2ED28;7689.
  ) 
 Here is how much of TeX's memory you used:
- 40333 strings out of 476091
- 897316 string characters out of 5794081
+ 40335 strings out of 476091
+ 897340 string characters out of 5794081
  1870330 words of memory out of 5000000
  59833 multiletter control sequences out of 15000+600000
  601065 words of font info for 106 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  122i,13n,134p,811b,983s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (23 pages, 333203 bytes).
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/yhmath/yhcmex.pfb>
+Output written on main.pdf (24 pages, 343748 bytes).
 PDF statistics:
- 510 PDF objects out of 1000 (max. 8388607)
- 444 compressed objects within 5 object streams
- 92 named destinations out of 1000 (max. 500000)
- 354 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 526 PDF objects out of 1000 (max. 8388607)
+ 457 compressed objects within 5 object streams
+ 94 named destinations out of 1000 (max. 500000)
+ 362 words of extra memory for PDF output out of 10000 (max. 10000000)
 

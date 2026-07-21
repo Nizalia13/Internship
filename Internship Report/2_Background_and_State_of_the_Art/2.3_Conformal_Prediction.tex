@@ -5,13 +5,15 @@ accessible by Angelopoulos and Bates \cite{angelopoulos2023conformal}, is a fram
 have a coverage guarantee. Unlike the methods seen in \ref{sec2.2: current approaches} it can provide us with a set of possible
 outcomes (not a point prediction), have a mathematical guarantee and yet requires no distributional assumptions on the data, 
 except for the exchangibility condition. In this section we will develop the framework of conformal prediction and see 
-\todo{complete this sentence}
+\todo{complete this sentence + define exchangeability}
 % \noindent - framework\\
 % - coverage guarantee\\
 % - exchnagebility
 
 \subsubsection{Mathematical Setup and Prediction Set}
 \label{sec2.3.1: setup}
+
+% %state Theorem 2.1 formally with both bounds ???
 \noindent Let $(X,Y) \in \mathcal{X} \times \mathcal{Y}$ be a random input-label pair, where $\mathcal{X}$ is the feature space that 
 represents our object of intererst (in our case it is the phage protein level score vectors) and $\mathcal{Y} = \{1, \cdots, K\}$
 is the discrete label space (set of candidate hosts). 
@@ -22,8 +24,9 @@ exchangable data points drawn from an unknown joint distribution, $P_{X,Y}$. The
 our aim is to to construct a prediction set function $C: \mathcal{X} \rightarrow 2^{\mathcal{Y}}$ dependening on the data
 which maps the test input to a subset of candidate labels, i.e., $C(X_{n+1}) \subseteq \mathcal{Y}$, such that the true label 
 falls in in the set with a defined coverage that is:
-$$\mathbb{P}(Y \in C(X_{n+1})) \geq 1 - \alpha$$
-In our experiments we set $\alpha = 0.1$  so that the guarantee is $90\%$.
+$$\mathbb{P}(Y_{n+1} \in C(X_{n+1})) \geq 1 - \alpha$$
+where $\alpha \in (0,1)$ is the significance level. In our experiments we set $\alpha = 0.1$  so that the guarantee is 
+$90\%$.
 
 \vspace{0.15cm}
 \noindent A prediction set function can provide us three qualitatively different outcomes for any new test point:
@@ -41,32 +44,46 @@ prediction. An ideal predictor should acheive a coverage $\geq 1-\alpha$ with th
 that we will work on in \todo{refer to the correct section}.
 
 
+\subsubsection{Split conformal prediction} 
+\label{sec2.3.2: split conformal}
+% \noindent - why we use it, the train/calibration/test separation, validity still holds
+\noindent In this work, we have used split conformal prediction, in this the training data is split into two sets. 
+The first set is the training set, it is used to fit a score model $\hat f: \mathcal{X} \times \mathcal{Y \rightarrow 
+\mathbb{R}}$. We then define a nonconformity score function: $V: \mathcal{X} \times \mathcal{Y} \to \mathbb{R}$ based on 
+$\hat{f}$, here, $V(x, y)$ is used to calculate the error margins, it quantifies how unusual the pair $(x, y)$ is 
+relative to the training data.  The calibration set (second set), is then used to evaluate the nonconformity scores:
+$$V_i = V(X_i, Y_i), \quad \forall (X_i, Y_i) \in S_{cal}$$
+
+\vspace{0.15cm}
+\noindent Then by the exchangibility assumption, we have that the test score, $V_{n+1} = V \left(X_{n+1}, Y_{n+1}\right)$
+has rank which is uniformly distributed among $\{V_1, \cdots V_n, V_{n+1}\}$. Therefore, to guarantee that our error rate
+does not exceed $\alpha$, we compute the empirical $(1-\alpha)$ quantile of the calibration nonconformity scores, denoted
+as $\hat q$:
+$$\hat{q} = \inf \left\{ q \in \mathbb{R} : \frac{1}{n}\sum_{i=1}^{n} \mathbb{I}(V_i \leq q) \geq \frac{\lceil (n+1)
+(1-\alpha) \rceil}{n} \right\}.$$
+
+\noindent Finally, for a new input, $X_{n+1}$ the prediction set is constructed by collecting all the candidate labels in
+$y \in \mathcal{Y}$ whose nonconformity scores do not exceed this calibrated threshold:
+$$C(X_{n+1}) = \{ y \in \mathcal{Y} : V(X_{n+1}, y) \leq \hat{q} \}$$
 
 
+
+% This technique acheives the coverage guarantee over calibration set in a single pass which makes it computationally efficient.
 
 
 \vspace{4cm}
-Let $\alpha \in (0, 1)$ represent a pre-specified error budget, where $1 - \alpha$ defines the target coverage level (e.g., 
-setting $\alpha = 0.10$ requests a $90\%$ confidence set). Conformal prediction provides a strict mathematical guarantee that:
-$$P(Y_{n+1} \in C(X_{n+1})) \geq 1 - \alpha$$
-This coverage property is finite-sample valid, meaning it holds exactly for any sample size $n$, and is distribution-free, 
-requiring absolutely no parametric assumptions about the underlying distribution $P_{X,Y}$ or the internal architecture of 
-the heuristic scoring model. The only fundamental requirement is the exchangeability of the sequence of random variables 
-$(X_1, Y_1), \dots, (X_{n+1}, Y_{n+1})$.
+
+% 1. Train the Model: Train your base model (a neural network, random forest, linear regression, etc.) using only the 
+%    Training Set.
+% 2. Calculate Errors on unseen data: Feed the Calibration Set into the trained model. Calculate how far off the prediction 
+%    was for each item (often called the non-conformity score or error distance).
+%    $$\text{Error} = \vert{}\text{True Value} - \text{Predicted Value}\vert{}$$
+% 3. Find the Error Threshold: Sort all those errors from smallest to largest. If you want a 90% confidence guarantee, 
+%    find the error value that covers 90% of your calibration examples (the 90th percentile).
+% 4. Make Guaranteed Predictions: When a new data point comes in: $$\text{Prediction Interval} = [\text{Predicted Value} 
+%    - \text{Threshold}, \;\; \text{Predicted Value} + \text{Threshold}]$$
 
 
-
-
-
-
-% \subsubsection{Setup and nonconformity scores}
-% \noindent - define exchangeability, define s(x,y) -> explain the intuition
-
-% \subsubsection{prediction set and coverage guarantee} \noindent - define C(x) 
-% %state Theorem 2.1 formally with both bounds
-
-% \subsubsection{Split conformal prediction} 
-% \noindent - why we use it, the train/calibration/test separation, validity still holds
 
 % \subsubsection{Marginal vs conditional coverage}
 % \noindent - the distinction, why it matters for imbalanced problems, formal statement of both guarantees
