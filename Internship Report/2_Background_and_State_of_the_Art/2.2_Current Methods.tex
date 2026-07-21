@@ -1,16 +1,16 @@
 \subsection{Current Computational Approaches and Limitations}
 \label{sec2.2: current approaches}
 % State of the Art in Uncertainty Quantification for Biological Prediction
-\noindent The problem of predicting which phage infects which host bacteria has been studied computationally for over a decade. The host 
-prediction methods can be divided into categories, these methods progress from simple genomic statistics to deep 
-representation learning. Here we will summarize each family of methods and their underlying mathematical assumptions along with
-the common limitations that motivate us for this work.
+\noindent The problem of predicting which phage infects which host bacteria has been studied computationally for over a decade
+and the methods have significantly evolved during this time. Prediction methods have progressed from simple rule based alignemnt 
+to deep representation learning. Here, we will summarize each family of methods and their underlying mathematical assumptions 
+along with the common limitations that motivate us for this work.
 
 
 \subsubsection{Sequence Similarity Approaches}
 \label{sec2.2.1: SSA}
-\noindent The earliest host prediction tools relied on sequence alignment between a phage and bacterial genomes, assuming that similarity 
-between the two indicates infection compatibility. This was motivated by the known transfer of genetic material between the 
+\noindent The earliest host prediction tools relied on sequence alignment between a phage and bacterial genomes, assuming that 
+similarity between the two indicates infection compatibility. This was motivated by the known transfer of genetic material between the 
 phages and their hosts through horizontal gene transfer.
 
 \vspace{0.15cm}
@@ -27,11 +27,10 @@ $$\hat{y} = \operatorname*{argmax}_{y \in \mathcal{Y}} \left\{ \max_{g_i : y_i =
 
 \vspace{0.15cm}
 \noindent Another method, WIsH \cite{galiez2017wish}, uses a probabilistic approach by modelling the genome of each candidate
-host, $h \in \mathcal{H}$, as a varaible order Markov chain with parameter vector, $\theta_h$. It then computes the the likelihood 
+host, $h \in \mathcal{H}$, as a variable order Markov chain with parameter vector, $\theta_h$. It then computes the likelihood 
 of the new phage genome sequence, $S = (a_1, \cdots, a_L)$ under each host model:
-$$\ell(S \mid \boldsymbol{\theta}_h) = \sum_{i=k+1}^L \log \mathbb{P}\left(a_i \mid a_{i-k}, \dots, a_{i-1}; 
-\boldsymbol{\theta}_h\right)$$
-The predicted host is $\hat{y} = \operatorname*{argmax}_{h \in \mathcal{H}} \ell(S \mid \boldsymbol{\theta}_h)$, 
+$$\ell(S \mid \theta_h) = \sum_{i=k+1}^L \log \mathbb{P}\left(a_i \mid a_{i-k}, \dots, a_{i-1}; \theta_h\right)$$
+The predicted host is $\hat{y} = \operatorname*{argmax}_{h \in \mathcal{H}} \ell(S \mid \theta_h)$, 
 which maximizes this likelihood.
 
 \vspace{0.15cm}
@@ -53,21 +52,23 @@ works by clustering all the known phage proteins into protein clusters using MMs
 It computes the amino acid composition vector of each cluster's representative sequence amd then trains a random forest
 classifier to predict the host genus from the protein cluster membership profile of the new phage. Let $x \in \{0,1\}^M$ be the 
 binary indicator that encodes which of the $M$ protein clusters are present in a given phage. Then the random forest 
-maps this vector to the probability simplex over the host categories
-$$f_{\text{RF}}: \{0,1\}^M \longrightarrow \Delta^{|\mathcal{Y}|-1}, \quad \text{where } \hat{\mathbf{p}} = 
-f_{\text{RF}}(\mathbf{x}), \ \sum_{y \in \mathcal{Y}} \hat{p}_y = 1$$
-
-% $f: \{0,1\}^M \to \varDelta(\mathcal{Y})$ 
-% maps the binary feature vector to a probability distribution over the hosts $\mathcal{Y}$. 
+maps this vector to the probability simplex over the host categories $\Delta^{|\mathcal{H}|-1}$ :
+$$f_{\text{RF}}: \{0,1\}^M \longrightarrow \Delta^{|\mathcal{H}|-1}, \quad \text{where } \hat{\mathbf{p}} = 
+    f_{\text{RF}}(\mathbf{x}), \quad \sum_{y \in \mathcal{H}} \hat{p}_y = 1$$
 
 \vspace{0.15cm}
 \noindent RaFAH is also relevant to this report, since we also work with similar protein based cluster representation
 and the contamination problem discussed in \todo{add section reference} also arises exactly from this protein-cluster 
-construction.
+construction. 
 
 \vspace{0.15cm}
-\noindent These techniques are more robust to sequence divergence than the sequence alignment methods \ref{sec2.2.1: SSA}, but they rely on the availibility of explicit functional
-annotations, which are missing for a large percentage of the already discovered phage genomes.
+\noindent These techniques are more robust to sequence divergence than the sequence alignment methods \ref{sec2.2.1: SSA}, 
+but they rely on the availibility of explicit functional annotations, which are missing for a large percentage of the 
+already discovered phage genomes.
+
+%Furthermore, as discussed in 
+% Section~\ref{sec4.3: train test split}, the overlap of protein clusters across phage genomes introduces non-trivial data 
+% leakage risks, necessitating a careful protein-level split assignment protocol.
 
 
 \subsubsection{Protein Language Models and Embedding Based Approaches}
@@ -77,12 +78,17 @@ Similar to how large language models (LLMs) are trained on massive text datasets
 millions of protein sequences through self-supervised learning.
 
 \vspace{0.15cm}
-\noindent For a protein sequence $a = (a_1, \dots, a_n) \in \mathcal{A}^n$, where $\mathcal{A}$ represents the standard
-amino acid alphabet of size 20. $\mathcal{A}$ is mapped by an encoder $\Phi_{\text{pLM}}$ (e.g., ProtT5-XL-UniRef50)
-\cite{elnaggar2022prottrans} to a embedding matrix $$Z = \Phi_{\text{pLM}}(a) \in \mathbb{R}^{n \times d}$$. This is followed
-by mean pooling along the sequence length which yields a fixed length embedding $z \in \mathbb{R}^d$, where $d$ is the embedding 
-dimension (typically 1024 or larger). This embedding vector, $z$, captures the sequence'sbbiochemical, structural, and 
-evolutionary properties. A primary foundational model in this domain is ProtTrans/ProtT5 \cite{elnaggar2022prottrans}, 
+\noindent A protein sequence of length $n$ can be represented as $A = (a_1, \dots, a_n) \in \mathcal{A}^n$, where 
+$\mathcal{A}$ represents the standard amino acid alphabet of size 20. $A$ is mapped by an encoder 
+$\Phi_{\text{pLM}}$ (e.g., ProtT5-XL-UniRef50) \cite{elnaggar2022prottrans} to a embedding matrix:
+$$Z = \Phi_{\text{pLM}}(A) \in \mathbb{R}^{n \times d}$$. 
+
+\noindent where $d$ is the embedding dimension (typically 1024 or larger). This is followed
+by mean pooling along the sequence length which provides us with a fixed length embedding $z \in \mathbb{R}^d$. 
+$$\mathbf{z} = \frac{1}{n} \sum_{i=1}^n \mathbf{Z}_{i, :}$$
+
+\noindent This embedding vector, $z$, captures the sequence's biochemical, structural, and evolutionary properties without 
+requiring an explicit sequence alignment. A primary foundational model in this domain is ProtTrans/ProtT5 \cite{elnaggar2022prottrans}, 
 which is trained on hundreds of millions of UniRef protein sequences.
 
 \vspace{0.15cm}
@@ -129,12 +135,12 @@ and verifiable.
 
 \vspace{0.15cm}
 \noindent Other techniques, like the calibration methods include techniques like Platt scaling or temperature scaling.They
-adjust the raw output scores of teh model so that they reflect the empirical probabilities better. For example, they make
-sure that among all the predictions which are assigned the score of $0.8$, around $80\%$ should be correct. This is 
-easy to apply on top of any existing models and is also compuationally cheap, but they do not provide us with any formal 
-finite sample guarantees. The calibration is verified empirically on a validation set but it can degrade on new data with no
-bounds on how far the calibrated probabilities may deviate from the truth on the unseen test set. 
-
+adjust the raw output scores of the model so that they reflect the empirical probabilities better
+$$\mathbb{P}\left(Y = y \;\Big|\; \hat{s}(X, y) = p\right) = p \quad \forall p \in [0, 1]$$
+\noindent For example, they make sure that among all the predictions which are assigned the score of $0.8$, around $80\%$ 
+should be correct. This is easy to apply on top of any existing models and is also compuationally cheap, but they do not 
+provide us with any formal finite sample guarantees. The calibration is verified empirically on a validation set but it can 
+degrade on new data with no bounds on how far the calibrated probabilities may deviate from the truth on the unseen test set. 
 
 \vspace{0.15cm}
 \noindent These observations lead us to us the conformal prediction, \cite{vovk2005algorithmic}, which offers exactly 

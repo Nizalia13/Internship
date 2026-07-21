@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  20 JUL 2026 15:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  21 JUL 2026 15:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -930,7 +930,7 @@ Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count357
 (./Title_Page.tex
-<logo_ensimag_uga.png, id=199, 276.3123pt x 95.6373pt>
+<logo_ensimag_uga.png, id=175, 276.3123pt x 95.6373pt>
 File: logo_ensimag_uga.png Graphic file (type png)
 <use logo_ensimag_uga.png>
 Package pdftex.def Info: logo_ensimag_uga.png  used on input line 25.
@@ -991,7 +991,7 @@ Package hyperref Info: bookmark level for unknown todo defaults to 0 on input li
 LaTeX Warning: Marginpar on page 1 moved.
 
 
-Overfull \hbox (15.08302pt too wide) in paragraph at lines 42--46
+Overfull \hbox (15.08302pt too wide) in paragraph at lines 42--47
 \T1/lmr/m/n/12 The pri-mary ob-jec-tive of this re-port is to ad-dress this lim-i-ta-tion by de-vel-op-ing an uncertainty-
  []
 
@@ -999,27 +999,33 @@ Overfull \hbox (15.08302pt too wide) in paragraph at lines 42--46
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.55 
+l.56 
       [1])
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.32 \newpage
-              [2] (./2_Background_and_State_of_the_Art/Background.tex
+              [2] (./2_Background_and_State_of_the_Art/2.1_Background.tex
+
+LaTeX Warning: Reference `sec2.3: CSA method' on page 3 undefined on input line 11.
+
+
+LaTeX Warning: Reference `sec2.4: conformal prediction' on page 3 undefined on input line 11.
+
+
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.46 
-      [3]) (./2_Background_and_State_of_the_Art/State_of_the_Art.tex [4]
+l.47 
+      [3]) (./2_Background_and_State_of_the_Art/2.2_Current Methods.tex [4] [5]
 
-LaTeX Font Warning: Font shape `U/stmry/b/n' undefined
-(Font)              using `U/stmry/m/n' instead on input line 32.
+LaTeX Warning: Marginpar on page 6 moved.
 
-[5] [6]) (./2_Background_and_State_of_the_Art/Conformal_Prediction.tex [7]) (./2_Background_and_State_of_the_Art/CSA_Method.tex) [8] (./3_Methods/Problem.tex) (./3_Methods/Non Convex.tex) (./3_Methods/Score Transformation.tex) (./3_Methods/Envelope_Construction_Methods.tex
+[6] [7]) (./2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex [8]) (./2_Background_and_State_of_the_Art/2.4_CSA_Method.tex) [9] (./3_Methods/Problem.tex) (./3_Methods/Non Convex.tex) (./3_Methods/Score Transformation.tex) (./3_Methods/Envelope_Construction_Methods.tex
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 5.
  (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [9]
+) [10]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 11.
@@ -1056,36 +1062,31 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 1.
 
-) [10] (./4_Data/Description.tex) (./4_Data/Protein_to_Phage_Aggregation.tex) (./4_Data/Train_test_split.tex)
+) [11] (./4_Data/Description.tex) (./4_Data/Protein_to_Phage_Aggregation.tex) (./4_Data/Train_test_split.tex)
 Underfull \hbox (badness 10000) in paragraph at lines 2--50
 
  []
 
-[11] [12] (./5_Experiments_and_Results/Validation.tex) (./5_Experiments_and_Results/Gram_type_classification.tex [13]) (./5_Experiments_and_Results/Host Classification.tex) [14] (./6_Conclusion/Summary.tex) (./6_Conclusion/limitations.tex) [15] (./main.bbl [16]
-Underfull \hbox (badness 1033) in paragraph at lines 86--90
-[]\T1/lmr/m/n/12 Z. Du, M. L. tastes, K. Lin, J. Li, J. Li, and M. Xiao, ``High-resolution
- []
+[12] [13] (./5_Experiments_and_Results/Validation.tex) (./5_Experiments_and_Results/Gram_type_classification.tex [14]) (./5_Experiments_and_Results/Host Classification.tex) [15] (./6_Conclusion/Summary.tex) (./6_Conclusion/limitations.tex) [16] (./main.bbl [17]) [18] (./main.aux)
 
-) [17] (./main.aux)
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 16FDFF3506FFAECB1F4A7B2DE865056D;8619.
+(rerunfilecheck)             Checksum: 6649C1D23995AF5C43E53ACE12D66FF1;7470.
  ) 
 Here is how much of TeX's memory you used:
- 40326 strings out of 476091
- 896960 string characters out of 5794081
- 1871330 words of memory out of 5000000
- 59824 multiletter control sequences out of 15000+600000
- 603039 words of font info for 112 fonts, out of 8000000 for 9000
+ 40333 strings out of 476091
+ 897316 string characters out of 5794081
+ 1870330 words of memory out of 5000000
+ 59833 multiletter control sequences out of 15000+600000
+ 601065 words of font info for 106 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  122i,13n,134p,811b,983s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmmib10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (22 pages, 321239 bytes).
+{/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (23 pages, 333203 bytes).
 PDF statistics:
- 530 PDF objects out of 1000 (max. 8388607)
- 463 compressed objects within 5 object streams
- 90 named destinations out of 1000 (max. 500000)
- 402 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 510 PDF objects out of 1000 (max. 8388607)
+ 444 compressed objects within 5 object streams
+ 92 named destinations out of 1000 (max. 500000)
+ 354 words of extra memory for PDF output out of 10000 (max. 10000000)
 

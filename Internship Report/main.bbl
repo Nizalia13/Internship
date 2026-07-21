@@ -12,6 +12,12 @@ P.~A. {de Jonge}, F.~L. Nobrega, S.~J.~J. Brouns, and B.~E. Dutilh, ``Molecular
   Microbiology}, vol.~27, no.~1, pp.~51--63, 2019.
 \newblock \href{https://doi.org/10.1016/j.tim.2018.08.006}{[CellPress]}.
 
+\bibitem{leprince2025strengthening}
+A.~Leprince, J.~Lefran{\c{c}}ois, D.~Magill, P.~Horvath, D.~Romero, G.~M.
+  Rousseau, and S.~Moineau, ``Strengthening phage resistance of
+  \textit{Streptococcus thermophilus} by leveraging complementary defense
+  systems,'' {\em Nature Communications}, vol.~16, no.~1, p.~7142, 2025.
+
 \bibitem{holtappels2023drivers}
 D.~Holtappels, P.~Alfenas-Zerbini, and B.~Koskella, ``Drivers and consequences
   of bacteriophage host range,'' {\em FEMS Microbiology Reviews}, vol.~47,
@@ -92,5 +98,11 @@ Z.~Du, M.~L. tastes, K.~Lin, J.~Li, J.~Li, and M.~Xiao, ``High-resolution
 V.~Vovk, A.~Gammerman, and G.~Shafer, {\em Algorithmic Learning in a Random
   World}.
 \newblock Springer Science \& Business Media, 2005.
+
+\bibitem{angelopoulos2023conformal}
+A.~N. Angelopoulos and S.~Bates, ``Conformal prediction: A gentle
+  introduction,'' {\em Foundations and Trends in Machine Learning}, vol.~16,
+  no.~4, pp.~494--591, 2023.
+\newblock \href{https://doi.org/10.1561/2200000101}{[FnT]}.
 
 \end{thebibliography}
