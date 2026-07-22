@@ -1,15 +1,15 @@
 # Fdb version 4
-["bibtex main"] 1784647126 "main.aux" "main.bbl" "main" 1784647127 0
-  "./references.bib" 1784638495 6991 1b44b881ebbd7beadabd065ab762b813 ""
+["bibtex main"] 1784733895 "main.aux" "main.bbl" "main" 1784733897 0
+  "./references.bib" 1784721756 7678 01ff6cc2eed77aff086d5c7d4b2a1917 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/base/ieeetr.bst" 1292289607 18361 1a00e58565e7f19bf2b3e1bfb82254ae ""
-  "main.aux" 1784647127 10655 79b82debd5cda19259b3b2b33063d395 "pdflatex"
+  "main.aux" 1784733896 13377 04d311614ec48ac24b850c74e65ad5d6 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1784647126 "/home/siddiqun/Bureau/Internship/Internship Report/main.tex" "main.pdf" "main" 1784647127 0
+["pdflatex"] 1784733895 "/home/siddiqun/Bureau/Internship/Internship Report/main.tex" "main.pdf" "main" 1784733897 0
   "/etc/texmf/web2c/texmf.cnf" 1779354507 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/siddiqun/Bureau/Internship/Internship Report/main.tex" 1784639489 1553 b1a2d79526469bc930c8f6164fbe504e ""
+  "/home/siddiqun/Bureau/Internship/Internship Report/main.tex" 1784710980 1553 b1a2d79526469bc930c8f6164fbe504e ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm1200.tfm" 1136768653 3584 f80ddd985bd00e29e9a6047ebd9d4781 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -294,6 +294,7 @@
   "/usr/share/texmf/fonts/type1/public/lm/lmr10.pfb" 1255129361 119235 f35b44530a1d90eb90fe15d9cba67ea0 ""
   "/usr/share/texmf/fonts/type1/public/lm/lmr12.pfb" 1255129361 113634 f99c44d58bae0863375faf0e1d74d612 ""
   "/usr/share/texmf/fonts/type1/public/lm/lmr17.pfb" 1255129361 119752 1bd8d06e4079df624bf59ce3ad7c9aa6 ""
+  "/usr/share/texmf/fonts/type1/public/lm/lmr6.pfb" 1255129361 123394 d390152bb30feeb496aaaa93299ee9ba ""
   "/usr/share/texmf/fonts/type1/public/lm/lmr8.pfb" 1255129361 122174 a7a08406857c9530a0320a2517f60370 ""
   "/usr/share/texmf/fonts/type1/public/lm/lmri12.pfb" 1255129361 109265 32320cb6133d4d76bf83e27b5eb4009b ""
   "/usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb" 1254269338 27863 09ce3735688ffde955e72da27c95b61a ""
@@ -309,10 +310,10 @@
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1779354536 4623455 fa0568a71dd9a288d6c226ee477506c6 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1779354616 7882125 14244e527077cecc12443da4b39fc0e6 ""
   "1_Introduction/1_Introduction.tex" 1784639681 5640 41f20dbee6a5c786f8118a5459ada0e5 ""
-  "2_Background_and_State_of_the_Art/2.1_Background.tex" 1784639746 5510 6496284676805578454a8d5af8cbc9c2 ""
+  "2_Background_and_State_of_the_Art/2.1_Background.tex" 1784721859 5510 6496284676805578454a8d5af8cbc9c2 ""
   "2_Background_and_State_of_the_Art/2.2_Current Methods.tex" 1784639936 15406 b222f29121ec653cec79da47ee6f9d93 ""
-  "2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex" 1784647124 6326 8453e7dd0c61bd841a44fa1d202b58c6 ""
-  "2_Background_and_State_of_the_Art/2.4_CSA_Method.tex" 1784634599 797 11a8d01d6b1f77eec8ba363a1102ac3f ""
+  "2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex" 1784730872 11646 6995be40e7c908d0855c6cb4e00293e6 ""
+  "2_Background_and_State_of_the_Art/2.4_CSA_Method.tex" 1784733893 5878 2779d4d0abbc537df18733df88d9998d ""
   "3_Methods/Envelope_Construction_Methods.tex" 1784640015 5839 4adec17d30ddcf995ca1f5d51c4977a7 ""
   "3_Methods/Non Convex.tex" 1781166628 1055 9a0e008f3afbac71bc2bd1040e009644 ""
   "3_Methods/Problem.tex" 1781166628 547 26d0d5c0b5e0966c77674979c39eca74 ""
@@ -330,11 +331,11 @@
   "Acknowledgements.tex" 1781166628 165 df0bda3f0a8ab4bf1d3cac32a144cc9c ""
   "Title_Page.tex" 1784536133 1113 15c0696308b15c40e488175429e46bbf ""
   "logo_ensimag_uga.png" 1781170963 40343 0eeb9b4e7d183f3295828c6c547c6f1d ""
-  "main.aux" 1784647127 10655 79b82debd5cda19259b3b2b33063d395 "pdflatex"
-  "main.bbl" 1784647126 5359 ed12c1d063eee2bad15d328a4284b038 "bibtex main"
-  "main.out" 1784647127 7689 a82c47e9f413bedb798db7a524c2ed28 "pdflatex"
-  "main.tex" 1784639489 1553 b1a2d79526469bc930c8f6164fbe504e ""
-  "main.toc" 1784647127 4001 b98252b80da1c1eca9d488ed181918eb "pdflatex"
+  "main.aux" 1784733896 13377 04d311614ec48ac24b850c74e65ad5d6 "pdflatex"
+  "main.bbl" 1784733895 5844 319b51c5662d328e460749b8da046e33 "bibtex main"
+  "main.out" 1784733896 8621 4b77e8aff8c267041e3ddcd2c626fefd "pdflatex"
+  "main.tex" 1784710980 1553 b1a2d79526469bc930c8f6164fbe504e ""
+  "main.toc" 1784733896 4433 1ebda8c11be1c264500054032c25c0da "pdflatex"
   "preamble.tex" 1784639418 3543 df27f3ebdd6fc853c0a7376d255d27ef ""
   (generated)
   "main.aux"

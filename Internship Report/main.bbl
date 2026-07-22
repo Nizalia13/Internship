@@ -105,4 +105,15 @@ A.~N. Angelopoulos and S.~Bates, ``Conformal prediction: A gentle
   no.~4, pp.~494--591, 2023.
 \newblock \href{https://doi.org/10.1561/2200000101}{[FnT]}.
 
+\bibitem{lei2018distribution}
+J.~Lei, M.~G'Sell, A.~Rinaldo, R.~J. Tibshirani, and L.~Wasserman,
+  ``Distribution-free predictive inference for regression,'' {\em Journal of
+  the American Statistical Association}, vol.~113, no.~523, pp.~1094--1111,
+  2018.
+
+\bibitem{romano2020classification}
+Y.~Romano, M.~Sesia, and E.~Cand{\'{e}}s, ``Classification with valid and
+  adaptive coverage,'' in {\em Advances in Neural Information Processing
+  Systems}, vol.~33, pp.~3581--3591, 2020.
+
 \end{thebibliography}

@@ -1,20 +1,80 @@
-\subsection{The CSA Method}
-\label{sec2.4: CSA method}
+\subsection{Conformal Set Aggregation (CSA)}
+\label{sec2.4: CSA Method}
+\noindent The standard split conformal framework in \ref{sec2.3.2: split conformal}, takes a scalar
+non-conformity score $S(x, y) \in \mathbb{R}$. In this report, the prediction pipeline produces a score 
+vector of scores $s \in [0, 1]^K$ for each phage, where $K$ is the number of functions. We may loose the 
+geometric structure of the score distribution if we aggregate this vector to a scalar value before applying 
+conformal prediction. For such settings, Ochoa Rivera, Pater and Tewari \cite{ochoarivera2024conformal} 
+have proposed a score based aggregation (CSA) method for conformal prediction.
+
+\subsubsection{Ensemble Score Vectors}
+\label{sec2.4.1: ensemble score vectors}
+\noindent Let $\mathcal{S} \subseteq [0, 1]^K$ be the score space and let $s = (s_1, \cdots, s_K) \in 
+\mathcal{S}$ be the vector of scores produces by the $K$ models, for each phage. Now, the CSA method
+treats the entire vector as the object of inference rather than reducing it into a single value. The main
+idea is to define a region, called an envelope, $E \subseteq [0,1]^K$. This envelope consists of the region where
+the score vectors of the true hosts for that particular phage live.
+
+\vspace{0.15cm}
+\noindent Mathematically, we can say that we apply a label dependent transformation $\phi_y: [0,1]^K \rightarrow
+[0,1]^K$ to the score vector, before actually testing if it is part of the envelope. This transformation needs to be
+such that the for a phage with the true label $y$, $\phi_y$ should be close to the origin in the score space. So,
+we can write our prediction set as:
+$$C(s) = \{y \in \mathcal{Y}: \phi_y(s) \in \hat t \dot E\},$$
+\noindent where $\hat t$ is the global scaling factor that is calibrated on the calibration set \ref{sec2.3.2: split 
+conformal}. The $\phi_y$ chosen in this work is defined in \todo{refer to the correct section}.
+
+
+\subsubsection{The CSA Framework}
+\label{sec2.4.2: csa framework}
+\noindent The core innovation of the CSA method is in the calibration process. It splits the calibration data into
+two subsets which have different roles. This is necessary for the exchangeability argument that provides us with the
+coverage guarantee. If we used the same calibration points to construct both, we would get overfitting which would 
+introduce bias which would invalidate the distruibution free coverage guarantee \cite{ochoarivera2024conformal}.
+
+\vspace{0.15cm}
+\noindent The first set is used to determine the geometric shape of the optimized envelope. Let's call it the 
+'Shape Discover Set', it is used to map the distribution of the scores and then learn the geometry of the multi-dimensional
+envelope $E \subseteq \mathbb{R}^K$. This envelope is such that the transformed score vectors of the true positives are
+concentrated here. This set is only used to fit the shape of the conformal region without fixing the size.  
+
+\vspace{0.15cm}
+\noindent The second set or the 'Size Scaling Set' is used to determine the global scaling factor $\hat t \in 
+\mathbb{R}^+$. This scaling factor either inflates or deflates the envelope, $E$ learned from the shape discovery set,
+depending on the value of $\hat t$, so that we get the precise finite sample coverage guarantee.  This $\hat t$ is the 
+smallest scaling factor such that the scaled envelope $\hat t \dot E$ achieves the required $1-\alpha$ coverage.
+The scaled envelope is defined linearly as:
+$$\hat t \cdot E = \{ t \cdot x : x \in E \}, \quad \hat t > 0$$
+
+\noindent Finally, for a test input a candidate label, $y$ is included in the prediction set its transformed score vector
+falls inside the scaled envelope:
+$$C(s) = \{ y \in \mathcal{Y} : \phi_y(\mathbf{s}) \in \hat{t} \cdot E \}$$
+where $\phi_y$ is a maps the raw scores into the score space.
+
+
+\subsubsection{Limitations of CSA in Classification}
+\label{sec2.4.3: csa limitations}
+This CSA framework was originally developed and analyzed in a regression setting \cite{ochoarivera2024conformal}. 
 
 
 
+\vspace{4cm}
 
-% \noindent - ensemble score aggregation\\
-% - calibration\\
-% - envelope
-% \subsubsection{Motivation} 
-% \noindent - from scalar to multivariate nonconformity scores -> why a scalar threshold is insufficient when the predictor produces a vector
+While effective for multi-target regression, the original CSA formulation by Ochoa Rivera et al. has major limitations 
+when applied to discrete classification problems:
+ - Assumption of Convexity: The original paper assumes that $E$ is a convex hull or intersection of half-spaces. In 
+                            bounded classification settings, the score vectors for distinct classes often concentrate in 
+                            separate clusters near different boundaries of the $[0,1]^K$ hypercube. Forcing a convex 
+                            envelope across these clusters creates a region that covers large areas of empty score space 
+                            between them. This significantly inflates the volume of the envelope, leading to overly 
+                            conservative, uninformative, and large prediction sets $|C(\mathbf{s})|$.
+ - Iterative Calibration Inefficiency: The original method relies on iterative numerical optimization or binary search to 
+                                       find the optimal scaling factor $\hat{t}$ over $S_2$. For high-dimensional score 
+                                       spaces or massive metagenomic datasets, this iterative approach is computationally 
+                                       expensive and lacks mathematical transparency.
+ - Lack of Per-Class Guarantees: The original scaling calculation enforces only a marginal coverage guarantee, which can 
+                                lead to poor predictive performance on highly imbalanced biological datasets.
+These limitations motivate the core contributions of this thesis: designing structured non-convex envelopes, developing 
+an exact analytical solution for $\hat{t}$, and implementing class-conditional adjustments to ensure robust statistical 
+guarantees for phage-host range prediction.
 
-% \subsubsection{Two-stage calibration} 
-% \noindent $S_1$ for shape discovery, $S_2$ for size scaling -> what each stage does and why they must be disjoint
-
-% \subsubsection{The envelope concept}
-% \noindent - a region $E \subset \mathbb{R}^K$ learned from $S_1$, scaled by $\hat{t}$ calibrated on $S_2$
-
-% \subsubsection{Limitations of the original method}
-% - iterative search for $\hat{t}$, convexity assumptions, no class-conditional guarantee -> each of these is addressed in Chapter 3
