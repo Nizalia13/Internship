@@ -1,27 +1,28 @@
 \subsection{Conformal Set Aggregation (CSA)}
 \label{sec2.4: CSA Method}
-\noindent The standard split conformal framework in \ref{sec2.3.2: split conformal}, takes a scalar
-non-conformity score $S(x, y) \in \mathbb{R}$. In this report, the prediction pipeline produces a score 
-vector of scores $s \in [0, 1]^K$ for each phage, where $K$ is the number of functions. We may loose the 
+\noindent The standard split conformal framework in \ref{sec2.3.2: split conformal}, takes a scalar non-conformity 
+score $S(x, y) \in \mathbb{R}$. In this report, the prediction pipeline produces a $K$ dimensional score vector of 
+scores $s \in [0, 1]^K$ for each phage, where $K$ is the number of distint functional categories. We may loose the 
 geometric structure of the score distribution if we aggregate this vector to a scalar value before applying 
-conformal prediction. For such settings, Ochoa Rivera, Pater and Tewari \cite{ochoarivera2024conformal} 
+conformal prediction. For such settings, Ochoa Rivera, Patel and Tewari \cite{ochoarivera2024conformal} 
 have proposed a score based aggregation (CSA) method for conformal prediction.
 
 \subsubsection{Ensemble Score Vectors}
 \label{sec2.4.1: ensemble score vectors}
-\noindent Let $\mathcal{S} \subseteq [0, 1]^K$ be the score space and let $s = (s_1, \cdots, s_K) \in 
-\mathcal{S}$ be the vector of scores produces by the $K$ models, for each phage. Now, the CSA method
-treats the entire vector as the object of inference rather than reducing it into a single value. The main
-idea is to define a region, called an envelope, $E \subseteq [0,1]^K$. This envelope consists of the region where
-the score vectors of the true hosts for that particular phage live.
+\noindent Let $\mathcal{S} \subseteq [0, 1]^K$ be the score space and let $s = (s_1, \cdots, s_K) \in \mathcal{S}$ be 
+the vector of scores produces by the $K$ models, for each phage. Now, the CSA method treats the entire vector as the 
+object of inference rather than reducing it into a single value. The main idea is to define a region, called an envelope, 
+$E \subseteq [0,1]^K$. This envelope consists of the region where the score vectors of the true hosts for that particular 
+phage are concentrated.
 
 \vspace{0.15cm}
 \noindent Mathematically, we can say that we apply a label dependent transformation $\phi_y: [0,1]^K \rightarrow
 [0,1]^K$ to the score vector, before actually testing if it is part of the envelope. This transformation needs to be
 such that the for a phage with the true label $y$, $\phi_y$ should be close to the origin in the score space. So,
 we can write our prediction set as:
-$$C(s) = \{y \in \mathcal{Y}: \phi_y(s) \in \hat t \dot E\},$$
-\noindent where $\hat t$ is the global scaling factor that is calibrated on the calibration set \ref{sec2.3.2: split 
+$$C(s) = \{y \in \mathcal{Y}: \phi_y(s) \in \hat t \cdot E\},$$
+\noindent where $t \cdot E = \{t \cdot \mathbf{x} : \mathbf{x} \in E\}$ represents linear dilation of $E$ in $\mathbb{R}^K$
+and $\hat t$ is the global scaling factor that is calibrated on the calibration set \ref{sec2.3.2: split 
 conformal}. The $\phi_y$ chosen in this work is defined in \todo{refer to the correct section}.
 
 
@@ -32,24 +33,43 @@ two subsets which have different roles. This is necessary for the exchangeabilit
 coverage guarantee. If we used the same calibration points to construct both, we would get overfitting which would 
 introduce bias which would invalidate the distruibution free coverage guarantee \cite{ochoarivera2024conformal}.
 
-\vspace{0.15cm}
-\noindent The first set, $S_1$ is used to determine the geometric shape of the optimized envelope. Let's call it the 
-`Shape Discovery Set', it is used to map the distribution of the scores and then learn the geometry of the multi-dimensional
-envelope $E \subseteq \mathbb{R}^K$. This envelope is such that the transformed score vectors of the true positives are
-concentrated here. This set is only used to fit the shape of the conformal region without fixing the size.  
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Shape Discovery Set ($S_1$):} Used to model the spatial distribution of scores and learn the geometric
+          shape, orientation, and boundaries of the envelope $E \subset \mathbb{R}^K$. $S_1$ determines the shape of the 
+          region without fixing its scale.
+    \item \textbf{Size Scaling Set ($S_2$):} Used to determine the scalar scaling parameter $\hat{t} \in \mathbb{R}^+$. 
+          $\hat{t}$ inflates or deflates $E$ until exact empirical coverage $1 - \alpha$ is attained over $S_2$:
+    \begin{equation}
+    \hat{t} = \inf \left\{ t > 0 \;\Big|\; \frac{1}{|S_2|} \sum_{\mathbf{s} \in S_2} \mathbf{1}\left(\phi_Y(\mathbf{s}) \in t \cdot E\right) \ge \frac{\lceil (|S_2|+1)(1-\alpha) \rceil}{|S_2|} \right\}
+    \end{equation}
+\end{enumerate}
+ 
 
 \vspace{0.15cm}
-\noindent The second set, $S_2$, or the `Size Scaling Set' is used to determine the global scaling factor $\hat t \in 
-\mathbb{R}^+$. This scaling factor either inflates or deflates the envelope, $E$ learned from the shape discovery set,
-depending on the value of $\hat t$, so that we get the precise finite sample coverage guarantee.  This $\hat t$ is the 
-smallest scaling factor such that the scaled envelope $\hat t \dot E$ achieves the required $1-\alpha$ coverage.
-The scaled envelope is defined linearly as:
+\noindent This $\hat t$ is the smallest scaling factor such that the scaled envelope $\hat t \cdot E$ achieves the 
+required $1-\alpha$ coverage. The scaled envelope is defined linearly as:
 $$\hat t \cdot E = \{ t \cdot x : x \in E \}, \quad \hat t > 0$$
 
-\noindent Finally, for a test input a candidate label, $y$ is included in the prediction set its transformed score vector
-falls inside the scaled envelope:
-$$C(s) = \{ y \in \mathcal{Y} : \phi_y(\mathbf{s}) \in \hat{t} \cdot E \}$$
-where $\phi_y$ is a maps the raw scores into the score space.
+\noindent Finally, for each calibration point $\mathbf{s} \in S_2$, we define the minimal scaling factor required to 
+include it in the envelope as:
+$$\tau(\mathbf{s}) = \inf\{t > 0 : \phi_y(\mathbf{s}) \in t \cdot E\}$$
+The global scaling factor is then the $(1-\alpha)$ quantile of these values over $S_2$:
+$$\hat{t} = \tau_{\lceil(|S_2|+1)(1-\alpha)\rceil}$$
+where $\tau_{(1)} \leq \cdots \leq \tau_{(|S_2|)}$ are the sorted $\tau$-values. By the 
+same exchangeability argument as Theorem~\ref{thm: marginal coverage}, this construction 
+guarantees $\mathbb{P}(Y_{n+1} \in C(\mathbf{s})) \geq 1-\alpha$.
+
+% \vspace{0.15cm}
+% \noindent Finally, for a test input a candidate label, $y$ is included in the prediction set its transformed score vector
+% falls inside the scaled envelope:
+% $$C(s) = \{ y \in \mathcal{Y} : \phi_y(\mathbf{s}) \in \hat{t} \cdot E \}$$
+% where $\phi_y$ is a maps the raw scores into the score space.
+
+
+
+
+\noindent Splitting calibration into disjoint sets $S_1$ and $S_2$ prevents overfitting and ensures that evaluating $\hat{t}$ on $S_2$ yields a valid distribution-free coverage guarantee \cite{ochoarivera2024conformal}. For a test phage with score vector $\mathbf{s}_{n+1}$, candidate label $y$ is included in the prediction set $C(\mathbf{s}_{n+1})$ if and only if $\phi_y(\mathbf{s}_{n+1}) \in \hat{t} \cdot E$.
+
 
 
 \subsubsection{Limitations of CSA in Classification}
@@ -79,3 +99,19 @@ we get statistical guarantees for the phage-host range prediction.
 
 
 
+
+
+
+
+
+\subsubsection{Limitations of CSA in Bounded Classification Spaces}
+\label{sec2.4.3: csa limitations}
+\noindent Because CSA was originally developed for multi-output regression \cite{ochoarivera2024conformal}, applying it directly to bounded classification score spaces $[0, 1]^K$ reveals three major limitations:
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Convexity Efficiency Loss:} Ochoa Rivera et al. assume $E$ is an intersection of half-spaces (a convex hull). In classification, transformed nonconformity vectors concentrate in localized, non-convex directional rays near the origin. Enforcing a convex hull over disconnected clusters forces $E$ to enclose empty void regions $V = \operatorname{Conv}(E) \setminus E$ where no true phage vectors reside, severely inflating set volume and yielding oversized, uninformative prediction sets $|C(\mathbf{s})|$.
+    \item \textbf{Iterative Calibration Burden:} Originally, finding $\hat{t}$ over $S_2$ required iterative binary searches or numerical optimizations, which become computationally prohibitive in high-dimensional feature spaces.
+    \item \textbf{Marginal-Only Guarantees:} Global scaling $\hat{t}$ provides only marginal coverage, leading to under-coverage on class-imbalanced biological datasets.
+\end{enumerate}
+
+\vspace{0.15cm}
+\noindent These limitations directly motivate our methodological contributions in Chapter~\ref{sec3: methods}: designing non-convex envelopes (Radial and Strip geometries), deriving closed-form analytical solutions for per-point $\tau$-values to enable one-pass calibration, and integrating class-conditional thresholds to guarantee reliable host-range predictions.
