@@ -33,13 +33,13 @@ coverage guarantee. If we used the same calibration points to construct both, we
 introduce bias which would invalidate the distruibution free coverage guarantee \cite{ochoarivera2024conformal}.
 
 \vspace{0.15cm}
-\noindent The first set is used to determine the geometric shape of the optimized envelope. Let's call it the 
-'Shape Discover Set', it is used to map the distribution of the scores and then learn the geometry of the multi-dimensional
+\noindent The first set, $S_1$ is used to determine the geometric shape of the optimized envelope. Let's call it the 
+`Shape Discovery Set', it is used to map the distribution of the scores and then learn the geometry of the multi-dimensional
 envelope $E \subseteq \mathbb{R}^K$. This envelope is such that the transformed score vectors of the true positives are
 concentrated here. This set is only used to fit the shape of the conformal region without fixing the size.  
 
 \vspace{0.15cm}
-\noindent The second set or the 'Size Scaling Set' is used to determine the global scaling factor $\hat t \in 
+\noindent The second set, $S_2$, or the `Size Scaling Set' is used to determine the global scaling factor $\hat t \in 
 \mathbb{R}^+$. This scaling factor either inflates or deflates the envelope, $E$ learned from the shape discovery set,
 depending on the value of $\hat t$, so that we get the precise finite sample coverage guarantee.  This $\hat t$ is the 
 smallest scaling factor such that the scaled envelope $\hat t \dot E$ achieves the required $1-\alpha$ coverage.
@@ -54,27 +54,28 @@ where $\phi_y$ is a maps the raw scores into the score space.
 
 \subsubsection{Limitations of CSA in Classification}
 \label{sec2.4.3: csa limitations}
-This CSA framework was originally developed and analyzed in a regression setting \cite{ochoarivera2024conformal}. 
+\noindent This CSA framework was originally developed and analyzed in a regression setting \cite{ochoarivera2024conformal}, 
+and has some major limitations when it is applied to classification problems:
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Convexity of Envelope:} In \cite{ochoarivera2024conformal} it is assumed that the conformal envelope, $E$, 
+      is an intersection of half spaces and therefore is a convex hull, But in classification, the score vectors for 
+      different classes concentrate in seperate clusters near different boundaries of the $[0, 1]^K$ score space. 
+      Therefore, if we force a convex envelope across the regions, we will create a region that covers a large area of 
+      empty score space in between, which would inflate the volume of the envelope. This would lead to an over conservative 
+      and uninformative prediction sets, $|C(\mathbf{s})|$, as they would be really large. 
+\item \textbf{Calibration Inefficiency:} Originally the method uses an iterative numerical optimication or a binary search 
+      to find the optimal scaling factor, $\hat t$ over $S_2$. In cases when the score space is high dimensional, the 
+      iterative approach can be really expensive computationally.
+\item \textbf{Lack of Per Class Guarantee:} The scaling calculations in the original method only provide us with a 
+      marginal guarantee. This can lead to poor performance on the biological datasets, which are imbalances 
+\end{enumerate}
+
+\vspace{0.15cm}
+\noindent These limitations provide us with the oppurtunity to improve efficiency, to acheivee the same covergae but 
+with smaller prediction sets. An this is the main motivation behind this work: designing the non-convex envelopes, 
+developing an analytical solution for $\hat t$ and finally implementing the class conditional adjustments to ensure that 
+we get statistical guarantees for the phage-host range prediction.
 
 
 
-\vspace{4cm}
-
-While effective for multi-target regression, the original CSA formulation by Ochoa Rivera et al. has major limitations 
-when applied to discrete classification problems:
- - Assumption of Convexity: The original paper assumes that $E$ is a convex hull or intersection of half-spaces. In 
-                            bounded classification settings, the score vectors for distinct classes often concentrate in 
-                            separate clusters near different boundaries of the $[0,1]^K$ hypercube. Forcing a convex 
-                            envelope across these clusters creates a region that covers large areas of empty score space 
-                            between them. This significantly inflates the volume of the envelope, leading to overly 
-                            conservative, uninformative, and large prediction sets $|C(\mathbf{s})|$.
- - Iterative Calibration Inefficiency: The original method relies on iterative numerical optimization or binary search to 
-                                       find the optimal scaling factor $\hat{t}$ over $S_2$. For high-dimensional score 
-                                       spaces or massive metagenomic datasets, this iterative approach is computationally 
-                                       expensive and lacks mathematical transparency.
- - Lack of Per-Class Guarantees: The original scaling calculation enforces only a marginal coverage guarantee, which can 
-                                lead to poor predictive performance on highly imbalanced biological datasets.
-These limitations motivate the core contributions of this thesis: designing structured non-convex envelopes, developing 
-an exact analytical solution for $\hat{t}$, and implementing class-conditional adjustments to ensure robust statistical 
-guarantees for phage-host range prediction.
 

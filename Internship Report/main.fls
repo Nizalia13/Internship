@@ -1406,18 +1406,18 @@ INPUT ./2_Background_and_State_of_the_Art/2.2_Current Methods.tex
 INPUT 2_Background_and_State_of_the_Art/2.2_Current Methods.tex
 INPUT ./2_Background_and_State_of_the_Art/2.2_Current Methods.tex
 INPUT 2_Background_and_State_of_the_Art/2.2_Current Methods.tex
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr8.tfm
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr6.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmbx12.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmbx8.tfm
 INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmbx6.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr8.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr6.tfm
+INPUT ./2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex
+INPUT 2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex
+INPUT ./2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex
+INPUT 2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex
 INPUT /usr/share/texlive/texmf-dist/fonts/vf/public/yhmath/yhcmex10.vf
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/yhmath/yrcmex10.tfm
-INPUT ./2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex
-INPUT 2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex
-INPUT ./2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex
-INPUT 2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex
 INPUT ./2_Background_and_State_of_the_Art/2.4_CSA_Method.tex
 INPUT 2_Background_and_State_of_the_Art/2.4_CSA_Method.tex
 INPUT ./2_Background_and_State_of_the_Art/2.4_CSA_Method.tex

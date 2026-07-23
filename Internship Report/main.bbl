@@ -94,16 +94,16 @@ Z.~Du, M.~L. tastes, K.~Lin, J.~Li, J.~Li, and M.~Xiao, ``High-resolution
   {\em Nature Communications}, vol.~17, no.~1, p.~4439, 2026.
 \newblock \href{https://doi.org/10.1038/s41467-026-70613-x}{[SpringerNature]}.
 
-\bibitem{vovk2005algorithmic}
-V.~Vovk, A.~Gammerman, and G.~Shafer, {\em Algorithmic Learning in a Random
-  World}.
-\newblock Springer Science \& Business Media, 2005.
-
 \bibitem{angelopoulos2023conformal}
 A.~N. Angelopoulos and S.~Bates, ``Conformal prediction: A gentle
   introduction,'' {\em Foundations and Trends in Machine Learning}, vol.~16,
   no.~4, pp.~494--591, 2023.
 \newblock \href{https://doi.org/10.1561/2200000101}{[FnT]}.
+
+\bibitem{vovk2005algorithmic}
+V.~Vovk, A.~Gammerman, and G.~Shafer, {\em Algorithmic Learning in a Random
+  World}.
+\newblock Springer Science \& Business Media, 2005.
 
 \bibitem{lei2018distribution}
 J.~Lei, M.~G'Sell, A.~Rinaldo, R.~J. Tibshirani, and L.~Wasserman,
