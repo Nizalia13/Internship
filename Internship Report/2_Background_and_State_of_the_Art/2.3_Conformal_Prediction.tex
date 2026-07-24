@@ -34,17 +34,17 @@ observations have no special ordering. This condition can easily be met by split
 % - coverage guarantee\\
 % - exchnagebility
 % state Theorem 2.1 formally with both bounds ???
-\noindent Let $(X,Y) \in \mathcal{X} \times \mathcal{Y}$ be a random input-label pair, where $\mathcal{X}$ is the feature 
-space that represents our object of interest (in our case it is the phage protein level score vectors) and $\mathcal{Y} = 
-\{1, \cdots, K\}$ is the discrete label space (set of candidate hosts). 
+\noindent Let $(X,H) \in \mathcal{X} \times \mathcal{H}$ be a random input-label pair, where $\mathcal{X}$ is the feature 
+space that represents our object of interest (in our case it is the phage protein level score vectors) and $\mathcal{H} = 
+\{h_1, \cdots, h_N\}$ is the discrete label space (set of candidate hosts). 
 
 \vspace{0.15cm}
-\noindent We assume that we have a calibration dataset, $D_{\text{cal}} = \{(X_1, Y_1), \cdots , (X_n, Y_n)\}$, of $n$ 
-exchangable data points drawn from an unknown joint distribution, $P_{X,Y}$. Then, for a new unlabelled test input, 
-$X_{n+1}$ our aim is to to construct a prediction set function $C: \mathcal{X} \rightarrow 2^{\mathcal{Y}}$ dependening on the data
-which maps the test input to a subset of candidate labels, i.e., $C(X_{n+1}) \subseteq \mathcal{Y}$, such that the true label 
-falls in in the set with a defined coverage that is:
-$$\mathbb{P}(Y_{n+1} \in C(X_{n+1})) \geq 1 - \alpha$$
+\noindent We assume that we have a calibration dataset, $D_{\text{cal}} = \{(X_1, H_1), \cdots , (X_n, H_n)\}$, of $n$ 
+exchangable data points drawn from an unknown joint distribution, $P_{X,H}$. Then, for a new unlabelled test input, 
+$X_{n+1}$ our aim is to to construct a prediction set function $C: \mathcal{X} \rightarrow 2^{\mathcal{H}}$ dependening on 
+the data which maps the test input to a subset of candidate labels, i.e., $C(X_{n+1}) \subseteq \mathcal{H}$, such that 
+the true label falls in in the set with a defined coverage that is:
+$$\mathbb{P}(H_{n+1} \in C(X_{n+1})) \geq 1 - \alpha$$
 where $\alpha \in (0,1)$ is the significance level. In our experiments we set $\alpha = 0.1$  so that the guarantee is 
 $90\%$.
 
@@ -75,14 +75,14 @@ an optimal predictor should acheive a coverage $\geq 1-\alpha$ with the smallest
 \label{sec2.3.2: split conformal}
 % \noindent - why we use it, the train/calibration/test separation, validity still holds
 \noindent  In split conformal prediction, the available data is divided into a training set and a disjoint calibration 
-set, $D_{\text{cal}} = \{(X_i, Y_i)\}_{i=1}^n$. The training set is used to fit an underlying scoring model $\hat{f}: 
-\mathcal{X} \times \mathcal{Y} \to \mathbb{R}$. We then define a nonconformity score function $s: \mathcal{X} \times 
-\mathcal{Y} \to \mathbb{R}$ based on $\hat{f}$. This score function quantifies how unusual a pair $(x, y)$ is relative 
+set, $D_{\text{cal}} = \{(X_i, H_i)\}_{i=1}^n$. The training set is used to fit an underlying scoring model $\hat{f}: 
+\mathcal{X} \times \mathcal{H} \to \mathbb{R}$. We then define a nonconformity score function $s: \mathcal{X} \times 
+\mathcal{H} \to \mathbb{R}$ based on $\hat{f}$. This score function quantifies how unusual a pair $(x, h)$ is relative 
 to the learned patterns.
 
 \vspace{0.15cm}
-\noindent Then using the calibration set , $\{(X_i, Y_i)\}^n_{i=1}$, we evaluate the nonconformity scores:
-$$S_i = S(X_i, Y_i), \quad \forall i = 1, \cdots, n$$
+\noindent Then using the calibration set , $\{(X_i, H_i)\}^n_{i=1}$, we evaluate the nonconformity scores:
+$$S_i = S(X_i, H_i), \quad \forall i = 1, \cdots, n$$
 
 \noindent To guranatee that out error rate is less than $\alpha$ we need to compute the conformal calibration qunatile,
 $\hat q$, from these calibration scores
@@ -101,32 +101,31 @@ q_{\alpha} = \inf \left\{ q \in \mathbb{R} : \frac{1}{n}\sum_{i=1}^{n} \mathbf{1
 
 \vspace{0.15cm}
 \noindent Then, for a new input, $X_{n+1}$ the conformal prediction set, $C(X_{n+1})$ , is constructed by collecting all 
-the candidate labels in $y \in \mathcal{Y}$ whose nonconformity scores do not exceed $q_{\alpha}$:
+the candidate labels in $H \in \mathcal{H}$ whose nonconformity scores do not exceed $q_{\alpha}$:
 \begin{equation}
 \label{eq: prediction set definition}
-C(X_{n+1}) = \left\{ y \in \mathcal{Y} \;\Big|\; s(X_{n+1}, y) \le q_{\alpha} \right\}
+C(X_{n+1}) = \left\{ H \in \mathcal{H} \;\Big|\; s(X_{n+1}, H) \le q_{\alpha} \right\}
 \end{equation}
 
-\noindent The validity of this construction follows directly from the exchangeability of the 
-calibration and test points. Since $(Z_1, \dots, Z_{n+1}) = ((X_1,Y_1), \dots, (X_{n+1}, 
-Y_{n+1}))$ are exchangeable, the joint distribution of $(S_1, \dots, S_{n+1})$ is invariant 
-under permutations. Therefore, the rank of $S_{n+1}$ among the $n+1$ scores is uniformly 
-distributed on $\{1, \dots, n+1\}$, giving:
-$$\mathbb{P}(S_{n+1} \leq q_{\alpha}) = \mathbb{P}\!\left(\operatorname{rank}(S_{n+1}) \leq 
-\lceil(n+1)(1-\alpha)\rceil\right) = \frac{\lceil(n+1)(1-\alpha)\rceil}{n+1} \geq 1 - \alpha.$$
+\noindent The validity of this construction follows directly from the exchangeability of the calibration and test points. 
+Since $(Z_1, \dots, Z_{n+1}) = ((X_1,H_1), \dots, (X_{n+1}, H_{n+1}))$ are exchangeable, the joint distribution of 
+$(S_1, \dots, S_{n+1})$ is invariant under permutations. Therefore, the rank of $S_{n+1}$ among the $n+1$ scores is 
+uniformly distributed on $\{1, \dots, n+1\}$, giving:
+$$\mathbb{P}(S_{n+1} \leq q_{\alpha}) = \mathbb{P}\!\left(\operatorname{rank}(S_{n+1}) \leq \lceil(n+1)(1-\alpha)\rceil
+\right) = \frac{\lceil(n+1)(1-\alpha)\rceil}{n+1} \geq 1 - \alpha.$$
 \noindent Theorem~\ref{thm: marginal coverage} formalises this argument.
 
 \begin{theorem}[Marginal Coverage Guarantee \cite{vovk2005algorithmic, lei2018distribution}]
 \label{thm: marginal coverage}
-If $(X_1, Y_1), \dots, (X_{n+1}, Y_{n+1})$ are exchangeable, then the prediction set $C(X_{n+1})$ defined in 
+If $(X_1, H_1), \dots, (X_{n+1}, H_{n+1})$ are exchangeable, then the prediction set $C(X_{n+1})$ defined in 
 Equation~\eqref{eq: prediction set definition} satisfies:
 \begin{equation*}
-\mathbb{P}\left( Y_{n+1} \in C(X_{n+1}) \right) \ge 1 - \alpha
+\mathbb{P}\left( H_{n+1} \in C(X_{n+1}) \right) \ge 1 - \alpha
 \end{equation*}
 Furthermore, if calibration scores $S_1, \dots, S_n$ are almost surely distinct continuous random variables, the coverage 
 bound is tight:
 \begin{equation}
-1 - \alpha \le \mathbb{P}\left( Y_{n+1} \in C(X_{n+1}) \right) \le 1 - \alpha + \frac{1}{n+1}
+1 - \alpha \le \mathbb{P}\left( H_{n+1} \in C(X_{n+1}) \right) \le 1 - \alpha + \frac{1}{n+1}
 \end{equation}
 \end{theorem}
 
@@ -146,7 +145,7 @@ bound is tight:
 
 \vspace{0.15cm}
 \noindent Crucially, Theorem~\ref{thm: marginal coverage} holds strictly in finite samples without requiring parametric 
-assumptions on $s(\cdot, \cdot)$ or $\mathbb{P}_{X,Y}$. While the choice of scoring function $s$ governs efficiency (set 
+assumptions on $s(\cdot, \cdot)$ or $\mathbb{P}_{X,H}$. While the choice of scoring function $s$ governs efficiency (set 
 size), valid statistical coverage is guaranteed by construction in a single computational pass over $D_{\text{cal}}$ 
 \cite{ochoarivera2024conformal}.
 
@@ -156,30 +155,30 @@ size), valid statistical coverage is guaranteed by construction in a single comp
 \label{sec2.3.3: coverage types}
 \noindent Standard conformal prediction satisfies marginal coverage, which means that the $(1-\alpha)\%$ coverage guarantee 
 holds on average across all possible choices of the calibration set, $D_{\text{cal}}$, and test samples, $(X_{n+1}, 
-Y_{n+1})$:
-$$\mathbb{E}_{D_{cal}, (X_{n+1}, Y_{n+1})} \left[ \mathbb{I}(Y_{n+1} \in C(X_{n+1})) \right] = \mathbb{P}(Y_{n+1} \in 
+H_{n+1})$:
+$$\mathbb{E}_{D_{cal}, (X_{n+1}, H_{n+1})} \left[ \mathbb{I}(H_{n+1} \in C(X_{n+1})) \right] = \mathbb{P}(H_{n+1} \in 
 C(X_{n+1})) \geq 1 - \alpha$$
 
 \vspace{0.15cm}
-\noindent HOwever, the marginal coverage does not ensure the conditional coverage, given specific features ($X = x$), or 
-specific classes ($Y=y$). So, for a dataset that has class imbalance, which is very common in phage-host interaction, a 
+\noindent However, the marginal coverage does not ensure the conditional coverage, given specific features ($X = x$), or 
+specific classes ($H=h$). So, for a dataset that has class imbalance, which is very common in phage-host interaction, a 
 marginal model can satisfy the coverage guarantee by potentially over-covering a majority class ($100\%$) and under-
-covering a small class ($0\%$) \cite{ochoarivera2024conformal, romano2020classification}. For instance, if $\mathcal{Y} 
-= \{-1, 1\}$ with class proportion $\mathbb{P}(Y = -1) = 0.9$, a predictor acheiving $100\%$ coverage on $Y = -1$ and 
+covering a small class ($0\%$) \cite{ochoarivera2024conformal, romano2020classification}. For instance, if $\mathcal{H} 
+= \{-1, 1\}$ with class proportion $\mathbb{P}(H = -1) = 0.9$, a predictor acheiving $100\%$ coverage on $H = -1$ and 
 $0\%$ coverage on $Y = 1$ still attains an overall $90\%$. In phage-host classification, such conditional under-coverage 
 on minority host may be a problem. 
  
 \vspace{0.15cm}
-\noindent While feature-conditional coverage ($\mathbb{P}(Y \in C(X) \mid X = x) \ge 1 - \alpha$) is mathematically 
+\noindent While feature-conditional coverage ($\mathbb{P}(H \in C(X) \mid X = x) \ge 1 - \alpha$) is mathematically 
 impossible to achieve in finite samples without strong parametric assumptions \cite{vovk2005algorithmic, 
 ochoarivera2024conformal}, class-conditional coverage (Mondrian conformal prediction) is exact and valid in finite 
-samples. We partition $D_{\text{cal}}$ into $K$ disjoint subsets $D_{\text{cal}}^{(y)} = \{(X_i, Y_i) \in D_{\text{cal}} 
-: Y_i = y\}$ and evaluate separate class-specific quantiles $q_{\alpha}^{(y)}$, enforcing exact coverage per class:
+samples. We partition $D_{\text{cal}}$ into $K$ disjoint subsets $D_{\text{cal}}^{(h)} = \{(X_i, H_i) \in D_{\text{cal}} 
+: H_i = h\}$ and evaluate separate class-specific quantiles $q_{\alpha}^{(h)}$, enforcing exact coverage per class:
 \begin{equation}
-\mathbb{P}\left(Y_{n+1} \in C(X_{n+1}) \;\Big|\; Y_{n+1} = y\right) \ge 1 - \alpha, \quad \forall y \in \mathcal{Y}
+\mathbb{P}\left(H_{n+1} \in C(X_{n+1}) \;\Big|\; H_{n+1} = h\right) \ge 1 - \alpha, \quad \forall y \in \mathcal{h}
 \end{equation}
 
-\noindent Because exchangeability holds within each class-conditional partition $D_{\text{cal}}^{(y)}$, evaluating 
+\noindent Because exchangeability holds within each class-conditional partition $D_{\text{cal}}^{(h)}$, evaluating 
 per-class quantiles preserves exact finite-sample validity across every candidate host, as formalised in 
 Section \todo{refer}
 

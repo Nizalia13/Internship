@@ -56,17 +56,17 @@ complement the lab experiment by providing with a shorter list of candidate phag
 validation \cite{coclet2021global} or even directly infer the host information directly from a given phage.
 
 \vspace{0.15cm}
-\noindent We can formulate this host prediction problem over a probability space $\left(\Omega, \mathcal{F}, \mathbb{P}
-\right)$. Let $\mathcal{X} \subseteq \mathbb{R}^d$ be the feature space representing phage representations, $X \in 
-\mathcal{X}$ be a random feature vector representing a phage and let $\mathcal{H} = \{h_1, \cdots, h_M\}$ be the finite 
-label space of possible bacterial hosts. 
+\noindent We can formulate this host prediction problem as follows:
+% over a probability space $\left(\Omega, \mathcal{F}, \mathbb{P}\right)$. 
+let $\mathcal{X} \subseteq \mathbb{R}^d$ be the feature space representing phage representations, and let $\mathcal{H} 
+= \{h_1, \cdots, h_N\}$ be the finite label space of possible bacterial hosts. 
 
 \vspace{0.15cm}
-\noindent In a single-host 
-classification setting, the underlying data-generating process yields random pairs $(X, H) \sim \mathbb{P}_{X,H}$, 
-where $H \in \mathcal{H}$ represents the true primary host. In a general multi-host setting, the target is a non-empty 
-subset of hosts $H^* \subseteq \mathcal{H}$, i.e., $H^* \in \mathcal{P}(\mathcal{H}) \setminus \{\emptyset\}$, where 
-$\mathcal{P}(\mathcal{H}) = 2^{\mathcal{H}}$ denotes the power set of $\mathcal{H}$. 
+\noindent In a single-host classification setting, we observe random pairs $(X, H) \sim \mathbb{P}_{X,H}$, where 
+$X \in \mathcal{X}$ is a feature vector representing a phage and $H \in \mathcal{H}$ represents the true host. 
+In a general multi-host setting, the target is a non-empty subset of hosts $H^* \subseteq \mathcal{H}$, i.e., 
+$H^* \in \mathcal{P}(\mathcal{H}) \setminus \{\emptyset\}$, where $\mathcal{P}(\mathcal{H}) = 2^{\mathcal{H}}$ denotes 
+the power set of $\mathcal{H}$ \todo{refer to correct section}. 
 
 \vspace{0.15cm}
 \noindent Our primary objective is to construct a set-valued prediction mapping:

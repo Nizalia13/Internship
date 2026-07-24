@@ -51,10 +51,12 @@ an encoder $\Phi_{\text{pLM}}$ produces a residue-level embedding matrix $\mathb
 explicit sequence alignment. Building on ProtT5 \cite{elnaggar2022prottrans}, tools such as EMPATHI 
 \cite{boulay2025empathi} and SUBLYME \cite{boulay2026phalp} use these representations for phage protein functional 
 annotation and metagenomic lysin discovery respectively. These tools are directly involved in this work: the 
-$K$-dimensional score vector $\mathbf{s} \in [0,1]^K$ that serves as input to our conformal framework is produced by a 
-pipeline built on these annotations, the precise construction of which is described in \todo{refer}. For host prediction, 
-protein embeddings have shown substantially improved accuracy over sequence-similarity baselines \cite{gonzales2023protein, 
-du2026high}. This confirms that the embedding space contains sufficient information for reliable host assignment.
+$K$-dimensional score vector $\mathbf{s} = \left( s_1(X), \dots, s_K(X) \right)^T\in [0,1]^K$ that serves as input to our 
+conformal framework is produced by a pipeline built on these annotations, the precise construction of which is described 
+in \todo{refer}. For host prediction, protein embeddings have shown substantially improved accuracy over sequence-
+similarity baselines \cite{gonzales2023protein, du2026high}. So this suggests that the embedding space contains sufficient 
+information for reliable host assignment.
+
 
 \subsubsection{Shared Limitation: Absence of Uncertainty Quantification}
 \label{sec2.2.3: limitations}
