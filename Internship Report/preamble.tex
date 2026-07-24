@@ -2,6 +2,7 @@
 %               PREAMBLE.TEX
 % ==========================================
 % !TEX option = --shell-escape
+
 % --- Encoding and Language ---
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -17,7 +18,33 @@
 \usepackage{indentfirst}
 \onehalfspacing
 
-% --- Hyperlinks configuration ---
+% --- Math Packages ---
+\usepackage{amsmath, amssymb, amsfonts, amsthm, mathtools, stmaryrd, yhmath}
+
+% --- Scientific and Physics Tools (MUST BE LOADED BEFORE HYPERREF) ---
+\usepackage{physics} % Loaded before hyperref to prevent breaking \ref
+\usepackage{dsfont}
+\usepackage{mathrsfs}
+
+% --- Graphics, Figures, and Plots ---
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18, width=10cm}
+\usetikzlibrary{patterns, positioning, arrows.meta, shapes.geometric}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{enumitem}
+
+% --- Tables and Text Formatting ---
+\usepackage{colortbl}
+\usepackage[normalem]{ulem}
+\usepackage{diagbox}
+\usepackage{array}
+\usepackage{booktabs}
+
+% --- Hyperlinks Configuration ---
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
@@ -26,14 +53,7 @@
     citecolor=magenta
 }
 
-
-\usepackage{colortbl}
-% \usepackage{ulem}
-\usepackage[normalem]{ulem}
-
-% --- Math Packages and Theorems ---
-\usepackage{amsmath, amssymb, amsfonts, amsthm, mathtools, stmaryrd, yhmath}
-
+% --- Theorem Styles & Environments (Restored Exact Original Definitions) ---
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{prop}[theorem]{Proposition}
 \newtheorem{corolT}[theorem]{Corollary}
@@ -55,24 +75,12 @@
 \newtheoremstyle{theoremBreak}{} {} {\itshape} {} {\bfseries} {.} {\newline} {}
 \theoremstyle{theoremBreak}
 \newtheorem{theorem2}[theorem]{Theorem}
-\numberwithin{equation}{subsection}
 
-% --- Scientific and Physics Tools ---
-% \usepackage[overwrite-functions=true]{siunitx}
-\usepackage{physics}
-\usepackage{dsfont}
-\usepackage{mathrsfs}
+\numberwithin{equation}{section}
 
-% --- Graphics, Figures, and Plots ---
-\usepackage{graphicx}
-\usepackage{tikz}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18, width=10cm}
-\usetikzlibrary{patterns, positioning, arrows.meta, shapes.geometric}
-\usepackage{subcaption}
-\usepackage{float}
-\usepackage{placeins}
-\usepackage{enumitem}
+% --- Bibliography ---
+\usepackage[backend=biber,style=ieee]{biblatex}
+\addbibresource{references.bib}
 
 % --- Source Code Block Styling ---
 \usepackage{listings}
@@ -87,11 +95,6 @@
     frame=single,
     backgroundcolor=\color{LightGray}
 }   
-
-% --- Tables Styling ---
-\usepackage{diagbox}
-\usepackage{array}
-\usepackage{booktabs}
 
 % --- Custom TikZ Node Styles ---
 \tikzset{
@@ -125,5 +128,3 @@
 }
 
 \setlength{\marginparwidth}{2cm}
-
-

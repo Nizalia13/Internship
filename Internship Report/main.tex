@@ -1,8 +1,12 @@
 \documentclass[12pt,a4paper]{article}
 
+% --- Ensure proper encoding for source files and bibliography ---
+\PassOptionsToPackage{utf8}{inputenc}
+\PassOptionsToPackage{bibencoding=latin1}{biblatex}
+
 % --- Load all configuration styles and packages ---
 \input{preamble.tex}
-\AtBeginDocument{\RenewCommandCopy\qty\SI}
+
 \setlength{\headheight}{14pt}
 
 % --- Document Metadata ---
@@ -38,8 +42,8 @@
 
 \newpage
 \input{3_Methods/Problem.tex}
-\input{3_Methods/Non convex}
-\input{3_Methods/Score Transformation}
+\input{3_Methods/Non convex.tex}
+\input{3_Methods/Score Transformation.tex}
 \input{3_Methods/Envelope_Construction_Methods.tex}
 \input{3_Methods/t_hat.tex}
 
@@ -58,8 +62,8 @@
 \input{6_Conclusion/limitations.tex}
 
 \newpage
-\bibliographystyle{ieeetr}
+% Ensure all entries from references.bib are included and printed
 \nocite{*}
-\bibliography{references} 
+\printbibliography
 
 \end{document}

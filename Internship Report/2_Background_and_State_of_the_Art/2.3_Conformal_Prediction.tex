@@ -78,7 +78,7 @@ an optimal predictor should acheive a coverage $\geq 1-\alpha$ with the smallest
 set, $D_{\text{cal}} = \{(X_i, H_i)\}_{i=1}^n$. The training set is used to fit an underlying scoring model $\hat{f}: 
 \mathcal{X} \times \mathcal{H} \to \mathbb{R}$. We then define a nonconformity score function $s: \mathcal{X} \times 
 \mathcal{H} \to \mathbb{R}$ based on $\hat{f}$. This score function quantifies how unusual a pair $(x, h)$ is relative 
-to the learned patterns.
+to the learned patterns, smaller values of $s(x,y)$ indicate stronger conformity between $x$ and label $h$
 
 \vspace{0.15cm}
 \noindent Then using the calibration set , $\{(X_i, H_i)\}^n_{i=1}$, we evaluate the nonconformity scores:
@@ -103,22 +103,49 @@ q_{\alpha} = \inf \left\{ q \in \mathbb{R} : \frac{1}{n}\sum_{i=1}^{n} \mathbf{1
 \noindent Then, for a new input, $X_{n+1}$ the conformal prediction set, $C(X_{n+1})$ , is constructed by collecting all 
 the candidate labels in $H \in \mathcal{H}$ whose nonconformity scores do not exceed $q_{\alpha}$:
 \begin{equation}
-\label{eq: prediction set definition}
+\label{eq:prediction_set_definition}
 C(X_{n+1}) = \left\{ H \in \mathcal{H} \;\Big|\; s(X_{n+1}, H) \le q_{\alpha} \right\}
 \end{equation}
 
-\noindent The validity of this construction follows directly from the exchangeability of the calibration and test points. 
-Since $(Z_1, \dots, Z_{n+1}) = ((X_1,H_1), \dots, (X_{n+1}, H_{n+1}))$ are exchangeable, the joint distribution of 
-$(S_1, \dots, S_{n+1})$ is invariant under permutations. Therefore, the rank of $S_{n+1}$ among the $n+1$ scores is 
-uniformly distributed on $\{1, \dots, n+1\}$, giving:
-$$\mathbb{P}(S_{n+1} \leq q_{\alpha}) = \mathbb{P}\!\left(\operatorname{rank}(S_{n+1}) \leq \lceil(n+1)(1-\alpha)\rceil
-\right) = \frac{\lceil(n+1)(1-\alpha)\rceil}{n+1} \geq 1 - \alpha.$$
-\noindent Theorem~\ref{thm: marginal coverage} formalises this argument.
+% \noindent The validity of this construction follows directly from the exchangeability of the calibration and test points. 
+% Since $(Z_1, \dots, Z_{n+1}) = ((X_1,H_1), \dots, (X_{n+1}, H_{n+1}))$ are exchangeable, the joint distribution of 
+% $(S_1, \dots, S_{n+1})$ is invariant under permutations. Therefore, the rank of $S_{n+1}$ among the $n+1$ scores is 
+% uniformly distributed on $\{1, \dots, n+1\}$, giving:
+% $$\mathbb{P}(S_{n+1} \leq q_{\alpha}) = \mathbb{P}\!\left(\operatorname{rank}(S_{n+1}) \leq \lceil(n+1)(1-\alpha)\rceil
+% \right) = \frac{\lceil(n+1)(1-\alpha)\rceil}{n+1} \geq 1 - \alpha.$$
+% \noindent Theorem~\ref{thm: marginal coverage} formalises this argument.
+
+\noindent The validity of this construction follows from exchangeability. Let $S_{(1)} \leq \dots \leq S_{(n)}$ denote the order 
+statistics of the calibration scores $\{S_1,\dots,S_n\}$, and augment this sequence with $S_{(n+1)} = +\infty$. Then 
+$q_{\alpha} = S_{(\lceil(n+1)(1-\alpha)\rceil)}$ is the $\lceil(n+1)(1-\alpha)\rceil$-th order statistic of the augmented 
+set $\{S_1,\dots,S_n,S_{n+1}\}$. Since $(Z_1,\dots,Z_{n+1})$ are exchangeable, the rank of $S_{n+1}$ among the $n+1$ augmented 
+scores is uniformly distributed on $\{1,\dots,n+1\}$. Consequently:
+$$\mathbb{P}\bigl(S_{n+1} \leq q_{\alpha}\bigr) 
+= \mathbb{P}\!\left(\operatorname{rank}(S_{n+1}) \leq \lceil(n+1)(1-\alpha)\rceil\right) 
+= \frac{\lceil(n+1)(1-\alpha)\rceil}{n+1} \geq 1-\alpha.$$
+
+% We first isolate the probabilistic core of the argument in a lemma.
+
+% \begin{lemma}[Uniform Rank]
+% \label{lem: uniform rank}
+% Let $U_1,\dots,U_{n+1}$ be exchangeable real-valued random variables. Let 
+% $R_{n+1}$ denote the rank of $U_{n+1}$ among $\{U_1,\dots,U_{n+1}\}$. Then 
+% $R_{n+1} \sim \mathrm{Uniform}\{1,\dots,n+1\}$.
+% \end{lemma}
+
+% \begin{proof}
+% Exchangeability implies that the joint distribution of 
+% $(U_1,\dots,U_{n+1})$ is invariant under permutations. All $(n+1)!$ orderings 
+% of the indices are equally likely, so the index of the $(n+1)$-th variable is 
+% uniform over $\{1,\dots,n+1\}$.
+% \end{proof}
+
+% Theorem~\ref{thm: marginal coverage} formalises the coverage guarantee.
 
 \begin{theorem}[Marginal Coverage Guarantee \cite{vovk2005algorithmic, lei2018distribution}]
 \label{thm: marginal coverage}
 If $(X_1, H_1), \dots, (X_{n+1}, H_{n+1})$ are exchangeable, then the prediction set $C(X_{n+1})$ defined in 
-Equation~\eqref{eq: prediction set definition} satisfies:
+Equation \ref{eq:prediction_set_definition} satisfies:
 \begin{equation*}
 \mathbb{P}\left( H_{n+1} \in C(X_{n+1}) \right) \ge 1 - \alpha
 \end{equation*}
@@ -144,7 +171,7 @@ bound is tight:
 % coverage guarantee \cite{ochoarivera2024conformal}.
 
 \vspace{0.15cm}
-\noindent Crucially, Theorem~\ref{thm: marginal coverage} holds strictly in finite samples without requiring parametric 
+\noindent Crucially, theorem \ref{thm: marginal coverage} holds strictly in finite samples without requiring parametric 
 assumptions on $s(\cdot, \cdot)$ or $\mathbb{P}_{X,H}$. While the choice of scoring function $s$ governs efficiency (set 
 size), valid statistical coverage is guaranteed by construction in a single computational pass over $D_{\text{cal}}$ 
 \cite{ochoarivera2024conformal}.
@@ -170,12 +197,12 @@ on minority host may be a problem.
  
 \vspace{0.15cm}
 \noindent While feature-conditional coverage ($\mathbb{P}(H \in C(X) \mid X = x) \ge 1 - \alpha$) is mathematically 
-impossible to achieve in finite samples without strong parametric assumptions \cite{vovk2005algorithmic, 
-ochoarivera2024conformal}, class-conditional coverage (Mondrian conformal prediction) is exact and valid in finite 
-samples. We partition $D_{\text{cal}}$ into $K$ disjoint subsets $D_{\text{cal}}^{(h)} = \{(X_i, H_i) \in D_{\text{cal}} 
+impossible to achieve in finite samples without strong parametric assumptions \cite{vovk2005algorithmic,ochoarivera2024conformal}, 
+class-conditional coverage (Mondrian conformal prediction) is exact and valid in finite 
+samples. We partition $D_{\text{cal}}$ into $N$ disjoint subsets $D_{\text{cal}}^{(h)} = \{(X_i, H_i) \in D_{\text{cal}} 
 : H_i = h\}$ and evaluate separate class-specific quantiles $q_{\alpha}^{(h)}$, enforcing exact coverage per class:
 \begin{equation}
-\mathbb{P}\left(H_{n+1} \in C(X_{n+1}) \;\Big|\; H_{n+1} = h\right) \ge 1 - \alpha, \quad \forall y \in \mathcal{h}
+\mathbb{P}\left(H_{n+1} \in C(X_{n+1}) \;\Big|\; H_{n+1} = h\right) \ge 1 - \alpha, \quad \forall h \in \mathcal{H}
 \end{equation}
 
 \noindent Because exchangeability holds within each class-conditional partition $D_{\text{cal}}^{(h)}$, evaluating 

@@ -1,7 +1,7 @@
 \subsection{Conformal Set Aggregation (CSA)}
 \label{sec2.4: CSA Method}
 \noindent The standard split conformal framework in \ref{sec2.3.2: split conformal} takes a scalar non-conformity 
-score $S(x, y) \in \mathbb{R}$. In this report, the prediction pipeline produces a $K$-dimensional score vector of 
+score $S(x, h) \in \mathbb{R}$. In this report, the prediction pipeline produces a $K$-dimensional score vector of 
 scores $s \in [0, 1]^K$ for each phage, where $K$ is the number of distinct functional categories. We may lose the 
 geometric structure of the score distribution if we aggregate this vector to a scalar value before applying 
 conformal prediction. For such settings, Ochoa Rivera, Patel and Tewari \cite{ochoarivera2024conformal} 
@@ -16,10 +16,24 @@ $E \subseteq [0,1]^K$. This envelope consists of the region where the score vect
 phage are concentrated.
 
 \vspace{0.15cm}
-\noindent Mathematically, we can say that we apply a label dependent transformation $\phi_y: [0,1]^K \rightarrow
-[0,1]^K$ to the raw score vector. This mapping is constructed such that when $y \in \mathcal{Y}$ is the true host label, 
-the transformed score vector $\phi_y(\mathbf{s})$ concentrates near the origin in $\mathbb{R}^K$. The exact transformation 
-$\phi_y$ used in this work is formalized later in \todo{refer}.
+% \noindent Mathematically, we can say that we apply a label dependent transformation $\phi_y: [0,1]^K \rightarrow
+% [0,1]^K$ to the raw score vector. This mapping is constructed such that when $y \in \mathcal{Y}$ is the true host label, 
+% the transformed score vector $\phi_y(\mathbf{s})$ concentrates near the origin in $\mathbb{R}^K$. The exact transformation 
+% $\phi_y$ used in this work is formalized later in \todo{refer}.
+
+\noindent Mathematically, let $\{\phi_h\}_{h\in\mathcal{H}}$ be a family of label-dependent maps 
+$\phi_h: [0,1]^K \to [0,1]^K$ such that, when $h$ is the true label, the transformed 
+score vector $\phi_h(\mathbf{s})$ concentrates near the origin in $\mathbb{R}^K_+$. 
+The CSA method constructs an envelope $E \subseteq \mathbb{R}^K_+$ as the intersection 
+of $M$ half-spaces induced by unit directions $\{\mathbf{u}_m\}_{m=1}^M$ and quantile 
+thresholds $\{\tilde{q}_m\}_{m=1}^M$:
+\begin{equation}
+\label{eq: convex envelope}
+E = \bigcap_{m=1}^{M} \bigl\{\mathbf{s} \in \mathbb{R}^K_+ : \langle \mathbf{s}, \mathbf{u}_m \rangle \leq \tilde{q}_m \bigr\}.
+\end{equation}
+By construction, $E$ is convex. Membership of a transformed score in the scaled envelope 
+$t \cdot E$ is tested coordinate-wise along each direction. The exact transformation 
+$\phi_h$ used in this work is formalized in Section~ \todo{refer to section}.
 
 % \vspace{0.15cm}
 % \noindent Mathematically, we can say that we apply a label dependent transformation $\phi_y: [0,1]^K \rightarrow
@@ -30,8 +44,6 @@ $\phi_y$ used in this work is formalized later in \todo{refer}.
 % \noindent where $t \cdot E = \{t \cdot \mathbf{x} : \mathbf{x} \in E\}$ represents linear dilation of $E$ in $\mathbb{R}^K$
 % and $\hat t$ is the global scaling factor that is calibrated on the calibration set \ref{sec2.3.2: split 
 % conformal}. The $\phi_y$ chosen in this work is defined in \todo{refer to the correct section}.
-
-
 
 \subsubsection{The CSA Framework}
 \label{sec2.4.2: csa framework}
@@ -47,7 +59,7 @@ introduce bias which would invalidate the distruibution free coverage guarantee 
     \item \textbf{Size Scaling Set ($S_2$):} Used to determine the scalar scaling parameter $\hat{t} \in \mathbb{R}^+$. 
           $\hat{t}$ inflates or deflates $E$ until exact empirical coverage $1 - \alpha$ is attained over $S_2$:
      \begin{equation*}
-    \hat{t} = \inf \left\{ t > 0 \;\Big|\; \frac{1}{|S_2|} \sum_{\mathbf{s} \in S_2} \mathbf{1}\left(\phi_Y(\mathbf{s}) 
+    \hat{t} = \inf \left\{ t > 0 \;\Big|\; \frac{1}{|S_2|} \sum_{\mathbf{s} \in S_2} \mathbf{1}\left(\phi_H(\mathbf{s}) 
     \in t \cdot E\right) \ge \frac{\lceil (|S_2|+1)(1-\alpha) \rceil}{|S_2|} \right\}
     \end{equation*}
 \end{enumerate}
@@ -62,8 +74,8 @@ $$\hat t \cdot E = \{ t \cdot x : x \in E \}, \quad \hat t > 0$$
 \vspace{0.15cm}
 \noindent In the original CSA paper \cite{ochoarivera2024conformal}, finding $\hat{t}$ is presented as a root-finding 
 problem solved through iterative numerical optimization or binary search over candidate scaling values $t$. At test time, 
-a candidate label $y$ is included in the prediction set $C(\mathbf{s}_{n+1})$ if and only if its transformed score 
-vector falls inside the scaled envelope: $$C(\mathbf{s}_{n+1}) = \{ y \in \mathcal{Y} : \phi_y(\mathbf{s}_{n+1}) \in 
+a candidate label $h$ is included in the prediction set $C(\mathbf{s}_{n+1})$ if and only if its transformed score 
+vector falls inside the scaled envelope: $$C(\mathbf{s}_{n+1}) = \{ h \in \mathcal{H} : \phi_h(\mathbf{s}_{n+1}) \in 
 \hat{t} \cdot E \}.$$
 
 

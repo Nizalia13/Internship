@@ -1,7 +1,8 @@
-\section{Methods}
+\section{Methodology}
 \label{sec3: methodology}
 
 \subsection{Problem Formalization}
+\label{sec3.1: problem formalisation}
 % \noindent - Prediction sets
 % - Scores
 % - Envelope design
@@ -10,5 +11,63 @@
 \noindent - Input: a phage represented by a score vector in $[0,1]^K$ where $K$ is the number of functional dimensions\\
 - Define the label space $\mathcal{Y}$ (finite set of classes)\\
 - Goal: construct a prediction set $C(x)\subseteq Y$ with the conformal guarantee\\
-- The one-envelope design: build one single envelope on all training phages under their true-label NC transformation, rather than separate envelopes per class
+- The one-envelope design: build one single envelope on all training phages under their true-label NC transformation, 
+rather than separate envelopes per class
 
+
+
+
+
+\noindent We now instantiate the general conformal classification setup of Section~\ref{sec2.3: conformal prediction} 
+for the specific prediction task addressed in this report. Recall from Section~\ref{sec2.1: host prediction problem} 
+that $\mathcal{H} = \{h_1, \ldots, h_N\}$ denotes the finite space of $N$ candidate bacterial hosts, and that our 
+objective is to construct a set-valued mapping $C: \mathcal{X} \to \mathcal{P}(\mathcal{H})$ satisfying the coverage 
+guarantee of Equation~\eqref{eq: core coverage guarantee objective}.
+
+\vspace{0.15cm}
+\noindent In this work, the feature space $\mathcal{X}$ is not the raw phage genome or proteome, but a fixed-length 
+vector of scores produced by the upstream annotation pipeline described in Section~\ref{sec2.2.2: plms}. Each score 
+$s_k$ corresponds to a distinct functional category (e.g. capsid, tail, lysin), and $K$ denotes the total number of 
+such categories. A phage is therefore represented by a vector
+\begin{equation*}
+\mathbf{s} = (s_1, \ldots, s_K), \qquad s_k \in [0,1] \cup \{\texttt{NA}\}, \quad k = 1, \ldots, K,
+\end{equation*}
+where $\texttt{NA}$ denotes a structurally missing entry: dimension $k$ is undefined for a given phage whenever none 
+of its constituent proteins were annotated with functional category $k$ (Section~\ref{sec4: data}). This is missingness 
+by construction, not measurement noise, and it must be treated accordingly rather than imputed away by default.
+
+\vspace{0.15cm}
+\noindent We make this explicit by associating to every score vector a \emph{missingness mask}
+\begin{equation*}
+\mathbf{m} = (m_1, \ldots, m_K) \in \{0,1\}^K, \qquad m_k = \mathbf{1}(s_k \neq \texttt{NA}),
+\end{equation*}
+and write $\mathbf{s}_{\mathbf{m}} = (s_k)_{k : m_k = 1} \in [0,1]^{|\mathbf{m}|}$ for the restriction of $\mathbf{s}$ 
+to its observed coordinates, where $|\mathbf{m}| = \sum_{k=1}^K m_k$. The pair $(\mathbf{s}, \mathbf{m})$, rather than 
+$\mathbf{s}$ alone, is the object our envelope methods operate on: a valid nonconformity score, and the envelope 
+membership test built on it, must be well-defined for every observed missingness pattern $\mathbf{m}$, not only for 
+the fully-observed case $\mathbf{m} = \mathbf{1}$. This requirement is what motivates the per-point, NaN-native 
+constructions of Section~\ref{sec3.4: envelope construction} — magnitudes and directions computed only over observed 
+dimensions (Radial), and conditional bounds replaced by marginal fallbacks when the conditioning dimension itself is 
+missing (Strip) — in place of a single global imputation step applied before calibration.
+
+\vspace{0.15cm}
+\noindent We study this framework in two instantiations of $\mathcal{H}$, sharing the same formal treatment:
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Gram-type classification} ($N = 2$): $\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$, the 
+          primary setting validated in this report (Section~\ref{sec5.2: gram results}).
+    \item \textbf{Host-level classification} ($N > 2$): $\mathcal{H}$ is the full set of bacterial host genera present 
+          in the dataset. The formalism extends directly, though the label-dependent transformation $\phi_h$ 
+          (Section~\ref{sec2.4.1: ensemble score vectors}) must be defined per host rather than as the single 
+          two-way transform of Section~\ref{sec3.3: nc transformation}. We report on this setting as ongoing work 
+          in Section~\ref{sec5.3: host results}.
+\end{enumerate}
+
+\vspace{0.15cm}
+\noindent Given a calibration set $D_{\text{cal}} = \{(\mathbf{s}_i, \mathbf{m}_i, H_i)\}_{i=1}^n$ of exchangeable 
+observations, our concrete objective is to construct $C(\mathbf{s}_{n+1}, \mathbf{m}_{n+1})$ such that
+\begin{equation*}
+\mathbb{P}\big(H_{n+1} \in C(\mathbf{s}_{n+1}, \mathbf{m}_{n+1})\big) \ge 1-\alpha,
+\end{equation*}
+while minimising the expected set size $\mathbb{E}[|C(\mathbf{s}, \mathbf{m})|]$, subject to the constraint — 
+established in Section~\ref{sec2.4.3: csa limitations} — that the envelope $E$ need not be convex, and must remain 
+well-defined under arbitrary missingness patterns $\mathbf{m}$.
