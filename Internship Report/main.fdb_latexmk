@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1784886749 "main.aux" "main.bbl" "main" 1784886751 0
+["bibtex main"] 1784888065 "main.aux" "main.bbl" "main" 1784888066 0
   "./references.bib" 1784883649 7682 ad690d73b09ba0ff5eecac507c8a98e5 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/base/ieeetr.bst" 1292289607 18361 1a00e58565e7f19bf2b3e1bfb82254ae ""
-  "main.aux" 1784886751 13185 6e12cff0b88e387e1308c9a0f0ad6718 "pdflatex"
+  "main.aux" 1784888066 12805 42403fd503af72190765a9cdff4b42c0 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1784886749 "/home/siddiqun/Bureau/Internship/Internship Report/main.tex" "main.pdf" "main" 1784886751 0
+["pdflatex"] 1784888065 "/home/siddiqun/Bureau/Internship/Internship Report/main.tex" "main.pdf" "main" 1784888066 0
   "/etc/texmf/web2c/texmf.cnf" 1779354507 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/home/siddiqun/Bureau/Internship/Internship Report/main.tex" 1784710980 1553 b1a2d79526469bc930c8f6164fbe504e ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -314,10 +314,10 @@
   "2_Background_and_State_of_the_Art/2.1_Background.tex" 1784885548 6342 9bd0a735c03acaaeaa0bdb7e837ee5ab ""
   "2_Background_and_State_of_the_Art/2.2_Current Methods.tex" 1784884304 17943 990a021d77976dd8def8f9ffacd0caca ""
   "2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex" 1784885439 13552 a790df652b25a331d15524e55e6f7554 ""
-  "2_Background_and_State_of_the_Art/2.4_CSA_Method.tex" 1784886747 10090 bef464fed1ec7cb324e396b0c7847c2d ""
+  "2_Background_and_State_of_the_Art/2.4_CSA_Method.tex" 1784888061 10116 bb9d508cd4b84e2d75c4406756df253e ""
   "3_Methods/Envelope_Construction_Methods.tex" 1784640015 5839 4adec17d30ddcf995ca1f5d51c4977a7 ""
   "3_Methods/Non Convex.tex" 1781166628 1055 9a0e008f3afbac71bc2bd1040e009644 ""
-  "3_Methods/Problem.tex" 1781166628 547 26d0d5c0b5e0966c77674979c39eca74 ""
+  "3_Methods/Problem.tex" 1784888000 573 14597a0b0b38b9528799f4a57756e4cd ""
   "3_Methods/Score Transformation.tex" 1781166628 449 4b1e3fe296a044439bcccc97534acd56 ""
   "3_Methods/t_hat.tex" 1781166628 78 cfc3c35cd10d1b628c2a4db7948d536b ""
   "4_Data/Description.tex" 1781166628 867 55875cf77fb94553bd8d384ddb45a95b ""
@@ -332,11 +332,11 @@
   "Acknowledgements.tex" 1781166628 165 df0bda3f0a8ab4bf1d3cac32a144cc9c ""
   "Title_Page.tex" 1784536133 1113 15c0696308b15c40e488175429e46bbf ""
   "logo_ensimag_uga.png" 1781170963 40343 0eeb9b4e7d183f3295828c6c547c6f1d ""
-  "main.aux" 1784886751 13185 6e12cff0b88e387e1308c9a0f0ad6718 "pdflatex"
-  "main.bbl" 1784886749 5844 ae4bca049de09aee41400e9b8991ff76 "bibtex main"
-  "main.out" 1784886751 8409 d99a4206a64a156dda2a423a07e3df07 "pdflatex"
+  "main.aux" 1784888066 12805 42403fd503af72190765a9cdff4b42c0 "pdflatex"
+  "main.bbl" 1784888065 5844 ae4bca049de09aee41400e9b8991ff76 "bibtex main"
+  "main.out" 1784888066 8409 d99a4206a64a156dda2a423a07e3df07 "pdflatex"
   "main.tex" 1784710980 1553 b1a2d79526469bc930c8f6164fbe504e ""
-  "main.toc" 1784886751 4329 576924fff55b9b67f1991e7b53f23751 "pdflatex"
+  "main.toc" 1784888066 4329 576924fff55b9b67f1991e7b53f23751 "pdflatex"
   "preamble.tex" 1784639418 3543 df27f3ebdd6fc853c0a7376d255d27ef ""
   (generated)
   "main.aux"
