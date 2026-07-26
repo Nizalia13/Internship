@@ -1,9 +1,0 @@
-\subsection{Non Convex envelope for classification}
-- In the regression setting of the original CSA paper, envelopes are typically convex because the score space is unbounded and the data does not cluster into separated groups\\
-- In our classification setting, the score space is bounded in $[0,1]^K$ and — crucially — true NC vectors for different classes occupy distinct, well-separated regions of this space (example)\\
-- In the classification, 
-% non-convex envelopes are not only permitted but actively beneficial 
-produce tighter prediction sets without sacrificing the coverage guarantee\\
-- The guarantee still holds because it depends only on the exchangeability of the data and the quantile construction, not on the shape of the envelope
-% This is the central geometric motivation for the radial and strip methods developed in section 3.5
-% Briefly contrast with collapsed 1D: if the data is genuinely one-dimensional (all dimensions carry the same signal), collapsing to a scalar is sufficient and non-convexity gives no additional benefit

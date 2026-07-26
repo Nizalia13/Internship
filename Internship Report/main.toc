@@ -15,33 +15,36 @@
 \contentsline {subsubsection}{\numberline {2.4.1}Ensemble Score Vectors}{10}{subsubsection.2.4.1}%
 \contentsline {subsubsection}{\numberline {2.4.2}The CSA Framework}{10}{subsubsection.2.4.2}%
 \contentsline {subsubsection}{\numberline {2.4.3}Limitations of CSA in Classification}{11}{subsubsection.2.4.3}%
-\contentsline {section}{\numberline {3}Methodology}{13}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Problem Formalization}{13}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Non Convex envelope for classification}{14}{subsection.3.2}%
-\contentsline {subsection}{\numberline {3.3}Score Transformation}{14}{subsection.3.3}%
-\contentsline {subsection}{\numberline {3.4}Envelope Constriction}{15}{subsection.3.4}%
-\contentsline {subsubsection}{\numberline {3.4.1}CSA Two-Stage Calibration}{15}{subsubsection.3.4.1}%
-\contentsline {subsubsection}{\numberline {3.4.2}$\tau $ Computation}{15}{subsubsection.3.4.2}%
-\contentsline {subsubsection}{\numberline {3.4.3}Radial Method}{15}{subsubsection.3.4.3}%
-\contentsline {subsubsection}{\numberline {3.4.4}Strip Method}{15}{subsubsection.3.4.4}%
-\contentsline {subsubsection}{\numberline {3.4.5}1D}{15}{subsubsection.3.4.5}%
-\contentsline {subsubsection}{\numberline {3.4.6}Class-Specific $\hat {t}$ Calculation}{15}{subsubsection.3.4.6}%
-\contentsline {subsection}{\numberline {3.5}$\hat {t}$ Calculation}{15}{subsection.3.5}%
-\contentsline {section}{\numberline {4}Data ....}{16}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Data Description}{16}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Protein to Phage Aggregation}{16}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}NaN handling after aggregation}{16}{subsubsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.3}Train-Test Split}{17}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Experiments and Results}{18}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Synthetic Data Validation}{18}{subsection.5.1}%
-\contentsline {subsubsection}{\numberline {5.1.1}Puspose and setup}{18}{subsubsection.5.1.1}%
-\contentsline {subsubsection}{\numberline {5.1.2}2D Experimenats}{18}{subsubsection.5.1.2}%
-\contentsline {subsubsection}{\numberline {5.1.3}Extension to K Dimensions}{18}{subsubsection.5.1.3}%
-\contentsline {subsubsection}{\numberline {5.1.4}Multiple Hosts}{18}{subsubsection.5.1.4}%
-\contentsline {subsection}{\numberline {5.2}Gram Type Classification}{19}{subsection.5.2}%
-\contentsline {subsubsection}{\numberline {5.2.1}Experimental Setup}{19}{subsubsection.5.2.1}%
-\contentsline {subsubsection}{\numberline {5.2.2}Results}{19}{subsubsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.3}Host Classification}{19}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Conclusion and Future Work}{20}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Summary.....}{20}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Limitations}{20}{subsection.6.2}%
+\contentsline {section}{\numberline {3}Methodology}{12}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Problem Formalization}{12}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Non-Convex Envelopes in Classification}{14}{subsection.3.2}%
+\contentsline {paragraph}{Efficiency loss from convexity.}{15}{section*.13}%
+\contentsline {paragraph}{Non-convex envelopes preserve coverage.}{16}{section*.14}%
+\contentsline {paragraph}{Practical construction.}{16}{section*.15}%
+\contentsline {subsection}{\numberline {3.3}Score Transformation}{16}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Envelope Constriction}{16}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}CSA Two-Stage Calibration}{16}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}$\tau $ Computation}{17}{subsubsection.3.4.2}%
+\contentsline {subsubsection}{\numberline {3.4.3}Radial Method}{17}{subsubsection.3.4.3}%
+\contentsline {subsubsection}{\numberline {3.4.4}Strip Method}{17}{subsubsection.3.4.4}%
+\contentsline {subsubsection}{\numberline {3.4.5}1D}{17}{subsubsection.3.4.5}%
+\contentsline {subsubsection}{\numberline {3.4.6}Class-Specific $\hat {t}$ Calculation}{17}{subsubsection.3.4.6}%
+\contentsline {subsection}{\numberline {3.5}$\hat {t}$ Calculation}{17}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Data ....}{18}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Data Description}{18}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Protein to Phage Aggregation}{18}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}NaN handling after aggregation}{18}{subsubsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.3}Train-Test Split}{19}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Experiments and Results}{20}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Synthetic Data Validation}{20}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Puspose and setup}{20}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}2D Experimenats}{20}{subsubsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.3}Extension to K Dimensions}{20}{subsubsection.5.1.3}%
+\contentsline {subsubsection}{\numberline {5.1.4}Multiple Hosts}{20}{subsubsection.5.1.4}%
+\contentsline {subsection}{\numberline {5.2}Gram Type Classification}{21}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Experimental Setup}{21}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Results}{21}{subsubsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.3}Host Classification}{21}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Conclusion and Future Work}{22}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Summary.....}{22}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Limitations}{22}{subsection.6.2}%

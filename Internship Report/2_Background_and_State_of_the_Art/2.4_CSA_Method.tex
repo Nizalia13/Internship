@@ -54,23 +54,21 @@ introduce bias which would invalidate the distruibution free coverage guarantee 
 
 \begin{enumerate}[label=(\roman*)]
     \item \textbf{Shape Discovery Set ($S_1$):} Used to model the spatial distribution of scores and learn the geometric
-          shape, orientation, and boundaries of the envelope $E \subset \mathbb{R}^K$. $S_1$ determines the shape of the 
-          region without fixing its scale.
+          shape, orientation, and boundaries of the envelope $E \subset \mathbb{R}^K$. 
+      %     $S_1$ determines the shape of the region without fixing its scale.
     \item \textbf{Size Scaling Set ($S_2$):} Used to determine the scalar scaling parameter $\hat{t} \in \mathbb{R}^+$. 
           $\hat{t}$ inflates or deflates $E$ until exact empirical coverage $1 - \alpha$ is attained over $S_2$:
-     \begin{equation*}
-    \hat{t} = \inf \left\{ t > 0 \;\Big|\; \frac{1}{|S_2|} \sum_{\mathbf{s} \in S_2} \mathbf{1}\left(\phi_H(\mathbf{s}) 
-    \in t \cdot E\right) \ge \frac{\lceil (|S_2|+1)(1-\alpha) \rceil}{|S_2|} \right\}
-    \end{equation*}
 \end{enumerate}
  
+\begin{equation*}
+ \hat{t} = \inf \left\{ t > 0 \;\Big|\; \frac{1}{|S_2|} \sum_{\mathbf{s} \in S_2} \mathbf{1}\left(\phi_H(\mathbf{s}) 
+ \in t \cdot E\right) \ge \frac{\lceil (|S_2|+1)(1-\alpha) \rceil}{|S_2|} \right\}
+ \end{equation*}
 
-\vspace{0.15cm}
 \noindent This $\hat t$ is the smallest scaling factor such that the scaled envelope $\hat t \cdot E$ achieves the 
 required $1-\alpha$ coverage. The scaled envelope is defined linearly as:
 $$\hat t \cdot E = \{ t \cdot x : x \in E \}, \quad \hat t > 0$$
 
-\vspace{0.15cm}
 \vspace{0.15cm}
 \noindent In the original CSA paper \cite{ochoarivera2024conformal}, finding $\hat{t}$ is presented as a root-finding 
 problem solved through iterative numerical optimization or binary search over candidate scaling values $t$. At test time, 
@@ -147,7 +145,7 @@ and has some major limitations when it is applied to classification problems:
 
 \vspace{0.15cm}
 \noindent These limitations directly motivate our methodological contributions in \ref{sec3: methodology}. This 
-includes designing non-convex envelopes (Radial and Strip geometries) \todo{refer}, deriving closed-form analytical 
+includes designing non-convex envelopes \todo{refer}, deriving closed-form analytical 
 solutions for per-point $\tau$-values to enable one-pass calibration \ref{sec3: methodology}, and integrating class-conditional 
 thresholds to guarantee reliable host-range predictions.
 
