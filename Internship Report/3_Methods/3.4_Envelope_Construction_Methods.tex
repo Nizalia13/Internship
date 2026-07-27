@@ -1,0 +1,179 @@
+% \subsubsection{CSA Two-Stage Calibration}
+% \begin{itemize}
+%     \item Training vectors are split into two disjoint halves $S_1$ and $S_2$ (50/50 random split).
+%     \item $S_1$ (shape discovery): used to learn the geometry of the envelope.
+%     \item $S_2$ (size scaling): used to calibrate the scaling factor $\hat{t}$ that determines the final size of the envelope.
+%     \item The two stages must use disjoint data to preserve the exchangeability argument underlying the coverage guarantee.
+% \end{itemize}
+
+% \subsubsection{\texorpdfstring{$\tau$ Computation}{tau Computation}}
+% \begin{itemize}
+%     \item Define $\tau(\mathbf{s}) = \inf\{t > 0 : \mathbf{s} \in t \cdot E\}$, the minimum scaling factor needed to include point $\mathbf{s}$ in the scaled envelope $E$.
+%     \item The global scaling factor is then determined by the $(1-\alpha)$ quantile of the $\tau$ values over $S_2$:
+%     \[
+%     \hat{t} = \tau_{(k)} \quad \text{where} \quad k = \lceil(|S_2|+1)(1-\alpha)\rceil
+%     \]
+%     where $\tau_{(k)}$ denotes the $k$-th smallest value of $\tau$ in $S_2$.
+%     \item Key contribution: for each of the three envelope geometries, $\tau(\mathbf{s})$ has a closed-form expression computable in a single pass — no iterative search required.
+%     \item Computational benefit: the entire calibration step reduces to one forward pass over $S_2$ followed by a sort.
+%     \item Contrast with the original CSA paper which uses iterative binary search.
+% \end{itemize}
+
+
+\subsection{Envelope Construction}
+\label{sec3.4: envelope construction}
+\noindent Here we will present the three envelope geometries that we have evaluated in this report. Each is defined by a 
+calibration procedure on $S_1$ that fixes the shape of $E$, and a test time rule for evaluating $\tau(\mathbf{s}) = 
+\inf\{t>0 : \mathbf{s} \in t\cdot E\}$ in closed form. This replaces the iterative search that was used in the original CSA 
+method (Section~\ref{sec2.4.2: csa framework}) with a single forward pass over $S_2$ followed by a sort.
+
+\subsubsection{Collapsed 1D Envelope Method}
+\label{sec3.4.1: collapsed 1d}
+\noindent The simplest envelope construction method just collapses the $K$-dimensional (or $K_h$-dimensional) NC vector to a 
+scalar value by taking the mean over the over observed dimensions,
+\begin{equation*}
+\bar{s} = \frac{1}{\|\mathbf{m}\|_1} \sum_{k : m_k = 1} v_k,
+\end{equation*}
+\noindent and calibrates a single quantile on $S_1$:
+
+\begin{equation*}
+\tilde{q} = \operatorname{Quantile}_{1-\alpha}\big(\{\bar{s}_i\}_{i \in S_1}\big), \qquad 
+\tau(\mathbf{s}) = \frac{\bar{s}}{\tilde{q}}, \qquad E = \{\mathbf{s} : \bar{s} \le \tilde{q}\}.
+\end{equation*}
+
+\noindent This envelope is star-shaped (Section~\ref{sec3.2: non-convex envelopes}), it is unaffected by the dimensionality 
+$K$, but at the same time is also discards all the geometric information that the $K$ dimensions provide us with. Any two 
+vectors with the same mean are treated identically regardless of the individual coordinates.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Radial Envelope Method}
+\label{sec3.4.2: radial}
+\noindent The Radial envelope method retains the directional structure of the scores by calibrating a boundary radius as a 
+function of direction on the unit sphere which is restricted only to the positive orthant (since all NC values are 
+non-negative). In this method, we draw $M$ directional vectors $\{\mathbf{u}_m\}_{m=1}^M$ uniformly over the orthant by 
+sampling $\mathbf{v}_m \sim |\mathcal{N}(0, I_K)|$ coordinate-wise and normalizing: $\mathbf{u}_m = \mathbf{v}_m / \|
+\mathbf{v}_m\|$.
+
+\vspace{0.15cm}
+\noindent For each $S_1$ point $\mathbf{s}_i$, over the observed dimensions only, we compute its magnitude and unit direction, 
+$r_i = \|\mathbf{s}_{i,\mathbf{m}_i}\|$, $\mathbf{d}_i = \mathbf{s}_{i,\mathbf{m}_i}/r_i$. For each sample direction 
+$\mathbf{u}_m$, we collect $n_m$ calibration points within an angular sector of half-width $\delta = 30^\circ$ (where 
+$\mathbf{d}_i \cdot \mathbf{u}_m \ge \cos\delta$). The directional radius $\tilde{q}_m$ is then calibrated as:
+\begin{equation*}
+\tilde{q}_m = \begin{cases}
+\operatorname{Quantile}_{1-\alpha}\big(\{r_i : \mathbf{d}_i \cdot \mathbf{u}_m \ge \cos\delta\}\big) & \text{if } 
+n_m \ge n_{\min}, \\
+w_m \cdot \operatorname{Quantile}_{1-\alpha}\big(\{r_i : \mathbf{d}_i \cdot \mathbf{u}_m \ge \cos\delta\}\big) + 
+(1-w_m) \cdot \tilde{q}_{\text{marg}} & \text{if } 0 < n_m < n_{\min}, \\
+\tilde{q}_{\text{marg}} & \text{if } n_m = 0,
+\end{cases}
+\end{equation*}
+
+\noindent where $n_m$ is the number of $S_1$ points within the band of direction $m$, $n_{\min}$ a minimum-support threshold, $w_m = 
+n_m/n_{\min}$, and $\tilde{q}_{\text{marg}} = \operatorname{Quantile}_{1-\alpha}(\{r_i\}_{i \in S_1})$ the marginal fallback 
+radius. This blend enables us to avoids a hard cutoff between sufficient and insufficient local support (number of points in 
+that region).
+
+\vspace{0.15cm}
+\noindent To ensure that we get a smooth boundary, we compute the radius at an arbitrary direction $\mathbf{d}$ as a 
+directional weighted average of all $M$ calibrated radii:
+\begin{equation}
+\label{eq: radial boundary}
+r(\mathbf{d}) = \sum_{m=1}^M w_m(\mathbf{d}) \, \tilde{q}_m, \qquad 
+w_m(\mathbf{d}) = \frac{\exp(\kappa \, \mathbf{d}\cdot\mathbf{u}_m)}{\sum_{m'=1}^M \exp(\kappa \, \mathbf{d}\cdot \mathbf{u}_{m'})},
+\end{equation}
+where $\kappa > 0$ controls the angular smoothness of the interpolation across directions (larger $\kappa$ approaches 
+nearest-direction assignment). This makes the envelope boundary a continuous function of direction rather than a piecewise 
+constant one. The scaling function follows directly from this:
+\begin{equation*}
+\tau(\mathbf{s}) = \frac{\|\mathbf{s}_{\mathbf{m}}\|}{r(\mathbf{d})}, \qquad \mathbf{d} = 
+\frac{\mathbf{s}_{\mathbf{m}}}{\|\mathbf{s}_{\mathbf{m}}\|}, \qquad E = \{\mathbf{s} : \|\mathbf{s}_{\mathbf{m}}\| \le 
+r(\mathbf{d})\}.
+\end{equation*}
+As established in Section~\ref{sec3.2: non-convex envelopes}, this construction is star-shaped by design. This is because $r$ 
+depends only on direction and not on magnitude, $\mathbf{s} \in t\cdot E$ for some $t$ implies $\lambda\mathbf{s} \in t\cdot E$ 
+for all $\lambda \in [0,1]$.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Strip Envelope Method}
+\label{sec3.4.3: strip}
+The Strip envelope defines conditional bounds for each target dimension $i$ based on the bin occupied by another dimension 
+$j$. We partition the range of dimension $j$ into $NB$ equal-width bins. For each bin $n$ containing $n_{j,n}$ calibration 
+points, the upper limit along dimension $i \neq j$ is calibrated as:
+\begin{equation*}
+\text{limits}[j,i,n] = \begin{cases}
+\operatorname{Quantile}_{1-\alpha}\big(\{s_{\cdot,i} : s_{\cdot,j} \in \text{bin } n\}\big) & \text{if } n_{j,n} \ge n_{\min}, \\
+w_{j,n} \cdot \operatorname{Quantile}_{1-\alpha}\big(\{s_{\cdot,i} : s_{\cdot,j} \in \text{bin } n\}\big) + (1-w_{j,n}) \cdot 
+\tilde q_i & \text{if } 0 < n_{j,n} < n_{\min}, \\
+\tilde{q}_i & \text{if } n_{j,n} = 0,
+\end{cases}
+\end{equation*}
+\noindent where $\tilde{q}_i$ is the marginal $(1-\alpha)$ quantile for dimension $i$ over $S_1$ , and $w_{j,n} = n_{j,n} / n_{\min}$ 
+shrinks underpopulated bins toward it (it mirrors is the blending rule of the radial envelope).
+
+\vspace{0.15cm}
+\noindent A windowed monotonicity pass then enforces $\text{limits}[j,i,n] \ge \text{limits}[j,i,n']$ for $n' \in (n, n+w]$ 
+within a fixed window $w$. This is done to ensure that a bin's limit cannot be undercut by a bin immediately ahead of it in 
+the same conditioning dimension. \todo{explain why it shouldnt happen}
+
+\vspace{0.15cm}
+\noindent The scaling function $\tau(\mathbf{s})$ aggregates the worst-case ratio over all conditioning pairs $(j,i)$:
+\begin{equation*}
+\tau(\mathbf{s}) = \max_{j \neq i} \frac{s_i}{\text{limits}[j,i,\text{bin}_j(\mathbf{s})]}, \qquad E = \{\mathbf{s} : 
+\forall j\neq i,\; s_i \le \text{limits}[j,i,\text{bin}_j(\mathbf{s})]\}.
+\end{equation*}
+
+\noindent Missing dimensions ($m_k = 0$) are handled pairwise: 
+\begin{itemize}
+    \item \textbf{Conditioning dimension $j$ missing:} The bin cannot be determined so the ratio falls back to dimension $i$'s 
+           marginal quantile $\tilde{q}_i$ instead of the conditional limit.
+    \item \textbf{Target dimension $i$ missing:} Its value $s_i$ is replaced by its marginal qunatile $\tilde{q}_i$ before
+           computing the ratio.
+    \item \textbf{Both missing:} The pair contributes no constraint ($\text{ratio} = 0$), since absence of evidence should not 
+          lead to a false rejection.
+\end{itemize}
+
+\subsubsection{Class-Specific \texorpdfstring{$\hat{t}$}{t̂} Calculation}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{4cm}
+
+
+
+\subsubsection{Class-Conditional Calibration}
+\noindent For any of the three constructions above, a single scaling factor computed over all of $S_2$ yields only 
+marginal coverage (Section~\ref{sec2.3.3: coverage types}). We instead compute a per-class threshold and take the 
+maximum:
+\begin{equation}
+\label{eq: class conditional that}
+\hat{t}_h = \tau_{\lceil (|S_2^h|+1)(1-\alpha)\rceil}, \qquad \hat{t} = \max_{h \in \mathcal{H}} \hat{t}_h,
+\end{equation}
+where $S_2^h = \{\mathbf{s} \in S_2 : H = h\}$ and $\tau_{(k)}$ denotes the $k$-th order statistic of $\{\tau(\mathbf{ 
+s})\}_{\mathbf{s}\in S_2^h}$. Taking the maximum over classes guarantees $\ge 1-\alpha$ coverage for every class 
+individually, at the cost of set size for classes whose $\hat t_h$ is below the maximum. The added computational cost 
+over the marginal $\hat t$ is negligible: a per-class sort of $\tau$-values already computed in one pass.
+
+\subsubsection{Resolving the Empty Prediction Set}
+\noindent Section~\ref{sec3.1: problem formalisation} noted that $C(\mathbf{s},\mathbf{m})$ may be empty when no 
+candidate label's transformed score falls inside $\hat t \cdot E$. The two tasks resolve this differently. For 
+gram-type classification, an empty set is resolved conservatively by returning both labels, $C(\mathbf{s}) = 
+\mathcal{H}$, rather than an arbitrary tie-break — since $N=2$, this is the maximally uninformative but always-valid 
+choice. For host-level classification, where $N$ can be large and returning all of $\hat{\mathcal{H}}(\mathbf{s})$ 
+would be uninformative, an empty set is instead resolved by forcing a singleton at the host with minimum $\tau$:
+\begin{equation*}
+C(\mathbf{s}) = \Big\{ \operatorname*{argmin}_{h \in \hat{\mathcal{H}}(\mathbf{s})} \tau_h(\mathbf{s}_h) \Big\}.
+\end{equation*}
+Both resolutions are applied only when the primary rule of Equation~\eqref{eq: prediction set definition} yields 
+$\emptyset$; the coverage guarantee of Theorem~\ref{thm: marginal coverage} is unaffected, since it is established on 
+the primary construction over $\mathcal{H}$ and empty outcomes are, by definition, cases where that guarantee already 
+requires \emph{some} label to be returned to satisfy the $1-\alpha$ bound in expectation. We note, however, that 
+neither task's reported \texttt{empty\_rate} can be nonzero as a result — this reflects the resolution rule, not an 
+absence of out-of-envelope test points, and Section~\ref{sec5: experiments} reports the pre-resolution 
+\texttt{forced\_rate} separately to make this visible.

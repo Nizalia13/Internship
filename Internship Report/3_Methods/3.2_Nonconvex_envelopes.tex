@@ -11,113 +11,55 @@
 % Briefly contrast with collapsed 1D: if the data is genuinely one-dimensional (all dimensions carry the same signal), 
 %collapsing to a scalar is sufficient and non-convexity gives no additional benefit
 
-
 \subsection{Non-Convex Envelopes in Classification}
 \label{sec3.2: non-convex envelopes}
-\noindent Section~\ref{sec2.4.3: csa limitations} identified convexity of the envelope $E$ as one of the main limitations of the 
-CSA method when applied to classification. In regression, the true target values usually form a single, continuous region. A 
-convex shape is therefore a natural fit because it fills in the region without creating artificial gaps. In classification, 
-however, score vectors for different classes tend to cluster in separate groups. So forcing a single convex shape around these 
-separate clusters stretches the region over empty space, leading to unnecessarily large prediction sets without improving 
-coverage. Here, we will describe the alternate method that we have used in this report.
+\noindent Section~\ref{sec2.4.3: csa limitations} identified envelope convexity as one of the main limitations of standard CSA 
+method \cite{ochoarivera2024conformal} when applied to classification. While convex envelopes naturally model 
+continuous target spaces in regression, classification score vectors concentrate in disjoint, class-specific clusters across 
+the score space. Therefore, it leads to the envelope being streched over regions of empty spaces, making the prediction sets 
+unnecessarily large. Here, we wil describe the alternate method that we have used in this report.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \vspace{0.15cm}
-\noindent Let $A, B \subset [0,1]^K$ denote the regions occupied by the transformed nonconformity vectors 
-$\phi_h(\mathbf{s})$ of two distinct true labels, and suppose $A$ and $B$ are separated, i.e. there exists 
-$\varepsilon > 0$ such that $\|\mathbf{a} - \mathbf{b}\| \ge \varepsilon$ for all $\mathbf{a} \in A, \mathbf{b} \in B$. 
-If $E$ is required to be convex and to contain both $A$ and $B$, then necessarily $E \supseteq \operatorname{conv}(A 
-\cup B)$. Since $A$ and $B$ are separated,
-\begin{equation*}
-\operatorname{vol}\big(\operatorname{conv}(A \cup B) \setminus (A \cup B)\big) > 0,
-\end{equation*}
-so any convex envelope containing both classes strictly contains a region of positive volume belonging to neither 
-class. Because membership in the scaled envelope $\hat{t} \cdot E$ determines set inclusion 
-(Equation~\eqref{eq: prediction set definition}), this excess volume directly inflates $|C(\mathbf{s})|$ for any test 
-point whose transformed score lands in it, without improving coverage. Therefore, convexity is not just an unnecessary 
-restriction here but it also affects efficiency whenever the true classes occupy well-separated regions of score space, which 
-the empirical score statistics of \todo{refer }confirm is the case for gram-type classification (gram-neg and gram-pos scores 
-concentrate near $0.07$ and $0.65$ respectively).
-
-After applying the label-dependent transformation $\phi_y$ (Section~\ref{sec3.3: nc transformation}), the nonconformity score 
-vectors of true infectors concentrate near the origin in $\mathbb{R}^K_+$. Crucially, the clusters for different classes are not 
-intermingled. In our gram-type task, gram-negative phages have mean raw scores $\approx 0.06$--$0.08$ while gram-positive phages 
-have mean raw scores $\approx 0.63$--$0.81$. Under the transformation \eqref{eq: gram-nc-transform}, the gram-negative NC 
-vectors live in $[0,0.1]^K$ whereas the gram-positive NC vectors live in $[0.2,0.4]^K$. The two populations are separated by a 
-gap of width $\approx 0.1$--$0.2$ along every dimension.
-
-Formally, let $\mathcal{C}_y \subseteq \mathbb{R}^K_+$ denote the support of $\phi_y(\mathbf{S})$ when $Y=y$ is the true label. In our setting,
+\noindent Formally, let $\mathcal{C}_h \subseteq \mathbb{R}^K_+$ denote the support of the transformed NC vector 
+$\phi_h(\mathbf{s})$ for true label $H = h \in \mathcal{H}$. In s multi-class classification, these supports are strictly 
+pairwise separated:
 \begin{equation}
 \label{eq: separated supports}
-\mathcal{C}_{\text{neg}} \cap \mathcal{C}_{\text{pos}} = \emptyset,
-\qquad
-\operatorname{dist}(\mathcal{C}_{\text{neg}}, \mathcal{C}_{\text{pos}}) > 0.
+\mathcal{C}_{h} \cap \mathcal{C}_{h'} = \emptyset, \qquad \operatorname{dist}(\mathcal{C}_{h}, \mathcal{C}_{h'}) > 0, \qquad \forall\, h \neq h' \in \mathcal{H}.
 \end{equation}
-If we construct a convex envelope $E_{\text{conv}} = \operatorname{conv}(\mathcal{C}_{\text{neg}} \cup \mathcal{C}_{\text{pos}})$, then by Carathéodory's theorem every point of $E_{\text{conv}}$ is a convex combination of at most $K+1$ points from $\mathcal{C}_{\text{neg}} \cup \mathcal{C}_{\text{pos}}$. Because the supports are separated, $E_{\text{conv}}$ contains points that are not in $\mathcal{C}_{\text{neg}} \cup \mathcal{C}_{\text{pos}}$---the ``empty region'' between the clusters. At test time, any NC vector falling in this gap is included in the prediction set for \emph{both} classes, producing a size-2 set even though no true infector ever occupies that region.
 
+\noindent A single convex envelope $E_{\text{conv}} = \operatorname{conv}\!\left(\bigcup_{h \in \mathcal{H}} \mathcal{C}_h
+\right)$ must contain every line segment connecting points in $\mathcal{C}_h$ and $\mathcal{C}_{h'}$. These segments inevitably 
+traverse unpopulated space. Letting $\text{gap} := E_{\text{conv}} \setminus \bigcup_{h \in \mathcal{H}} \mathcal{C}_h$, 
+the Lebesgue volume decomposes as:
+\begin{equation}
+\label{eq: volume inequality}
+\operatorname{Vol}(E_{\text{conv}}) = \sum_{h \in \mathcal{H}} \operatorname{Vol}(\mathcal{C}_h) + \operatorname{Vol}(\text{gap}), \qquad \text{where } \operatorname{Vol}(\text{gap}) > 0.
+\end{equation}
 
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\noindent Test points landing are obviously included in the prediction set, $|C(\mathbf{s})|$, and they make them larger 
+without improving coverage. This inefficiency scales with the number of classes $N = |\mathcal{H}|$, making shared convex 
+hulls particularly sub-optimal for host-level classification with multiple classes ($N > 2$). 
+% This mirrors our phage data, where the score vectors cluster tightly around distinct class centroids, this is consistent with 
+% the score separation established in Section~\ref{sec2.2.3: limitations}.
 
 \vspace{0.15cm}
-\noindent Thus, we drop the convexity requirement on $E$, and only keep the properties needed for the coverage 
-guarantee of Theorem~\ref{thm: marginal coverage} to hold: the guarantee depends only on the exchangeability of 
-calibration and test points and on the quantile construction of $\hat{t}$ \cite{ochoarivera2024conformal}. Any measurable 
-region $E$ for which membership can be evaluated at test time yields a valid coverage guarantee once $\hat{t}$ is calibrated on 
-it.
-
-\vspace{0.15cm}
-\noindent One structural property is worth isolating, since one of the three envelope geometries of 
-Section~\ref{sec3.4: envelope construction} satisfies it. A region $E$ is \emph{star-shaped} with respect to the 
-origin if
+\noindent Also very importantly, dropping convexity does not violate the statistical validity: the marginal coverage guarantee holds for any measurable envelope $E \subseteq \mathbb{R}^K_+$ by exchangeability \cite{ochoarivera2024conformal}.
+To ensure the scaling function$\tau(\mathbf{s}) = \inf \{ t > 0 : \mathbf{s} \in t \cdot E \}$ yields a single, well-defined 
+scalar threshold, $E$ needs only to be star-shaped (Definition \ref{def: star shaped})with respect to the origin:
 \begin{equation*}
 \mathbf{x} \in E \implies \lambda \mathbf{x} \in E, \qquad \forall \lambda \in [0,1].
 \end{equation*}
-Star-shapedness is strictly weaker than convexity, but it is exactly the property needed for the scalar 
-$\tau(\mathbf{s})$ of Section~\ref{sec2.4.1: ensemble score vectors} to be well-defined as a single scaling threshold: 
-if $\mathbf{s} \in t \cdot E$ for some $t > 0$, star-shapedness guarantees $\mathbf{s} \in t' \cdot E$ for every 
-$t' \ge t$, so the set $\{t > 0 : \mathbf{s} \in t \cdot E\}$ is an interval and its infimum, $\tau(\mathbf{s})$, is a 
-single well-defined boundary rather than one of possibly several disconnected thresholds.
 
-\vspace{0.15cm}
-\noindent The Radial envelope of Section~\ref{sec3.4: envelope construction} is star-shaped by construction: each 
-directional boundary is a radius $\tilde{q}_m$ along a fixed direction $\mathbf{u}_m$ from the origin, so a point 
-$\mathbf{s}$ satisfying $s_k \le \tilde q_m u_{mk}$ for all $k$, for some sector $m$, trivially satisfies 
-$\lambda s_k \le \tilde q_m u_{mk}$ for any $\lambda \in [0,1]$ — downscaling toward the origin preserves the 
-inequality coordinate-wise. It is not convex, since $\tilde q_m$ varies across directions, but this non-convexity is a 
-deliberate consequence of letting the envelope follow the true anisotropic shape of the calibration data, not a 
-defect. The Strip envelope, by contrast, conditions each dimension's boundary on the bin index of the point's own 
-coordinate; its monotonicity propagation (Section~\ref{sec3.4: envelope construction}) enforces a weaker, one-sided 
-ordering across bins and does not in general guarantee star-shapedness. We therefore describe Strip only as 
-non-convex and data-adaptive, without claiming the stronger property for it.
+\begin{definition}[Star-Shaped Set]
+\label{def: star shaped}
+A set $E \subseteq \mathbb{R}^K$ is said to be \emph{star-shaped with respect to the origin} $0 \in \mathbb{R}^K$ if for 
+every point $x \in E$ and every scalar $\lambda \in [0, 1]$, the line segment connecting the origin to $x$ lies entirely 
+within $E$:
+$$\lambda x \in E \quad \forall x \in E, \; \forall \lambda \in [0, 1].$$
+\end{definition}
 
+\noindent Star-shapedness guarantees that $\{t > 0 : \mathbf{s} \in t \cdot E\}$ forms a continuous interval, preserving simple 
+single-pass calibration while allowing the envelope to tightly hug non-convex cluster geometries.
 
-
-
-
-
-
-\paragraph{Efficiency loss from convexity.} Let $\operatorname{Vol}(\cdot)$ denote the Lebesgue measure in $\mathbb{R}^K$. The volume of the convex envelope satisfies
-\begin{equation}
-\label{eq: volume inequality}
-\operatorname{Vol}(E_{\text{conv}})
-\;\geq\;
-\operatorname{Vol}(\mathcal{C}_{\text{neg}}) + \operatorname{Vol}(\mathcal{C}_{\text{pos}})
-+ \operatorname{Vol}(\text{gap}),
-\end{equation}
-where the gap term is strictly positive under \eqref{eq: separated supports}. Because the CSA scaling factor $\hat{t}$ is chosen to achieve coverage $1-\alpha$ on $S_2$, a larger envelope volume directly translates into larger expected prediction sets $\mathbb{E}[|C(\mathbf{s})|]$. The efficiency loss is most severe when the clusters are far apart relative to their individual diameters---precisely the regime we observe in phage-host score data.
-
-\paragraph{Non-convex envelopes preserve coverage.} Dropping convexity does not invalidate the conformal guarantee. Theorem~\ref{thm: marginal coverage} holds for \emph{any} measurable envelope $E \subseteq \mathbb{R}^K_+$, provided the scaling factor $\hat{t}$ is computed as the $(1-\alpha)$ quantile of the $\tau$-values over $S_2$. The proof relies only on exchangeability and the rank argument of Lemma~\ref{lem: uniform rank}; it places no restriction on the geometric shape of $E$. We may therefore design envelopes that adapt to the local geometry of each class cluster without sacrificing the finite-sample coverage guarantee.
-
-Figure~\ref{fig: nonconvex} illustrates this principle in two dimensions. Panel (a) shows a convex hull enclosing both gram-negative and gram-positive NC clusters; the shaded red region represents the wasted coverage between the clusters. Panel (b) shows a non-convex envelope that wraps tightly around each cluster, eliminating the gap and reducing the expected prediction-set size.
-
-% \begin{figure}[htbp]
-% \centering
-% \includegraphics[width=0.95\textwidth]{figure_nonconvex_envelopes.png}
-% \caption{Envelope geometry in nonconformity score space. \textbf{(a)} A convex envelope (black dashed boundary) enclosing both gram-negative (blue) and gram-positive (orange) NC clusters. The red shaded region lies inside the convex hull but contains no data points from either class; any test point falling here receives a size-2 prediction set. \textbf{(b)} A non-convex envelope consisting of two separate regions fitted to each cluster. The same coverage guarantee holds, but the expected prediction-set size is strictly smaller.}
-% \label{fig: nonconvex}
-% \end{figure}
-
-\paragraph{Practical construction.} In Sections~\ref{sec3.4.1: radial}--\ref{sec3.4.3: collapsed} we present three envelope geometries. The Radial and Strip methods are explicitly non-convex: the Radial envelope assigns different boundary radii to different angular sectors, while the Strip envelope allows the admissible range of each dimension to vary conditionally on the value of another dimension. The Collapsed 1D method is a scalar baseline that discards geometric structure entirely. All three methods satisfy the coverage guarantee \eqref{eq: coverage-guarantee-31} by construction; their efficiency differs according to how well they approximate the true class-conditional supports $\mathcal{C}_y$.
