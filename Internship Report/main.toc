@@ -22,13 +22,13 @@
 \contentsline {subsubsection}{\numberline {3.3.1}Gram Type Classification Nonconformity Mapping}{15}{subsubsection.3.3.1}%
 \contentsline {subsubsection}{\numberline {3.3.2}Host Level Classification Nonconformity Mapping}{16}{subsubsection.3.3.2}%
 \contentsline {subsection}{\numberline {3.4}Envelope Construction}{16}{subsection.3.4}%
-\contentsline {subsubsection}{\numberline {3.4.1}Collapsed 1D Envelope Method}{16}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.1}Collapsed 1D Envelope Method}{17}{subsubsection.3.4.1}%
 \contentsline {subsubsection}{\numberline {3.4.2}Radial Envelope Method}{17}{subsubsection.3.4.2}%
 \contentsline {subsubsection}{\numberline {3.4.3}Strip Envelope Method}{18}{subsubsection.3.4.3}%
-\contentsline {subsubsection}{\numberline {3.4.4}Class-Specific $\hat {t}$ Calculation}{19}{subsubsection.3.4.4}%
-\contentsline {subsubsection}{\numberline {3.4.5}Class-Conditional Calibration}{19}{subsubsection.3.4.5}%
-\contentsline {subsubsection}{\numberline {3.4.6}Resolving the Empty Prediction Set}{19}{subsubsection.3.4.6}%
-\contentsline {subsection}{\numberline {3.5}$\hat {t}$ Calculation}{20}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.5}$\hat {t}$ Calculation}{19}{subsection.3.5}%
+\contentsline {subsubsection}{\numberline {3.5.1}$\tau $ Computation}{19}{subsubsection.3.5.1}%
+\contentsline {subsubsection}{\numberline {3.5.2}Class Specific $\hat {t}$ Calculation}{19}{subsubsection.3.5.2}%
+\contentsline {subsubsection}{\numberline {3.5.3}Resolving the Empty Prediction Set}{20}{subsubsection.3.5.3}%
 \contentsline {section}{\numberline {4}Data ....}{21}{section.4}%
 \contentsline {subsection}{\numberline {4.1}Data Description}{21}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Protein to Phage Aggregation}{21}{subsection.4.2}%

@@ -1,14 +1,14 @@
 # Fdb version 4
-["biber main"] 0 "main.bcf" "main.bbl" "main" 1785159938 -1
+["biber main"] 0 "main.bcf" "main.bbl" "main" 1785241082 -1
   "./references.bib" 1785140357 7679 56e8873d1ab3fda6c0f0fcd6e221ce20 ""
-  "main.bcf" 1785159938 109621 2b30eb8fe5b9f712f7480953d9092a60 "pdflatex"
+  "main.bcf" 1785241082 109621 2b30eb8fe5b9f712f7480953d9092a60 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1785159936 "/home/siddiqun/Bureau/Internship/Internship Report/main.tex" "main.pdf" "main" 1785159938 0
+["pdflatex"] 1785241080 "/home/siddiqun/Bureau/Internship/Internship Report/main.tex" "main.pdf" "main" 1785241082 0
   "/etc/texmf/web2c/texmf.cnf" 1779354507 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/siddiqun/Bureau/Internship/Internship Report/main.tex" 1785142746 1575 317bcda5192fb229933a0d28a8d76685 ""
+  "/home/siddiqun/Bureau/Internship/Internship Report/main.tex" 1785228995 1589 ef018c79f20e5e14c6d15e15779325ad ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm1200.tfm" 1136768653 3584 f80ddd985bd00e29e9a6047ebd9d4781 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -337,26 +337,26 @@
   "3_Methods/3.1_Problem.tex" 1785143812 7159 c3c086cbbe2e374435e1bd1b46d71ae2 ""
   "3_Methods/3.2_Nonconvex_envelopes.tex" 1785159822 4670 2382a60abe5c855e95303e94d1657357 ""
   "3_Methods/3.3_Score_Transformation.tex" 1785155594 5635 82344bde7098e332289fe4f49f2184f9 ""
-  "3_Methods/3.4_Envelope_Construction_Methods.tex" 1785159933 11468 391ad7bdc00a88063f8225d2105cd37d ""
-  "3_Methods/t_hat.tex" 1785140357 139 d3d743f83e27a402407a661ad9557f4f ""
+  "3_Methods/3.4_Envelope_Construction_Methods.tex" 1785241080 12115 8dbab2e800e1bfbb6fdcb681bd043103 ""
+  "3_Methods/3.5_Tau_Computation.tex" 1785241080 5846 150758d6cfbf7e145f76cd993c40958d ""
   "4_Data/Description.tex" 1785140357 867 55875cf77fb94553bd8d384ddb45a95b ""
   "4_Data/Protein_to_Phage_Aggregation.tex" 1785140357 1379 0e082e89308fb9c7345b8e3a9918a3c4 ""
   "4_Data/Train_test_split.tex" 1785140357 863 def44ee5a53da2354b57dacf17b8a5a6 ""
   "5_Experiments_and_Results/Gram_type_classification.tex" 1785140357 1602 670c3f0306274ebb3e3c62a5ddbd4e63 ""
   "5_Experiments_and_Results/Host Classification.tex" 1785140357 32 689a348bf5915beed799aabfd9d53eed ""
-  "5_Experiments_and_Results/Validation.tex" 1785140357 2210 42544b204e974427233d73d922a08b32 ""
+  "5_Experiments_and_Results/Validation.tex" 1785228630 2236 45fd2aeaf8ccf49734d0bf278ccc0f1e ""
   "6_Conclusion/Summary.tex" 1785140357 63 6d15e9c8f3491bc02b26481e82c0bdd5 ""
   "6_Conclusion/limitations.tex" 1785140357 57 c82a5c5254a6c543a8b0428b67fedde9 ""
   "Abstract.tex" 1785140357 96 481014379da5bb9118a5583e42602aaa ""
   "Acknowledgements.tex" 1785140357 165 df0bda3f0a8ab4bf1d3cac32a144cc9c ""
   "Title_Page.tex" 1785140357 1113 15c0696308b15c40e488175429e46bbf ""
   "logo_ensimag_uga.png" 1781170963 40343 0eeb9b4e7d183f3295828c6c547c6f1d ""
-  "main.aux" 1785159938 18444 a1f13993abf4df7ec606dfb2f070c285 "pdflatex"
+  "main.aux" 1785241082 18875 3718d13bd9d965abaa128a9985564ca2 "pdflatex"
   "main.bbl" 1785142749 36546 085b29bdcdb7ab53571a66079628c05f "biber main"
-  "main.out" 1785159938 9506 29c05ba70cd3ecee91c2d499d3bc439e "pdflatex"
-  "main.run.xml" 1785159938 2402 7c866ed2192e71c57464ed4279aadefa "pdflatex"
-  "main.tex" 1785142746 1575 317bcda5192fb229933a0d28a8d76685 ""
-  "main.toc" 1785159938 4659 48f6236fdcc7bda64a4d69c71b662d18 "pdflatex"
+  "main.out" 1785241082 9439 57b9c31b9659166d5ff2e0543ade0d18 "pdflatex"
+  "main.run.xml" 1785241082 2402 7c866ed2192e71c57464ed4279aadefa "pdflatex"
+  "main.tex" 1785228995 1589 ef018c79f20e5e14c6d15e15779325ad ""
+  "main.toc" 1785241082 4649 5905a44d010cac84fed88ef13bb0905f "pdflatex"
   "preamble.tex" 1785140357 3732 9d7dada7f54ef57ca1164b48696e1f16 ""
   (generated)
   "main.aux"

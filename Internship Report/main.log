@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  27 JUL 2026 15:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  28 JUL 2026 14:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1262,28 +1262,21 @@ LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 10
  (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [14] [15]) (./3_Methods/3.4_Envelope_Construction_Methods.tex [16] [17]
-Overfull \hbox (13.47176pt too wide) detected at line 114
+Overfull \hbox (13.47176pt too wide) detected at line 123
 []\OT1/lmr/m/n/12 [\OML/lmm/m/it/12 j; i; n\OT1/lmr/m/n/12 ] = []
  []
 
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 132.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 145.
 (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [18]
-
-LaTeX Warning: Reference `eq: prediction set definition' on page 19 undefined on input line 173.
-
-
-LaTeX Warning: Reference `sec5: experiments' on page 19 undefined on input line 178.
-
-) (./3_Methods/t_hat.tex
+) [18]) (./3_Methods/3.5_Tau_Computation.tex
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <14.4> on input line 2.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10> on input line 2.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 2.
-) [19] [20] (./4_Data/Description.tex) (./4_Data/Protein_to_Phage_Aggregation.tex) (./4_Data/Train_test_split.tex)
+ [19]) [20] (./4_Data/Description.tex) (./4_Data/Protein_to_Phage_Aggregation.tex) (./4_Data/Train_test_split.tex)
 Underfull \hbox (badness 10000) in paragraph at lines 2--50
 
  []
@@ -1294,28 +1287,25 @@ Overfull \hbox (9.42464pt too wide) in paragraph at lines 64--64
  []
 
 [26] [27] (./main.aux)
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 29C05BA70CD3ECEE91C2D499D3BC439E;9506.
+(rerunfilecheck)             Checksum: 57B9C31B9659166D5FF2E0543ADE0D18;9439.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 47689 strings out of 476091
- 1047848 string characters out of 5794081
- 1917861 words of memory out of 5000000
- 67092 multiletter control sequences out of 15000+600000
+ 47686 strings out of 476091
+ 1047841 string characters out of 5794081
+ 1918105 words of memory out of 5000000
+ 67088 multiletter control sequences out of 15000+600000
  604820 words of font info for 110 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  122i,13n,134p,1130b,2274s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/yhmath/yhcmex.pfb>
-Output written on main.pdf (32 pages, 464302 bytes).
+Output written on main.pdf (32 pages, 468867 bytes).
 PDF statistics:
- 683 PDF objects out of 1000 (max. 8388607)
- 596 compressed objects within 6 object streams
- 133 named destinations out of 1000 (max. 500000)
+ 690 PDF objects out of 1000 (max. 8388607)
+ 602 compressed objects within 7 object streams
+ 134 named destinations out of 1000 (max. 500000)
  402 words of extra memory for PDF output out of 10000 (max. 10000000)
 

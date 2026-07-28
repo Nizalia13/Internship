@@ -22,17 +22,26 @@
 
 \subsection{Envelope Construction}
 \label{sec3.4: envelope construction}
-\noindent Here we will present the three envelope geometries that we have evaluated in this report. Each is defined by a 
-calibration procedure on $S_1$ that fixes the shape of $E$, and a test time rule for evaluating $\tau(\mathbf{s}) = 
-\inf\{t>0 : \mathbf{s} \in t\cdot E\}$ in closed form. This replaces the iterative search that was used in the original CSA 
-method (Section~\ref{sec2.4.2: csa framework}) with a single forward pass over $S_2$ followed by a sort.
+\noindent Here we will present the three envelope geometries that we have evaluated in this report. Each method follows the 
+two-stage calibration procedure: the shape-discovery set $S_1$ determines the geometric form of the envelope, and the 
+size scaling set $S_2$ determines the scaling factor $\hat{t}$. All three envelopes are star-shaped with respect to the origin, 
+so the per-point scaling function
+\begin{equation}
+\label{eq: tau-def}
+\tau(\mathbf{s}) = \inf\{t > 0 : \mathbf{s} \in t \cdot E\}
+\end{equation}
+
+\noindent is well-defined as a single scalar for every $\mathbf{s} \in \mathbb{R}^K_+$. For each envelope type, we derive a 
+closed form expression for $\tau(\mathbf{s})$ that eliminates the need for iterative search. The scaling factor $\hat{t}$ is 
+then computed using class conditional quantile aggregation over $S_2$, as detailed in Section~\ref{sec3.5: t hat calculation}.
+
 
 \subsubsection{Collapsed 1D Envelope Method}
 \label{sec3.4.1: collapsed 1d}
 \noindent The simplest envelope construction method just collapses the $K$-dimensional (or $K_h$-dimensional) NC vector to a 
 scalar value by taking the mean over the over observed dimensions,
 \begin{equation*}
-\bar{s} = \frac{1}{\|\mathbf{m}\|_1} \sum_{k : m_k = 1} v_k,
+\bar{s} = \frac{1}{|\mathbf{m}|_1} \sum_{k : m_k = 1} v_k,
 \end{equation*}
 \noindent and calibrates a single quantile on $S_1$:
 
@@ -58,7 +67,7 @@ sampling $\mathbf{v}_m \sim |\mathcal{N}(0, I_K)|$ coordinate-wise and normalizi
 
 \vspace{0.15cm}
 \noindent For each $S_1$ point $\mathbf{s}_i$, over the observed dimensions only, we compute its magnitude and unit direction, 
-$r_i = \|\mathbf{s}_{i,\mathbf{m}_i}\|$, $\mathbf{d}_i = \mathbf{s}_{i,\mathbf{m}_i}/r_i$. For each sample direction 
+$r_i = \|\mathbf{s}_{i,\mathbf{m}_i}\|$, $\mathbf{d}_i = \mathbf{s}_{i,\mathbf{m}}/r_i$. For each sample direction 
 $\mathbf{u}_m$, we collect $n_m$ calibration points within an angular sector of half-width $\delta = 30^\circ$ (where 
 $\mathbf{d}_i \cdot \mathbf{u}_m \ge \cos\delta$). The directional radius $\tilde{q}_m$ is then calibrated as:
 \begin{equation*}
@@ -101,24 +110,28 @@ for all $\lambda \in [0,1]$.
 
 \subsubsection{Strip Envelope Method}
 \label{sec3.4.3: strip}
-The Strip envelope defines conditional bounds for each target dimension $i$ based on the bin occupied by another dimension 
+\noindent The Strip envelope defines conditional bounds for each target dimension $i$ based on the bin occupied by another dimension 
 $j$. We partition the range of dimension $j$ into $NB$ equal-width bins. For each bin $n$ containing $n_{j,n}$ calibration 
 points, the upper limit along dimension $i \neq j$ is calibrated as:
 \begin{equation*}
 \text{limits}[j,i,n] = \begin{cases}
-\operatorname{Quantile}_{1-\alpha}\big(\{s_{\cdot,i} : s_{\cdot,j} \in \text{bin } n\}\big) & \text{if } n_{j,n} \ge n_{\min}, \\
+\operatorname{Quantile}_{1-\alpha}\big(\{s_{\cdot, i} : s_{\cdot, j} \in \text{bin } n\}\big) & \text{if } n_{j,n} \ge n_{\min}, \\
 w_{j,n} \cdot \operatorname{Quantile}_{1-\alpha}\big(\{s_{\cdot,i} : s_{\cdot,j} \in \text{bin } n\}\big) + (1-w_{j,n}) \cdot 
 \tilde q_i & \text{if } 0 < n_{j,n} < n_{\min}, \\
 \tilde{q}_i & \text{if } n_{j,n} = 0,
 \end{cases}
 \end{equation*}
 \noindent where $\tilde{q}_i$ is the marginal $(1-\alpha)$ quantile for dimension $i$ over $S_1$ , and $w_{j,n} = n_{j,n} / n_{\min}$ 
-shrinks underpopulated bins toward it (it mirrors is the blending rule of the radial envelope).
+shrinks underpopulated bins toward it (it mirrors the blending rule of the radial envelope).
 
 \vspace{0.15cm}
 \noindent A windowed monotonicity pass then enforces $\text{limits}[j,i,n] \ge \text{limits}[j,i,n']$ for $n' \in (n, n+w]$ 
 within a fixed window $w$. This is done to ensure that a bin's limit cannot be undercut by a bin immediately ahead of it in 
-the same conditioning dimension. \todo{explain why it shouldnt happen}
+the same conditioning dimension. The monotonicity is necessary to ensure that a phage with a smaller value (more confident) in 
+the conditioning dimension $j$, does not recieve a tighter bound in dimension $i$ than a phage with a larger value in $j$, which 
+makes sure that the conditional envelope is logically correct.
+
+$$\text{limits}[j,i,n] \leftarrow \max_{n' \in [n, \min(n+w, NB)]} \text{limits}[j,i,n']$$
 
 \vspace{0.15cm}
 \noindent The scaling function $\tau(\mathbf{s})$ aggregates the worst-case ratio over all conditioning pairs $(j,i)$:
@@ -129,51 +142,48 @@ the same conditioning dimension. \todo{explain why it shouldnt happen}
 
 \noindent Missing dimensions ($m_k = 0$) are handled pairwise: 
 \begin{itemize}
-    \item \textbf{Conditioning dimension $j$ missing:} The bin cannot be determined so the ratio falls back to dimension $i$'s 
-           marginal quantile $\tilde{q}_i$ instead of the conditional limit.
-    \item \textbf{Target dimension $i$ missing:} Its value $s_i$ is replaced by its marginal qunatile $\tilde{q}_i$ before
+    \item \textbf{Conditioning dimension $j$ missing} ($m_j = 0$): The bin index along $j$ is undefined, so the evaluation 
+           falls back to the normalized marginal ratio $s_i / \tilde{q}_i$.".
+    \item \textbf{Target dimension $i$ missing:} Its value $s_i$ is replaced by its marginal quantile $\tilde{q}_i$ before
            computing the ratio.
     \item \textbf{Both missing:} The pair contributes no constraint ($\text{ratio} = 0$), since absence of evidence should not 
           lead to a false rejection.
 \end{itemize}
 
-\subsubsection{Class-Specific \texorpdfstring{$\hat{t}$}{t̂} Calculation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+% \subsubsection{Class-Conditional Calibration}
+% \label{sec3.4.4: class-conditional}
+% \noindent For all three of the envelope construction methods above, we only compute a single scaling factor over all of 
+% $S_2$. This only provides us with marginal coverage (Section~\ref{sec2.3.3: coverage types}). Therefore, instead of this 
+% we compute a per-class threshold and take the maximum:
+% \begin{equation}
+% \label{eq: class conditional t hat}
+% \hat{t}_h = \tau_{\lceil (|S_2^h|+1)(1-\alpha)\rceil}, \qquad \hat{t} = \max_{h \in \mathcal{H}} \hat{t}_h,
+% \end{equation}
+
+% \noindent where $S_2^h = \{\mathbf{s} \in S_2 : H = h\}$ and $\tau_{(k)}$ denotes the $k$-th order statistic of $\{\tau
+% (\mathbf{s})\}_{\mathbf{s}\in S_2^h}$. Taking the maximum over classes guarantees $\ge 1-\alpha$ coverage for every class 
+% individually. But at the cost of set size for classes whose $\hat t_h$ is below the maximum. The added computational cost 
+% for this over the marginal $\hat t$ is negligible, since we already compute a per-class sort of $\tau$-values in one pass.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\vspace{4cm}
+% \paragraph{Algorithmic summary.} Algorithm~\ref{alg: envelope-construction} sketches the complete two-stage calibration for an arbitrary envelope geometry. The closed-form $\tau$ expressions \eqref{eq: tau-radial}, \eqref{eq: tau-strip}, and \eqref{eq: tau-collapsed} reduce calibration to a single forward pass over $S_1$ (shape discovery) followed by a single forward pass over $S_2$ ($\tau$-computation and quantile extraction). No iterative binary search is required.
 
-
-
-\subsubsection{Class-Conditional Calibration}
-\noindent For any of the three constructions above, a single scaling factor computed over all of $S_2$ yields only 
-marginal coverage (Section~\ref{sec2.3.3: coverage types}). We instead compute a per-class threshold and take the 
-maximum:
-\begin{equation}
-\label{eq: class conditional that}
-\hat{t}_h = \tau_{\lceil (|S_2^h|+1)(1-\alpha)\rceil}, \qquad \hat{t} = \max_{h \in \mathcal{H}} \hat{t}_h,
-\end{equation}
-where $S_2^h = \{\mathbf{s} \in S_2 : H = h\}$ and $\tau_{(k)}$ denotes the $k$-th order statistic of $\{\tau(\mathbf{ 
-s})\}_{\mathbf{s}\in S_2^h}$. Taking the maximum over classes guarantees $\ge 1-\alpha$ coverage for every class 
-individually, at the cost of set size for classes whose $\hat t_h$ is below the maximum. The added computational cost 
-over the marginal $\hat t$ is negligible: a per-class sort of $\tau$-values already computed in one pass.
-
-\subsubsection{Resolving the Empty Prediction Set}
-\noindent Section~\ref{sec3.1: problem formalisation} noted that $C(\mathbf{s},\mathbf{m})$ may be empty when no 
-candidate label's transformed score falls inside $\hat t \cdot E$. The two tasks resolve this differently. For 
-gram-type classification, an empty set is resolved conservatively by returning both labels, $C(\mathbf{s}) = 
-\mathcal{H}$, rather than an arbitrary tie-break — since $N=2$, this is the maximally uninformative but always-valid 
-choice. For host-level classification, where $N$ can be large and returning all of $\hat{\mathcal{H}}(\mathbf{s})$ 
-would be uninformative, an empty set is instead resolved by forcing a singleton at the host with minimum $\tau$:
-\begin{equation*}
-C(\mathbf{s}) = \Big\{ \operatorname*{argmin}_{h \in \hat{\mathcal{H}}(\mathbf{s})} \tau_h(\mathbf{s}_h) \Big\}.
-\end{equation*}
-Both resolutions are applied only when the primary rule of Equation~\eqref{eq: prediction set definition} yields 
-$\emptyset$; the coverage guarantee of Theorem~\ref{thm: marginal coverage} is unaffected, since it is established on 
-the primary construction over $\mathcal{H}$ and empty outcomes are, by definition, cases where that guarantee already 
-requires \emph{some} label to be returned to satisfy the $1-\alpha$ bound in expectation. We note, however, that 
-neither task's reported \texttt{empty\_rate} can be nonzero as a result — this reflects the resolution rule, not an 
-absence of out-of-envelope test points, and Section~\ref{sec5: experiments} reports the pre-resolution 
-\texttt{forced\_rate} separately to make this visible.
+% \begin{algorithm}[H]
+% \caption{Two-Stage Envelope Calibration with Analytical $\tau$}
+% \label{alg: envelope-construction}
+% \begin{algorithmic}[1]
+% \Require Shape set $S_1$, scaling set $S_2$, label sets $Y_1,Y_2$, level $\alpha$, geometry $\in\{\text{radial},\text{strip},\text{collapsed}\}$
+% \Ensure Scaled envelope parameters and $\hat{t}$
+% \State \textbf{Shape discovery:} Compute envelope-specific parameters from $S_1$
+% \State \quad (Radial: $\{\mathbf{u}_m\}$, $\{\tilde{q}_m\}$; Strip: $\{\ell_{j,i,m}\}$; Collapsed: $\tilde{q}$)
+% \State \textbf{$\tau$-computation:} For each $\mathbf{s} \in S_2$, compute $\tau(\mathbf{s})$ via closed form
+% \State \textbf{Class-conditional scaling:} For each $h \in \mathcal{H}$, compute $\hat{t}_h$ as $(1-\alpha)$ quantile of $\{\tau(\mathbf{s}) : \mathbf{s} \in S_2^h\}$
+% \State \Return $\hat{t} = \max_h \hat{t}_h$ together with envelope parameters
+% \end{algorithmic}
+% \end{algorithm}
