@@ -209,27 +209,87 @@
 \newlabel{eq: class specific quantile}{{3.8}{19}{Class Specific \texorpdfstring {$\hat {t}$}{t̂} Calculation}{equation.3.8}{}}
 \newlabel{eq: class conditional that gram}{{3.9}{20}{Class Specific \texorpdfstring {$\hat {t}$}{t̂} Calculation}{equation.3.9}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.3}Resolving the Empty Prediction Set}{20}{subsubsection.3.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4}Data ....}{21}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Data Description}{21}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Protein to Phage Aggregation}{21}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}NaN handling after aggregation}{21}{subsubsection.4.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Train-Test Split}{22}{subsection.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}Experiments and Results}{23}{section.5}\protected@file@percent }
-\newlabel{sec5: experiments}{{5}{23}{Experiments and Results}{section.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Synthetic Data Validation}{23}{subsection.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.1}Puspose and setup}{23}{subsubsection.5.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.2}2D Experimenats}{23}{subsubsection.5.1.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3}Extension to K Dimensions}{23}{subsubsection.5.1.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.4}Multiple Hosts}{23}{subsubsection.5.1.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Gram Type Classification}{24}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Experimental Setup}{24}{subsubsection.5.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}Results}{24}{subsubsection.5.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Host Classification}{24}{subsection.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion and Future Work}{25}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Summary.....}{25}{subsection.6.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Limitations}{25}{subsection.6.2}\protected@file@percent }
+\abx@aux@cite{0}{coclet2021global}
+\abx@aux@segm{0}{0}{coclet2021global}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Data and Preprocessing Pipeline}{21}{section.4}\protected@file@percent }
+\newlabel{sec4: data}{{4}{21}{Data and Preprocessing Pipeline}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Data Description and Structural Missingness}{21}{subsection.4.1}\protected@file@percent }
+\newlabel{sec4.1: data description}{{4.1}{21}{Data Description and Structural Missingness}{subsection.4.1}{}}
+\newlabel{eq: structural-missingness}{{4.1}{21}{Data Description and Structural Missingness}{equation.4.1}{}}
+\abx@aux@cite{0}{4}
+\abx@aux@segm{0}{0}{4}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Dataset Summary and Class Distributions\relax }}{22}{table.caption.14}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab: dataset summary}{{1}{22}{Dataset Summary and Class Distributions\relax }{table.caption.14}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Protein to Phage Aggregation}{22}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}NaN handling after aggregation}{22}{subsubsection.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Protein-to-Phage Aggregation via NaN-Aware Mean Pooling}{22}{subsection.4.3}\protected@file@percent }
+\newlabel{sec4.2: aggregation}{{4.3}{22}{Protein-to-Phage Aggregation via NaN-Aware Mean Pooling}{subsection.4.3}{}}
+\abx@aux@cite{0}{4}
+\abx@aux@segm{0}{0}{4}
+\abx@aux@cite{0}{4}
+\abx@aux@segm{0}{0}{4}
+\abx@aux@cite{0}{4}
+\abx@aux@segm{0}{0}{4}
+\newlabel{eq: nan mean pooling}{{4.2}{23}{Protein-to-Phage Aggregation via NaN-Aware Mean Pooling}{equation.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Protein-to-Phage Aggregation and NaN Handling}{23}{subsection.4.4}\protected@file@percent }
+\newlabel{sec4.2: aggregation}{{4.4}{23}{Protein-to-Phage Aggregation and NaN Handling}{subsection.4.4}{}}
+\newlabel{eq: nan-aware-mean}{{4.3}{23}{Protein-to-Phage Aggregation and NaN Handling}{equation.4.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{Post-aggregation imputation.}{23}{section*.15}\protected@file@percent }
+\newlabel{eq: median-imputation}{{4.4}{23}{Post-aggregation imputation}{equation.4.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Resulting phage-level matrix.}{23}{section*.16}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Protein-to-Phage Aggregation (NaN-Aware Mean Pooling)}{24}{subsection.4.5}\protected@file@percent }
+\newlabel{sec4.2: aggregation}{{4.5}{24}{Protein-to-Phage Aggregation (NaN-Aware Mean Pooling)}{subsection.4.5}{}}
+\newlabel{eq: nan-mean-pooling}{{4.5}{24}{Protein-to-Phage Aggregation (NaN-Aware Mean Pooling)}{equation.4.5}{}}
+\newlabel{eq: phage-mask}{{4.6}{24}{Protein-to-Phage Aggregation (NaN-Aware Mean Pooling)}{equation.4.6}{}}
+\abx@aux@cite{0}{4}
+\abx@aux@segm{0}{0}{4}
+\abx@aux@cite{0}{4}
+\abx@aux@segm{0}{0}{4}
+\abx@aux@cite{0}{5}
+\abx@aux@segm{0}{0}{5}
+\abx@aux@cite{0}{4}
+\abx@aux@segm{0}{0}{4}
+\abx@aux@cite{0}{5}
+\abx@aux@segm{0}{0}{5}
+\abx@aux@cite{0}{4}
+\abx@aux@segm{0}{0}{4}
+\abx@aux@cite{0}{5}
+\abx@aux@segm{0}{0}{5}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Train-Test Split}{25}{subsection.4.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7}Data Partitioning and the Contamination Fix}{25}{subsection.4.7}\protected@file@percent }
+\newlabel{sec4.3: contamination fix}{{4.7}{25}{Data Partitioning and the Contamination Fix}{subsection.4.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.7.1}Protein Cluster Contamination Problem}{25}{subsubsection.4.7.1}\protected@file@percent }
+\abx@aux@cite{0}{4}
+\abx@aux@segm{0}{0}{4}
+\abx@aux@cite{0}{5}
+\abx@aux@segm{0}{0}{5}
+\abx@aux@cite{0}{5}
+\abx@aux@segm{0}{0}{5}
+\abx@aux@cite{0}{5}
+\abx@aux@segm{0}{0}{5}
+\abx@aux@cite{0}{4}
+\abx@aux@segm{0}{0}{4}
+\abx@aux@cite{0}{4}
+\abx@aux@segm{0}{0}{4}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.7.2}Protein-Level Masking Strategy}{26}{subsubsection.4.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experiments and Results}{27}{section.5}\protected@file@percent }
+\newlabel{sec5: experiments}{{5}{27}{Experiments and Results}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Synthetic Data Validation}{27}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.1}Puspose and setup}{27}{subsubsection.5.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.2}2D Experimenats}{27}{subsubsection.5.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.3}Extension to K Dimensions}{27}{subsubsection.5.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.1.4}Multiple Hosts}{27}{subsubsection.5.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Gram Type Classification}{28}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Experimental Setup}{28}{subsubsection.5.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}Results}{28}{subsubsection.5.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Host Classification}{28}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion and Future Work}{29}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Summary.....}{29}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Limitations}{29}{subsection.6.2}\protected@file@percent }
 \abx@aux@nociteall
-\abx@aux@read@bbl@mdfivesum{085B29BDCDB7AB53571A66079628C05F}
+\abx@aux@read@bbl@mdfivesum{0A1ADB415484EF08724E6CCE5C021282}
+\abx@aux@read@bblrerun
 \abx@aux@defaultrefcontext{0}{ochoarivera2024conformal}{none/global//global/global}
 \abx@aux@defaultrefcontext{0}{dejonge2019molecular}{none/global//global/global}
 \abx@aux@defaultrefcontext{0}{leprince2025strengthening}{none/global//global/global}
@@ -249,4 +309,5 @@
 \abx@aux@defaultrefcontext{0}{vovk2005algorithmic}{none/global//global/global}
 \abx@aux@defaultrefcontext{0}{lei2018distribution}{none/global//global/global}
 \abx@aux@defaultrefcontext{0}{romano2020classification}{none/global//global/global}
-\gdef \@abspage@last{32}
+\abx@aux@defaultrefcontext{0}{bignaud2025phages}{none/global//global/global}
+\gdef \@abspage@last{36}

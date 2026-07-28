@@ -1,8 +1,0 @@
-\section{Data ....}
-
-\subsection{Data Description}
-\noindent - The two files: protein-level score matrix (1,853,074 proteins × 40 functional score columns, values in [0,1], NaN when protein not annotated with that function) and metadata file (same 1,853,074 rows, columns: accession, host, host\_type, split)\\
-- Scale of the dataset: 18,474 unique phages after aggregation\\
-- The split column: integer 0–4 encoding a genome-cluster-based partition — phages in the same genome cluster are always in the same fold, ensuring test phages are genuinely different from training phages at the sequence level\\
-- Class distribution: gram-neg vs gram-pos vs unknown\\ 
-- The NaN structure:  NaN is structural missingness, not noise — a protein that was not annotated with a given function simply has no score for that function, which is different from a score of zero

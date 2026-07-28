@@ -1,4 +1,0 @@
-\subsection{Train-Test Split}
-\noindent - Standard split: split 0 is the held-out test set, splits 1–4 form the training set\\
-- The contamination problem: explain the protein cluster (pc) column -> a protein's cluster may include proteins from phages in different folds. The models that produced the scores were trained on protein clusters, so a protein from a training-fold phage may share a cluster with a test-fold protein, introducing subtle leakage\\
-- The masking fix: the file all\_random\_pc\_splits.pkl encodes for each protein and each (host, function) model which fold that protein was assigned to. Setting scores to NaN where the protein was not in the test set of the relevant model, before aggregation, removes the contaminated predictions. The existing NaN-aware mean pooling then handles these naturally -> this is the "missing value" framing\\

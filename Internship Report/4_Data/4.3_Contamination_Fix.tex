@@ -1,0 +1,25 @@
+\subsection{Train-Test Split}
+\noindent - Standard split: split 0 is the held-out test set, splits 1–4 form the training set\\
+- The contamination problem: explain the protein cluster (pc) column -> a protein's cluster may include proteins from phages in different folds. The models that produced the scores were trained on protein clusters, so a protein from a training-fold phage may share a cluster with a test-fold protein, introducing subtle leakage\\
+- The masking fix: the file all\_random\_pc\_splits.pkl encodes for each protein and each (host, function) model which fold that protein was assigned to. Setting scores to NaN where the protein was not in the test set of the relevant model, before aggregation, removes the contaminated predictions. The existing NaN-aware mean pooling then handles these naturally -> this is the "missing value" framing\\
+
+
+
+\subsection{Data Partitioning and the Contamination Fix}
+\label{sec4.3: contamination fix}
+
+\noindent To guarantee finite-sample conformal validity (Theorem~\ref{thm: marginal coverage}), calibration samples $S_2$ and test samples $S_3$ must be exchangeable \cite{4}. In biological sequence classification, naive random splitting introduces \emph{data contamination} due to homologous protein clusters shared across distinct phage accessions \cite{4, 5}.
+
+\subsubsection{Protein Cluster Contamination Problem}
+\noindent Base scoring models were trained at the protein cluster level (\texttt{pc})[cite: 5]. If proteins from the same cluster appear in both the training set of a base scoring model and a test phage, the predicted scores $s_k(X_{\text{test}})$ become optimistically biased, violating exchangeability \cite{4}. For example, in the host genus \emph{Ralstonia}, 4 out of 46 test protein clusters ($8.7\%$) overlap with training clusters, introducing score leakage \cite{5}.
+
+\subsubsection{Protein-Level Masking Strategy}
+\noindent To eliminate optimistic bias, we enforce a strict 5-fold cross-validation partition based on genome clusters \cite{4, 5}:
+\begin{itemize}
+    \item \textbf{Split 0 (Test Fold):} Consists of $4,433$ phages reserved strictly for final holdout evaluation \cite{4, 5}.
+    \item \textbf{Split 1 (Validation Fold):} Consists of $2,593$ phages used exclusively to tune envelope hyperparameters (e.g., bin count $NB$, directional resolution $M$, and kernel smoothing $\kappa$) \cite{5}.
+    \item \textbf{Splits 2--4 (Training/Calibration Folds):} Consists of $9,101$ phages used to discover envelope boundaries ($S_1$) and calibrate scaling factors ($S_2$) \cite{5}.
+\end{itemize}
+
+\vspace{0.15cm}
+\noindent Before phage-level mean pooling via Equation~\eqref{eq: nan mean pooling}, protein-level prediction matrices are masked: any protein score that was not in the designated evaluation fold of the base model is set to $\text{NA}$ \cite{4}. The NaN-aware mean pooling operator inherently filters these masked entries out, ensuring that all scores entering the conformal calibration pipeline are unbiased by construction \cite{4}.

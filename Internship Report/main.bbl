@@ -890,6 +890,129 @@
       \field{pages}{3581\bibrangedash 3591}
       \range{pages}{11}
     \endentry
+    \entry{bignaud2025phages}{article}{}
+      \name{author}{20}{}{%
+        {{hash=823a308be4c8df281007550539dc44a4}{%
+           family={Bignaud},
+           familyi={B\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=384933504f02e5bfa22c413dfba0b510}{%
+           family={Conti},
+           familyi={C\bibinitperiod},
+           given={D.\bibnamedelimi E.},
+           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=996be88a9f79aa228ba43e696c2fb6d6}{%
+           family={Thierry},
+           familyi={T\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=60be49fb6bc3cbb125510bacac34289e}{%
+           family={Serizay},
+           familyi={S\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=69e71f318f1beb05e4c2a5dae1a0cf00}{%
+           family={Labadie},
+           familyi={L\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod}}}%
+        {{hash=66c91fddb742f9afc44d7dde5c20b62d}{%
+           family={Poulain},
+           familyi={P\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod}}}%
+        {{hash=6c49e84ad44cda3f9021a8a8a3d2a329}{%
+           family={Cheny},
+           familyi={C\bibinitperiod},
+           given={O.},
+           giveni={O\bibinitperiod}}}%
+        {{hash=e5af701bf5ae445ef051f7044dd85359}{%
+           family={Colón-González},
+           familyi={C\bibinithyphendelim G\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=476921ad97e9d41eaffe22516c0cb8ad}{%
+           family={Debarbieux},
+           familyi={D\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=19cf1a87ea16dbb6689f9bb6436c9bfa}{%
+           family={Guerrero-Osornio},
+           familyi={G\bibinithyphendelim O\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+        {{hash=a64900ce61c43a62fece302d5b3eabec}{%
+           family={Helaine},
+           familyi={H\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=81ec0e070abea1e116142a4c4a7d51c3}{%
+           family={Hill},
+           familyi={H\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+        {{hash=2c89dc54b6d7ea45c91de46eb5a99ba7}{%
+           family={{Le Tinier}},
+           familyi={L\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=8cbf111e80d16fbe2622b091206d23f9}{%
+           family={Millot},
+           familyi={M\bibinitperiod},
+           given={G.\bibnamedelimi A.},
+           giveni={G\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=e22cb0ab8dd4d9f2d2e11e8fb77d9fa9}{%
+           family={Morales},
+           familyi={M\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=d051b5ef351fed54b4e7327d9a040dbb}{%
+           family={Parada},
+           familyi={P\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+        {{hash=e8fb2541447f594e2c6f7060e94a3d6a}{%
+           family={Riera},
+           familyi={R\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod}}}%
+        {{hash=277ef16c71490846de6a593f127b183e}{%
+           family={Iraola},
+           familyi={I\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod}}}%
+        {{hash=8fe660c66330421f9d209e429dc7517d}{%
+           family={Koszul},
+           familyi={K\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod}}}%
+        {{hash=a1daa5e9d23c5012ecd9d39d6cf91d38}{%
+           family={Marbouty},
+           familyi={M\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{d4048d5abb7c4449229ba165de69c430}
+      \strng{fullhash}{1684cdea0993ef762c61435c2f72fe1c}
+      \strng{bibnamehash}{d4048d5abb7c4449229ba165de69c430}
+      \strng{authorbibnamehash}{d4048d5abb7c4449229ba165de69c430}
+      \strng{authornamehash}{d4048d5abb7c4449229ba165de69c430}
+      \strng{authorfullhash}{1684cdea0993ef762c61435c2f72fe1c}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature Microbiology}
+      \field{note}{\href{https://doi.org/10.1038/s41564-025-02108-2}{[SpringerNature]}}
+      \field{number}{10}
+      \field{title}{Phages with a broad host range are common across ecosystems}
+      \field{volume}{10}
+      \field{year}{2025}
+      \true{nocite}
+      \field{pages}{2537\bibrangedash 2549}
+      \range{pages}{13}
+    \endentry
   \enddatalist
 \endrefsection
 \endinput

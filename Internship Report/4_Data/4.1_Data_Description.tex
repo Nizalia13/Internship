@@ -1,0 +1,74 @@
+% - The two files: protein-level score matrix (1,853,074 proteins × 40 functional score columns, values in [0,1], NaN when 
+%              protein not annotated with that function) and metadata file (same 1,853,074 rows, columns: accession, host, host\_type, 
+%              split)\\
+% - Scale of the dataset: 18,474 unique phages after aggregation\\
+% - The split column: integer 0–4 encoding a genome-cluster-based partition — phages in the same genome cluster are always in the 
+%   same fold, ensuring test phages are genuinely different from training phages at the sequence level\\
+% - Class distribution: gram-neg vs gram-pos vs unknown\\ 
+% - The NaN structure:  NaN is structural missingness, not noise — a protein that was not annotated with a given function simply has 
+%   no score for that function, which is different from a score of zero
+
+
+
+\section{Data and Preprocessing Pipeline}
+\label{sec4: data}
+\noindent In this section, we describe the dataset architecture \ref{sec4.1: data description}, the mathematical aggregation 
+operators used to combine protein-level functional annotations into phage-level score vectors \ref{sec4.2: aggregation}, and the 
+masking strategy developed to eliminate bias caused by cross-fold protein cluster contamination \ref{sec4.3: contamination fix}.
+
+\subsection{Data Description and Structural Missingness}
+\label{sec4.1: data description}
+\noindent Our dataset comprises of $N_{\text{prot}} = 1\,853\,074$ protein sequences extracted from $18\,474$ unique bacteriophages. 
+The base models use the EMPATHI pipeline (Section~\ref{sec2.2.2: plms}) to predict functional annotations across categories such 
+as lysin, tail sheath, portal protein, and capsid \cite{coclet2021global}. An entry $s_{p,m} \in [0,1]$ is the model's predicted 
+probability that protein $p$ carries function $m$. In this work we treat these scores as fixed features in our conformal framework 
+without retraining the underlying classifiers.
+
+\vspace{0.15cm}
+\noindent Our pipeline operates on four primary data structures:
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Protein Score Matrix:} Matrix of raw model predictions $\mathbf{S} \in ([0,1] \cup \{\text{NA}\})^{N_{\text
+          {prot}} \times M}$, where entry $s_{p,m}$ denotes the predicted probability that protein $p$ carries function $m$. For 
+           the Gram-type task, we evaluate the $M$ functional categories aggregated across all hosts; for the host-level task, 
+           $M = 2\,160$ host-function pairs.
+    \item \textbf{Phage Metadata:} Mappings linking each protein ID to its accession identifier, host genus label $H \in \mathcal{H}$ 
+          ($N = 54$ genera), host Gram-type $G \in \{\text{gram-neg}, \text{gram-pos}\}$, and protein cluster identifier (\texttt{pc}).
+    \item \textbf{Cross-Validation Partition:} Integer fold assignments $f \in \{0, 1, 2, 3, 4\}$ assigned at the genome level, 
+           they ensure that all proteins from a given phage share the same fold.
+    \item \textbf{Protein Split Mask Matrix:} A binary assignment matrix mapping each protein to its evaluation fold across all 
+           host-function models.
+\end{enumerate}
+
+\noindent The dataset contains some structural missingness: approximately $30.6\%$ to $36.5\%$ of protein category scores are 
+missing ($\text{NA}$) because phages possess only a subset of functional categories. An entry $s_{p,m} = \text{NA}$ indicates that 
+protein $p$ was not annotated with function $m$. This is deterministic rather than stochastic: a capsid protein cannot carry a 
+tail-fiber score, and an unannotated cluster does not provide any predictions. 
+
+\vspace{0.15cm}
+\noindent Formally, we can say that there exists a deterministic missingness mask $\mathbf{M} \in \{0,1\}^{N_{\text{prot}} \times 
+M}$ such that:
+\begin{equation}
+\label{eq: structural-missingness}
+s_{p,m} = \text{NA} \iff M_{p,m} = 0.
+\end{equation}
+
+\noindent This missingness reflects the biological identity of the phage, so it is not missing randomly. Imputing $\text{NA}$ 
+values to zero would falsely treat unannotated proteins as evidence against infection which would violate the nonconformity 
+interpretations of Section~\ref{sec3.3: nc transformation}. We therefore preserve missingness by using NaN aware aggregation 
+(Section~\ref{sec4.2: aggregation}).
+
+\begin{table}[htbp]
+\centering
+\caption{Dataset Summary and Class Distributions}
+\label{tab: dataset summary}
+\begin{tabular}{lccc}
+\toprule
+\textbf{<Set} & \textbf{Total Phages} & \textbf{Gram-Negative} & \textbf{Gram-Positive} \\
+\midrule
+Full Dataset & 18,474 & 10,735 & 7,708 \\
+Test Split (Fold 0) & 4,433 & 2,811 & 1,611 \\
+Validation Split (Fold 1) & 3,173 & -- & -- \\
+Training Splits (Folds 2--4) & 10,868 & 7,924 & 6,097 \\
+\bottomrule
+\end{tabular}
+\end{table}

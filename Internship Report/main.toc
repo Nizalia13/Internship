@@ -29,21 +29,29 @@
 \contentsline {subsubsection}{\numberline {3.5.1}$\tau $ Computation}{19}{subsubsection.3.5.1}%
 \contentsline {subsubsection}{\numberline {3.5.2}Class Specific $\hat {t}$ Calculation}{19}{subsubsection.3.5.2}%
 \contentsline {subsubsection}{\numberline {3.5.3}Resolving the Empty Prediction Set}{20}{subsubsection.3.5.3}%
-\contentsline {section}{\numberline {4}Data ....}{21}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Data Description}{21}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Protein to Phage Aggregation}{21}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}NaN handling after aggregation}{21}{subsubsection.4.2.1}%
-\contentsline {subsection}{\numberline {4.3}Train-Test Split}{22}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Experiments and Results}{23}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Synthetic Data Validation}{23}{subsection.5.1}%
-\contentsline {subsubsection}{\numberline {5.1.1}Puspose and setup}{23}{subsubsection.5.1.1}%
-\contentsline {subsubsection}{\numberline {5.1.2}2D Experimenats}{23}{subsubsection.5.1.2}%
-\contentsline {subsubsection}{\numberline {5.1.3}Extension to K Dimensions}{23}{subsubsection.5.1.3}%
-\contentsline {subsubsection}{\numberline {5.1.4}Multiple Hosts}{23}{subsubsection.5.1.4}%
-\contentsline {subsection}{\numberline {5.2}Gram Type Classification}{24}{subsection.5.2}%
-\contentsline {subsubsection}{\numberline {5.2.1}Experimental Setup}{24}{subsubsection.5.2.1}%
-\contentsline {subsubsection}{\numberline {5.2.2}Results}{24}{subsubsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.3}Host Classification}{24}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Conclusion and Future Work}{25}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Summary.....}{25}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Limitations}{25}{subsection.6.2}%
+\contentsline {section}{\numberline {4}Data and Preprocessing Pipeline}{21}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Data Description and Structural Missingness}{21}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Protein to Phage Aggregation}{22}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}NaN handling after aggregation}{22}{subsubsection.4.2.1}%
+\contentsline {subsection}{\numberline {4.3}Protein-to-Phage Aggregation via NaN-Aware Mean Pooling}{22}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Protein-to-Phage Aggregation and NaN Handling}{23}{subsection.4.4}%
+\contentsline {paragraph}{Post-aggregation imputation.}{23}{section*.15}%
+\contentsline {paragraph}{Resulting phage-level matrix.}{23}{section*.16}%
+\contentsline {subsection}{\numberline {4.5}Protein-to-Phage Aggregation (NaN-Aware Mean Pooling)}{24}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Train-Test Split}{25}{subsection.4.6}%
+\contentsline {subsection}{\numberline {4.7}Data Partitioning and the Contamination Fix}{25}{subsection.4.7}%
+\contentsline {subsubsection}{\numberline {4.7.1}Protein Cluster Contamination Problem}{25}{subsubsection.4.7.1}%
+\contentsline {subsubsection}{\numberline {4.7.2}Protein-Level Masking Strategy}{26}{subsubsection.4.7.2}%
+\contentsline {section}{\numberline {5}Experiments and Results}{27}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Synthetic Data Validation}{27}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}Puspose and setup}{27}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}2D Experimenats}{27}{subsubsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.3}Extension to K Dimensions}{27}{subsubsection.5.1.3}%
+\contentsline {subsubsection}{\numberline {5.1.4}Multiple Hosts}{27}{subsubsection.5.1.4}%
+\contentsline {subsection}{\numberline {5.2}Gram Type Classification}{28}{subsection.5.2}%
+\contentsline {subsubsection}{\numberline {5.2.1}Experimental Setup}{28}{subsubsection.5.2.1}%
+\contentsline {subsubsection}{\numberline {5.2.2}Results}{28}{subsubsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.3}Host Classification}{28}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Conclusion and Future Work}{29}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Summary.....}{29}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Limitations}{29}{subsection.6.2}%
