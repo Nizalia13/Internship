@@ -1,134 +1,61 @@
-\subsection{Protein to Phage Aggregation}
-\noindent - The raw data is at the protein level but conformal prediction operates at the phage level — aggregation is needed\\
-- NaN-aware mean pooling: for each phage and each functional score column, compute the mean across all proteins of that phage that have a non-NaN value for that column. Proteins with NaN for a given column are excluded from the mean for that column only\\
-- Why not replace NaN with zero before pooling: treating an unannotated protein as having zero evidence would push the phage's aggregated score artificially toward zero, misrepresenting its biology\\
-- After aggregation: result is a matrix of shape (number of phages) × 40, still with NaNs in cells where none of the phage's proteins were annotated with that function
+% \subsection{Protein to Phage Aggregation}
+% - The raw data is at the protein level but conformal prediction operates at the phage level — aggregation is needed\\
+% - NaN-aware mean pooling: for each phage and each functional score column, compute the mean across all proteins of that phage that 
+%   have a non-NaN value for that column. Proteins with NaN for a given column are excluded from the mean for that column only\\
+% - Why not replace NaN with zero before pooling: treating an unannotated protein as having zero evidence would push the phage's 
+%   aggregated score artificially toward zero, misrepresenting its biology\\ 
+% - After aggregation: result is a matrix of shape (number of phages) × 40, still with NaNs in cells where none of the phage's 
+%   proteins were annotated with that function
 
 
-\subsubsection{NaN handling after aggregation}
-- After mean pooling, some phages still have NaN in certain columns -> this happens when none of their proteins were annotated with a particular function\\
-- Strategy: fill remaining NaNs using column-wise medians computed strictly on the training set (never the test set, to prevent data leakage)
-- The median cap: any training median above 0.6 is capped at 0.5 -> this prevents an imputed value from falsely pushing a phage toward a particular class
-- any remaining NaNs after median imputation are filled with 0.5 (neutral value)
+% \subsubsection{NaN handling after aggregation}
+% - After mean pooling, some phages still have NaN in certain columns -> this happens when none of their proteins were annotated with 
+%   a particular function\\
+% - Strategy: fill remaining NaNs using column-wise medians computed strictly on the training set (never the test set, to prevent 
+%   data leakage)
+% - The median cap: any training median above 0.6 is capped at 0.5 -> this prevents an imputed value from falsely pushing a phage 
+%   toward a particular class
+% - any remaining NaNs after median imputation are filled with 0.5 (neutral value)
 
 
-
-\subsection{Protein-to-Phage Aggregation via NaN-Aware Mean Pooling}
+\subsection{Protein-to-Phage Aggregation and NaN-Aware Pooling}
 \label{sec4.2: aggregation}
-
-\noindent Because predictions are produced at the individual protein level $p \in \mathcal{P}_X$, whereas host infection occurs 
-at the intact virion level $X$, protein scores must be aggregated to form a single $K$-dimensional score vector $\mathbf{s}(X)$ 
-per phage accession \cite{4}.
+\noindent The base classifiers only score individual proteins $p \in \mathcal{P}_i$, while host infection is a property of the 
+phage as a whole, so we need to aggregate the protein level scores into a single phage-level score vector. For each phage 
+$i \in \{1, \ldots, N_{\text{phage}}\}$ ($N_{\text{phage}} = 18{,}474$) with protein set $\mathcal{P}_i$, let $M_{p,k} = 
+\mathbf{1}(\text{protein } p \text{ has a valid prediction for column } k)$ denote the protein-level mask. We compute the 
+aggregation using running sums and counts per phage, this avoids holding the full $1.85 \times 10^6$-row protein matrix in memory.
 
 \vspace{0.15cm}
-\noindent For a phage $X$ consisting of $M_X$ proteins $\{p_1, \dots, p_{M_X}\}$, the aggregated score $s_k(X)$ for functional 
-category $k \in \{1, \dots, K\}$ is computed via dimension-wise, NaN-aware mean pooling \cite{4}:
+\noindent For each of the $K$ functional dimensions, we get the aggregated phage level score using dimension wise, NaN aware 
+mean pooling:
 \begin{equation}
-\label{eq: nan mean pooling}
-s_k(X) = \begin{cases}
-\dfrac{\sum_{m=1}^{M_X} P_{p_m, k} \cdot \mathbf{1}(P_{p_m, k} \neq \text{NA})}{\sum_{m=1}^{M_X} \mathbf{1}(P_{p_m, k} \neq 
-\text{NA})} & \text{if } \sum_{m=1}^{M_X} \mathbf{1}(P_{p_m, k} \neq \text{NA}) > 0, \\[12pt]
+\label{eq: nan-mean-pooling}
+s_{i,k} = \begin{cases}
+\dfrac{\sum_{p \in \mathcal{P}_i} s_{p,k} \cdot M_{p,k}}{\sum_{p \in \mathcal{P}_i} M_{p,k}} & \text{if } 
+\sum_{p \in \mathcal{P}_i} M_{p,k} > 0, \\[10pt]
 \text{NA} & \text{otherwise.}
 \end{cases}
 \end{equation}
-Correspondingly, the missingness mask element $m_k(X)$ is set to $1$ if at least one protein in phage $X$ possesses a valid score 
-for category $k$, and $0$ otherwise \cite{4}. This pooling operation reduces the dataset to a matrix $\mathbf{S} \in ([0,1] \cup 
-\{\text{NA}\})^{18474 \times K}$ paired with mask matrix $\mathbf{M} \in \{0,1\}^{18474 \times K}$, avoiding global score 
-fabrication \cite{4}.
 
+\noindent Equation~\eqref{eq: nan-mean-pooling} excludes missing entries ($\texttt{NA}$) from both the numerator and denominator, 
+and takes the average strictly over observed proteins. A score is $\texttt{NA}$ if and only if no protein of phage $i$ has a 
+valid prediction for column $k$.
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Protein-to-Phage Aggregation and NaN Handling}
-\label{sec4.2: aggregation}
-
-\noindent Host-range prediction is performed at the phage level, so protein-level scores must be aggregated. For phage $p$ with 
-protein set $\mathcal{T}_p$ and score dimension $m$, the NaN-aware mean is
-\begin{equation}
-\label{eq: nan-aware-mean}
-\bar{s}_{p,m} = \frac{1}{|\mathcal{T}_{p,m}|} \sum_{t \in \mathcal{T}_{p,m}} s_{t,m}, \qquad 
-\mathcal{T}_{p,m} = \{t \in \mathcal{T}_p : s_{t,m} \neq \mathrm{NA}\}.
-\end{equation}
-If $\mathcal{T}_{p,m} = \emptyset$ then $\bar{s}_{p,m} = \mathrm{NA}$. This occurs when none of the phage's proteins were 
-annotated with function $m$. The aggregation preserves the structural missingness pattern: a phage lacking tail-fiber proteins 
-receives $\mathrm{NA}$ in the tail-fiber dimension, rather than a false zero.
-
-\paragraph{Post-aggregation imputation.} After pooling, some phages still have $\mathrm{NA}$ in certain dimensions because no 
-protein carried that annotation. These are filled by column-wise medians computed strictly on the training set. Let $\mathcal{I}_
-{\text{train}}$ denote the training phage indices. For dimension $m$,
-\begin{equation}
-\label{eq: median-imputation}
-\mu_m = \operatorname{median}\bigl(\{\bar{s}_{p,m} : p \in \mathcal{I}_{\text{train}},\; \bar{s}_{p,m} \neq \mathrm{NA}\}\bigr).
-\end{equation}
-Any training median above $0.6$ is capped at $0.5$ to prevent imputed values from falsely pushing a phage toward a particular class. 
-Remaining $\mathrm{NA}$ values after median imputation are filled with $0.5$, the neutral midpoint of the score range. This 
-two-stage imputation (median then neutral) is applied after aggregation and only to the training set statistics, avoiding data 
-leakage from test to train.
-
-\paragraph{Resulting phage-level matrix.} After aggregation and imputation, each phage $p$ is represented by a pair 
-$(\bar{\mathbf{s}}_p, \mathbf{m}_p) \in [0,1]^M \times \{0,1\}^M$, where $\mathbf{m}_p$ records which dimensions were originally 
-observed ($m_{p,k}=1$) versus imputed ($m_{p,k}=0$). This pair is the input to the conformal pipeline of Chapter~
-\ref{sec3: methodology}.
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\subsection{Protein-to-Phage Aggregation (NaN-Aware Mean Pooling)}
-\label{sec4.2: aggregation}
-
-\noindent Because base classifiers predict functional scores at the individual protein level, whereas host recognition is an 
-emergent property of the entire viral particle, protein-level predictions must be aggregated into a unified phage-level 
-representation.
 
 \vspace{0.15cm}
-\noindent Let $\mathcal{P}_i = \{p_{i,1}, p_{i,2}, \ldots, p_{i,n_i}\}$ denote the set of $n_i$ constituent proteins belonging to 
-bacteriophage accession $i \in \{1, \ldots, N_{\text{phage}}\}$, where $N_{\text{phage}} = 18\,474$. For each functional dimension 
-$m \in \{1, \ldots, M\}$, the aggregated phage-level raw score $s_{i,m}$ is computed using dimension-wise, NaN-aware mean pooling:
-\begin{equation}
-\label{eq: nan-mean-pooling}
-s_{i,m} = \begin{cases}
-\dfrac{\sum_{p \in \mathcal{P}_i} s_{p,m} \cdot \mathbf{1}(M_{p,m} = 1)}{\sum_{p \in \mathcal{P}_i} \mathbf{1}(M_{p,m} = 1)} & 
-\text{if } \sum_{p \in \mathcal{P}_i} M_{p,m} > 0, \\[14pt]
-\text{NA} & \text{if } \sum_{p \in \mathcal{P}_i} M_{p,m} = 0.
-\end{cases}
-\end{equation}
-
-\noindent Equation~\eqref{eq: nan-mean-pooling} excludes missing entries ($\text{NA}$) from both the numerator and denominator, 
-averaging strictly over observed proteins. A phage-level score $s_{i,m}$ evaluates to $\text{NA}$ if and only if none of the 
-phage's constituent proteins were assigned a prediction for functional category $m$. 
-
-\vspace{0.15cm}
-\noindent Correspondingly, the aggregated phage-level binary mask vector $\mathbf{m}_i = (m_{i,1}, \ldots, m_{i,M})^T \in 
-\{0,1\}^M$ is defined coordinate-wise as:
+\noindent The phage-level mask follows directly:
 \begin{equation}
 \label{eq: phage-mask}
-m_{i,m} = \mathbf{1}\left( \sum_{p \in \mathcal{P}_i} M_{p,m} > 0 \right).
+m_{i,k} = \mathbf{1}\left( \sum_{p \in \mathcal{P}_i} M_{p,k} > 0 \right).
 \end{equation}
-This operation reduces the protein score tensor to a phage-level score matrix $\mathbf{S} \in ([0,1] \cup \{\text{NA}\})^
-{N_{\text{phage}} \times M}$ paired with a phage-level missingness mask $\mathbf{M} \in \{0,1\}^{N_{\text{phage}} \times M}$.
+i.e. $m_{i,k}=1$ if at least one protein of phage $i$ has an observed score for column $k$, otherwise, it is $0$. This reduces 
+the protein data to a phage-level matrix $\mathbf{S} \in ([0,1]\cup\{\text{NA}\})^{N_{\text{phage}} \times K}$ paired with a 
+binary mask for missingness $\mathbf{M} \in \{0,1\}^{N_{\text{phage}} \times K}$.
 
 \vspace{0.15cm}
-\noindent As established in Chapter~\ref{sec3: methodology}, our conformal envelope constructions (Radial, Strip, and Collapsed 1D) 
-natively operate on the paired observation $(\mathbf{s}_i, \mathbf{m}_i)$, requiring no prior score imputation. However, for 
-diagnostic baseline comparison or when evaluating downstream classifiers that demand dense numeric arrays, post-aggregation missing 
-values are imputed strictly on the training fold $D_{\text{train}}$ (folds 2--4) to avoid data leakage:
-\begin{enumerate}[label=(\roman*)]
-    \item \textbf{Training Median Computation:} For each dimension $m$, the median observed value $\tilde{\mu}_m = \text{Median}
-    (\{s_{i,m} : i \in D_{\text{train}}, m_{i,m} = 1\})$ is evaluated exclusively on training phages.
-    \item \textbf{Neutral Cap Enforcement:} To prevent imputed fallback values from falsely inflating evidence toward a particular 
-    class hypothesis, any column median exceeding $0.6$ is capped at $0.5$:
-    \begin{equation}
-    \tilde{\mu}_m^{\text{capped}} = \min(\tilde{\mu}_m, 0.5).
-    \end{equation}
-    \item \textbf{Imputation:} Remaining $\text{NA}$ entries across validation and test folds are replaced using $\tilde{\mu}_m^
-    {\text{capped}}$ (or $0.5$ as a neutral default if no training observations exist for feature $m$).
-\end{enumerate}
-
-\noindent All main conformal classification results reported in Chapter~\ref{sec5: experiments} rely entirely on the native 
-missingness pair $(\mathbf{s}_i, \mathbf{m}_i)$ without applying post-aggregation imputation.
+\noindent As we have already established in Section~\ref{sec3: methodology}, our conformal envelope constructions operate 
+natively on the paired observation $(\mathbf{s}_i, \mathbf{m}_i)$.  This preserves the structural missingness without 
+fabricating values in place of it. Consequently, all conformal classification results reported in Section~\ref{sec5: experiments} 
+rely entirely on this native representation, and require no imputation after aggregation. The task dependent rules that determine 
+which protein predictions count as valid and thus define $M_{p,k}$ are detailed in Section~\ref{sec4.3: contamination fix}.

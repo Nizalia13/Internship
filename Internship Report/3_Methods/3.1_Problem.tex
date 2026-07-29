@@ -73,7 +73,7 @@ missingness pattern, not just fully observed data, $\mathbf{m} = \mathbf{1}$.
 \vspace{0.15cm}
 \noindent In practice, host-level classification is not evaluated over the full host space $\mathcal{H}$ at test time. 
 We first obtain a gram-type prediction set $C_{\text{gram}}(\mathbf{s}) \subseteq \{\text{gram-neg}, \text{gram-pos}\}$ 
-from the procedure of Section~\todo{refer}, and use it to restrict the candidate host set to
+from the procedure of Section~\ref{sec3.3.1: gram nc mapping}, and use it to restrict the candidate host set to
 \begin{equation*}
 \hat{\mathcal{H}}(\mathbf{s}) = \bigcup_{g \,\in\, C_{\text{gram}}(\mathbf{s})} \mathcal{H}_g \;\subseteq\; \mathcal{H},
 \end{equation*}
@@ -86,7 +86,8 @@ C_{\text{host}}(\mathbf{s}, \mathbf{m}) = \big\{ h \in \hat{\mathcal{H}}(\mathbf
 \end{equation*}
 rather than a single-stage test over all of $\mathcal{H}$. This cascade reduces the number of per-host envelope 
 evaluations required at test time, at the cost of making $C_{\text{host}}$ dependent on the upstream gram-type 
-prediction; we will see the implications of this dependency in Section~\todo{refer}.
+prediction.
+%  we will see the implications of this dependency in Section~\todo{refer}.
 
 \vspace{0.15cm}
 \noindent Given a calibration set $D_{\text{cal}} = \{(\mathbf{s}_i, \mathbf{m}_i, H_i)\}_{i=1}^n$ of exchangeable samples,

@@ -7,10 +7,9 @@ problem}, which motivates the need for computational approaches to find a soluti
 existing and state-of-the-art computational techniques in Section \ref{sec2.2: current approaches}, progressing from the 
 classical sequence similarity techniques to the much nore efficient and modern protein embeddings techniques. We will 
 also look at the limitations that all the currently exisiting methods have in common, for example the absence of rigourous 
-distribution-free uncertainity quantification. \todo{define uncertainty quantification at somepoint in the report}.  In 
-the remaining part of the section, \ref{sec2.3: conformal prediction} and \ref{sec2.4: CSA Method} we will introduce the 
-mathematical framework of conformal prediction and the score-based aggregation method of in \cite{ochoarivera2024conformal}, 
-on which we will build our work.
+distribution-free uncertainity quantification. In the remaining part of the section, \ref{sec2.3: conformal prediction} 
+and \ref{sec2.4: CSA Method} we will introduce the mathematical framework of conformal prediction and the score-based 
+aggregation method of in \cite{ochoarivera2024conformal}, on which we will build our work.
 
 % However, identifying specific host-range interactions brings some challenges. Traditional laboratory screening via 
 % plaque assays is accurate but expensive, labor-intensive, and incapable of scaling to the astronomical number of novel 
@@ -65,7 +64,7 @@ let $\mathcal{X} \subseteq \mathbb{R}^d$ be the feature space representing phage
 $X \in \mathcal{X}$ is a feature vector representing a phage and $H \in \mathcal{H}$ represents the true host. 
 In a general multi-host setting, the target is a non-empty subset of hosts $H^* \subseteq \mathcal{H}$, i.e., 
 $H^* \in \mathcal{P}(\mathcal{H}) \setminus \{\emptyset\}$, where $\mathcal{P}(\mathcal{H}) = 2^{\mathcal{H}}$ denotes 
-the power set of $\mathcal{H}$ \todo{refer to correct section}. 
+the power set of $\mathcal{H}$ \ref{sec3.1: problem formalisation}. 
 
 \vspace{0.15cm}
 \noindent Our primary objective is to construct a set-valued prediction mapping:
@@ -78,3 +77,4 @@ confidence, $1 - \alpha \in (0, 1)$:
 \mathbb{P}\left( H_{n+1} \in C(X_{n+1}) \right) \ge 1 - \alpha
 \end{equation*}
 \noindent where $\alpha \in (0, 1)$ denotes the target error probability.
+this 

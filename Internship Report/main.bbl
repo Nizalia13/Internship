@@ -19,81 +19,6 @@
 
 \refsection{0}
   \datalist[entry]{none/global//global/global}
-    \entry{ochoarivera2024conformal}{inproceedings}{}
-      \name{author}{3}{}{%
-        {{hash=f39af2c2b0ce83cba5dc71ec69581350}{%
-           family={Rivera},
-           familyi={R\bibinitperiod},
-           given={E.\bibnamedelimi Ochoa},
-           giveni={E\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
-        {{hash=257980268d3c546b730554f4c0aaa79d}{%
-           family={Patel},
-           familyi={P\bibinitperiod},
-           given={Y.},
-           giveni={Y\bibinitperiod}}}%
-        {{hash=d31d7bf4a6d8b3d6a4d1b8dad94a2494}{%
-           family={Tewari},
-           familyi={T\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod}}}%
-      }
-      \strng{namehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \strng{fullhash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \strng{bibnamehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \strng{authorbibnamehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \strng{authornamehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \strng{authorfullhash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{Advances in Neural Information Processing Systems (NeurIPS)}
-      \field{note}{\href{https://arxiv.org/abs/2405.16246}{[arXiv]}}
-      \field{title}{Conformal Prediction for Ensembles: Improving Efficiency via Score-Based Aggregation}
-      \field{year}{2024}
-    \endentry
-    \entry{dejonge2019molecular}{article}{}
-      \name{author}{4}{}{%
-        {{hash=e94bc4064a22b8a39a5c0b9439358795}{%
-           family={{de Jonge}},
-           familyi={d\bibinitperiod},
-           given={P.\bibnamedelimi A.},
-           giveni={P\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
-        {{hash=288231d806d86f85dd6b4113c4335407}{%
-           family={Nobrega},
-           familyi={N\bibinitperiod},
-           given={F.\bibnamedelimi L.},
-           giveni={F\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
-        {{hash=43a3a58ca7e10a460c49735ebbe61e48}{%
-           family={Brouns},
-           familyi={B\bibinitperiod},
-           given={S.\bibnamedelimi J.\bibnamedelimi J.},
-           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
-        {{hash=8b0f7a0df72c08495b10282fcfa5cd89}{%
-           family={Dutilh},
-           familyi={D\bibinitperiod},
-           given={B.\bibnamedelimi E.},
-           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
-      }
-      \strng{namehash}{aeed8e9caefe5db7d9ccaeafd2c8e2e2}
-      \strng{fullhash}{aaf7dfed7de89167da71747b2617d0bb}
-      \strng{bibnamehash}{aaf7dfed7de89167da71747b2617d0bb}
-      \strng{authorbibnamehash}{aaf7dfed7de89167da71747b2617d0bb}
-      \strng{authornamehash}{aeed8e9caefe5db7d9ccaeafd2c8e2e2}
-      \strng{authorfullhash}{aaf7dfed7de89167da71747b2617d0bb}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Trends in Microbiology}
-      \field{note}{\href{https://doi.org/10.1016/j.tim.2018.08.006}{[CellPress]}}
-      \field{number}{1}
-      \field{title}{Molecular and Evolutionary Determinants of Bacteriophage Host Range}
-      \field{volume}{27}
-      \field{year}{2019}
-      \field{pages}{51\bibrangedash 63}
-      \range{pages}{13}
-    \endentry
     \entry{leprince2025strengthening}{article}{}
       \name{author}{7}{}{%
         {{hash=558c1cdead99f76240a771f1e715a677}{%
@@ -138,8 +63,8 @@
       \strng{authorbibnamehash}{696d35619ea4cd2071550eb12f7fd96c}
       \strng{authornamehash}{696d35619ea4cd2071550eb12f7fd96c}
       \strng{authorfullhash}{0e01086d6bcb672d65922d756bb68d0f}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Nature Communications}
@@ -152,6 +77,178 @@
       \verb{doi}
       \verb 10.1038/s41467-025-62408-3
       \endverb
+    \endentry
+    \entry{dejonge2019molecular}{article}{}
+      \name{author}{4}{}{%
+        {{hash=e94bc4064a22b8a39a5c0b9439358795}{%
+           family={{de Jonge}},
+           familyi={d\bibinitperiod},
+           given={P.\bibnamedelimi A.},
+           giveni={P\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=288231d806d86f85dd6b4113c4335407}{%
+           family={Nobrega},
+           familyi={N\bibinitperiod},
+           given={F.\bibnamedelimi L.},
+           giveni={F\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+        {{hash=43a3a58ca7e10a460c49735ebbe61e48}{%
+           family={Brouns},
+           familyi={B\bibinitperiod},
+           given={S.\bibnamedelimi J.\bibnamedelimi J.},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=8b0f7a0df72c08495b10282fcfa5cd89}{%
+           family={Dutilh},
+           familyi={D\bibinitperiod},
+           given={B.\bibnamedelimi E.},
+           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{aeed8e9caefe5db7d9ccaeafd2c8e2e2}
+      \strng{fullhash}{aaf7dfed7de89167da71747b2617d0bb}
+      \strng{bibnamehash}{aaf7dfed7de89167da71747b2617d0bb}
+      \strng{authorbibnamehash}{aaf7dfed7de89167da71747b2617d0bb}
+      \strng{authornamehash}{aeed8e9caefe5db7d9ccaeafd2c8e2e2}
+      \strng{authorfullhash}{aaf7dfed7de89167da71747b2617d0bb}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Trends in Microbiology}
+      \field{note}{\href{https://doi.org/10.1016/j.tim.2018.08.006}{[CellPress]}}
+      \field{number}{1}
+      \field{title}{Molecular and Evolutionary Determinants of Bacteriophage Host Range}
+      \field{volume}{27}
+      \field{year}{2019}
+      \field{pages}{51\bibrangedash 63}
+      \range{pages}{13}
+    \endentry
+    \entry{coclet2021global}{article}{}
+      \name{author}{2}{}{%
+        {{hash=41bf63176bc79b36c9ea23e724103f76}{%
+           family={Coclet},
+           familyi={C\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod}}}%
+        {{hash=b376511bed1727a07564395dc02c8a3c}{%
+           family={Roux},
+           familyi={R\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
+      \strng{fullhash}{a3e78bf55b10c9d6f1d44ba306a9233f}
+      \strng{bibnamehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
+      \strng{authorbibnamehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
+      \strng{authornamehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
+      \strng{authorfullhash}{a3e78bf55b10c9d6f1d44ba306a9233f}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Current Opinion in Virology}
+      \field{note}{\href{https://doi.org/10.1016/j.coviro.2021.05.003}{[ScienceDirect]}}
+      \field{title}{Global overview and major challenges of host prediction methods for uncultivated phages}
+      \field{volume}{49}
+      \field{year}{2021}
+      \field{pages}{117\bibrangedash 126}
+      \range{pages}{10}
+    \endentry
+    \entry{vovk2005algorithmic}{book}{}
+      \name{author}{3}{}{%
+        {{hash=bef6907ff5daebb69843cf35c8af1a83}{%
+           family={Vovk},
+           familyi={V\bibinitperiod},
+           given={Vladimir},
+           giveni={V\bibinitperiod}}}%
+        {{hash=ca87923b059d26a133029c97697f174d}{%
+           family={Gammerman},
+           familyi={G\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod}}}%
+        {{hash=071635b97777823135be2ea970911b06}{%
+           family={Shafer},
+           familyi={S\bibinitperiod},
+           given={Glenn},
+           giveni={G\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer Science \& Business Media}%
+      }
+      \strng{namehash}{f522739be82db7e155f6ba79833cba46}
+      \strng{fullhash}{f522739be82db7e155f6ba79833cba46}
+      \strng{bibnamehash}{f522739be82db7e155f6ba79833cba46}
+      \strng{authorbibnamehash}{f522739be82db7e155f6ba79833cba46}
+      \strng{authornamehash}{f522739be82db7e155f6ba79833cba46}
+      \strng{authorfullhash}{f522739be82db7e155f6ba79833cba46}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Algorithmic Learning in a Random World}
+      \field{year}{2005}
+    \endentry
+    \entry{angelopoulos2023conformal}{article}{}
+      \name{author}{2}{}{%
+        {{hash=e664c70b932e0462320278893abe131b}{%
+           family={Angelopoulos},
+           familyi={A\bibinitperiod},
+           given={A.\bibnamedelimi N.},
+           giveni={A\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+        {{hash=964467ff063f2ec7ff17669c7476be32}{%
+           family={Bates},
+           familyi={B\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{4ca6c87623836f646704aaaf1df53487}
+      \strng{fullhash}{4ca6c87623836f646704aaaf1df53487}
+      \strng{bibnamehash}{4ca6c87623836f646704aaaf1df53487}
+      \strng{authorbibnamehash}{4ca6c87623836f646704aaaf1df53487}
+      \strng{authornamehash}{4ca6c87623836f646704aaaf1df53487}
+      \strng{authorfullhash}{4ca6c87623836f646704aaaf1df53487}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Foundations and Trends in Machine Learning}
+      \field{note}{\href{https://doi.org/10.1561/2200000101}{[FnT]}}
+      \field{number}{4}
+      \field{title}{Conformal Prediction: A Gentle Introduction}
+      \field{volume}{16}
+      \field{year}{2023}
+      \field{pages}{494\bibrangedash 591}
+      \range{pages}{98}
+    \endentry
+    \entry{ochoarivera2024conformal}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=f39af2c2b0ce83cba5dc71ec69581350}{%
+           family={Rivera},
+           familyi={R\bibinitperiod},
+           given={E.\bibnamedelimi Ochoa},
+           giveni={E\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+        {{hash=257980268d3c546b730554f4c0aaa79d}{%
+           family={Patel},
+           familyi={P\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=d31d7bf4a6d8b3d6a4d1b8dad94a2494}{%
+           family={Tewari},
+           familyi={T\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
+      \strng{fullhash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
+      \strng{bibnamehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
+      \strng{authorbibnamehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
+      \strng{authornamehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
+      \strng{authorfullhash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Advances in Neural Information Processing Systems (NeurIPS)}
+      \field{note}{\href{https://arxiv.org/abs/2405.16246}{[arXiv]}}
+      \field{title}{Conformal Prediction for Ensembles: Improving Efficiency via Score-Based Aggregation}
+      \field{year}{2024}
     \endentry
     \entry{holtappels2023drivers}{article}{}
       \name{author}{3}{}{%
@@ -177,8 +274,8 @@
       \strng{authorbibnamehash}{f99731884f6b53af2e413954af281448}
       \strng{authornamehash}{f99731884f6b53af2e413954af281448}
       \strng{authorfullhash}{f99731884f6b53af2e413954af281448}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{FEMS Microbiology Reviews}
@@ -189,37 +286,6 @@
       \field{year}{2023}
       \field{pages}{fuad038}
       \range{pages}{-1}
-    \endentry
-    \entry{coclet2021global}{article}{}
-      \name{author}{2}{}{%
-        {{hash=41bf63176bc79b36c9ea23e724103f76}{%
-           family={Coclet},
-           familyi={C\bibinitperiod},
-           given={C.},
-           giveni={C\bibinitperiod}}}%
-        {{hash=b376511bed1727a07564395dc02c8a3c}{%
-           family={Roux},
-           familyi={R\bibinitperiod},
-           given={S.},
-           giveni={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \strng{fullhash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \strng{bibnamehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \strng{authorbibnamehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \strng{authornamehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \strng{authorfullhash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Current Opinion in Virology}
-      \field{note}{\href{https://doi.org/10.1016/j.coviro.2021.05.003}{[ScienceDirect]}}
-      \field{title}{Global overview and major challenges of host prediction methods for uncultivated phages}
-      \field{volume}{49}
-      \field{year}{2021}
-      \field{pages}{117\bibrangedash 126}
-      \range{pages}{10}
     \endentry
     \entry{villarroel2016hostphinder}{article}{}
       \name{author}{7}{}{%
@@ -265,8 +331,8 @@
       \strng{authorbibnamehash}{b1798cfbabb8b2d660da745a08bb5a39}
       \strng{authornamehash}{b1798cfbabb8b2d660da745a08bb5a39}
       \strng{authorfullhash}{4c897ddbe750402aea690e97c5958531}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Viruses}
@@ -312,8 +378,8 @@
       \strng{authorbibnamehash}{98d6e540eccc6e488a3f23714e28a276}
       \strng{authornamehash}{ea2affc29fa8e39b53a28b75571d13f5}
       \strng{authorfullhash}{98d6e540eccc6e488a3f23714e28a276}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Bioinformatics}
@@ -639,8 +705,8 @@
       \strng{authorbibnamehash}{60411c25f3738a8d258100ddfa6a8b4d}
       \strng{authornamehash}{60411c25f3738a8d258100ddfa6a8b4d}
       \strng{authorfullhash}{ec272244d95f162d641094503964708b}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Database}
@@ -675,8 +741,8 @@
       \strng{authorbibnamehash}{1a59fa590095ea7812f642848c469c06}
       \strng{authornamehash}{1a59fa590095ea7812f642848c469c06}
       \strng{authorfullhash}{1a59fa590095ea7812f642848c469c06}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{PLOS ONE}
@@ -727,8 +793,8 @@
       \strng{authorbibnamehash}{456791212932f801a89a8b1020c84944}
       \strng{authornamehash}{ff63b9c6fbbb669ee64ebea0013b7c1b}
       \strng{authorfullhash}{456791212932f801a89a8b1020c84944}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Nature Communications}
@@ -739,72 +805,6 @@
       \field{year}{2026}
       \field{pages}{4439}
       \range{pages}{1}
-    \endentry
-    \entry{angelopoulos2023conformal}{article}{}
-      \name{author}{2}{}{%
-        {{hash=e664c70b932e0462320278893abe131b}{%
-           family={Angelopoulos},
-           familyi={A\bibinitperiod},
-           given={A.\bibnamedelimi N.},
-           giveni={A\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
-        {{hash=964467ff063f2ec7ff17669c7476be32}{%
-           family={Bates},
-           familyi={B\bibinitperiod},
-           given={S.},
-           giveni={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{4ca6c87623836f646704aaaf1df53487}
-      \strng{fullhash}{4ca6c87623836f646704aaaf1df53487}
-      \strng{bibnamehash}{4ca6c87623836f646704aaaf1df53487}
-      \strng{authorbibnamehash}{4ca6c87623836f646704aaaf1df53487}
-      \strng{authornamehash}{4ca6c87623836f646704aaaf1df53487}
-      \strng{authorfullhash}{4ca6c87623836f646704aaaf1df53487}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Foundations and Trends in Machine Learning}
-      \field{note}{\href{https://doi.org/10.1561/2200000101}{[FnT]}}
-      \field{number}{4}
-      \field{title}{Conformal Prediction: A Gentle Introduction}
-      \field{volume}{16}
-      \field{year}{2023}
-      \field{pages}{494\bibrangedash 591}
-      \range{pages}{98}
-    \endentry
-    \entry{vovk2005algorithmic}{book}{}
-      \name{author}{3}{}{%
-        {{hash=bef6907ff5daebb69843cf35c8af1a83}{%
-           family={Vovk},
-           familyi={V\bibinitperiod},
-           given={Vladimir},
-           giveni={V\bibinitperiod}}}%
-        {{hash=ca87923b059d26a133029c97697f174d}{%
-           family={Gammerman},
-           familyi={G\bibinitperiod},
-           given={Alexander},
-           giveni={A\bibinitperiod}}}%
-        {{hash=071635b97777823135be2ea970911b06}{%
-           family={Shafer},
-           familyi={S\bibinitperiod},
-           given={Glenn},
-           giveni={G\bibinitperiod}}}%
-      }
-      \list{publisher}{1}{%
-        {Springer Science \& Business Media}%
-      }
-      \strng{namehash}{f522739be82db7e155f6ba79833cba46}
-      \strng{fullhash}{f522739be82db7e155f6ba79833cba46}
-      \strng{bibnamehash}{f522739be82db7e155f6ba79833cba46}
-      \strng{authorbibnamehash}{f522739be82db7e155f6ba79833cba46}
-      \strng{authornamehash}{f522739be82db7e155f6ba79833cba46}
-      \strng{authorfullhash}{f522739be82db7e155f6ba79833cba46}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{Algorithmic Learning in a Random World}
-      \field{year}{2005}
     \endentry
     \entry{lei2018distribution}{article}{}
       \name{author}{5}{}{%
@@ -999,8 +999,8 @@
       \strng{authorbibnamehash}{d4048d5abb7c4449229ba165de69c430}
       \strng{authornamehash}{d4048d5abb7c4449229ba165de69c430}
       \strng{authorfullhash}{1684cdea0993ef762c61435c2f72fe1c}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Nature Microbiology}

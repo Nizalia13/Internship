@@ -126,12 +126,17 @@ shrinks underpopulated bins toward it (it mirrors the blending rule of the radia
 
 \vspace{0.15cm}
 \noindent A windowed monotonicity pass then enforces $\text{limits}[j,i,n] \ge \text{limits}[j,i,n']$ for $n' \in (n, n+w]$ 
-within a fixed window $w$. This is done to ensure that a bin's limit cannot be undercut by a bin immediately ahead of it in 
-the same conditioning dimension. The monotonicity is necessary to ensure that a phage with a smaller value (more confident) in 
-the conditioning dimension $j$, does not recieve a tighter bound in dimension $i$ than a phage with a larger value in $j$, which 
-makes sure that the conditional envelope is logically correct.
+within a fixed window $w$.
+\begin{equation*}
+\text{limits}[j,i,n] \leftarrow \max_{n' \,\in\, [n,\, \min(n+w,\, NB-1)]} \text{limits}_{\text{raw}}[j,i,n'].
+\end{equation*}
 
-$$\text{limits}[j,i,n] \leftarrow \max_{n' \in [n, \min(n+w, NB)]} \text{limits}[j,i,n']$$
+\noindent This is done to ensure that a bin's limit cannot be undercut by a bin immediately ahead of it in the same conditioning 
+dimension. The monotonicity is necessary to ensure that a phage with a smaller value (more confident) in the conditioning 
+dimension $j$, does not recieve a tighter bound in dimension $i$ than a phage with a larger value in $j$, which makes sure that 
+the conditional envelope is logically correct. This ensures that a single sparse or fallback-driven bin at one end of the range 
+cannot set the limit for every bin behind it. This report uses $w \ge NB$ for gram type classification and $w=2$ for host-level 
+classification, reflecting the difference in how many bins ($NB$) each task typically calibrates.
 
 \vspace{0.15cm}
 \noindent The scaling function $\tau(\mathbf{s})$ aggregates the worst-case ratio over all conditioning pairs $(j,i)$:

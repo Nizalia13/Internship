@@ -1489,6 +1489,11 @@ INPUT ./1_Introduction/1_Introduction.tex
 INPUT 1_Introduction/1_Introduction.tex
 INPUT ./1_Introduction/1_Introduction.tex
 INPUT 1_Introduction/1_Introduction.tex
+INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmbx12.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmbx8.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmbx6.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr8.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr6.tfm
 INPUT ./2_Background_and_State_of_the_Art/2.1_Background.tex
 INPUT 2_Background_and_State_of_the_Art/2.1_Background.tex
 INPUT ./2_Background_and_State_of_the_Art/2.1_Background.tex
@@ -1498,11 +1503,6 @@ INPUT ./2_Background_and_State_of_the_Art/2.2_Current Methods.tex
 INPUT 2_Background_and_State_of_the_Art/2.2_Current Methods.tex
 INPUT ./2_Background_and_State_of_the_Art/2.2_Current Methods.tex
 INPUT 2_Background_and_State_of_the_Art/2.2_Current Methods.tex
-INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmbx12.tfm
-INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmbx8.tfm
-INPUT /usr/share/texmf/fonts/tfm/public/lm/rm-lmbx6.tfm
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr8.tfm
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr6.tfm
 INPUT ./2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex
 INPUT 2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex
 INPUT ./2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex

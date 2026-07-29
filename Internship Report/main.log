@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  28 JUL 2026 16:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  29 JUL 2026 16:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1079,14 +1079,7 @@ Package csquotes Info: Redefining alias 'default' -> 'english'.
 LaTeX Font Info:    Trying to load font information for T1+lmr on input line 12.
  (/usr/share/texmf/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) (./main.aux
-
-LaTeX Warning: Label `sec4.2: aggregation' multiply defined.
-
-
-LaTeX Warning: Label `sec4.2: aggregation' multiply defined.
-
-)
+) (./main.aux)
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
@@ -1189,7 +1182,7 @@ Package biblatex Info: Reference section=0 on input line 12.
 Package biblatex Info: Reference segment=0 on input line 12.
 \c@lstlisting=\count487
  (./Title_Page.tex
-<logo_ensimag_uga.png, id=224, 276.3123pt x 95.6373pt>
+<logo_ensimag_uga.png, id=183, 276.3123pt x 95.6373pt>
 File: logo_ensimag_uga.png Graphic file (type png)
 <use logo_ensimag_uga.png>
 Package pdftex.def Info: logo_ensimag_uga.png  used on input line 25.
@@ -1244,17 +1237,11 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 \openout6 = `main.toc'.
 
  [2] (./1_Introduction/1_Introduction.tex
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input line 23.
-
-
-LaTeX Warning: Marginpar on page 1 moved.
-
-
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.56 
-      [1])
+l.47     \item \textbf
+                      {Non-convex geometry in classification space:} We demo... [1])
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
@@ -1263,126 +1250,52 @@ l.32 \newpage
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.56 
-      [3]) (./2_Background_and_State_of_the_Art/2.2_Current Methods.tex [4] [5]) (./2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex [6] [7] [8]) (./2_Background_and_State_of_the_Art/2.4_CSA_Method.tex [9] [10]) [11] (./3_Methods/3.1_Problem.tex [12]) (./3_Methods/3.2_Nonconvex_envelopes.tex [13]) (./3_Methods/3.3_Score_Transformation.tex
+l.55 
+      [3]) (./2_Background_and_State_of_the_Art/2.2_Current Methods.tex [4] [5]) (./2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex [6] [7] [8] [9]) (./2_Background_and_State_of_the_Art/2.4_CSA_Method.tex [10] [11]) [12] (./3_Methods/3.1_Problem.tex [13]) (./3_Methods/3.2_Nonconvex_envelopes.tex [14]) (./3_Methods/3.3_Score_Transformation.tex
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 10.
  (/usr/share/texmf/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [14] [15]) (./3_Methods/3.4_Envelope_Construction_Methods.tex [16] [17]
+) [15] [16]) (./3_Methods/3.4_Envelope_Construction_Methods.tex [17] [18]
 Overfull \hbox (13.47176pt too wide) detected at line 123
 []\OT1/lmr/m/n/12 [\OML/lmm/m/it/12 j; i; n\OT1/lmr/m/n/12 ] = []
  []
 
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 145.
-(/usr/share/texmf/tex/latex/lm/ts1lmr.fd
+[19]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 150.
+ (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [18]) (./3_Methods/3.5_Tau_Computation.tex
+)) (./3_Methods/3.5_Tau_Computation.tex
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <14.4> on input line 2.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10> on input line 2.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 2.
- [19]) [20] (./4_Data/4.1_Data_Description.tex
-Overfull \hbox (1.77936pt too wide) in paragraph at lines 30--34
-[]\T1/lmr/bx/n/12 Protein Score Ma-trix: \T1/lmr/m/n/12 Ma-trix of raw model pre-dic-tions $\OT1/lmr/bx/n/12 S \OMS/lmsy/m/n/12 2 \OT1/lmr/m/n/12 ([0\OML/lmm/m/it/12 ; \OT1/lmr/m/n/12 1] \OMS/lmsy/m/n/12 [ f[]g\OT1/lmr/m/n/12 )[]$\T1/lmr/m/n/12 ,
- []
-
-[21]) (./4_Data/4.2_Aggregation.tex
-
-LaTeX Warning: Citation '4' on page 22 undefined on input line 21.
-
-[22]
-
-LaTeX Warning: Citation '4' on page 23 undefined on input line 25.
-
-
-LaTeX Warning: Citation '4' on page 23 undefined on input line 35.
-
-
-LaTeX Warning: Citation '4' on page 23 undefined on input line 37.
-
-[23] [24]) (./4_Data/4.3_Contamination_Fix.tex
-Underfull \hbox (badness 10000) in paragraph at lines 2--5
-
- []
-
-
-LaTeX Warning: Citation '4' on page 25 undefined on input line 11.
-
-
-LaTeX Warning: Citation '4' on page 25 undefined on input line 11.
-
-
-LaTeX Warning: Citation '5' on page 25 undefined on input line 11.
-
-
-LaTeX Warning: Citation '4' on page 25 undefined on input line 14.
-
-
-LaTeX Warning: Citation '5' on page 25 undefined on input line 14.
-
-
-LaTeX Warning: Citation '4' on page 25 undefined on input line 17.
-
-
-LaTeX Warning: Citation '5' on page 25 undefined on input line 17.
-
-[25]
-
-LaTeX Warning: Citation '4' on page 26 undefined on input line 19.
-
-
-LaTeX Warning: Citation '5' on page 26 undefined on input line 19.
-
-
-LaTeX Warning: Citation '5' on page 26 undefined on input line 20.
-
-
-LaTeX Warning: Citation '5' on page 26 undefined on input line 21.
-
-
-LaTeX Warning: Citation '4' on page 26 undefined on input line 25.
-
-
-LaTeX Warning: Citation '4' on page 26 undefined on input line 25.
-
-) [26] (./5_Experiments_and_Results/Validation.tex) (./5_Experiments_and_Results/Gram_type_classification.tex [27]) (./5_Experiments_and_Results/Host Classification.tex) [28] (./6_Conclusion/Summary.tex) (./6_Conclusion/limitations.tex) [29]
+ [20]) [21] (./4_Data/4.1_Data_Description.tex [22]) (./4_Data/4.2_Aggregation.tex) (./4_Data/4.3_Contamination_Fix.tex [23] [24]) [25] (./5_Experiments_and_Results/Validation.tex) (./5_Experiments_and_Results/Gram_type_classification.tex) (./5_Experiments_and_Results/Host Classification.tex) [26] (./6_Conclusion/Summary.tex) (./6_Conclusion/limitations.tex) [27] [28]
 Overfull \hbox (9.42464pt too wide) in paragraph at lines 64--64
 []\T1/lmr/m/n/12 A. Boulay, A. Lep-rince, F. Enault, E. Rousseau, and C. Galiez, ^^P  Em-pathi: Embedding-
  []
 
-[30] [31] (./main.aux)
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: There were multiply-defined labels.
-
+[29] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 143A88CFC5FD83BE2D7254648655ED06;11457.
-
-Package biblatex Warning: Please (re)run Biber on the file:
-(biblatex)                main
-(biblatex)                and rerun LaTeX afterwards.
-
+(rerunfilecheck)             Checksum: 41577264C1025B6DDD0C321DFC473D00;9319.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 47740 strings out of 476091
- 1048763 string characters out of 5794081
- 1918992 words of memory out of 5000000
- 67114 multiletter control sequences out of 15000+600000
+ 47523 strings out of 476091
+ 1044076 string characters out of 5794081
+ 1907322 words of memory out of 5000000
+ 66925 multiletter control sequences out of 15000+600000
  604820 words of font info for 110 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  122i,13n,134p,1130b,2274s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmcsc10.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr17.pfb></usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/yhmath/yhcmex.pfb>
-Output written on main.pdf (36 pages, 490619 bytes).
+Output written on main.pdf (34 pages, 479890 bytes).
 PDF statistics:
- 773 PDF objects out of 1000 (max. 8388607)
- 681 compressed objects within 7 object streams
- 162 named destinations out of 1000 (max. 500000)
- 450 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 715 PDF objects out of 1000 (max. 8388607)
+ 625 compressed objects within 7 object streams
+ 134 named destinations out of 1000 (max. 500000)
+ 370 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -34,7 +34,8 @@ to map this profile to a distribution over host genera.
 $$f_{\text{RF}}: \{0,1\}^M \longrightarrow \Delta^{|\mathcal{H}|-1}, \quad \text{where } \hat{\mathbf{p}} = 
     f_{\text{RF}}(\mathbf{x}), \quad \sum_{y \in \mathcal{H}} \hat{p}_y = 1$$
 \noindent This representation is directly relevant to the present work, as our pipeline operates on a related 
-protein-cluster construction, and the data contamination problem discussed in \todo{refer} arises from the same source.
+protein-cluster construction, and the data contamination problem discussed in \ref{sec4.3: contamination fix} arises 
+from the same source.
 
 \subsubsection{Protein Language Models and Embedding-Based Methods}
 \label{sec2.2.2: plms}
@@ -53,7 +54,7 @@ explicit sequence alignment. Building on ProtT5 \cite{elnaggar2022prottrans}, to
 annotation and metagenomic lysin discovery respectively. These tools are directly involved in this work: the 
 $K$-dimensional score vector $\mathbf{s} = \left( s_1(X), \dots, s_K(X) \right)^T\in [0,1]^K$ that serves as input to our 
 conformal framework is produced by a pipeline built on these annotations, the precise construction of which is described 
-in \todo{refer}. For host prediction, protein embeddings have shown substantially improved accuracy over sequence-
+in \ref{sec4: data}. For host prediction, protein embeddings have shown substantially improved accuracy over sequence-
 similarity baselines \cite{gonzales2023protein, du2026high}. So this suggests that the embedding space contains sufficient 
 information for reliable host assignment.
 
@@ -62,15 +63,19 @@ information for reliable host assignment.
 \label{sec2.2.3: limitations}
 \noindent Despite their empirical success of all the methods seen, they all share a fundamental limitation: they produce 
 point predictions (a single host label $\hat{y}$ or a scalar score $\hat{s}(x,y) \in [0,1]$) without any formal 
-quantification of prediction uncertainty. A score $\hat{s}(x,y) = 0.87$ reflects a relative ranking statistic, not a
-probability $\mathbb{P}(Y = y \mid X = x)$. And no existing method provides a finite-sample guarantee that the true host 
-is contained in any predicted set with a specified probability. 
+uncertainty quantification. 
 
 \vspace{0.15cm}
-\noindent Existing uncertainty quantification frameworks only offer partial solutions. For example, the Bayesian approaches 
-require strong assumptions on the distribution distributional that are difficult to justify for biological score data, 
-while post-hoc calibration methods such as Platt scaling provide no finite-sample guarantees on unseen test data 
-\cite{angelopoulos2023conformal}. 
+\noindent \textbf{Uncertainty Quantification (UQ)} is defined as the mathematical framework used to rigorously measure, 
+propagate, and bound prediction errors. A raw scalar output $\hat{s}(x,y) = 0.87$ merely reflects an uncalibrated 
+relative ranking statistic, not a true conditional probability $\mathbb{P}(Y = y \mid X = x)$. Existing host prediction 
+tools fail to provide UQ because no tool offers a finite sample statistical guarantee that the true bacterial host is 
+contained within a candidate prediction set with a predefined target probability $1-\alpha$.
+
+\vspace{0.15cm}
+\noindent Existing UQ frameworks only offer partial solutions. For example, the Bayesian approaches require strong assumptions 
+on the distribution distributional that are difficult to justify for biological score data, while post-hoc calibration methods 
+such as Platt scaling provide no finite-sample guarantees on unseen test data \cite{angelopoulos2023conformal}. 
 
 \vspace{0.15cm}
 \noindent These limitations are consequential in phage therapy, where an incorrectly predicted host can directly harm a 
@@ -78,14 +83,6 @@ patient. This motivates the adoption of conformal prediction \cite{vovk2005algor
 framework that wraps any existing scoring model in a statistical construction, and produces prediction sets $C(X) 
 \subseteq \mathcal{H}$ with exact finite-sample coverage guarantees while only requiring exchangeability of calibration 
 and test data.
-
-
-
-
-
-
-
-
 
 
 

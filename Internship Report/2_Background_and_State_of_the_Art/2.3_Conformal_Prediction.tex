@@ -142,6 +142,7 @@ $$\mathbb{P}\bigl(S_{n+1} \leq q_{\alpha}\bigr)
 
 % Theorem~\ref{thm: marginal coverage} formalises the coverage guarantee.
 
+\newpage
 \begin{theorem}[Marginal Coverage Guarantee \cite{vovk2005algorithmic, lei2018distribution}]
 \label{thm: marginal coverage}
 If $(X_1, H_1), \dots, (X_{n+1}, H_{n+1})$ are exchangeable, then the prediction set $C(X_{n+1})$ defined in 
@@ -205,9 +206,10 @@ samples. We partition $D_{\text{cal}}$ into $N$ disjoint subsets $D_{\text{cal}}
 \mathbb{P}\left(H_{n+1} \in C(X_{n+1}) \;\Big|\; H_{n+1} = h\right) \ge 1 - \alpha, \quad \forall h \in \mathcal{H}
 \end{equation}
 
+\newpage
 \noindent Because exchangeability holds within each class-conditional partition $D_{\text{cal}}^{(h)}$, evaluating 
 per-class quantiles preserves exact finite-sample validity across every candidate host, as formalised in 
-Section \todo{refer}
+Section \ref{sec3.5.2: class specific t hat}.
 
 
 

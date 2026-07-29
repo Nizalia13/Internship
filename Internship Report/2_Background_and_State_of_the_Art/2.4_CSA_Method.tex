@@ -33,7 +33,7 @@ E = \bigcap_{m=1}^{M} \bigl\{\mathbf{s} \in \mathbb{R}^K_+ : \langle \mathbf{s},
 \end{equation}
 By construction, $E$ is convex. Membership of a transformed score in the scaled envelope 
 $t \cdot E$ is tested coordinate-wise along each direction. The exact transformation 
-$\phi_h$ used in this work is formalized in Section~ \todo{refer to section}.
+$\phi_h$ used in this work is formalized in Section~ \ref{sec3.3: nc transformation}.
 
 % \vspace{0.15cm}
 % \noindent Mathematically, we can say that we apply a label dependent transformation $\phi_y: [0,1]^K \rightarrow
@@ -145,9 +145,9 @@ and has some major limitations when it is applied to classification problems:
 
 \vspace{0.15cm}
 \noindent These limitations directly motivate our methodological contributions in \ref{sec3: methodology}. This 
-includes designing non-convex envelopes \todo{refer}, deriving closed-form analytical 
-solutions for per-point $\tau$-values to enable one-pass calibration \ref{sec3: methodology}, and integrating class-conditional 
-thresholds to guarantee reliable host-range predictions.
+includes designing non-convex envelopes \ref{sec3.4: envelope construction}, deriving closed-form analytical 
+solutions for per-point $\tau$-values to enable one-pass calibration \ref{sec3.5: t hat calculation}, and integrating class 
+conditional thresholds to guarantee reliable host-range predictions.
 
 % \noindent These limitations provide us with the oppurtunity to improve efficiency, to acheivee the same covergae but 
 % with smaller prediction sets. An this is the main motivation behind this work: designing the non-convex envelopes, 
