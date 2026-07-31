@@ -147,12 +147,13 @@ classification, reflecting the difference in how many bins ($NB$) each task typi
 
 \noindent Missing dimensions ($m_k = 0$) are handled pairwise: 
 \begin{itemize}
-    \item \textbf{Conditioning dimension $j$ missing} ($m_j = 0$): The bin index along $j$ is undefined, so the evaluation 
-           falls back to the normalized marginal ratio $s_i / \tilde{q}_i$.".
-    \item \textbf{Target dimension $i$ missing:} Its value $s_i$ is replaced by its marginal quantile $\tilde{q}_i$ before
-           computing the ratio.
-    \item \textbf{Both missing:} The pair contributes no constraint ($\text{ratio} = 0$), since absence of evidence should not 
-          lead to a false rejection.
+    \item \textbf{Conditioning $j$ missing, Target $i$ present} ($m_j = 0$, $m_i = 1$): The bin index along $j$ is undefined, so 
+           $s_i$ falls back to its unconditional marginal ratio: $\frac{s_i}{\tilde{q}_i}$.
+    \item \textbf{Target dimension $i$ missing and conditioning dimension $j$ is present} ($m_i= 0$ \& $m_j = 1$): The missing 
+           target score $s_i$ is replaced by its marginal quantile $\tilde{q}_i$, which gives us the ratio $\tilde{q_i}/ \text{limits}
+           [j, i, \text{bin}_j(s)].$
+    \item \textbf{Both missing:} ($m_i= 0$ \& $m_j = 0$)The pair contributes no constraint ($\text{ratio} = 0$), this ensures that the 
+          unobserved dimensions do not lead to a false rejection
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
