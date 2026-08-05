@@ -1,0 +1,281 @@
+
+% \noindent - correlated, uncorrelated etc predictors
+% - K dimensions
+% - multiple hosts
+
+% \subsubsection{Puspose and setup}
+% \noindent - Why synthetic validation before real data: allows controlled verification that the coverage guarantee holds exactly, with known ground truth distributions\\
+% - General setup: simulate score vectors from known distributions, apply all three envelope methods, verify empirical coverage matches theoretical target $1-\alpha$
+
+% \subsubsection{2D Experimenats}
+% \noindent - Three scenarios tested in 2D (K=2):
+%      - Uncorrelated scores: two independent uniform or    Gaussian dimensions\\
+%      - Correlated scores: scores with positive correlation -> tests whether the envelope adapts to the correlation structure\\
+%      - Asymmetric predictors: one informative dimension and one uninformative dimension -> tests whether the envelope correctly ignores the noisy dimension\\
+% - For each scenario: show the envelope shape visually, report empirical coverage across multiple runs, confirm it matches $1-\alpha$\\
+% - Key observation from 2D: the radial and strip envelopes are visibly non-convex and wrap tightly around the data, while collapsed 1D produces a simple interval
+
+
+% \subsubsection{Extension to K Dimensions}
+% \noindent - Repeat the experiments for $K \in {2,5,10,20}$ with a single host\\
+% - Show that all three methods maintain coverage $\geq 1-\alpha$ across all dimensionalities\\
+% - Discuss the effect of increasing K on envelope quality: radial method becomes sparser (fewer S1 points per sector), strip method has more dimension pairs to condition on, collapsed 1D is unaffected\\
+% - Show that the analytical $\tau$ computation gives identical results to what iterative search would give, confirming correctness
+
+% \subsubsection{Multiple Hosts}
+% \noindent - Extend to a simulated multi-class setting with multiple hosts $(|\mathcal{Y}| = 6, K=5)$\\
+% - Each host's true score distribution is a distinct cluster in $[0,1]^K$\\
+% - Verify that the single unified envelope correctly assigns the true host to the prediction set with probability $\geq 1-\alpha$
+% - Show 3D visualisation of the envelope for K=3
+
+
+\section{Experiments and Results}
+\label{sec5: experiments}
+
+\noindent In this section we will present the experimental validation of the methods developed in Section~\ref{sec3: 
+methodology}. In section~\ref{sec5.1: synthetic validation} we validate the construction of each envelope on simulated data, 
+where the ground truth is known, we verify the finite sample coverage guarantees, geometric adaptation, and dimensionality 
+scaling. Section~\ref{sec5.2: gram results} and Section~\ref{sec5.3: host results} then report results on real phage data 
+for gram-type and host-level classification respectively.
+
+
+\subsection{Synthetic Validation}
+\label{sec5.1: synthetic validation}
+
+\noindent Before applying the conformal envelope constructions of Section~\ref{sec3.4: envelope construction} to real phage 
+data, we evaluated the theoretical guarantees, geometric adaptations and the efficiency scaling of methods on simulated 
+scores with known ground truth. 
+% All experiments use $\alpha=0.1$, target coverage $1-\alpha=0.900$, and $K$-dimensional 
+% scores drawn from a multivariate normal with mean $\mathbf{0.3}$, variance $0.02$, and pairwise correlation $0.3$, clipped 
+% to $[0,1]^K$. This is a simple but non trivial synthetic analogue of the concentrated, correlated NC vectors described in 
+% Section~\ref{sec3.2: non-convex envelopes}.
+
+\vspace{0.15cm}
+\noindent These experiments have four specific goals:
+\begin{enumerate}[label=(\roman*)]
+    \item Verify the exact finite sample marginal coverage validity ($1-\alpha = 0.900$) across varying score dimensions $K$.
+    \item Demonstrate how class conditional calibration improves prediction set efficiency over shared global boundaries.
+    \item Characterize how non-convex geometries (Radial and Strip) adapt to non Gaussian, correlated, or sparse score
+          distributions.
+    \item Validate the per host envelope cascade in a multi class ground truth setting.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsubsection{2D Geometric Proof-of-Concept and Class Conditional Efficiency}
+\label{sec5.1.1: 2d proof of concept}
+
+\noindent We first simulated $N = 400$ bivariate score pairs from $\mathcal{N}((0.15,0.15), \boldsymbol{\Sigma})$ with 
+$\Sigma_{11}=\Sigma_{22}=0.01$ and $\Sigma_{12}=-0.0085$, clipped to $[0,1]^2$. Fitting a single convex envelope 
+($\alpha=0.10$, $M=500$ directions, 50/50 $S_1/S_2$ split) confirms the two stage pipeline: the initial shape (only boundary 
+under covers), whereas the size scaled envelope hits the target $90\%$ coverage exactly.
+
+\vspace{0.15cm}
+\noindent Next, we introduce four latent classes ($\text{Hosts A--D}$) with centroids at $(0.1,0.7)$, $(0.7,0.1)$, $(0.1,0.1)$, 
+and $(0.7,0.7)$, each with variance $0.01$. Fitting a single shared convex envelope ($\alpha=0.10$) to test a phage whose 
+true host is $\text{Host B}$ yields the prediction set $C(X) = \{\text{Host A}, \text{Host B}, \text{Host C}\}$. Because a 
+convex hull must span the empty interior space between disjoint clusters, the prediction set remains overly conservative, even 
+when tightening the significance level to $\alpha=0.40$. This confirms that shared convex hull inefficiency is structural 
+rather than an artifact of hyperparameter choice.
+
+\vspace{0.15cm} 
+\noindent Computing host specific scaling thresholds $\hat{t}_h$ while sharing the directional shape $\tilde{\mathbf{q}}$ 
+yields $\hat{t}_A = 0.969$, $\hat{t}_B = 0.980$, $\hat{t}_C = 0.302$, and $\hat{t}_D = 1.074$. The large spread in $\hat{t}_h$ 
+reflects underlying class dispersion heterogeneity (e.g., $\text{Host C}$ requires only $30\%$ of the expansion required by 
+$\text{Host D}$). Applying these class conditional thresholds shrinks the prediction set for the same test phage to $C(X) = 
+\{\text{Host B}, \text{Host D}\}$, reducing set size from 3 to 2 while preserving true label coverage.
+
+
+% \subsubsection{Single-Host Coverage Across Dimension}
+% \label{sec5.1.1: single host coverage}
+% \noindent We first validates the original convex CSA construction (Section~\ref{sec2.4.2: csa framework}) as a 
+% baseline, then the Radial and Strip constructions of this report, each calibrated on $S_1$ and evaluated on a 
+% held-out $S_2$ for $K \in \{2,5,10,20\}$ (Strip evaluated up to $K=10$, since its bin populations shrink quickly with 
+% increasing $K$ at fixed sample size). Table~\ref{tab: k-sweep} reports the calibrated scaling factor $\hat{t}$ and 
+% the resulting empirical coverage.
+
+% \begin{table}[htbp]
+% \centering
+% \caption{Empirical coverage and calibrated $\hat{t}$ across score dimension $K$ ($\alpha=0.1$, $N=1000$–$2000$).}
+% \label{tab: k-sweep}
+% \begin{tabular}{lcccc}
+% \toprule
+% \textbf{Method} & \textbf{$K=2$} & \textbf{$K=5$} & \textbf{$K=10$} & \textbf{$K=20$} \\
+% \midrule
+% Paper CSA (convex) & $\hat t=0.996$ & $\hat t=1.009$ & $\hat t=1.016$ & $\hat t=1.021$ \\
+% Radial              & $\hat t=0.972$ & $\hat t=1.179$ & $\hat t=1.920$ & $\hat t=2.925$ \\
+% Strip                & $\hat t=0.893$ & $\hat t=1.031$ & $\hat t=1.107$ & --- \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+% \noindent Every method achieves exactly $0.900$ empirical coverage across all tested $K$. This confirms the theoretical guarantee 
+% (Theorem~\ref{thm: marginal coverage}, Section~\ref{sec3.2: non-convex envelopes}) holds regardless of envelope geometry. 
+% However, fro different methds $\hat{t}$ scales differently with dimension $K$. For the convex baseline and Strip methods, it 
+% remains near $1$ (even at $K=20$), but the Radial method's $\hat{t}$ nearly triples between $K=2$ and $K=20$. This reflects 
+% a curse of dimensionality in Radial's angular calibration (Section~\ref{sec3.4: envelope construction}). As $K$ grows, a 
+% fixed angular bandwidth $\delta$ covers a smaller fraction of the unit sphere, forcing more directions to default to the 
+% conservative global quantile $\tilde{q}_{\text{marg}}$ and inflating $\hat{t}$. We will see this practical limitation for \
+% high dimensional data again in Section~\ref{sec5.2: gram results}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsubsection{Dimensionality Scaling and Finite-Sample Coverage}
+\label{sec5.1.2: dimensionality scaling}
+
+\noindent To evaluate coverage validity as the dimensionality grows, we benchmarked the reference CSA paper method (binary 
+search) against the Radial envelope ($\delta = 15^\circ$), and the Strip envelope ($M_{\text{bin}} = 20$) across dimensions 
+$K \in \{2, 5, 10, 20\}$ at target level $1-\alpha = 0.900$ ($\alpha = 0.10, N = 1\,000$). The scores were drawn from a 
+$K$-dimensional multivariate normal distribution with mean vector $\mathbf{0.3}$, variance $0.02$, and off diagonal feature 
+correlation $\rho = 0.30$, clipped to $[0,1]^K$.
+
+\begin{table}[htbp]
+\centering
+\caption{Dimensionality scaling experiment ($K \in \{2,5,10,20\}$, nominal $1-\alpha = 0.900$, $N = 1\,000$). Empirical 
+coverage and calibrated size-scaling factors $\hat{t}$ are reported across envelope geometries.}
+\label{tab: dim scaling results}
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{2}{c}{\textbf{Reference CSA (Convex)}} & \multicolumn{2}{c}{\textbf{Radial Envelope}} & \multicolumn{2}{c}
+{\textbf{Strip Envelope}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+\textbf{Dimension ($K$)} & \textbf{Coverage (\%)} & $\mathbf{\hat{t}}$ & \textbf{Coverage (\%)} & $\mathbf{\hat{t}}$ & 
+\textbf{Coverage (\%)} & $\mathbf{\hat{t}}$ \\
+\midrule
+$K = 2$  & 90.0 & 0.996 & 90.0 & 0.972 & 90.0 & 0.893 \\
+$K = 5$  & 90.0 & 1.009 & 90.0 & 1.179 & 90.0 & 1.031 \\
+$K = 10$ & 90.0 & 1.016 & 90.0 & 1.920 & 90.0 & 1.107 \\
+$K = 20$ & 90.0 & 1.021 & 90.0 & 2.925 & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent As shown in Table~\ref{tab: dim scaling results}, every method achieves exactly $90.0\%$ empirical coverage across 
+all tested dimensions. This empirically confirms the distribution free guarantee of Theorem~\ref{thm: marginal coverage}. 
+However, their statistical efficiency, which is reflected by the scaling factor $\hat{t}$, is significantly different as $K$ 
+increases. For the reference CSA method, the $\hat{t}$ only slightly changes from $0.996$ to $1.021$ between $K=2$ and $K=20$.
+For the radial method the $\hat t$ value inflates for high dimensions, it nearly triples from $\hat{t} = 0.972$ at $K=2$ to 
+$\hat{t} = 2.925$ at $K=20$. This is due to the curse of dimensionality, the directional cones ($\delta = 15^\circ$) capture 
+fewer local calibration points in sparse high dimensional spaces, so more directions fall back to the conservative global 
+marginal quantile $\tilde{q}_{\text{marg}}$, inflating $\hat{t}$. Finally, the strip method maintains the robust sample 
+efficiency up to $K=10$ ($\hat{t} = 1.107$), and outperforms the radial method by using axis aligned pairwise projections. 
+(Evaluations at $K=20$ were omitted as per-bin sample counts shrink rapidly at fixed $N$).
+
+
+% \subsubsection{Robustness to Score Distribution Shape}
+% \label{sec5.1.2: distribution robustness}
+
+% \noindent Next, we checked if the coverage holds not only across $K$ but across qualitatively different score cloud 
+% shapes, at fixed $K=3$ we tested an isotropic normal, a correlated normal, a heavier-tailed multivariate Laplace, and a 
+% sparse distribution with one dimension concentrated near zero. Table~\ref{tab: distribution robustness} reports Radial and 
+% Strip's calibrated $\hat t$ and coverage on each.
+
+% \begin{table}[htbp]
+% \centering
+% \caption{Coverage and $\hat t$ across score distribution shape ($K=3$, $\alpha=0.1$, $N=400$).}
+% \label{tab: distribution robustness}
+% \begin{tabular}{lcccc}
+% \toprule
+% \textbf{Distribution} & \textbf{Radial $\hat t$} & \textbf{Radial Cov.} & \textbf{Strip $\hat t$} & \textbf{Strip Cov.} \\
+% \midrule
+% Normal (identity cov.) & 1.072 & 0.900 & 1.161 & 0.900 \\
+% Normal (correlated)    & 0.995 & 0.900 & 0.861 & 0.900 \\
+% Multivariate Laplace   & 1.072 & 0.900 & 1.232 & 0.900 \\
+% Sparse (one dim.\ near 0) & 1.077 & 0.900 & 1.155 & 0.900 \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+
+% \noindent Coverage is exact ($0.900$) in every case, regardless of distributional shape, since the 
+% guarantee depends only on exchangeability (Theorem~\ref{thm: marginal coverage}), not on any distributional 
+% assumption. The calibrated $\hat t$, however, adapts to shape, Strip's $\hat t$ is more sensitive to correlation 
+% structure than Radial's (ranging $0.861$–$1.232$ versus $0.995$–$1.077$). This is consistent with the setup of the strip 
+% method, it is conditioned directly on pairwise dimension relationships (Section~\ref{sec3.4: envelope construction}) while 
+% the Radial method is conditioned only on overall direction.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Geometric Robustness Across Score Topologies}
+\label{sec5.1.3: distribution robustness}
+
+\noindent To assess the boundary adaptation under realistic non convex or misspecified feature spaces, we calibrated 
+$3\text{D}$ ($K=3$) envelopes ($\alpha = 0.10, N = 400$) across four distinct score topologies: (i) \emph{Uncorrelated 
+Gaussian} ($\boldsymbol{\Sigma} = \mathbf{I}$), (ii) \emph{Correlated Gaussian} ($\rho = 0.85$), (iii) \emph{Multivariate 
+Laplace} (heavy-tailed), and (iv) \emph{Sparse} (one feature centered near zero, $0.05 \pm 0.03$, while others remain 
+diffuse at $0.35$).
+
+\begin{table}[htbp]
+\centering
+\caption{Geometric adaptation benchmark across $3\text{D}$ score topologies ($\alpha = 0.10, N = 400$). Both Radial ($M=150$) 
+and Strip ($M_{\text{bin}}=12$) envelopes achieve exact nominal coverage under distributional misspecification.}
+\label{tab: 3d topology results}
+\begin{tabular}{lcccc}
+\toprule
+& \multicolumn{2}{c}{\textbf{Radial Envelope}} & \multicolumn{2}{c}{\textbf{Strip Envelope}} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+\textbf{Score Distribution Topology} & \textbf{Coverage (\%)} & $\mathbf{\hat{t}}$ & \textbf{Coverage (\%)} & 
+$\mathbf{\hat{t}}$ \\
+\midrule
+Normal (Uncorrelated, $\boldsymbol{\Sigma} = \mathbf{I}$) & 90.0 & 1.072 & 90.0 & 1.161 \\
+Normal (Highly Correlated, $\rho=0.85$)              & 90.0 & 0.995 & 90.0 & 0.861 \\
+Multivariate Laplace (Heavy-Tailed)               & 90.0 & 1.072 & 90.0 & 1.232 \\
+Sparse (Degenerate Dimension)                     & 90.0 & 1.077 & 90.0 & 1.155 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\noindent The results in Table~\ref{tab: 3d topology results} highlight several key properties:
+\begin{itemize}
+    \item \textbf{Distribution Free Invariance:} Both Radial and Strip constructions hit the exact $90.0\%$ target across 
+           all four topologies. this confirms that heavy tails or feature sparsity do not compromise marginal validity.
+    \item \textbf{Adaptation to Correlation:} On highly correlated data ($\rho = 0.85$), both methods require little to no 
+          inflation ($\hat t \approx 1$ for radial and $\hat t \approx 0.861$ for strip). This indicates that the shape 
+          discovery step already produces a well fitted envelope for diagonal score clouds. The Strip method's initial 
+          conditional bounds are slightly conservative for this geometry, so the calibration step fine tunes the 
+          scale downward.
+    \item \textbf{Heavy-Tail Sensitivity:} The heavy tailed Laplace distribution induces the largest inflation factor for 
+           the Strip envelope ($\hat{t} = 1.232$). This is because heavy tails produce extreme nonconformity values that 
+           force wider bin wise quantile limits during shape discovery.
+\end{itemize}
+
+
+% \subsubsection{Multi-Host Validation}
+% \label{sec5.1.3: multi host validation}
+
+% \noindent Finally, we validated the per-host envelope cascade (Section~\ref{sec3.1: problem formalisation}) on a simulated 
+% 6-host, $K=5$ setup. We calibrated one envelope per host using simulated infector scores and evaluated a test phage which was 
+% designed to infect only \texttt{Host\_B}. Across the convex baseline, Radial, and Strip constructions, all three methods 
+% correctly isolated $C(\mathbf{s}) = \{\texttt{Host\_B}\}$ as a singleton set. While this single test case serves as a sanity 
+% check rather than a full coverage estimate, it confirms that the per host cascade functions as intended before scaling to 
+% $N=54$ hosts in Section~\ref{sec5.3: host results}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\subsubsection{Multi-Host Benchmark Verification}
+\label{sec5.1.4: multi host validation}
+
+\noindent Finally, we validate the per-host envelope cascade (Section~\ref{sec3.1: problem formalisation}) on a simulated 
+6-host system ($\mathcal{H} = \{\text{Host}_A, \dots, \text{Host}_F\}$, $K=5$, $N_{\text{cal}} = 500$ infectors per host, 
+$\alpha = 0.10$). Host-specific envelopes are calibrated from true infector score distributions centered in $[0.1, 0.5]^5$. 
+A test phage matching $\text{Host}_B$ (scores in $[0.1, 0.4]^5$ for $\text{Host}_B$; scores in $[0.6, 0.9]^5$ for all non 
+target hosts) is evaluated against all six envelopes.
+
+\vspace{0.15cm}
+\noindent Across the reference CSA, Radial, and Strip constructions, all three methods correctly isolate $C(\mathbf{s}) = 
+\{\text{Host}_B\}$ as an ideal singleton prediction set, excluding every non-target host. This test case serves as a sanity 
+check under separated ground truth rather than a full coverage estimate, but it also confirms the per host cascade 
+functions as intended prior to evaluating the substantially larger host space ($N=54$) in Section~\ref{sec5.3: host results}.
+
+
+
+
+

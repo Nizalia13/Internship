@@ -29,17 +29,18 @@
 \contentsline {subsubsection}{\numberline {3.5.1}$\tau $ Computation}{20}{subsubsection.3.5.1}%
 \contentsline {subsubsection}{\numberline {3.5.2}Class Specific $\hat {t}$ Calculation}{20}{subsubsection.3.5.2}%
 \contentsline {subsubsection}{\numberline {3.5.3}Resolving the Empty Prediction Set}{21}{subsubsection.3.5.3}%
-\contentsline {section}{\numberline {4}Data and Preprocessing Pipeline}{22}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Data Description and Structural Missingness}{22}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Protein-to-Phage Aggregation and NaN-Aware Pooling}{23}{subsection.4.2}%
-\contentsline {subsection}{\numberline {4.3}Task Specific Filtering and Data Partitioning}{24}{subsection.4.3}%
-\contentsline {section}{\numberline {5}Experiments and Results}{26}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Synthetic Data Validation}{26}{subsection.5.1}%
-\contentsline {subsubsection}{\numberline {5.1.1}2D Experimenats}{26}{subsubsection.5.1.1}%
-\contentsline {subsubsection}{\numberline {5.1.2}Extension to K Dimensions}{26}{subsubsection.5.1.2}%
-\contentsline {subsubsection}{\numberline {5.1.3}Multiple Hosts}{26}{subsubsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.2}Gram Type Classification}{26}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Host Classification}{26}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Conclusion and Future Work}{27}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Summary.....}{27}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Limitations}{27}{subsection.6.2}%
+\contentsline {section}{\numberline {4}Data and Preprocessing Pipeline}{23}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Data Description and Structural Missingness}{23}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Protein-to-Phage Aggregation and NaN-Aware Pooling}{24}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Task Specific Filtering and Data Partitioning}{25}{subsection.4.3}%
+\contentsline {section}{\numberline {5}Experiments and Results}{27}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Synthetic Validation}{27}{subsection.5.1}%
+\contentsline {subsubsection}{\numberline {5.1.1}2D Geometric Proof-of-Concept and Class Conditional Efficiency}{27}{subsubsection.5.1.1}%
+\contentsline {subsubsection}{\numberline {5.1.2}Dimensionality Scaling and Finite-Sample Coverage}{28}{subsubsection.5.1.2}%
+\contentsline {subsubsection}{\numberline {5.1.3}Geometric Robustness Across Score Topologies}{28}{subsubsection.5.1.3}%
+\contentsline {subsubsection}{\numberline {5.1.4}Multi-Host Benchmark Verification}{29}{subsubsection.5.1.4}%
+\contentsline {subsection}{\numberline {5.2}Gram Type Classification}{30}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Host Classification}{30}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Conclusion and Future Work}{31}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Summary.....}{31}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Limitations}{31}{subsection.6.2}%
