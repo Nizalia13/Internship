@@ -23,3 +23,224 @@
 % [0.3,0.7] — these are phages for which the underlying classifiers are genuinely uncertain
 % Show that coverage on typical phages of each class is much higher than coverage on the ambiguous subset — this is a property of the data, not a flaw in the conformal framework
 % Discuss variance across runs: radial method has higher variance than strip and collapsed due to the random direction sampling
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Gram-Type Classification Results}
+\label{sec5.2: gram results}
+
+\noindent We evaluate the three envelope geometries (Radial, Strip, and Collapsed 1D) on real bacteriophage data for binary 
+Gram-type classification ($\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$, $K = 40$). Because per-column protein-level 
+split assignments were unavailable for the general functional base models, we adopt the conservative contamination workaround 
+of Section~\ref{sec4.3: contamination fix}: evaluations are strictly restricted to the $4\,433$ phages in Fold 0, ensuring 
+all protein scores are out-of-fold by construction.
+
+\subsubsection{Experimental Setup}
+\label{sec5.2.1: gram setup}
+
+\noindent The Fold-0 subset is partitioned into shape-discovery ($|S_1| = 1\,768$), size-scaling ($|S_2| = 1\,326$), and 
+holdout evaluation ($|S_3| = 1\,328$) sets following a $40/30/30$ split. For each geometry, a single shared envelope $E$ 
+is fitted on $S_1$, and class-conditional scaling factors $\hat{t}_{\text{neg}}$ and $\hat{t}_{\text{pos}}$ are calculated 
+on $S_2$ via \eqref{eq: class specific quantile}. To guarantee validity across both classes simultaneously, the envelope is 
+scaled by their maximum:
+\begin{equation}
+\label{eq: gram-max-scaling}
+\hat{t} = \max\big(\hat{t}_{\text{neg}},\, \hat{t}_{\text{pos}}\big).
+\end{equation}
+At test time, the Gram-type nonconformity transformation is evaluated under both candidate hypotheses. An empty candidate set ($\emptyset$) is resolved conservatively by returning both labels ($C(\mathbf{s}) = \mathcal{H}$) as established in Section~\ref{sec3.5: t hat calculation}.
+
+\subsubsection{Coverage and Prediction Efficiency}
+\label{sec5.2.2: gram coverage}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Plots/comparison_plots.png}
+    \caption{Gram-type classification performance across Radial, Strip, and Collapsed 1D geometries on the held-out test split 
+(Fold 0, nominal target $1-\alpha = 0.90$). Panels show (left to right): prediction set size distribution, marginal empirical 
+coverage, class-conditional coverage, and singleton accuracy with sample counts ($n$).}
+    \label{fig: gram results}
+\end{figure}
+
+\paragraph{Coverage Validity.} As illustrated in Figure~\ref{fig: gram results} (middle panels), all three envelope geometries 
+achieve $99.8\%$ empirical coverage, well above the nominal $90\%$ target (red dashed line). Class-conditional breakdown 
+confirms balanced coverage for both Gram-negative ($99.9\%$) and Gram-positive ($99.8\%$) phages, demonstrating that the 
+max-threshold calibration $\hat{t} = \max(\hat{t}_{\text{neg}}, \hat{t}_{\text{pos}})$ effectively eliminates coverage 
+disparity between classes.
+
+\paragraph{Prediction Efficiency.} High coverage does not compromise efficiency. As shown in the set size distribution of 
+Figure~\ref{fig: gram results} (left panel), $94\text{--}95\%$ of test phages receive confident singleton predictions, while 
+only $5\text{--}6\%$ require size-2 uncertain sets ($C(\mathbf{s}) = \mathcal{H}$). When singleton sets are produced, the 
+prediction accuracy is $99.8\%$ across all three geometries ($n \ge 1\,249$), confirming that decisive outputs are 
+exceptionally reliable.
+
+\subsubsection{Score Separation and Geometric Equivalence}
+\label{sec5.2.3: score separation}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\linewidth]{Plots/raw_score_distribution.png}
+\caption{Distribution of mean raw functional scores per test phage, separated by true host Gram-type. Gram-negative phages 
+concentrate tightly near 0 while Gram-positive phages concentrate near 1, leaving the intermediate ambiguous zone 
+($0.3\text{--}0.7$, dashed red lines) virtually empty.}
+\label{fig: gram score separation}
+\end{figure}
+
+\noindent All three envelope constructions yield nearly identical performance metrics in Figure~\ref{fig: gram results}. 
+This equivalence is directly explained by the empirical raw score distribution in Figure~\ref{fig: gram score separation}: 
+Gram-negative phages concentrate tightly near the origin (mean $0.055 \pm 0.054$), whereas Gram-positive phages concentrate 
+near $1.0$ (mean $0.918 \pm 0.066$). Because the two classes form disjoint, well-separated clusters with negligible density 
+in the intermediate ambiguous zone ($0.3\text{--}0.7$), any sensible star-shaped or bounding boundary cleanly separates 
+them. The distinct geometric advantages of non-convex envelopes emerge more prominently in the higher-dimensional, 
+multi-class host-level task presented in Section~\ref{sec5.3: host results}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\noindent We evaluate the three envelope constructions on real phage data for the binary gram-type task, using the 
+fold-$0$-restricted, $40/30/30$ split of Section~\ref{sec4.3: contamination} 
+($|S_1|=1768$, $|S_2|=1326$, held-out test $=1328$).
+
+\subsubsection{Coverage and Efficiency}
+\label{sec5.2.1: coverage results}
+
+\begin{table}[htbp]
+\centering
+\caption{Gram-type classification results on the held-out test set (Fold $0$, $\alpha=0.1$).}
+\label{tab: gram results}
+\begin{tabular}{lccccccc}
+\toprule
+\textbf{Method} & \textbf{Coverage} & \textbf{Neg.\ Cov.} & \textbf{Pos.\ Cov.} & \textbf{Avg.\ Set Size} & 
+\textbf{Empty \%} & \textbf{Size-2 \%} & \textbf{Singleton Acc.} \\
+\midrule
+Radial       & 0.998 & 0.999 & 0.998 & 1.053 & 0.0\% & 5.3\% & 0.998 \\
+Strip        & 0.998 & 0.999 & 0.998 & 1.059 & 0.0\% & 5.9\% & 0.998 \\
+Collapsed 1D & 0.998 & 0.999 & 0.998 & 1.050 & 0.0\% & 5.0\% & 0.998 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent All three methods substantially exceed the nominal $90\%$ target, reaching $99.8\%$ coverage for both 
+gram-negative and gram-positive phages — the class-conditional calibration of Section~\ref{sec3.5: t hat calculation} 
+resolves what was, in earlier iterations of this pipeline, a real gram-positive undercoverage gap. The cost of this 
+margin is visible in average set size: at $\approx 1.05$–$1.06$, roughly $5$–$6\%$ of test phages receive a 
+size-$2$ (fully uncertain) prediction rather than a confident singleton, and singleton accuracy remains $99.8\%$ 
+across all three methods — when the model does commit to one class, it is almost never wrong. The three geometries 
+perform near-identically on this two-class, well-separated problem; the methods diverge more substantially on the 
+higher-dimensional host-level task of Section~\ref{sec5.3: host results}.
+
+\vspace{0.15cm}
+\noindent We note that coverage this far above target is itself informative: it suggests the calibrated envelopes 
+are wider than strictly necessary to meet $1-\alpha=0.90$, trading efficiency for a safety margin the task may not 
+require. We return to this trade-off in Section~\ref{sec6: conclusion}.
+
+\subsubsection{Score Separation}
+\label{sec5.2.2: score separation}
+
+\noindent The distribution of mean raw scores per test phage, split by true gram-type, shows gram-negative phages 
+concentrating tightly near $0$ (mean $0.055$, std $0.054$) and gram-positive phages concentrating tightly near $1$ 
+(mean $0.918$, std $0.066$), with negligible density in the ambiguous mid-range — the empirical basis for the 
+separated-support assumption of Equation~\eqref{eq: separated supports} and the near-origin concentration argument of 
+Section~\ref{sec3.2: non-convex envelopes}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\noindent We first evaluate the three envelope methods on binary Gram-type prediction ($\mathcal{H} = \{\text{gram-neg}, 
+\text{gram-pos}\}$, $K=40$). Because per-column protein-level split assignments are unavailable for the Gram-type score 
+models, we adopt the conservative workaround of Section~\ref{sec4.3: contamination fix}: only fold-0 phages are used, 
+ensuring every score is out-of-fold by construction.
+
+\paragraph{Experimental protocol.} The $n=4\,433$ fold-0 phages are shuffled and partitioned $40/30/30$ into shape-discovery 
+($S_1$), size-scaling ($S_2$), and held-out test sets. All three envelopes are calibrated with class-conditional thresholds 
+$\hat{t}_{\text{neg}}$ and $\hat{t}_{\text{pos}}$ (Equation~\eqref{eq: class conditional t hat}), taking $\hat{t} = 
+\max\{\hat{t}_{\text{neg}}, \hat{t}_{\text{pos}}\}$. At test time, the nonconformity transformation \eqref{eq: gram nc 
+transformation} is applied under both hypotheses; an empty prediction set is resolved conservatively by returning 
+$\mathcal{H}$ (both labels), flagged as a forced decision.
+
+\begin{table}[htbp]
+\centering
+\caption{Gram-type classification results ($\alpha=0.1$, fold-0 only, held-out test set).}
+\label{tab: gram results}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Method} & \textbf{Coverage} & \textbf{Gram-neg} & \textbf{Gram-pos} & \textbf{Avg.\ set size} & \textbf{Singleton acc.} \\
+\midrule
+Radial      & 0.950 & 0.996 & 0.865 & 0.954 & 0.996 \\
+Strip       & 0.946 & 0.986 & 0.874 & 0.949 & 0.997 \\
+Collapsed 1D& 0.952 & 0.995 & 0.872 & 0.955 & 0.996 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Coverage.} All three methods exceed the nominal $90\%$ marginal coverage target. The overall coverage ($\approx 
+95\%$) is higher than $1-\alpha$ because the conservative fold-0-only restriction reduces the effective calibration set 
+size, leaving less data to precisely tune the quantile boundary. More importantly, the class-conditional breakdown reveals 
+asymmetric behavior: Gram-negative coverage is near-perfect ($\geq 98.6\%$), while Gram-positive coverage is lower ($\approx 
+87\%$). This imbalance arises because Gram-positive phages are fewer in fold 0 ($\approx 36\%$ of the set), so the class
+-conditional quantile $\hat{t}_{\text{pos}}$ is estimated from a smaller $S_2^{\text{pos}}$ and is more variable.
+
+\paragraph{Efficiency and confidence.} The average prediction-set size is $\approx 0.95$ for all methods, meaning that 
+most phages receive a singleton prediction. Singleton accuracy exceeds $99.5\%$ across all geometries: when the model is 
+confident enough to output exactly one label, it is almost always correct. The empty-set rate is zero by construction 
+(empty sets are replaced by $\mathcal{H}$), but the underlying forced-rate (the fraction of phages that fall outside both 
+envelopes before resolution) is reported separately in the analysis. The near-identical performance across the three 
+geometries suggests that, for this low-dimensional binary task with strongly separated score distributions, the choice of 
+envelope geometry is less critical than the class-conditional calibration strategy.
+
+\paragraph{Takeaway.} The Gram-type experiments validate that the conformal pipeline achieves reliable coverage and high 
+precision on real biological data, even under the conservative fold-0 restriction. The Gram-positive under-coverage 
+motivates the full five-fold protocol with protein-level masking used in the host-level experiments of Section
+~\ref{sec5.3: host results}, where larger calibration sets per class are available.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\noindent We first evaluate the three envelope methods on binary Gram-type prediction ($\mathcal{H} = \{\text{gram-neg}, 
+\text{gram-pos}\}$, $K=40$). Because per-column protein-level split assignments are unavailable for the Gram-type score 
+models, we adopt the conservative workaround of Section~\ref{sec4.3: contamination fix}: only fold-0 phages are used, 
+ensuring every score is out-of-fold by construction.
+
+\paragraph{Experimental protocol.} The $n=4\,433$ fold-0 phages are shuffled and partitioned $40/30/30$ into shape-discovery 
+($S_1$), size-scaling ($S_2$), and held-out test sets. All three envelopes are calibrated with class-conditional thresholds 
+$\hat{t}_{\text{neg}}$ and $\hat{t}_{\text{pos}}$ (Equation~\eqref{eq: class conditional t hat}), taking $\hat{t} = 
+\max\{\hat{t}_{\text{neg}}, \hat{t}_{\text{pos}}\}$. At test time, the nonconformity transformation \eqref{eq: gram nc 
+transformation} is applied under both hypotheses; an empty prediction set is resolved conservatively by returning 
+$\mathcal{H}$ (both labels), flagged as a forced decision.
+
+\begin{table}[htbp]
+\centering
+\caption{Gram-type classification results ($\alpha=0.1$, fold-0 only, held-out test set).}
+\label{tab: gram results}
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Method} & \textbf{Coverage} & \textbf{Gram-neg} & \textbf{Gram-pos} & \textbf{Avg.\ set size} & \textbf{Singleton acc.} \\
+\midrule
+Radial      & 0.950 & 0.996 & 0.865 & 0.954 & 0.996 \\
+Strip       & 0.946 & 0.986 & 0.874 & 0.949 & 0.997 \\
+Collapsed 1D& 0.952 & 0.995 & 0.872 & 0.955 & 0.996 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Coverage.} All three methods exceed the nominal $90\%$ marginal coverage target. The overall coverage 
+($\approx 95\%$) is higher than $1-\alpha$ because the conservative fold-0-only restriction reduces the effective 
+calibration set size, leaving less data to precisely tune the quantile boundary. More importantly, the class-conditional 
+breakdown reveals asymmetric behavior: Gram-negative coverage is near-perfect ($\geq 98.6\%$), while Gram-positive coverage 
+is lower ($\approx 87\%$). This imbalance arises because Gram-positive phages are fewer in fold 0 ($\approx 36\%$ of the 
+set), so the class-conditional quantile $\hat{t}_{\text{pos}}$ is estimated from a smaller $S_2^{\text{pos}}$ and is more 
+variable.
+
+\paragraph{Efficiency and confidence.} The average prediction-set size is $\approx 0.95$ for all methods, meaning that most 
+phages receive a singleton prediction. Singleton accuracy exceeds $99.5\%$ across all geometries: when the model is confident 
+enough to output exactly one label, it is almost always correct. The empty-set rate is zero by construction (empty sets are 
+replaced by $\mathcal{H}$), but the underlying forced-rate (the fraction of phages that fall outside both envelopes before 
+resolution) is reported separately in the analysis. The near-identical performance across the three geometries suggests that, 
+for this low-dimensional binary task with strongly separated score distributions, the choice of envelope geometry is less 
+critical than the class-conditional calibration strategy.
+
+\paragraph{Takeaway.} The Gram-type experiments validate that the conformal pipeline achieves reliable coverage and high 
+precision on real biological data, even under the conservative fold-0 restriction. The Gram-positive under-coverage motivates 
+the full five-fold protocol with protein-level masking used in the host-level experiments of Section~\ref{sec5.3: host 
+results}, where larger calibration sets per class are available.
+
+
+

@@ -66,7 +66,7 @@ scores with known ground truth.
 \subsubsection{2D Geometric Proof-of-Concept and Class Conditional Efficiency}
 \label{sec5.1.1: 2d proof of concept}
 
-\noindent We first simulated $N = 400$ bivariate score pairs from $\mathcal{N}((0.15,0.15), \boldsymbol{\Sigma})$ with 
+\noindent We first simulated $N = 400$ bivariate score pairs from $\mathcal{N}((0.15,0.15), \Sigma)$ with 
 $\Sigma_{11}=\Sigma_{22}=0.01$ and $\Sigma_{12}=-0.0085$, clipped to $[0,1]^2$. Fitting a single convex envelope 
 ($\alpha=0.10$, $M=500$ directions, 50/50 $S_1/S_2$ split) confirms the two stage pipeline: the initial shape (only boundary 
 under covers), whereas the size scaled envelope hits the target $90\%$ coverage exactly.
@@ -131,18 +131,20 @@ $K \in \{2, 5, 10, 20\}$ at target level $1-\alpha = 0.900$ ($\alpha = 0.10, N =
 $K$-dimensional multivariate normal distribution with mean vector $\mathbf{0.3}$, variance $0.02$, and off diagonal feature 
 correlation $\rho = 0.30$, clipped to $[0,1]^K$.
 
+
+
 \begin{table}[htbp]
 \centering
-\caption{Dimensionality scaling experiment ($K \in \{2,5,10,20\}$, nominal $1-\alpha = 0.900$, $N = 1\,000$). Empirical 
-coverage and calibrated size-scaling factors $\hat{t}$ are reported across envelope geometries.}
-\label{tab: dim scaling results}
+\small
+\setlength{\tabcolsep}{3pt} % Adjust spacing between columns
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
 & \multicolumn{2}{c}{\textbf{Reference CSA (Convex)}} & \multicolumn{2}{c}{\textbf{Radial Envelope}} & \multicolumn{2}{c}
 {\textbf{Strip Envelope}} \\
 \cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
-\textbf{Dimension ($K$)} & \textbf{Coverage (\%)} & $\mathbf{\hat{t}}$ & \textbf{Coverage (\%)} & $\mathbf{\hat{t}}$ & 
-\textbf{Coverage (\%)} & $\mathbf{\hat{t}}$ \\
+\textbf{Dimension ($K$)} & \textbf{Coverage (\%)} & $\hat{\mathbf{t}}$ & \textbf{Coverage (\%)} & $\hat{\mathbf{t}}$ & 
+\textbf{Coverage (\%)} & $\hat{\mathbf{t}}$ \\
 \midrule
 $K = 2$  & 90.0 & 0.996 & 90.0 & 0.972 & 90.0 & 0.893 \\
 $K = 5$  & 90.0 & 1.009 & 90.0 & 1.179 & 90.0 & 1.031 \\
@@ -150,7 +152,12 @@ $K = 10$ & 90.0 & 1.016 & 90.0 & 1.920 & 90.0 & 1.107 \\
 $K = 20$ & 90.0 & 1.021 & 90.0 & 2.925 & -- & -- \\
 \bottomrule
 \end{tabular}
+}
+\caption{Dimensionality scaling experiment ($K \in \{2,5,10,20\}$, nominal $1-\alpha = 0.900$, $N = 1\,000$). Empirical 
+coverage and calibrated size-scaling factors $\hat{t}$ are reported across envelope geometries.}
+\label{tab: dim scaling results}
 \end{table}
+
 
 \noindent As shown in Table~\ref{tab: dim scaling results}, every method achieves exactly $90.0\%$ empirical coverage across 
 all tested dimensions. This empirically confirms the distribution free guarantee of Theorem~\ref{thm: marginal coverage}. 
@@ -204,7 +211,7 @@ efficiency up to $K=10$ ($\hat{t} = 1.107$), and outperforms the radial method b
 
 \noindent To assess the boundary adaptation under realistic non convex or misspecified feature spaces, we calibrated 
 $3\text{D}$ ($K=3$) envelopes ($\alpha = 0.10, N = 400$) across four distinct score topologies: (i) \emph{Uncorrelated 
-Gaussian} ($\boldsymbol{\Sigma} = \mathbf{I}$), (ii) \emph{Correlated Gaussian} ($\rho = 0.85$), (iii) \emph{Multivariate 
+Gaussian} ($\Sigma = \mathbf{I}$), (ii) \emph{Correlated Gaussian} ($\rho = 0.85$), (iii) \emph{Multivariate 
 Laplace} (heavy-tailed), and (iv) \emph{Sparse} (one feature centered near zero, $0.05 \pm 0.03$, while others remain 
 diffuse at $0.35$).
 
@@ -213,19 +220,21 @@ diffuse at $0.35$).
 \caption{Geometric adaptation benchmark across $3\text{D}$ score topologies ($\alpha = 0.10, N = 400$). Both Radial ($M=150$) 
 and Strip ($M_{\text{bin}}=12$) envelopes achieve exact nominal coverage under distributional misspecification.}
 \label{tab: 3d topology results}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
 & \multicolumn{2}{c}{\textbf{Radial Envelope}} & \multicolumn{2}{c}{\textbf{Strip Envelope}} \\
 \cmidrule(lr){2-3} \cmidrule(lr){4-5}
-\textbf{Score Distribution Topology} & \textbf{Coverage (\%)} & $\mathbf{\hat{t}}$ & \textbf{Coverage (\%)} & 
-$\mathbf{\hat{t}}$ \\
+\textbf{Score Distribution Topology} & \textbf{Coverage (\%)} & $\hat{\mathbf{t}}$ & \textbf{Coverage (\%)} & 
+$\hat{\mathbf{t}}$ \\\\
 \midrule
-Normal (Uncorrelated, $\boldsymbol{\Sigma} = \mathbf{I}$) & 90.0 & 1.072 & 90.0 & 1.161 \\
+Normal (Uncorrelated, $\Sigma = \mathbf{I}$) & 90.0 & 1.072 & 90.0 & 1.161 \\
 Normal (Highly Correlated, $\rho=0.85$)              & 90.0 & 0.995 & 90.0 & 0.861 \\
 Multivariate Laplace (Heavy-Tailed)               & 90.0 & 1.072 & 90.0 & 1.232 \\
 Sparse (Degenerate Dimension)                     & 90.0 & 1.077 & 90.0 & 1.155 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 

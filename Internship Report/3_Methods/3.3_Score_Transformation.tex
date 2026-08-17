@@ -42,7 +42,7 @@ $\phi_h(s_k) = 1 - s_k$ when $c_h = 1$, this ensures that $\phi_h(s_k) \to 0$ wh
 \label{sec3.3.1: gram nc mapping}
 \noindent In the binary Gram-type classification, $\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$, all the $K$ functional 
 score models measure a single Gram-positive evidence scale. Empirically, true Gram-negative phages have low raw scores 
-(mean $\approx 0.06\text{--}0.08$), whereas true Gram-positive phages exhibit high raw scores (mean $\approx 0.63\text{--}0.81$).
+(mean $\approx 0.07$), whereas true Gram-positive phages exhibit high raw scores (mean $\approx 0.92$).
 
 \noindent Since the scale is shared, the $c_h$ must differ by hypothesis: $c_{\text{gramneg}} = 0$ and $c_{\text{grampos}} = 1$. 
 This gives us the elementwise transformation for dimension $k \in \{1, \ldots, K\}$:
@@ -60,6 +60,7 @@ the scores for the true hypothesis are mapped near the origin $\mathbf{0} \in \m
 to be calibrated against a shared reference envelope $E \subset \mathbb{R}_+^K$.
 
 \subsubsection{Host Level Classification Nonconformity Mapping}
+\label{sec3.3.2: host nc mapping}
 \noindent In the host level setting ($N > 2$), the candidate labels do not share the scores. Instead, each candidate host $h 
 \in \mathcal{H}$ is evaluated on a host-specific sub-vector $\mathbf{s}_h \in ([0,1] \cup \{\text{NA}\})^{K_h}$. This measures
 the direct functional compatibility with host $h$. 
