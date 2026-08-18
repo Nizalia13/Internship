@@ -1409,18 +1409,22 @@ INPUT ./Title_Page.tex
 INPUT Title_Page.tex
 INPUT ./Title_Page.tex
 INPUT Title_Page.tex
-INPUT ./logo_ensimag_uga.png
-INPUT ./logo_ensimag_uga.png
-INPUT logo_ensimag_uga.png
-INPUT ./logo_ensimag_uga.png
-INPUT ./logo_ensimag_uga.png
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr17.tfm
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmcsc10.tfm
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr17.tfm
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmbx12.tfm
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmbx12.tfm
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmbx12.tfm
+INPUT ./Plots/logo_IM2AG.jpeg
+INPUT ./Plots/logo_IM2AG.jpeg
+INPUT Plots/logo_IM2AG.jpeg
+INPUT ./Plots/logo_IM2AG.jpeg
+INPUT ./Plots/logo_IM2AG.jpeg
+INPUT ./Plots/logo_Ensimag.jpeg
+INPUT ./Plots/logo_Ensimag.jpeg
+INPUT Plots/logo_Ensimag.jpeg
+INPUT ./Plots/logo_Ensimag.jpeg
+INPUT ./Plots/logo_Ensimag.jpeg
 INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr12.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr17.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmbx12.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr17.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmbx12.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmbx12.tfm
 INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
 INPUT ./Abstract.tex
 INPUT Abstract.tex
@@ -1435,6 +1439,7 @@ INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmr10.tfm
 INPUT ./main.toc
 INPUT main.toc
 INPUT main.toc
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmbx12.tfm
 INPUT /usr/share/texmf/tex/latex/lm/ot1lmr.fd
 INPUT /usr/share/texmf/tex/latex/lm/ot1lmr.fd
 INPUT /usr/share/texmf/tex/latex/lm/ot1lmr.fd
@@ -1510,7 +1515,6 @@ INPUT ./2_Background_and_State_of_the_Art/2.1_Background.tex
 INPUT 2_Background_and_State_of_the_Art/2.1_Background.tex
 INPUT ./2_Background_and_State_of_the_Art/2.1_Background.tex
 INPUT 2_Background_and_State_of_the_Art/2.1_Background.tex
-INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmbx12.tfm
 INPUT ./2_Background_and_State_of_the_Art/2.2_Current Methods.tex
 INPUT 2_Background_and_State_of_the_Art/2.2_Current Methods.tex
 INPUT ./2_Background_and_State_of_the_Art/2.2_Current Methods.tex
@@ -1643,9 +1647,9 @@ INPUT ./main.out
 INPUT ./main.out
 INPUT main.run.xml
 OUTPUT main.run.xml
+INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc
-INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc
@@ -1661,7 +1665,6 @@ INPUT /usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr10.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr12.pfb
-INPUT /usr/share/texmf/fonts/type1/public/lm/lmr17.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr6.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr8.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmri12.pfb

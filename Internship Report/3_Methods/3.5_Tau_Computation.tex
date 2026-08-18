@@ -63,24 +63,48 @@ independently, admitting a candidate host $h$ if $\phi_h(\mathbf{s}_h) \in \hat{
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsubsection{Resolving the Empty Prediction Set}
 \noindent In section~\ref{sec3.1: problem formalisation} we noted that $C(\mathbf{s},\mathbf{m})$ may be empty when no 
-candidate label's transformed score falls inside $\hat t \cdot E$. In both our tasks we resolve this issue differently.
+candidate label's transformed score falls inside $\hat t \cdot E$. In both our tasks we resolve this differently.
 
 \vspace{0.15cm}
-\noindent For gram-type classification, we resolve an empty set conservatively by returning both labels, $C(\mathbf{s}) = 
-\mathcal{H}$, rather than an arbitrary tie-break — since $N=2$, this is the uninformative but always-valid choice. 
+\noindent For gram type classification, we resolve an empty set conservatively by returning both labels, $C(\mathbf{s}) = 
+\mathcal{H}$, rather than an arbitrary tie break, since $N=2$, this is the uninformative but always valid choice. 
 On the other hand, for host-level classification, where $N$ can be large and returning all of $\hat{\mathcal{H}}(\mathbf{s})$ 
-would be uninformative, an empty set is instead resolved by forcing a singleton at the host with the closest $\tau$ value:
+would be uninformative, we resolve an empty set by forcing a singleton at the host with the closest $\tau$ value:
 \begin{equation*}
 C(\mathbf{s}) = \Big\{ \operatorname*{argmin}_{h \in \hat{\mathcal{H}}(\mathbf{s})} \tau_h(\mathbf{s}_h) \Big\}.
 \end{equation*}
 
-\noindent Both are applied only when the primary rule of Equation~\eqref{eq:prediction_set_definition} yields $\emptyset$.
-The coverage guarantee of Theorem~\ref{thm: marginal coverage} remains unaffected as it is established on the primary 
-construction over $\mathcal{H}$ and empty outcomes are, by definition, cases where that guarantee already requires some label 
-to be returned to satisfy the $1-\alpha$ bound in expectation. Because set expansion and nonempty fallback options strictly 
-enlarge $C(\mathbf{s})$, the lower bound $\mathbb{P}(H \in C(\mathbf{s})) \ge 1 - \alpha$ trivially holds. Consequently, 
-the reported \texttt{empty\_rate} for both tasks is strictly zero by rule rather than an absence of out of envelope points. 
-To preserve visibility of these points, Section~\ref{sec5: experiments} reports the pre resolution \texttt{forced\_rate} 
+\noindent Both apply only when the primary rule of Equation~\eqref{eq:prediction_set_definition} yields $\emptyset$.
+Coverage guarantee in Theorem~\ref{thm: marginal coverage} remains unaffected as nonempty fallback options strictly 
+enlarge $C(\mathbf{s})$, thus the lower bound $\mathbb{P}(H \in C(\mathbf{s})) \ge 1 - \alpha$ trivially holds. Consequently, 
+the reported \texttt{empty\_rate} is strictly zero by rule rather than an absence of out-of-envelope points. 
+To preserve visibility of these points, Section~\ref{sec5: experiments} reports the pre-resolution \texttt{forced\_rate} 
 separately.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \subsubsection{Resolving the Empty Prediction Set}
+% \noindent In section~\ref{sec3.1: problem formalisation} we noted that $C(\mathbf{s},\mathbf{m})$ may be empty when no 
+% candidate label's transformed score falls inside $\hat t \cdot E$. In both our tasks we resolve this issue differently.
+
+% \vspace{0.15cm}
+% \noindent For gram-type classification, we resolve an empty set conservatively by returning both labels, $C(\mathbf{s}) = 
+% \mathcal{H}$, rather than an arbitrary tie-break — since $N=2$, this is the uninformative but always-valid choice. 
+% On the other hand, for host-level classification, where $N$ can be large and returning all of $\hat{\mathcal{H}}(\mathbf{s})$ 
+% would be uninformative, an empty set is instead resolved by forcing a singleton at the host with the closest $\tau$ value:
+% \begin{equation*}
+% C(\mathbf{s}) = \Big\{ \operatorname*{argmin}_{h \in \hat{\mathcal{H}}(\mathbf{s})} \tau_h(\mathbf{s}_h) \Big\}.
+% \end{equation*}
+
+% \noindent Both are applied only when the primary rule of Equation~\eqref{eq:prediction_set_definition} yields $\emptyset$.
+% The coverage guarantee of Theorem~\ref{thm: marginal coverage} remains unaffected as it is established on the primary 
+% construction over $\mathcal{H}$ and empty outcomes are, by definition, cases where that guarantee already requires some label 
+% to be returned to satisfy the $1-\alpha$ bound in expectation. Because set expansion and nonempty fallback options strictly 
+% enlarge $C(\mathbf{s})$, the lower bound $\mathbb{P}(H \in C(\mathbf{s})) \ge 1 - \alpha$ trivially holds. Consequently, 
+% the reported \texttt{empty\_rate} for both tasks is strictly zero by rule rather than an absence of out of envelope points. 
+% To preserve visibility of these points, Section~\ref{sec5: experiments} reports the pre resolution \texttt{forced\_rate} 
+% separately.
