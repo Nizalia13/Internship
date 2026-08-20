@@ -113,6 +113,7 @@ for all $\lambda \in [0,1]$.
 \noindent The Strip envelope defines conditional bounds for each target dimension $i$ based on the bin occupied by another dimension 
 $j$. We partition the range of dimension $j$ into $NB$ equal-width bins. For each bin $n$ containing $n_{j,n}$ calibration 
 points, the upper limit along dimension $i \neq j$ is calibrated as:
+
 \begin{equation*}
 \text{limits}[j,i,n] = \begin{cases}
 \operatorname{Quantile}_{1-\alpha}\big(\{s_{\cdot, i} : s_{\cdot, j} \in \text{bin } n\}\big) & \text{if } n_{j,n} \ge n_{\min}, \\

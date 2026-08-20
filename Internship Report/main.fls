@@ -941,6 +941,53 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/grffile/grffile.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/grffile/grffile.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/grffile/grffile.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/tabularx.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/pdflscape/pdflscape-nometadata.sty
+INPUT /usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
@@ -1534,6 +1581,8 @@ INPUT ./3_Methods/3.1_Problem.tex
 INPUT 3_Methods/3.1_Problem.tex
 INPUT ./3_Methods/3.1_Problem.tex
 INPUT 3_Methods/3.1_Problem.tex
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmri8.tfm
+INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmri7.tfm
 INPUT ./3_Methods/3.2_Nonconvex_envelopes.tex
 INPUT 3_Methods/3.2_Nonconvex_envelopes.tex
 INPUT ./3_Methods/3.2_Nonconvex_envelopes.tex
@@ -1633,6 +1682,11 @@ INPUT ./5_Experiments_and_Results/5.3_Host_Classification.tex
 INPUT 5_Experiments_and_Results/5.3_Host_Classification.tex
 INPUT ./5_Experiments_and_Results/5.3_Host_Classification.tex
 INPUT 5_Experiments_and_Results/5.3_Host_Classification.tex
+INPUT ./Plots/Host coverage and set size.png
+INPUT ./Plots/Host coverage and set size.png
+INPUT Plots/Host coverage and set size.png
+INPUT ./Plots/Host coverage and set size.png
+INPUT ./Plots/Host coverage and set size.png
 INPUT ./6_Conclusion/Summary.tex
 INPUT 6_Conclusion/Summary.tex
 INPUT ./6_Conclusion/Summary.tex
@@ -1642,6 +1696,40 @@ INPUT 6_Conclusion/limitations.tex
 INPUT ./6_Conclusion/limitations.tex
 INPUT 6_Conclusion/limitations.tex
 INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmcsc10.tfm
+INPUT ./Appendix/plots.tex
+INPUT Appendix/plots.tex
+INPUT ./Appendix/plots.tex
+INPUT Appendix/plots.tex
+INPUT ./Plots/per_host_coverage.png
+INPUT ./Plots/per_host_coverage.png
+INPUT Plots/per_host_coverage.png
+INPUT ./Plots/per_host_coverage.png
+INPUT ./Plots/per_host_coverage.png
+INPUT ./Plots/prediction set size_histogram.png
+INPUT ./Plots/prediction set size_histogram.png
+INPUT Plots/prediction set size_histogram.png
+INPUT ./Plots/prediction set size_histogram.png
+INPUT ./Plots/prediction set size_histogram.png
+INPUT ./Plots/prediction set size_boxplot.png
+INPUT ./Plots/prediction set size_boxplot.png
+INPUT Plots/prediction set size_boxplot.png
+INPUT ./Plots/prediction set size_boxplot.png
+INPUT ./Plots/prediction set size_boxplot.png
+INPUT ./Plots/heatmap_collapsed.png
+INPUT ./Plots/heatmap_collapsed.png
+INPUT Plots/heatmap_collapsed.png
+INPUT ./Plots/heatmap_collapsed.png
+INPUT ./Plots/heatmap_collapsed.png
+INPUT ./Plots/heatmap_radial.png
+INPUT ./Plots/heatmap_radial.png
+INPUT Plots/heatmap_radial.png
+INPUT ./Plots/heatmap_radial.png
+INPUT ./Plots/heatmap_radial.png
+INPUT ./Plots/heatmap_strip.png
+INPUT ./Plots/heatmap_strip.png
+INPUT Plots/heatmap_strip.png
+INPUT ./Plots/heatmap_strip.png
+INPUT ./Plots/heatmap_strip.png
 INPUT main.aux
 INPUT ./main.out
 INPUT ./main.out
@@ -1668,6 +1756,7 @@ INPUT /usr/share/texmf/fonts/type1/public/lm/lmr12.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr6.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmr8.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmri12.pfb
+INPUT /usr/share/texmf/fonts/type1/public/lm/lmri8.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb

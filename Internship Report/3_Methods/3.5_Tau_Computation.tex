@@ -6,7 +6,7 @@
 \label{3.5.1: computation}
 \noindent For any test point $\mathbf{s} \in \mathbb{R}^K$, we define the inclusion threshold function $\tau(\mathbf{s})$ (defined 
 in \ref{eq: tau-def}) as the minimum scaling factor required for the scaled envelope $t \cdot E$ to contain $\mathbf{s}$:
-% \[\tau(\mathbf{s}) = \inf \{ t > 0 : \mathbf{s} \in t \cdot E \}\]
+\[\tau(\mathbf{s}) = \inf \{ t > 0 : \mathbf{s} \in t \cdot E \}\]
 
 \noindent Given the computed $\tau$ values over the scaling set $S_2$, the calibrated scaling factor $\hat{t}$ is selected as 
 the $(1-\alpha)$ empirical quantile:
@@ -19,6 +19,9 @@ the $(1-\alpha)$ empirical quantile:
 $t$ values, our closed form expressions allow $\tau(\mathbf{s})$ to be evaluated directly for each point in a single pass 
 over $S_2$. This eliminates the iterative search entirely, which reduces the calibration computational complexity from 
 $O(|S_2| \cdot N_{\text{iter}})$ to $O(|S_2| \log |S_2|)$.
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

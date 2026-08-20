@@ -23,12 +23,12 @@ derives the calibration scaling factor $\hat{t}$.
 
 \subsection{Problem Formalization}
 \label{sec3.1: problem formalisation}
-
-\noindent We will now apply the general conformal prediction setup from Section~\ref{sec2.3: conformal prediction} to our 
+ \noindent We will now apply the general conformal prediction setup from Section~\ref{sec2.3: conformal prediction} to our 
 host prediction task. Recall from Section~\ref{sec2.1: host prediction problem} that $\mathcal{H} = \{h_1, \ldots, h_N\}$ 
 represents the discrete set of $N$ candidate bacterial hosts. Our goal is to build a function $C: \mathcal{X} \to 
 \mathcal{P} (\mathcal{H})$ that outputs a set of hosts while maintaining the coverage guarantee in Equation~\eqref{eq: 
 core coverage guarantee objective}
+
 
 \vspace{0.15cm}
 \noindent In our work, the feature space, $\mathcal{X}$, does not use the raw phage sequences directly. Instead it 
@@ -51,6 +51,19 @@ score vector. We represent each score observation as a paired vector $(\mathbf{s
 \begin{equation*}
 \mathbf{m} = (m_1, \ldots, m_K)^T \in \{0,1\}^K, \qquad m_k = \mathbf{1}(s_k \neq \text{NA}).
 \end{equation*}
+
+\noindent Given a calibration set $D_{\text{cal}} = \{(\mathbf{s}_i, \mathbf{m}_i, H_i)\}_{i=1}^n$ of exchangeable samples,
+and an unlabelled test sample $(\mathbf{s}_{n+1}, \mathbf{m}_{n+1})$ drawn exchangeably from an unknown joint probability 
+distribution. Our goal is to construct a set-valued prediction mapping $C: ([0,1] \cup \{\text{NA}\})^K \times \{0,1\}^K 
+\to \mathcal{P} (\mathcal{H})$ at significance level $\alpha \in (0,1)$ such that:
+\begin{equation*}
+\label{eq: coverage with missingness}
+\mathbb{P}\Big( H_{n+1} \in C(\mathbf{s}_{n+1}, \mathbf{m}_{n+1}) \Big) \ge 1 - \alpha.
+\end{equation*}
+At the same time, to maximize the preditive efficiency, we want to minimize the expected set size $\mathbb{E}\left[ 
+|C(\mathbf{s}, \mathbf{m})| \right]$. The sets $C(\mathbf{s}_{n+1}, \mathbf{m}_{n+1})$ as defined above may be empty 
+when no candidate label's transformed score falls within the calibrated envelope. The two prediction tasks in this 
+report resolve this case differently \ref{sec3.4: envelope construction}.
 
 \noindent The total number of observed functional dimensions for a given phage is given by the $L_1$ norm of the mask, 
 $\|\mathbf{m}\|_1 = \sum_{k=1}^K m_k$. Then we have $\mathbf{s}_{\mathbf{m}} \in [0,1]^{\|\mathbf{m}\|_1}$, the sub-vector 
@@ -80,25 +93,42 @@ from the procedure of Section~\ref{sec3.3.1: gram nc mapping}, and use it to res
 where $\mathcal{H}_g \subset \mathcal{H}$ denotes the set of hosts of gram-type $g$. Let $s_h \in \left([0,1] \cup \{NA\}
 ^{K_h}\right)$ denotes the restriction of $s$ to the $K_h$ score dimensions associated with host $h$. The host-level 
 prediction map of this report is therefore the composition
-\begin{equation*}
+\begin{equation}
+\label{eq: host-prediction-set}
 C_{\text{host}}(\mathbf{s}, \mathbf{m}) = \big\{ h \in \hat{\mathcal{H}}(\mathbf{s}) \;\big|\; \phi_h(\mathbf{s}_h) 
 \in \hat{t}_h \cdot E_h \big\},
-\end{equation*}
+\end{equation}
 rather than a single-stage test over all of $\mathcal{H}$. This cascade reduces the number of per-host envelope 
 evaluations required at test time, at the cost of making $C_{\text{host}}$ dependent on the upstream gram-type 
 prediction.
 %  we will see the implications of this dependency in Section~\todo{refer}.
 
 \vspace{0.15cm}
-\noindent Given a calibration set $D_{\text{cal}} = \{(\mathbf{s}_i, \mathbf{m}_i, H_i)\}_{i=1}^n$ of exchangeable samples,
-and an unlabelled test sample $(\mathbf{s}_{n+1}, \mathbf{m}_{n+1})$ drawn exchangeably from an unknown joint probability 
-distribution. Our goal is to construct a set-valued prediction mapping $C: ([0,1] \cup \{\text{NA}\})^K \times \{0,1\}^K 
-\to \mathcal{P} (\mathcal{H})$ at significance level $\alpha \in (0,1)$ such that:
-\begin{equation*}
-\label{eq: coverage with missingness}
-\mathbb{P}\Big( H_{n+1} \in C(\mathbf{s}_{n+1}, \mathbf{m}_{n+1}) \Big) \ge 1 - \alpha.
-\end{equation*}
-At the same time, to maximize the preditive efficiency, we want to minimize the expected set size $\mathbb{E}\left[ 
-|C(\mathbf{s}, \mathbf{m})| \right]$. The sets $C(\mathbf{s}_{n+1}, \mathbf{m}_{n+1})$ as defined above may be empty 
-when no candidate label's transformed score falls within the calibrated envelope. The two prediction tasks in this 
-report resolve this case differently \ref{sec3.4: envelope construction}.
+\noindent \noindent The following result confirms that composing the gram type and host level stages does not degrade the 
+coverage guarantee of Equation~\eqref{eq: coverage with missingness}.
+
+\begin{proposition}[Cascade Validity]
+\label{prop:cascade}
+Under exchangeability, if gram type classification is class conditionally valid at level $\alpha$ and each candidate 
+host envelope satisfies validity level $\alpha_h$, the cascaded predictor satisfies
+\begin{equation}
+\label{eq: cascade-bound}
+\mathbb{P}\big(H^\star \notin C_{\text{host}}(\mathbf{s})\big) \le \alpha + \max_{h \in \mathcal{H}} \alpha_h.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The miscoverage event $\{h^\star \notin C_{\text{host}}(\mathbf{s})\}$ implies either that the true host was pruned by the Gram 
+type filter ($h^\star \notin \mathcal{H}_{\text{cand}}(\mathbf{s})$, which requires $g^\star \notin C_{\text{gram}}(\mathbf{s})$) 
+or that $h^\star$ was admitted to the candidate pool but rejected by its host envelope ($\tau_{h^\star}(\mathbf{s}) > 
+\hat{t}_{h^\star}$). Applying the union bound:
+\begin{align*}
+\mathbb{P}\big(h^\star \notin C_{\text{host}}(\mathbf{s})\big) &\le \mathbb{P}\big(g^\star \notin C_{\text{gram}}(\mathbf{s})\big) + \mathbb{P}\big(\tau_{h^\star}(\mathbf{s}) > \hat{t}_{h^\star}\big) \\
+&= \sum_{g} \mathbb{P}(G=g)\,\mathbb{P}(g^\star \notin C_{\text{gram}} \mid G=g) + \sum_{h} \mathbb{P}(H=h)\,\mathbb{P}(\tau_h > \hat{t}_h \mid H=h) \\
+&\le \alpha + \max_{h \in \mathcal{H}} \alpha_h. \qedhere
+\end{align*}
+\end{proof}
+
+\noindent For $\alpha=0.10$, this gives a conservative worst-case coverage lower bound of $1-2\alpha=0.80$; 
+Section~\ref{sec5.3: host results} reports the much tighter empirical coverage actually achieved.
+\vspace{0.15cm}

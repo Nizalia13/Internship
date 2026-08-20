@@ -33,9 +33,9 @@ without retraining the underlying classifiers.
            $N \times K = 2\,160$ host-function pairs.
     \item \textbf{Phage Metadata:} Mappings linking each protein ID to its accession identifier, host genus label $H \in \mathcal{H}$ 
           ($N = 54$ genera), host Gram-type $G \in \{\text{gram-neg}, \text{gram-pos}\}$, and protein cluster identifier (\texttt{pc}).
-    \item \textbf{Cross-Validation Partition:} Integer fold assignments $f \in \{0, 1, 2, 3, 4\}$ assigned at the genome level, 
-           they ensure that all proteins from a given phage share the same fold.
-    \item \textbf{Protein Split Mask Matrix:} A binary assignment matrix mapping each protein to its evaluation fold across all 
+    \item \textbf{Cross-Validation Partition:} Integer split assignments $f \in \{0, 1, 2, 3, 4\}$ assigned at the genome level, 
+           they ensure that all proteins from a given phage share the same split.
+    \item \textbf{Protein Split Mask Matrix:} A binary assignment matrix mapping each protein to its evaluation split across all 
            host-function models.
 \end{enumerate}
 
@@ -59,11 +59,9 @@ interpretations of Section~\ref{sec3.3: nc transformation}. We therefore preserv
 
 \begin{table}[htbp]
 \centering
-\caption{Dataset Summary and Class Distributions}
-\label{tab: dataset summary}
 \begin{tabular}{lccc}
 \toprule
-\textbf{<Set} & \textbf{Total Phages} & \textbf{Gram-Negative} & \textbf{Gram-Positive} \\
+\textbf{Set} & \textbf{Total Phages} & \textbf{Gram-Negative} & \textbf{Gram-Positive} \\
 \midrule
 Full Dataset & 18,474 & 10,735 & 7,708 \\
 Test Split (Fold 0) & 4,433 & 2,811 & 1,611 \\
@@ -71,6 +69,8 @@ Validation Split (Fold 1) & 3,173 & -- & -- \\
 Training Splits (Folds 2--4) & 10,868 & 7,924 & 6,097 \\
 \bottomrule
 \end{tabular}
+\caption{Dataset Summary and Class Distributions}
+\label{tab: dataset summary}
 \end{table}
 
 

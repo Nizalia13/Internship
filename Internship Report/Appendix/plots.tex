@@ -1,0 +1,64 @@
+\section{Host Classification Results}
+\label{app: plots}
+
+% PER HOST COVERAGE
+\subsection{Class Conditional Coverage Breakdown}
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{Plots/per_host_coverage.png}
+  \caption{Class conditional empirical coverage across all 54 candidate bacterial hosts on Split 0 test phages. The red dashed line 
+  denotes the nominal $1 - \alpha = 0.90$ target.}
+  \label{fig: per_host_coverage}
+\end{figure}
+
+
+%%%%%%%%%% SET SIZE DISTRIBUTION %%%%%%%%%%
+\subsection{Set Size Distribution Per Host}
+% PREDICTION SET SIZE - HISTOGRAM
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{Plots/prediction set size_histogram.png}
+   \caption{Prediction set size histograms for all 54 host types across Collapsed 1D, Radial, and Strip envelopes.}
+  \label{fig: set_size_distribution_histogram}
+\end{figure}
+
+% PREDICTION SET SIZE - BOXLPLOT
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{Plots/prediction set size_boxplot.png}
+  \caption{Per host prediction set size distribution across envelope geometries, ordered by training set size.}
+  \label{fig: set_size_distributions_boxplot}
+\end{figure}
+
+
+
+%%%%%%% HEATMAPS %%%%%%%
+\subsection{Prediction Set Inclusion Heatmaps}
+% HEATMAP - 1D COLLAPSED    
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{Plots/heatmap_collapsed.png}
+    \caption{Prediction set inclusion frequency heatmap for the 1D envelope across all 54 true hosts (rows) vs. predicted candidate 
+  hosts (columns).}
+  \label{fig: heatmap_collapsed}
+\end{figure}
+
+
+% HEATMAP - RADIAL
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{Plots/heatmap_radial.png}
+  \caption{Prediction set inclusion frequency heatmap for the Radial envelope across all 54 true hosts (rows) vs. predicted candidate 
+  hosts (columns).}
+  \label{fig: heatmap_radial}
+\end{figure}
+
+
+% HEATMAP - STRIP
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{Plots/heatmap_strip.png}
+    \caption{Prediction set inclusion frequency heatmap for the Strip envelope across all 54 true hosts (rows) vs. predicted candidate 
+  hosts (columns).}
+  \label{fig: heatmap_strip}
+\end{figure}

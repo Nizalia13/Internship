@@ -23,6 +23,7 @@ mask vector $\mathbf{m}$.
 \noindent To map all the score vectors into one unified nonconformity space near the origin, we define label-dependent 
 transformations $\phi_h$. Formally, for a single score dimension $s_k \in [0,1]$ with the binary mask $m_k \in \{0,1\}$, 
 we define the general coordinate wise mapping:
+
 \begin{equation}
 \label{eq: general nc transform}
 \phi_h(s_k, m_k) = 
@@ -42,7 +43,7 @@ $\phi_h(s_k) = 1 - s_k$ when $c_h = 1$, this ensures that $\phi_h(s_k) \to 0$ wh
 \label{sec3.3.1: gram nc mapping}
 \noindent In the binary Gram-type classification, $\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$, all the $K$ functional 
 score models measure a single Gram-positive evidence scale. Empirically, true Gram-negative phages have low raw scores 
-(mean $\approx 0.07$), whereas true Gram-positive phages exhibit high raw scores (mean $\approx 0.92$).
+(mean $\approx 0.055 \pm 0.054$), whereas true Gram-positive phages exhibit high raw scores (mean $\approx 0.918 \pm 0.066$).
 
 \noindent Since the scale is shared, the $c_h$ must differ by hypothesis: $c_{\text{gramneg}} = 0$ and $c_{\text{grampos}} = 1$. 
 This gives us the elementwise transformation for dimension $k \in \{1, \ldots, K\}$:
