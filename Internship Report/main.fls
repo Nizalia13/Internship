@@ -988,6 +988,17 @@ INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/lscape.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
@@ -1287,6 +1298,18 @@ INPUT /usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
 INPUT /usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty
 INPUT /usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty
 INPUT /usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/cleveref/cleveref.sty
+INPUT /usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.sty
 INPUT /usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.sty
@@ -1687,6 +1710,21 @@ INPUT ./Plots/Host coverage and set size.png
 INPUT Plots/Host coverage and set size.png
 INPUT ./Plots/Host coverage and set size.png
 INPUT ./Plots/Host coverage and set size.png
+INPUT ./Plots/staph_both_good.png
+INPUT ./Plots/staph_both_good.png
+INPUT Plots/staph_both_good.png
+INPUT ./Plots/staph_both_good.png
+INPUT ./Plots/staph_both_good.png
+INPUT ./Plots/staph_1good_1bad.png
+INPUT ./Plots/staph_1good_1bad.png
+INPUT Plots/staph_1good_1bad.png
+INPUT ./Plots/staph_1good_1bad.png
+INPUT ./Plots/staph_1good_1bad.png
+INPUT ./Plots/phage_host_binary_clustermap_collapsed.png
+INPUT ./Plots/phage_host_binary_clustermap_collapsed.png
+INPUT Plots/phage_host_binary_clustermap_collapsed.png
+INPUT ./Plots/phage_host_binary_clustermap_collapsed.png
+INPUT ./Plots/phage_host_binary_clustermap_collapsed.png
 INPUT ./6_Conclusion/Summary.tex
 INPUT 6_Conclusion/Summary.tex
 INPUT ./6_Conclusion/Summary.tex
@@ -1695,26 +1733,45 @@ INPUT ./6_Conclusion/limitations.tex
 INPUT 6_Conclusion/limitations.tex
 INPUT ./6_Conclusion/limitations.tex
 INPUT 6_Conclusion/limitations.tex
+INPUT ./6_Conclusion/6.3_future_work.tex
+INPUT 6_Conclusion/6.3_future_work.tex
+INPUT ./6_Conclusion/6.3_future_work.tex
+INPUT 6_Conclusion/6.3_future_work.tex
 INPUT /usr/share/texmf/fonts/tfm/public/lm/ec-lmcsc10.tfm
 INPUT ./Appendix/plots.tex
 INPUT Appendix/plots.tex
 INPUT ./Appendix/plots.tex
 INPUT Appendix/plots.tex
-INPUT ./Plots/per_host_coverage.png
-INPUT ./Plots/per_host_coverage.png
-INPUT Plots/per_host_coverage.png
-INPUT ./Plots/per_host_coverage.png
-INPUT ./Plots/per_host_coverage.png
-INPUT ./Plots/prediction set size_histogram.png
-INPUT ./Plots/prediction set size_histogram.png
-INPUT Plots/prediction set size_histogram.png
-INPUT ./Plots/prediction set size_histogram.png
-INPUT ./Plots/prediction set size_histogram.png
-INPUT ./Plots/prediction set size_boxplot.png
-INPUT ./Plots/prediction set size_boxplot.png
-INPUT Plots/prediction set size_boxplot.png
-INPUT ./Plots/prediction set size_boxplot.png
-INPUT ./Plots/prediction set size_boxplot.png
+INPUT ./Plots/coverage_frequent_hosts.pdf
+INPUT ./Plots/coverage_frequent_hosts.pdf
+INPUT Plots/coverage_frequent_hosts.pdf
+INPUT ./Plots/coverage_frequent_hosts.pdf
+INPUT ./Plots/coverage_frequent_hosts.pdf
+INPUT ./Plots/coverage_rare_hosts.pdf
+INPUT ./Plots/coverage_rare_hosts.pdf
+INPUT Plots/coverage_rare_hosts.pdf
+INPUT ./Plots/coverage_rare_hosts.pdf
+INPUT ./Plots/coverage_rare_hosts.pdf
+INPUT ./Plots/set_size_hist_top50.pdf
+INPUT ./Plots/set_size_hist_top50.pdf
+INPUT Plots/set_size_hist_top50.pdf
+INPUT ./Plots/set_size_hist_top50.pdf
+INPUT ./Plots/set_size_hist_top50.pdf
+INPUT ./Plots/set_size_hist_bottom50.pdf
+INPUT ./Plots/set_size_hist_bottom50.pdf
+INPUT Plots/set_size_hist_bottom50.pdf
+INPUT ./Plots/set_size_hist_bottom50.pdf
+INPUT ./Plots/set_size_hist_bottom50.pdf
+INPUT ./Plots/set_size_distribution_top50.pdf
+INPUT ./Plots/set_size_distribution_top50.pdf
+INPUT Plots/set_size_distribution_top50.pdf
+INPUT ./Plots/set_size_distribution_top50.pdf
+INPUT ./Plots/set_size_distribution_top50.pdf
+INPUT ./Plots/set_size_distribution_bottom50.pdf
+INPUT ./Plots/set_size_distribution_bottom50.pdf
+INPUT Plots/set_size_distribution_bottom50.pdf
+INPUT ./Plots/set_size_distribution_bottom50.pdf
+INPUT ./Plots/set_size_distribution_bottom50.pdf
 INPUT ./Plots/heatmap_collapsed.png
 INPUT ./Plots/heatmap_collapsed.png
 INPUT Plots/heatmap_collapsed.png
@@ -1730,6 +1787,16 @@ INPUT ./Plots/heatmap_strip.png
 INPUT Plots/heatmap_strip.png
 INPUT ./Plots/heatmap_strip.png
 INPUT ./Plots/heatmap_strip.png
+INPUT ./Plots/phage_host_binary_clustermap_radial.png
+INPUT ./Plots/phage_host_binary_clustermap_radial.png
+INPUT Plots/phage_host_binary_clustermap_radial.png
+INPUT ./Plots/phage_host_binary_clustermap_radial.png
+INPUT ./Plots/phage_host_binary_clustermap_radial.png
+INPUT ./Plots/phage_host_binary_clustermap_strip.png
+INPUT ./Plots/phage_host_binary_clustermap_strip.png
+INPUT Plots/phage_host_binary_clustermap_strip.png
+INPUT ./Plots/phage_host_binary_clustermap_strip.png
+INPUT ./Plots/phage_host_binary_clustermap_strip.png
 INPUT main.aux
 INPUT ./main.out
 INPUT ./main.out

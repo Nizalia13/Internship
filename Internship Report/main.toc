@@ -47,10 +47,15 @@
 \contentsline {subsubsection}{\numberline {5.3.1}Experimental Protocol}{32}{subsubsection.5.3.1}%
 \contentsline {subsubsection}{\numberline {5.3.2}Hyperparameter Selection on Validation Data}{33}{subsubsection.5.3.2}%
 \contentsline {subsubsection}{\numberline {5.3.3}Empirical Test Results (Split 0)}{33}{subsubsection.5.3.3}%
-\contentsline {section}{\numberline {6}Conclusion and Future Work}{35}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Summary.....}{35}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Limitations}{35}{subsection.6.2}%
-\contentsline {section}{\numberline {A}Host Classification Results}{38}{appendix.A}%
-\contentsline {subsection}{\numberline {A.1}Class Conditional Coverage Breakdown}{38}{subsection.A.1}%
-\contentsline {subsection}{\numberline {A.2}Set Size Distribution Per Host}{38}{subsection.A.2}%
-\contentsline {subsection}{\numberline {A.3}Prediction Set Inclusion Heatmaps}{38}{subsection.A.3}%
+\contentsline {subsubsection}{\numberline {5.3.4}Geometric Boundary Visualization Across All Methods}{34}{subsubsection.5.3.4}%
+\contentsline {subsubsection}{\numberline {5.3.5}Effect of Hierarchical Gram-Type Filtering}{36}{subsubsection.5.3.5}%
+\contentsline {subsubsection}{\numberline {5.3.6}Robustness Ablations and Methodological Limitations}{38}{subsubsection.5.3.6}%
+\contentsline {section}{\numberline {6}Conclusion and Future Work}{39}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Summary.....}{39}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Limitations}{39}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Future Work}{39}{subsection.6.3}%
+\contentsline {section}{\numberline {A}Host Classification Results}{42}{appendix.A}%
+\contentsline {subsection}{\numberline {A.1}Class Conditional Coverage Breakdown}{42}{subsection.A.1}%
+\contentsline {subsection}{\numberline {A.2}Set Size Distribution Per Host}{44}{subsection.A.2}%
+\contentsline {subsection}{\numberline {A.3}Prediction Set Inclusion Heatmaps}{48}{subsection.A.3}%
+\contentsline {subsection}{\numberline {A.4}Phage Host IPrediction Clustermaps}{51}{subsection.A.4}%
