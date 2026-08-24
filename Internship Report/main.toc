@@ -1,5 +1,5 @@
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Contents}{i}{chapter*.1}%
+\contentsline {chapter}{Contents}{i}{section*.1}%
 \contentsline {chapter}{\chapternumberline {1}Introduction}{1}{chapter.1}%
 \contentsline {chapter}{\chapternumberline {2}Background \& State of the Art}{3}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Bacteriophages and Host-Prediction Problem}{3}{section.2.1}%
@@ -48,15 +48,16 @@
 \contentsline {subsection}{\numberline {5.3.2}Hyperparameter Selection on Validation Data}{33}{subsection.5.3.2}%
 \contentsline {subsection}{\numberline {5.3.3}Empirical Test Results (Split 0)}{34}{subsection.5.3.3}%
 \contentsline {subsection}{\numberline {5.3.4}Geometric Boundary Visualization Across All Methods}{35}{subsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.3.5}Effect of Hierarchical Gram-Type Filtering}{38}{subsection.5.3.5}%
-\contentsline {subsection}{\numberline {5.3.6}Robustness Ablations and Methodological Limitations}{38}{subsection.5.3.6}%
+\contentsline {subsection}{\numberline {5.3.5}Effect of Gram-Type Filtering}{38}{subsection.5.3.5}%
+\contentsline {subsection}{\numberline {5.3.6}Functional Dimension Sufficiency}{38}{subsection.5.3.6}%
+\contentsline {subsection}{\numberline {5.3.7}Performance under Different Constraints}{39}{subsection.5.3.7}%
 \contentsline {chapter}{\chapternumberline {6}Conclusion and Future Work}{41}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Summary}{41}{section.6.1}%
 \contentsline {section}{\numberline {6.2}Limitations}{42}{section.6.2}%
 \contentsline {section}{\numberline {6.3}Future Work}{43}{section.6.3}%
-\contentsline {chapter}{Bibliography}{45}{chapter*.4}%
-\contentsline {appendix}{\chapternumberline {A}Host Classification Results}{49}{chapter.A}%
-\contentsline {section}{\numberline {A.1}Class Conditional Coverage Breakdown}{49}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Set Size Distribution Per Host}{52}{section.A.2}%
-\contentsline {section}{\numberline {A.3}Prediction Set Inclusion Heatmaps}{56}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Phage Host Prediction Clustermaps}{59}{section.A.4}%
+\contentsline {chapter}{Bibliography}{45}{chapter*.3}%
+\contentsline {appendix}{\chapternumberline {A}Host Classification Results}{47}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Class Conditional Coverage Breakdown}{47}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Set Size Distribution Per Host}{50}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Prediction Set Inclusion Heatmaps}{54}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Phage Host Prediction Clustermaps}{57}{section.A.4}%

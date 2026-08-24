@@ -205,7 +205,7 @@ sparsity forces broad, uninformative multi host inclusion blocks across the enti
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Effect of Hierarchical Gram-Type Filtering}
+\subsection{Effect of Gram-Type Filtering}
 \label{sec5.3.5: gram filtering effect}
 
 Table~\ref{tab: gram filtering effect} compares the performance of of the three methods with and without Gram type pre 
@@ -236,17 +236,68 @@ envelopes. The average prediction set size decreases by over $60\%$ for both of 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Robustness Ablations and Methodological Limitations}
-\label{sec5.3.6: host ablations}
 
-We conducted three targeted ablation experiments to evaluate specific operational boundaries:
+\subsection{Functional Dimension Sufficiency}
+\label{sec5.3.6:core-set}
+
+The high dimensionality of the host level score space ($K_h \in [26, 40]$ per host) raises a natural question: how many 
+of these dimensions are actually necessary? Here we checked if a single subset of functional categories, retained across 
+all $54$ hosts, can reproduce the performance of full dimensional. We selected the $\texttt{TOP\_N\_CORE}$ most informative 
+functional categories. To select the top functions, for each host we ranked its functional dimensions by their mean score on 
+the phages that truly infect the host in the training set, then took the top 5 ranked functions per host and then finally, we 
+pooled the top 5 list across the $54$ hostsand selected the top 7 function names that occured most frequently. This yielded  
+a core score matrix of $356$ columns (17.5\% of the original $K_{\text{tot}} = 2{,}036$). 
+
+Figure~\ref{fig:core-vs-full} summarizes the results. Collapsed1D's coverage
+falls slightly from $0.929$ to $0.905$ (still above the target) with a modest increase in average set size ($6.09 \to
+6.43$). Radial's coverage falls similarly ($0.939 \to 0.915$) while its average set size \emph{decreases}
+($15.25 \to 14.58$). Strip, at its adjusted $\alpha$, achieves both higher coverage ($0.905 \to 0.917$) and a
+smaller average set size ($15.35 \to 13.64$), the largest efficiency gain of the three methods.
+
+These results suggest that most of the discriminative signal in the $2{,}036$-dimensional score space is concentrated in a 
+relatively small subset of functional categories, and that the remaining dimensions contribute comparatively little. 
+Section~\ref{sec5.3.7: host ablations} examines this dimensionality sensitivity further at a finer and provides preliminary 
+empirical support for the learned projection approach proposed as future work in Section~\ref{sec6.3:future-work}.
+
+% \begin{table}[h]
+% \centering
+% \begin{tabular}{lccc}
+% \toprule
+% Method & Configuration & Coverage & Avg. Set Size \\
+% \midrule
+% Collapsed 1D & Full ($2{,}036$ cols) & 0.929 & 6.09 \\
+% Collapsed 1D & Core ($356$ cols)     & 0.905 & 6.43 \\
+% Radial       & Full ($2{,}036$ cols) & 0.939 & 15.25 \\
+% Radial       & Core ($356$ cols)     & 0.915 & 14.58 \\
+% Strip        & Full ($2{,}036$ cols) & 0.905 & 15.35 \\
+% Strip        & Core ($356$ cols, $\alpha=0.09$) & 0.917 & 13.64 \\
+% \bottomrule
+% \end{tabular}
+% \caption{Coverage and average prediction set size on the full vs.\ core functional score set.}
+% \label{tab:core-vs-full}
+% \end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{Plots/core_vs_full.png}
+\caption{Coverage (left) and average prediction set size (right) on the full ($2{,}036$-column) vs.\ core
+($356$-column) functional score set, across all three envelope geometries.}
+\label{fig:core-vs-full}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Performance under Different Constraints}
+\label{sec5.3.7: host ablations}
+
+We conducted three targeted experiments to evaluate specific operational boundaries:
 \begin{itemize}
      \item \textbf{Low Data Host Sensitivity:} Restricting evaluation to the 17 host genera with $\ge 100$ calibration phages 
            increases the coverage of the Strip method from $0.897$ to $0.969$. This confirms that slight under coverage 
            of the strip method is driven primarily by low sample hosts where bin marginals cannot be estimated robustly. Also, 
            this ablation also reduces the Strip bin count from the validation-tuned $N_B = 10$ to $N_B = 5$ in the same 
            step, so part of the observed gain may be attributable to coarser binning rather than host sample size alone.
-    \item \textbf{Dimensionality Reduction:} Restricting host subspaces to their top $3$, $5$, or $8$ most informative functional 
+    
+     \item \textbf{Dimensionality Reduction:} Restricting host subspaces to their top $3$, $5$, or $8$ most informative functional 
            dimensions degraded empirical coverage to $86\text{--}88\%$. This indicates that secondary functional annotations provide 
            discriminative signal rather than noise.
     \item \textbf{Two-Dimensional Functional Subspaces:} Evaluating phages using only lysin and tail fiber dimensions (available for 
