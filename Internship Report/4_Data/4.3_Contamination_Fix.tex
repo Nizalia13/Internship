@@ -4,56 +4,53 @@
 % - The masking fix: the file all\_random\_pc\_splits.pkl encodes for each protein and each (host, function) model which fold that protein was assigned to. Setting scores to NaN where the protein was not in the test set of the relevant model, before aggregation, removes the contaminated predictions. The existing NaN-aware mean pooling then handles these naturally -> this is the "missing value" framing\\
 
 
-\subsection{Task Specific Filtering and Data Partitioning}
+\section{Task Specific Filtering and Data Partitioning}
 \label{sec4.3: contamination fix}
 
-\noindent The main requirement for the finite sample conformal validity (Theorem~\ref{thm: marginal coverage}) is the 
+The main requirement for the finite sample conformal validity (Theorem~\ref{thm: marginal coverage}) is the 
 exchangeability of the calibration samples $S_2$ and test samples $S_{\text{test}}$. In our dataset, the cross validation 
-partition is defined at the phage (genome cluster) level ($f_p \in \{0,1,2,3,4\}$), whereas the underlying base scoring models 
+partition is defined at the phage level ($f_p \in \{0,1,2,3,4\}$), whereas the underlying base scoring models 
 were trained at the protein-cluster (\texttt{pc}) level. A single protein cluster can span phages assigned to different genome 
 folds, therefore a base model scoring protein $p$ for category $k$ may have observed homologous proteins from $p$'s cluster 
 during training.
 
-\vspace{0.15cm}
-\noindent Formally, let $F_{p,k} \in \{0,1,2,3,4\}$ denote the fold held out when training the base model for feature $k$. A naive 
+Formally, let $F_{p,k} \in \{0,1,2,3,4\}$ denote the fold held out when training the base model for feature $k$. A naive 
 aggregation which uses scores where $F_{p,k} \neq f_p$ introduces optimistic bias, by carrying training information into test 
 evaluations. This breaks the exchangeability assumption that is a requiremenr of Theorem~\ref{thm: marginal coverage}.
 
-\noindent The underlying prediction models for host level and gram type classification differ in structure, hence we correct for data 
+The underlying prediction models for host level and gram type classification differ in structure, hence we correct for data 
 contamination at the appropriate granularity for each task:
 
-\vspace{0.15cm}
-\noindent For \textbf{host level classification}, each of the $M = 2\,160$ host function models was trained on an independent 
+For \textbf{host level classification}, each of the $M = 2\,160$ host function models were trained on an independent 
 five fold split of the protein cluster space. \texttt{all\_random\_pc\_splits.pkl} is the file that records $F_{p,k}$ for every 
-protein and model. We have enforced a strict out of fold masking rule before aggregation:
+protein and model. We have enforced a out of fold masking rule before aggregation:
 \begin{equation}
 \label{eq: contamination-mask}
 s_{p,k} \leftarrow \text{NA} \quad \text{if } F_{p,k} \neq f_p.
 \end{equation}
 
-\noindent We replace the in fold predictions with $\texttt{NA}$, then the NaN-aware mean pooling operator \eqref{eq: nan-mean-pooling} 
+We replace the in fold predictions with $\texttt{NA}$, then the NaN-aware mean pooling operator \eqref{eq: nan-mean-pooling} 
 naturally excludes the contaminated scores without introducing imputation bias. This allows us to utilize the full  dataset across 
 all five folds without discarding data:
 \begin{equation*}
 D_{\text{test}} = \{i : \text{split}_i = 0\}, \qquad D_{\text{val}} = \{i : \text{split}_i = 1\}, \qquad D_{\text{train}} = 
 \{i : \text{split}_i \in \{2,3,4\}\}.
 \end{equation*}
-\noindent Here, $D_{\text{train}}$ provides us with the the shape-discovery and size-scaling calibration sets ($S_1, S_2$), 
+
+Here, $D_{\text{train}}$ provides us with the the shape-discovery and size-scaling calibration sets ($S_1, S_2$), 
 $D_{\text{val}}$ is used to tune envelope hyperparameters (e.g., bin count $NB$, directional resolution $M$, and kernel smoothing 
 $\kappa$), and $D_{\text{test}}$ is held out for final evaluation.
 
-\vspace{0.2cm}
-\noindent For \textbf{gram type classification}, the $K = 40$ functional category models used for gram type classification do not 
+For \textbf{gram type classification}, the $K = 40$ functional category models used for gram type classification do not 
 have per column split assignment tables. As a conservative, unambiguous fallback, we restrict the gram type dataset strictly to 
 phages in Fold 0 ($\text{split}_i = 0$). Because Fold 0 phages are consistently held out at the genome cluster level, all 
 associated protein scores are unbiased by construction. Within this Fold 0 subset, we partition the phages $40/30/30$ into shape 
 discovery ($S_1$), size-scaling ($S_2$), and test ($S_{\text{test}}$) sets following the standard CSA calibration split.
 
-\vspace{0.15cm}
-\noindent In both cases, $M_{p,k}$, which is the indicator determining which protein level scores are treated as valid input 
+In both cases, $M_{p,k}$, which is the indicator determining which protein level scores are treated as valid input 
 to the pooling operator of Equation~\eqref{eq: nan-mean-pooling}, reduces to whichever correction each task's models 
-support. This is the exact fold match test of Equation~\eqref{eq: contamination-mask} for host-level classification, or 
-membership in the Fold-$0$ subset for gram-type classification.
+support. This is the exact fold match test of Equation~\eqref{eq: contamination-mask} for host level classification, or 
+membership in the Fold-$0$ subset for gram type classification.
 
 
 % \subsubsection{Valid Prediction Filter}

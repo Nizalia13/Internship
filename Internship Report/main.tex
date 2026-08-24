@@ -1,5 +1,3 @@
-\documentclass[12pt,a4paper]{article}
-
 % --- Load all configuration styles and packages ---
 \input{preamble.tex}
 
@@ -7,18 +5,21 @@
 
 % --- Document Metadata ---
 \author{Nizalia SIDDIQUI} % Updated to match your title page
-\date{January 2026}
+\date{Spetember  2026}
+\setheadfoot{18pt}{24pt}
 
 \begin{document}
 
 % 1. Load your custom title page (Ensure filename matches exactly)
 \input{Title_Page.tex} 
-\clearpage 
+\begin{titlingpage} % Keeps the title on its own page and resets page numbering
+\maketitle
+\end{titlingpage}
 
 \input{Abstract.tex}
 
-\newpage
-\input{Acknowledgements.tex}
+% \newpage
+% \input{Acknowledgements.tex}
 
 \newpage
 % Table of contents
@@ -54,16 +55,17 @@
 \input{5_Experiments_and_Results/5.3_Host_Classification.tex}
 
 \newpage
-\input{6_Conclusion/Summary.tex}
-\input{6_Conclusion/limitations.tex}
+\input{6_Conclusion/6.1_Summary.tex}
+\input{6_Conclusion/6.2_Limitations.tex}
 \input{6_Conclusion/6.3_future_work.tex}
 
 \newpage
 % Ensure all entries from references.bib are included and printed
 \nocite{*}
-\printbibliography
+\bibliographystyle{plain}
+\bibliography{references} % without .bib
 
-\newpage
+
 \appendix
 \input{Appendix/plots.tex}
 

@@ -1,2 +1,41 @@
-\subsection{Future Work}
-label{sec6.3: future work}
+\section{Future Work}
+\label{sec6.3: future work}
+
+The challenges identified in \ref{sec6.2: limitations} point toward several avenues for future research:
+
+\begin{itemize}
+    \item \textbf{Reducing Prediction Set Sizes Directly:} Beyond the Gram type filter we already used, we can use a second
+          coarser filtering stage, for example something based on phage morphology or a nearest neighbor prefilter could narrow 
+          the host level candidate space even further before the conformal envelope test is applied. 
+
+    \item \textbf{Pooling for Low Sample Hosts:} Rather than calibrating all of the $54$ host envelopes 
+           independently, a hierarchical shrinkage scheme could pool information across related hosts. Shrinking quantile 
+           estimates for data scarce genera ($n_h < 10$) toward family or Gram level baselines would stabilize coverage 
+           without requiring additional data.
+
+    \item \textbf{Dimensionality Reduction:} To resolve high dimensional sparsity in multi 
+           dimensional geometries ($K_h \approx 40$), future work should explore learning host specific linear or non linear 
+           projections $\Phi_h: \mathbb{R}^{K_h} \to \mathbb{R}^{d}$ ($d \in [2, 5]$) designed to maximize infector/non 
+           infector separation. 
+        %    Learning a Mahalanobis distance metric may help us preserve local support for the Radial envelope in higher 
+        %    dimensions and reduce reliance on the marginal fallback.
+
+    \item \textbf{Specificity Control:} The impostor calibration experiment (\ref{sec5.3.6: host ablations}) shows 
+          that naively incorporating non infector scores collapses the prediction sets to near total abstention. Future work 
+          may investigate two sided nonconformity functions that jointly penalize false negatives and false positives, 
+          this may bound the false discovery rate and yet avoid the coverage loss.
+    
+    \item \textbf{Handling of Missing Scores:} Instead of defaulting to the conservative marginal quantile when 
+          functional categories are absent, future envelope constructions could condition fallbacks on the observed 
+          missingness patterns. This may be done by observing the sparsity pattern, which itself may be carrying some 
+          information about the host.
+\end{itemize}
+
+
+
+
+
+
+
+
+

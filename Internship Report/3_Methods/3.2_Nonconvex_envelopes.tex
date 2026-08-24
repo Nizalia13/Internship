@@ -11,17 +11,15 @@
 % Briefly contrast with collapsed 1D: if the data is genuinely one-dimensional (all dimensions carry the same signal), 
 %collapsing to a scalar is sufficient and non-convexity gives no additional benefit
 
-\subsection{Non-Convex Envelopes in Classification}
+\section{Non-Convex Envelopes in Classification}
 \label{sec3.2: non-convex envelopes}
-\noindent Section~\ref{sec2.4.3: csa limitations} identified envelope convexity as one of the main limitations of standard CSA 
+Section~\ref{sec2.4.3: csa limitations} identified envelope convexity as one of the main limitations of standard CSA 
 method \cite{ochoarivera2024conformal} when applied to classification. While convex envelopes naturally model 
 continuous target spaces in regression, classification score vectors concentrate in disjoint, class-specific clusters across 
 the score space. Therefore, it leads to the envelope being streched over regions of empty spaces, making the prediction sets 
 unnecessarily large. Here, we wil describe the alternate method that we have used in this report.
 
-
-\vspace{0.15cm}
-\noindent Formally, let $\mathcal{C}_h \subseteq \mathbb{R}^K_+$ denote the support of the transformed NC vector 
+Formally, let $\mathcal{C}_h \subseteq \mathbb{R}^K_+$ denote the support of the transformed NC vector 
 $\phi_h(\mathbf{s})$ for true label $H = h \in \mathcal{H}$. In multi-class classification, these supports are strictly 
 pairwise separated:
 \begin{equation}
@@ -29,7 +27,7 @@ pairwise separated:
 \mathcal{C}_h \cap \mathcal{C}_{h'} = \emptyset, \qquad \operatorname{dist}(\mathcal{C}_h, \mathcal{C}_{h'}) > 0, \qquad 
 \forall h \neq h' \in \mathcal{H}.\end{equation}
 
-\noindent A single convex envelope $E_{\text{conv}} = \operatorname{conv}\left(\bigcup_{h \in \mathcal{H}} \mathcal{C}_h \right)$ 
+A single convex envelope $E_{\text{conv}} = \operatorname{conv}\left(\bigcup_{h \in \mathcal{H}} \mathcal{C}_h \right)$ 
 must contain every line segment connecting points in $\mathcal{C}_h$ and $\mathcal{C}_{h'}$. These line segments inevitably 
 traverse unpopulated space. Let us define the empty gap as $\text{gap} := E_{\text{conv}} \setminus \bigcup_{h \in \mathcal{H}} 
 \mathcal{C}_h$, the Lebesgue volume decomposes as:
@@ -40,14 +38,13 @@ traverse unpopulated space. Let us define the empty gap as $\text{gap} := E_{\te
 \end{equation}
 
 
-\noindent Test points falling in this gap are included in the prediction set by construction, $|C(\mathbf{s})|$, and they make 
+Test points falling in this gap are included in the prediction set by construction, $|C(\mathbf{s})|$, and they make 
 them larger without improving coverage. This inefficiency scales with the number of classes $N = |\mathcal{H}|$, making shared 
 convex hulls particularly suboptimal for hostlevel classification with multiple classes ($N > 2$). 
 % This mirrors our phage data, where the score vectors cluster tightly around distinct class centroids, this is consistent with 
 % the score separation established in Section~\ref{sec2.2.3: limitations}.
 
-\vspace{0.15cm}
-\noindent Also very importantly, dropping convexity does not violate the statistical validity: the marginal coverage guarantee holds for any measurable envelope $E \subseteq \mathbb{R}^K_+$ by exchangeability \cite{ochoarivera2024conformal}.
+Also very importantly, dropping convexity does not violate the statistical validity: the marginal coverage guarantee holds for any measurable envelope $E \subseteq \mathbb{R}^K_+$ by exchangeability \cite{ochoarivera2024conformal}.
 To ensure the scaling function $\tau(\mathbf{s}) = \inf \{ t > 0 : \mathbf{s} \in t \cdot E \}$ yields a single, well defined 
 scalar threshold, $E$ needs only to be star shaped (Definition \ref{def: star shaped}) with respect to the origin:
 \begin{equation*}
@@ -62,6 +59,6 @@ within $E$:
 $$\lambda x \in E \quad \forall x \in E, \; \forall \lambda \in [0, 1].$$
 \end{definition}
 
-\noindent Star-shapedness guarantees that $\{t > 0 : \mathbf{s} \in t \cdot E\}$ forms a continuous interval, preserving simple 
+Star-shapedness guarantees that $\{t > 0 : \mathbf{s} \in t \cdot E\}$ forms a continuous interval, preserving simple 
 single-pass calibration while allowing the envelope to tightly hug non-convex cluster geometries.
 

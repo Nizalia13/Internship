@@ -10,28 +10,27 @@
 
 
 
-\section{Data and Preprocessing Pipeline}
+\chapter{Data and Preprocessing Pipeline}
 \label{sec4: data}
 \noindent In this section, we describe the dataset architecture \ref{sec4.1: data description}, the mathematical aggregation 
 operators used to combine protein-level functional annotations into phage-level score vectors \ref{sec4.2: aggregation}, and the 
 masking strategy developed to eliminate bias caused by cross-fold protein cluster contamination \ref{sec4.3: contamination fix}.
 
-\subsection{Data Description and Structural Missingness}
+\section{Data Description and Structural Missingness}
 \label{sec4.1: data description}
-\noindent Our dataset comprises of $N_{\text{prot}} = 1\,853\,074$ protein sequences extracted from $18\,474$ unique bacteriophages. 
+Our dataset comprises of $N_{\text{prot}} = 1\,853\,074$ protein sequences extracted from $18\,474$ unique bacteriophages. 
 The base models use the EMPATHI pipeline (Section~\ref{sec2.2.2: plms}) to predict functional annotations across categories such 
 as lysin, tail sheath, portal protein, and capsid \cite{coclet2021global}. An entry $s_{p,m} \in [0,1]$ is the model's predicted 
 probability that protein $p$ carries function $m$. In this work we treat these scores as fixed features in our conformal framework 
 without retraining the underlying classifiers.
 
-\vspace{0.15cm}
-\noindent Our pipeline operates on four primary data structures:
+Our pipeline operates on four primary data structures:
 \begin{enumerate}[label=(\roman*)]
     \item \textbf{Protein Score Matrix:} Matrix of raw predictions $\mathbf{S} \in ([0,1] \cup \{\text{NA}\})^{N_{\text
           {prot}} \times M}$, where entry $s_{p,m}$ denotes the predicted probability that protein $p$ carries function $m$. For 
            the Gram-type task, we evaluate the $K$ functional categories aggregated across all hosts; for the host-level task, 
            $N \times K = 2\,160$ host-function pairs.
-    \item \textbf{Phage Metadata:} Mappings linking each protein ID to its accession identifier, host genus label $H \in \mathcal{H}$ 
+    \item \textbf{Phage Metadata:} Mappings that link each protein ID to its accession, host genus label $H \in \mathcal{H}$ 
           ($N = 54$ genera), host Gram-type $G \in \{\text{gram-neg}, \text{gram-pos}\}$, and protein cluster identifier (\texttt{pc}).
     \item \textbf{Cross-Validation Partition:} Integer split assignments $f \in \{0, 1, 2, 3, 4\}$ assigned at the genome level, 
            they ensure that all proteins from a given phage share the same split.
@@ -39,20 +38,19 @@ without retraining the underlying classifiers.
            host-function models.
 \end{enumerate}
 
-\noindent The dataset contains some structural missingness: approximately $30.6\%$ to $36.5\%$ of protein category scores are 
+The dataset contains some structural missingness: approximately $30.6\%$ to $36.5\%$ of protein category scores are 
 missing ($\text{NA}$) because phages possess only a subset of functional categories. An entry $s_{p,m} = \text{NA}$ indicates that 
 protein $p$ was not annotated with function $m$. This is deterministic rather than stochastic: a capsid protein cannot carry a 
 tail-fiber score, and an unannotated cluster does not provide any predictions. 
 
-\vspace{0.15cm}
-\noindent Formally, we can say that there exists a deterministic missingness mask $\mathbf{M} \in \{0,1\}^{N_{\text{prot}} \times 
+Formally, we can say that there exists a missingness mask $\mathbf{M} \in \{0,1\}^{N_{\text{prot}} \times 
 M}$ such that:
 \begin{equation}
 \label{eq: structural-missingness}
 s_{p,m} = \text{NA} \iff M_{p,m} = 0.
 \end{equation}
 
-\noindent This missingness reflects the biological identity of the phage, so it is not missing randomly. Imputing $\text{NA}$ 
+This missingness reflects the biological identity of the phage, so it is not missing randomly. Imputing $\text{NA}$ 
 values to zero would falsely treat unannotated proteins as evidence against infection which would violate the nonconformity 
 interpretations of Section~\ref{sec3.3: nc transformation}. We therefore preserve missingness by using NaN aware aggregation 
 (Section~\ref{sec4.2: aggregation}).
@@ -73,96 +71,3 @@ Training Splits (Folds 2--4) & 10,868 & 7,924 & 6,097 \\
 \label{tab: dataset summary}
 \end{table}
 
-
-
-% \subsection{Protein-to-Phage Aggregation and NaN-Aware Pooling}
-% \label{sec4.2: aggregation}
-% \noindent The base classifiers only score individual proteins $p \in \mathcal{P}_i$, while host infection is a property of the 
-% phage as a whole, so we need to aggregate the protein level scores into a single phage-level score vector. For each phage 
-% $i \in \{1, \ldots, N_{\text{phage}}\}$ ($N_{\text{phage}} = 18{,}474$) with protein set $\mathcal{P}_i$, let $M_{p,k} = 
-% \mathbf{1}(\text{protein } p \text{ has a valid prediction for column } k)$ denote the protein-level mask. We compute the 
-% aggregation using running sums and counts per phage, this avoids holding the full $1.85 \times 10^6$-row protein matrix in memory.
-
-% \vspace{0.15cm}
-% \noindent For each of the $K$ functional dimensions, we get the aggregated phage level score using dimension wise, NaN aware 
-% mean pooling:
-% \begin{equation}
-% \label{eq: nan-mean-pooling}
-% s_{i,k} = \begin{cases}
-% \dfrac{\sum_{p \in \mathcal{P}_i} s_{p,k} \cdot M_{p,k}}{\sum_{p \in \mathcal{P}_i} M_{p,k}} & \text{if } 
-% \sum_{p \in \mathcal{P}_i} M_{p,k} > 0, \\[10pt]
-% \text{NA} & \text{otherwise.}
-% \end{cases}
-% \end{equation}
-
-% \noindent Equation~\eqref{eq: nan-mean-pooling} excludes missing entries ($\texttt{NA}$) from both the numerator and denominator, 
-% and takes the average strictly over observed proteins. A score is $\texttt{NA}$ if and only if no protein of phage $i$ has a 
-% valid prediction for column $k$.
-
-
-% \vspace{0.15cm}
-% \noindent The phage-level mask follows directly:
-% \begin{equation}
-% \label{eq: phage-mask}
-% m_{i,k} = \mathbf{1}\left( \sum_{p \in \mathcal{P}_i} M_{p,k} > 0 \right).
-% \end{equation}
-% i.e. $m_{i,k}=1$ if at least one protein of phage $i$ has an observed score for column $k$, otherwise, it is $0$. This reduces 
-% the protein data to a phage-level matrix $\mathbf{S} \in ([0,1]\cup\{\text{NA}\})^{N_{\text{phage}} \times K}$ paired with a 
-% binary mask for missingness $\mathbf{M} \in \{0,1\}^{N_{\text{phage}} \times K}$.
-
-% \vspace{0.15cm}
-% \noindent As we have already established in Section~\ref{sec3: methodology}, our conformal envelope constructions operate 
-% natively on the paired observation $(\mathbf{s}_i, \mathbf{m}_i)$.  This preserves the structural missingness without 
-% fabricating values in place of it. Consequently, all conformal classification results reported in Section~\ref{sec5: experiments} 
-% rely entirely on this native representation, and require no imputation after aggregation. The task dependent rules that determine 
-% which protein predictions count as valid and thus define $M_{p,k}$ are detailed in Section~\ref{sec4.3: contamination fix}.
-
-% \subsection{Task Specific Filtering and Data Partitioning}
-% \label{sec4.3: contamination fix}
-
-% \noindent The main requirement for the finite sample conformal validity (Theorem~\ref{thm: marginal coverage}) is the 
-% exchangeability of the calibration samples $S_2$ and test samples $S_{\text{test}}$. In our dataset, the cross validation 
-% partition is defined at the phage (genome cluster) level ($f_p \in \{0,1,2,3,4\}$), whereas the underlying base scoring models 
-% were trained at the protein-cluster (\texttt{pc}) level. A single protein cluster can span phages assigned to different genome 
-% folds, therefore a base model scoring protein $p$ for category $k$ may have observed homologous proteins from $p$'s cluster 
-% during training.
-
-% \vspace{0.15cm}
-% \noindent Formally, let $F_{p,k} \in \{0,1,2,3,4\}$ denote the fold held out when training the base model for feature $k$. A naive 
-% aggregation which uses scores where $F_{p,k} \neq f_p$ introduces optimistic bias, by carrying training information into test 
-% evaluations. This breaks the exchangeability assumption that is a requiremenr of Theorem~\ref{thm: marginal coverage}.
-
-% \noindent The underlying prediction models for host level and gram type classification differ in structure, hence we correct for data 
-% contamination at the appropriate granularity for each task:
-
-% \vspace{0.15cm}
-% \noindent For \textbf{host level classification}, each of the $M = 2\,160$ host function models was trained on an independent 
-% five fold split of the protein cluster space. \texttt{all\_random\_pc\_splits.pkl} is the file that records $F_{p,k}$ for every 
-% protein and model. We have enforced a strict out of fold masking rule before aggregation:
-% \begin{equation}
-% \label{eq: contamination-mask}
-% s_{p,k} \leftarrow \text{NA} \quad \text{if } F_{p,k} \neq f_p.
-% \end{equation}
-
-% \noindent We replace the in fold predictions with $\texttt{NA}$, then the NaN-aware mean pooling operator \eqref{eq: nan-mean-pooling} 
-% naturally excludes the contaminated scores without introducing imputation bias. This allows us to utilize the full  dataset across 
-% all five folds without discarding data:
-% \begin{equation*}
-% D_{\text{test}} = \{i : \text{split}_i = 0\}, \qquad D_{\text{val}} = \{i : \text{split}_i = 1\}, \qquad D_{\text{train}} = 
-% \{i : \text{split}_i \in \{2,3,4\}\}.
-% \end{equation*}
-% \noindent Here, $D_{\text{train}}$ provides us with the the shape-discovery and size-scaling calibration sets ($S_1, S_2$), 
-% $D_{\text{val}}$ is used to tune envelope hyperparameters (e.g., bin count $NB$, directional resolution $M$, and kernel smoothing 
-% $\kappa$), and $D_{\text{test}}$ is held out for final evaluation.
-
-% \vspace{0.2cm}
-% \noindent For \textbf{gram type classification}, the $K = 40$ functional category models used for gram type classification do not 
-% have per column split assignment tables. As a conservative, unambiguous fallback, we restrict the gram type dataset strictly to 
-% phages in Fold 0 ($\text{split}_i = 0$). Because Fold 0 phages are consistently held out at the genome cluster level, all 
-% associated protein scores are unbiased by construction. Within this Fold 0 subset, we partition the phages $40/30/30$ into shape 
-% discovery ($S_1$), size-scaling ($S_2$), and test ($S_{\text{test}}$) sets following the standard CSA calibration split.
-
-% \noindent In both cases, $M_{p,k}$, which is the indicator determining which protein level scores are treated as valid input 
-% to the pooling operator of Equation~\eqref{eq: nan-mean-pooling}, reduces to whichever correction each task's models 
-% support. This is the exact fold match test of Equation~\eqref{eq: contamination-mask} for host-level classification, or 
-% membership in the Fold-$0$ subset for gram-type classification.

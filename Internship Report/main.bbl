@@ -1,1019 +1,119 @@
-% $ biblatex auxiliary file $
-% $ biblatex bbl format version 3.2 $
-% Do not modify the above lines!
-%
-% This is an auxiliary file used by the 'biblatex' package.
-% This file may safely be deleted. It will be recreated by
-% biber as required.
-%
-\begingroup
-\makeatletter
-\@ifundefined{ver@biblatex.sty}
-  {\@latex@error
-     {Missing 'biblatex' package}
-     {The bibliography requires the 'biblatex' package.}
-      \aftergroup\endinput}
-  {}
-\endgroup
+\begin{thebibliography}{10}
 
+\bibitem{angelopoulos2023conformal}
+A.~N. Angelopoulos and S.~Bates.
+\newblock Conformal prediction: A gentle introduction.
+\newblock {\em Foundations and Trends in Machine Learning}, 16(4):494--591, 2023.
+\newblock \href{https://doi.org/10.1561/2200000101}{[FnT]}.
 
-\refsection{0}
-  \datalist[entry]{none/global//global/global}
-    \entry{leprince2025strengthening}{article}{}
-      \name{author}{7}{}{%
-        {{hash=558c1cdead99f76240a771f1e715a677}{%
-           family={Leprince},
-           familyi={L\bibinitperiod},
-           given={Audrey},
-           giveni={A\bibinitperiod}}}%
-        {{hash=bcb47d6b8a453fd721d590ffe465dfc5}{%
-           family={Lefrançois},
-           familyi={L\bibinitperiod},
-           given={Justine},
-           giveni={J\bibinitperiod}}}%
-        {{hash=b672aa323999985f53aace8aaa295f7b}{%
-           family={Magill},
-           familyi={M\bibinitperiod},
-           given={Damian},
-           giveni={D\bibinitperiod}}}%
-        {{hash=bd22e4c559845af3bc845dc24d21ae4c}{%
-           family={Horvath},
-           familyi={H\bibinitperiod},
-           given={Philippe},
-           giveni={P\bibinitperiod}}}%
-        {{hash=fef2fe7fdf85f9dc0f55c21d542793b2}{%
-           family={Romero},
-           familyi={R\bibinitperiod},
-           given={Dennis},
-           giveni={D\bibinitperiod}}}%
-        {{hash=f560afaca35b405164d18f983cb29d26}{%
-           family={Rousseau},
-           familyi={R\bibinitperiod},
-           given={Geneviève\bibnamedelima M.},
-           giveni={G\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
-        {{hash=63540d5114aaef35adf19c535c8bc7cf}{%
-           family={Moineau},
-           familyi={M\bibinitperiod},
-           given={Sylvain},
-           giveni={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{696d35619ea4cd2071550eb12f7fd96c}
-      \strng{fullhash}{0e01086d6bcb672d65922d756bb68d0f}
-      \strng{bibnamehash}{696d35619ea4cd2071550eb12f7fd96c}
-      \strng{authorbibnamehash}{696d35619ea4cd2071550eb12f7fd96c}
-      \strng{authornamehash}{696d35619ea4cd2071550eb12f7fd96c}
-      \strng{authorfullhash}{0e01086d6bcb672d65922d756bb68d0f}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Nature Communications}
-      \field{number}{1}
-      \field{title}{Strengthening phage resistance of \textit{Streptococcus thermophilus} by leveraging complementary defense systems}
-      \field{volume}{16}
-      \field{year}{2025}
-      \field{pages}{7142}
-      \range{pages}{1}
-      \verb{doi}
-      \verb 10.1038/s41467-025-62408-3
-      \endverb
-    \endentry
-    \entry{dejonge2019molecular}{article}{}
-      \name{author}{4}{}{%
-        {{hash=e94bc4064a22b8a39a5c0b9439358795}{%
-           family={{de Jonge}},
-           familyi={d\bibinitperiod},
-           given={P.\bibnamedelimi A.},
-           giveni={P\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
-        {{hash=288231d806d86f85dd6b4113c4335407}{%
-           family={Nobrega},
-           familyi={N\bibinitperiod},
-           given={F.\bibnamedelimi L.},
-           giveni={F\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
-        {{hash=43a3a58ca7e10a460c49735ebbe61e48}{%
-           family={Brouns},
-           familyi={B\bibinitperiod},
-           given={S.\bibnamedelimi J.\bibnamedelimi J.},
-           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
-        {{hash=8b0f7a0df72c08495b10282fcfa5cd89}{%
-           family={Dutilh},
-           familyi={D\bibinitperiod},
-           given={B.\bibnamedelimi E.},
-           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
-      }
-      \strng{namehash}{aeed8e9caefe5db7d9ccaeafd2c8e2e2}
-      \strng{fullhash}{aaf7dfed7de89167da71747b2617d0bb}
-      \strng{bibnamehash}{aaf7dfed7de89167da71747b2617d0bb}
-      \strng{authorbibnamehash}{aaf7dfed7de89167da71747b2617d0bb}
-      \strng{authornamehash}{aeed8e9caefe5db7d9ccaeafd2c8e2e2}
-      \strng{authorfullhash}{aaf7dfed7de89167da71747b2617d0bb}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Trends in Microbiology}
-      \field{note}{\href{https://doi.org/10.1016/j.tim.2018.08.006}{[CellPress]}}
-      \field{number}{1}
-      \field{title}{Molecular and Evolutionary Determinants of Bacteriophage Host Range}
-      \field{volume}{27}
-      \field{year}{2019}
-      \field{pages}{51\bibrangedash 63}
-      \range{pages}{13}
-    \endentry
-    \entry{coclet2021global}{article}{}
-      \name{author}{2}{}{%
-        {{hash=41bf63176bc79b36c9ea23e724103f76}{%
-           family={Coclet},
-           familyi={C\bibinitperiod},
-           given={C.},
-           giveni={C\bibinitperiod}}}%
-        {{hash=b376511bed1727a07564395dc02c8a3c}{%
-           family={Roux},
-           familyi={R\bibinitperiod},
-           given={S.},
-           giveni={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \strng{fullhash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \strng{bibnamehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \strng{authorbibnamehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \strng{authornamehash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \strng{authorfullhash}{a3e78bf55b10c9d6f1d44ba306a9233f}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Current Opinion in Virology}
-      \field{note}{\href{https://doi.org/10.1016/j.coviro.2021.05.003}{[ScienceDirect]}}
-      \field{title}{Global overview and major challenges of host prediction methods for uncultivated phages}
-      \field{volume}{49}
-      \field{year}{2021}
-      \field{pages}{117\bibrangedash 126}
-      \range{pages}{10}
-    \endentry
-    \entry{vovk2005algorithmic}{book}{}
-      \name{author}{3}{}{%
-        {{hash=bef6907ff5daebb69843cf35c8af1a83}{%
-           family={Vovk},
-           familyi={V\bibinitperiod},
-           given={Vladimir},
-           giveni={V\bibinitperiod}}}%
-        {{hash=ca87923b059d26a133029c97697f174d}{%
-           family={Gammerman},
-           familyi={G\bibinitperiod},
-           given={Alexander},
-           giveni={A\bibinitperiod}}}%
-        {{hash=071635b97777823135be2ea970911b06}{%
-           family={Shafer},
-           familyi={S\bibinitperiod},
-           given={Glenn},
-           giveni={G\bibinitperiod}}}%
-      }
-      \list{publisher}{1}{%
-        {Springer Science \& Business Media}%
-      }
-      \strng{namehash}{f522739be82db7e155f6ba79833cba46}
-      \strng{fullhash}{f522739be82db7e155f6ba79833cba46}
-      \strng{bibnamehash}{f522739be82db7e155f6ba79833cba46}
-      \strng{authorbibnamehash}{f522739be82db7e155f6ba79833cba46}
-      \strng{authornamehash}{f522739be82db7e155f6ba79833cba46}
-      \strng{authorfullhash}{f522739be82db7e155f6ba79833cba46}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{Algorithmic Learning in a Random World}
-      \field{year}{2005}
-    \endentry
-    \entry{angelopoulos2023conformal}{article}{}
-      \name{author}{2}{}{%
-        {{hash=e664c70b932e0462320278893abe131b}{%
-           family={Angelopoulos},
-           familyi={A\bibinitperiod},
-           given={A.\bibnamedelimi N.},
-           giveni={A\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
-        {{hash=964467ff063f2ec7ff17669c7476be32}{%
-           family={Bates},
-           familyi={B\bibinitperiod},
-           given={S.},
-           giveni={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{4ca6c87623836f646704aaaf1df53487}
-      \strng{fullhash}{4ca6c87623836f646704aaaf1df53487}
-      \strng{bibnamehash}{4ca6c87623836f646704aaaf1df53487}
-      \strng{authorbibnamehash}{4ca6c87623836f646704aaaf1df53487}
-      \strng{authornamehash}{4ca6c87623836f646704aaaf1df53487}
-      \strng{authorfullhash}{4ca6c87623836f646704aaaf1df53487}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Foundations and Trends in Machine Learning}
-      \field{note}{\href{https://doi.org/10.1561/2200000101}{[FnT]}}
-      \field{number}{4}
-      \field{title}{Conformal Prediction: A Gentle Introduction}
-      \field{volume}{16}
-      \field{year}{2023}
-      \field{pages}{494\bibrangedash 591}
-      \range{pages}{98}
-    \endentry
-    \entry{ochoarivera2024conformal}{inproceedings}{}
-      \name{author}{3}{}{%
-        {{hash=f39af2c2b0ce83cba5dc71ec69581350}{%
-           family={Rivera},
-           familyi={R\bibinitperiod},
-           given={E.\bibnamedelimi Ochoa},
-           giveni={E\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
-        {{hash=257980268d3c546b730554f4c0aaa79d}{%
-           family={Patel},
-           familyi={P\bibinitperiod},
-           given={Y.},
-           giveni={Y\bibinitperiod}}}%
-        {{hash=d31d7bf4a6d8b3d6a4d1b8dad94a2494}{%
-           family={Tewari},
-           familyi={T\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod}}}%
-      }
-      \strng{namehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \strng{fullhash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \strng{bibnamehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \strng{authorbibnamehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \strng{authornamehash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \strng{authorfullhash}{c1b2bf2a068f1f7ac5072d7eb38e5b01}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{Advances in Neural Information Processing Systems (NeurIPS)}
-      \field{note}{\href{https://arxiv.org/abs/2405.16246}{[arXiv]}}
-      \field{title}{Conformal Prediction for Ensembles: Improving Efficiency via Score-Based Aggregation}
-      \field{year}{2024}
-    \endentry
-    \entry{holtappels2023drivers}{article}{}
-      \name{author}{3}{}{%
-        {{hash=07227a97f8197e39cc9b6cda0aea2161}{%
-           family={Holtappels},
-           familyi={H\bibinitperiod},
-           given={D.},
-           giveni={D\bibinitperiod}}}%
-        {{hash=bf07548b55220a1b3564f528e91d5bf2}{%
-           family={Alfenas-Zerbini},
-           familyi={A\bibinithyphendelim Z\bibinitperiod},
-           given={P.},
-           giveni={P\bibinitperiod}}}%
-        {{hash=07f91b1b7480ef7c0039be811766c3a7}{%
-           family={Koskella},
-           familyi={K\bibinitperiod},
-           given={B.},
-           giveni={B\bibinitperiod}}}%
-      }
-      \strng{namehash}{f99731884f6b53af2e413954af281448}
-      \strng{fullhash}{f99731884f6b53af2e413954af281448}
-      \strng{bibnamehash}{f99731884f6b53af2e413954af281448}
-      \strng{authorbibnamehash}{f99731884f6b53af2e413954af281448}
-      \strng{authornamehash}{f99731884f6b53af2e413954af281448}
-      \strng{authorfullhash}{f99731884f6b53af2e413954af281448}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{FEMS Microbiology Reviews}
-      \field{note}{\href{https://doi.org/10.1093/femsre/fuad038}{[OxfordPress]}}
-      \field{number}{4}
-      \field{title}{Drivers and consequences of bacteriophage host range}
-      \field{volume}{47}
-      \field{year}{2023}
-      \field{pages}{fuad038}
-      \range{pages}{-1}
-    \endentry
-    \entry{villarroel2016hostphinder}{article}{}
-      \name{author}{7}{}{%
-        {{hash=cfbcc823ba64f47b2183045c93e4036a}{%
-           family={Villarroel},
-           familyi={V\bibinitperiod},
-           given={J.},
-           giveni={J\bibinitperiod}}}%
-        {{hash=96bcdd51c2160dc139cd81e9361614c7}{%
-           family={Kleinheinz},
-           familyi={K\bibinitperiod},
-           given={K.\bibnamedelimi A.},
-           giveni={K\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
-        {{hash=b8e8f996451557fdcdf03073655167aa}{%
-           family={Jurtz},
-           familyi={J\bibinitperiod},
-           given={V.\bibnamedelimi I.},
-           giveni={V\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
-        {{hash=eded4bbbc2e95f4fa3990eb3fed5d338}{%
-           family={Zschach},
-           familyi={Z\bibinitperiod},
-           given={H.},
-           giveni={H\bibinitperiod}}}%
-        {{hash=3a5122970b82ec01d587787cd6913656}{%
-           family={Lund},
-           familyi={L\bibinitperiod},
-           given={O.},
-           giveni={O\bibinitperiod}}}%
-        {{hash=9464fec9e7bc41dacf4bbd5db14a22ec}{%
-           family={Nielsen},
-           familyi={N\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-        {{hash=a697088fe915d121d045abf892433d85}{%
-           family={Marcatili},
-           familyi={M\bibinitperiod},
-           given={P.},
-           giveni={P\bibinitperiod}}}%
-      }
-      \strng{namehash}{b1798cfbabb8b2d660da745a08bb5a39}
-      \strng{fullhash}{4c897ddbe750402aea690e97c5958531}
-      \strng{bibnamehash}{b1798cfbabb8b2d660da745a08bb5a39}
-      \strng{authorbibnamehash}{b1798cfbabb8b2d660da745a08bb5a39}
-      \strng{authornamehash}{b1798cfbabb8b2d660da745a08bb5a39}
-      \strng{authorfullhash}{4c897ddbe750402aea690e97c5958531}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Viruses}
-      \field{note}{\href{https://doi.org/10.3390/v8050116}{[MDPI]}}
-      \field{number}{5}
-      \field{title}{HostPhinder: A Phage Host Prediction Tool}
-      \field{volume}{8}
-      \field{year}{2016}
-      \field{pages}{116}
-      \range{pages}{1}
-    \endentry
-    \entry{galiez2017wish}{article}{}
-      \name{author}{5}{}{%
-        {{hash=f627f6a9a1a3c0dab0c5b3b5b53180af}{%
-           family={Galiez},
-           familyi={G\bibinitperiod},
-           given={C.},
-           giveni={C\bibinitperiod}}}%
-        {{hash=8c0a1ee5b7e75a3530a83b28dd0a1b85}{%
-           family={Siebert},
-           familyi={S\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-        {{hash=50ded978ab7e92186bba2ad6fedd5f4f}{%
-           family={Enault},
-           familyi={E\bibinitperiod},
-           given={F.},
-           giveni={F\bibinitperiod}}}%
-        {{hash=b6e4acf34616cdfd4590cd4bbded3410}{%
-           family={Vincent},
-           familyi={V\bibinitperiod},
-           given={J.},
-           giveni={J\bibinitperiod}}}%
-        {{hash=fff15e641e44b17a5e7b0d3bc9ee8f81}{%
-           family={Söding},
-           familyi={S\bibinitperiod},
-           given={J.},
-           giveni={J\bibinitperiod}}}%
-      }
-      \strng{namehash}{ea2affc29fa8e39b53a28b75571d13f5}
-      \strng{fullhash}{98d6e540eccc6e488a3f23714e28a276}
-      \strng{bibnamehash}{98d6e540eccc6e488a3f23714e28a276}
-      \strng{authorbibnamehash}{98d6e540eccc6e488a3f23714e28a276}
-      \strng{authornamehash}{ea2affc29fa8e39b53a28b75571d13f5}
-      \strng{authorfullhash}{98d6e540eccc6e488a3f23714e28a276}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Bioinformatics}
-      \field{note}{\href{https://doi.org/10.1093/bioinformatics/btx383}{[OxfordPress]}}
-      \field{number}{19}
-      \field{title}{WIsH: who is the host? Predicting prokaryotic hosts from metagenomic phage contigs}
-      \field{volume}{33}
-      \field{year}{2017}
-      \field{pages}{3113\bibrangedash 3114}
-      \range{pages}{2}
-    \endentry
-    \entry{coutinho2021rafah}{article}{}
-      \name{author}{8}{}{%
-        {{hash=bc542f923404b7f6cddfcbb7211d8b30}{%
-           family={Coutinho},
-           familyi={C\bibinitperiod},
-           given={F.\bibnamedelimi H.},
-           giveni={F\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
-        {{hash=fe020b582280641df9d1bb0c98e091f2}{%
-           family={Zaragoza-Solas},
-           familyi={Z\bibinithyphendelim S\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod}}}%
-        {{hash=2a583b627f48f80b74f9e4422abafbe6}{%
-           family={López-Pérez},
-           familyi={L\bibinithyphendelim P\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-        {{hash=d8e74df4344e67ef1fc5788ec5319678}{%
-           family={Barylski},
-           familyi={B\bibinitperiod},
-           given={J.},
-           giveni={J\bibinitperiod}}}%
-        {{hash=9c5af6cf292b832528e167944c8be35b}{%
-           family={Zielezinski},
-           familyi={Z\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod}}}%
-        {{hash=8b0f7a0df72c08495b10282fcfa5cd89}{%
-           family={Dutilh},
-           familyi={D\bibinitperiod},
-           given={B.\bibnamedelimi E.},
-           giveni={B\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
-        {{hash=5b601e8114d071e765a0a2ae8eb65eed}{%
-           family={Edwards},
-           familyi={E\bibinitperiod},
-           given={R.},
-           giveni={R\bibinitperiod}}}%
-        {{hash=80f07ed922e9f7507fc26f70b217cf7f}{%
-           family={Rodriguez-Valera},
-           familyi={R\bibinithyphendelim V\bibinitperiod},
-           given={F.},
-           giveni={F\bibinitperiod}}}%
-      }
-      \strng{namehash}{556403b32032fc06b8c30471b0ba2e1d}
-      \strng{fullhash}{1ef319ac3c38046457007ee2a48de317}
-      \strng{bibnamehash}{556403b32032fc06b8c30471b0ba2e1d}
-      \strng{authorbibnamehash}{556403b32032fc06b8c30471b0ba2e1d}
-      \strng{authornamehash}{556403b32032fc06b8c30471b0ba2e1d}
-      \strng{authorfullhash}{1ef319ac3c38046457007ee2a48de317}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Patterns}
-      \field{note}{\href{https://doi.org/10.1016/j.patter.2021.100274}{[ScienceDirect]}}
-      \field{number}{7}
-      \field{title}{RaFAH: Host prediction for viruses of Bacteria and Archaea based on protein content}
-      \field{volume}{2}
-      \field{year}{2021}
-      \field{pages}{100274}
-      \range{pages}{1}
-    \endentry
-    \entry{steinegger2017mmseqs2}{article}{}
-      \name{author}{2}{}{%
-        {{hash=d7638cec814f1771bc24445e030b0a0e}{%
-           family={Steinegger},
-           familyi={S\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-        {{hash=fff15e641e44b17a5e7b0d3bc9ee8f81}{%
-           family={Söding},
-           familyi={S\bibinitperiod},
-           given={J.},
-           giveni={J\bibinitperiod}}}%
-      }
-      \strng{namehash}{bf9369350176382ccf67623b3657628c}
-      \strng{fullhash}{bf9369350176382ccf67623b3657628c}
-      \strng{bibnamehash}{bf9369350176382ccf67623b3657628c}
-      \strng{authorbibnamehash}{bf9369350176382ccf67623b3657628c}
-      \strng{authornamehash}{bf9369350176382ccf67623b3657628c}
-      \strng{authorfullhash}{bf9369350176382ccf67623b3657628c}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Nature Biotechnology}
-      \field{note}{\href{https://doi.org/10.1038/nbt.3988}{[SpringerNature]}}
-      \field{number}{11}
-      \field{title}{MMseqs2 enables sensitive protein sequence searching for the analysis of massive data sets}
-      \field{volume}{35}
-      \field{year}{2017}
-      \field{pages}{1026\bibrangedash 1028}
-      \range{pages}{3}
-    \endentry
-    \entry{elnaggar2022prottrans}{article}{}
-      \name{author}{12}{}{%
-        {{hash=1d2a6c75e2f6e5bea97636436dcead3b}{%
-           family={Elnaggar},
-           familyi={E\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod}}}%
-        {{hash=2bdd42359f11105bd7655dbe9af7a040}{%
-           family={Heinzinger},
-           familyi={H\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-        {{hash=4a4ac33919cca682b33de3f0286300d5}{%
-           family={Dallago},
-           familyi={D\bibinitperiod},
-           given={C.},
-           giveni={C\bibinitperiod}}}%
-        {{hash=f42cf7ffe5b9dc40484ad01777422f68}{%
-           family={Rehawi},
-           familyi={R\bibinitperiod},
-           given={G.},
-           giveni={G\bibinitperiod}}}%
-        {{hash=61ad10c626e1d641e0b1d7b5f48d3233}{%
-           family={Wang},
-           familyi={W\bibinitperiod},
-           given={Y.},
-           giveni={Y\bibinitperiod}}}%
-        {{hash=39b701b10f089b6b5ccf6776adb4c595}{%
-           family={Jones},
-           familyi={J\bibinitperiod},
-           given={L.},
-           giveni={L\bibinitperiod}}}%
-        {{hash=9645e9496ca1df10ff1f25b076a3713c}{%
-           family={Gibbs},
-           familyi={G\bibinitperiod},
-           given={T.},
-           giveni={T\bibinitperiod}}}%
-        {{hash=2405bacade5b30fb8e749e2321faf51a}{%
-           family={Feher},
-           familyi={F\bibinitperiod},
-           given={T.},
-           giveni={T\bibinitperiod}}}%
-        {{hash=68421438ad1c77087a3fc43846167a6d}{%
-           family={Angerer},
-           familyi={A\bibinitperiod},
-           given={C.},
-           giveni={C\bibinitperiod}}}%
-        {{hash=d7638cec814f1771bc24445e030b0a0e}{%
-           family={Steinegger},
-           familyi={S\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-        {{hash=1c8df20286f0f824f4e92f9c89cb2881}{%
-           family={Bhowmik},
-           familyi={B\bibinitperiod},
-           given={D.},
-           giveni={D\bibinitperiod}}}%
-        {{hash=73de0d118c40c2c243d3753b96811aa3}{%
-           family={Rost},
-           familyi={R\bibinitperiod},
-           given={B.},
-           giveni={B\bibinitperiod}}}%
-      }
-      \strng{namehash}{d6075469d307382c7ea51f10aa9434cb}
-      \strng{fullhash}{ae7c3ab0d81ad8a41e14b3e6fab0d491}
-      \strng{bibnamehash}{d6075469d307382c7ea51f10aa9434cb}
-      \strng{authorbibnamehash}{d6075469d307382c7ea51f10aa9434cb}
-      \strng{authornamehash}{d6075469d307382c7ea51f10aa9434cb}
-      \strng{authorfullhash}{ae7c3ab0d81ad8a41e14b3e6fab0d491}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{IEEE Transactions on Pattern Analysis and Machine Intelligence}
-      \field{note}{\href{https://doi.org/10.1109/TPAMI.2021.3095381}{[IEEE]}}
-      \field{number}{10}
-      \field{title}{ProtTrans: Toward Understanding the Language of Life Through Self-Supervised Learning}
-      \field{volume}{44}
-      \field{year}{2022}
-      \field{pages}{7112\bibrangedash 7127}
-      \range{pages}{16}
-    \endentry
-    \entry{flamholz2024large}{article}{}
-      \name{author}{3}{}{%
-        {{hash=f70c5e75d62415e99168e3d47fe32063}{%
-           family={Flamholz},
-           familyi={F\bibinitperiod},
-           given={Z.\bibnamedelimi N.},
-           giveni={Z\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
-        {{hash=2cffd7453b554f08bb06d0105ed31ae1}{%
-           family={Biller},
-           familyi={B\bibinitperiod},
-           given={S.\bibnamedelimi J.},
-           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
-        {{hash=ea6aaad8400de815d2edab01d83eff0c}{%
-           family={Kelly},
-           familyi={K\bibinitperiod},
-           given={L.},
-           giveni={L\bibinitperiod}}}%
-      }
-      \strng{namehash}{9e896d20478652be44b28412a8bb0213}
-      \strng{fullhash}{9e896d20478652be44b28412a8bb0213}
-      \strng{bibnamehash}{9e896d20478652be44b28412a8bb0213}
-      \strng{authorbibnamehash}{9e896d20478652be44b28412a8bb0213}
-      \strng{authornamehash}{9e896d20478652be44b28412a8bb0213}
-      \strng{authorfullhash}{9e896d20478652be44b28412a8bb0213}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Nature Microbiology}
-      \field{note}{\href{https://doi.org/10.1038/s41564-023-01584-8}{[SpringerNature]}}
-      \field{number}{2}
-      \field{title}{Large language models improve annotation of prokaryotic viral proteins}
-      \field{volume}{9}
-      \field{year}{2024}
-      \field{pages}{537\bibrangedash 549}
-      \range{pages}{13}
-    \endentry
-    \entry{boulay2025empathi}{article}{}
-      \name{author}{5}{}{%
-        {{hash=4366bbba9992db4604a78602c5e2d082}{%
-           family={Boulay},
-           familyi={B\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod}}}%
-        {{hash=927ebf025737cdc335db5909748355b5}{%
-           family={Leprince},
-           familyi={L\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod}}}%
-        {{hash=50ded978ab7e92186bba2ad6fedd5f4f}{%
-           family={Enault},
-           familyi={E\bibinitperiod},
-           given={F.},
-           giveni={F\bibinitperiod}}}%
-        {{hash=0c668b6d28e5f7c0ae5b9a1800b40157}{%
-           family={Rousseau},
-           familyi={R\bibinitperiod},
-           given={E.},
-           giveni={E\bibinitperiod}}}%
-        {{hash=f627f6a9a1a3c0dab0c5b3b5b53180af}{%
-           family={Galiez},
-           familyi={G\bibinitperiod},
-           given={C.},
-           giveni={C\bibinitperiod}}}%
-      }
-      \strng{namehash}{9980fec3783c41c0edf76fc1df36c3a5}
-      \strng{fullhash}{b2c8c92de13aededeb8bcf239df845f9}
-      \strng{bibnamehash}{b2c8c92de13aededeb8bcf239df845f9}
-      \strng{authorbibnamehash}{b2c8c92de13aededeb8bcf239df845f9}
-      \strng{authornamehash}{9980fec3783c41c0edf76fc1df36c3a5}
-      \strng{authorfullhash}{b2c8c92de13aededeb8bcf239df845f9}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Nature Communications}
-      \field{note}{\href{https://doi.org/10.1038/s41467-025-64177-5}{[SpringerNature]}}
-      \field{number}{1}
-      \field{title}{Empathi: embedding-based phage protein annotation tool by hierarchical assignment}
-      \field{volume}{16}
-      \field{year}{2025}
-      \field{pages}{9114}
-      \range{pages}{1}
-    \endentry
-    \entry{boulay2026phalp}{article}{}
-      \name{author}{9}{}{%
-        {{hash=4366bbba9992db4604a78602c5e2d082}{%
-           family={Boulay},
-           familyi={B\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod}}}%
-        {{hash=96a707991ec32514857131b7dcae1a4b}{%
-           family={Németh},
-           familyi={N\bibinitperiod},
-           given={V.},
-           giveni={V\bibinitperiod}}}%
-        {{hash=ba24138f58661b79320d83cc2131fb3e}{%
-           family={Criel},
-           familyi={C\bibinitperiod},
-           given={B.},
-           giveni={B\bibinitperiod}}}%
-        {{hash=3dc48c721315b9d935cbceb3e6955e20}{%
-           family={Stock},
-           familyi={S\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-        {{hash=b9856119b042078a6dd8cf2171f9b69f}{%
-           family={{De Baets}},
-           familyi={D\bibinitperiod},
-           given={B.},
-           giveni={B\bibinitperiod}}}%
-        {{hash=f627f6a9a1a3c0dab0c5b3b5b53180af}{%
-           family={Galiez},
-           familyi={G\bibinitperiod},
-           given={C.},
-           giveni={C\bibinitperiod}}}%
-        {{hash=0c668b6d28e5f7c0ae5b9a1800b40157}{%
-           family={Rousseau},
-           familyi={R\bibinitperiod},
-           given={E.},
-           giveni={E\bibinitperiod}}}%
-        {{hash=528f4c2237807f850cd299771f816900}{%
-           family={Briers},
-           familyi={B\bibinitperiod},
-           given={Y.},
-           giveni={Y\bibinitperiod}}}%
-        {{hash=834e46b0d767e21b1fa1763b72a3a831}{%
-           family={Vázquez},
-           familyi={V\bibinitperiod},
-           given={R.},
-           giveni={R\bibinitperiod}}}%
-      }
-      \strng{namehash}{60411c25f3738a8d258100ddfa6a8b4d}
-      \strng{fullhash}{ec272244d95f162d641094503964708b}
-      \strng{bibnamehash}{60411c25f3738a8d258100ddfa6a8b4d}
-      \strng{authorbibnamehash}{60411c25f3738a8d258100ddfa6a8b4d}
-      \strng{authornamehash}{60411c25f3738a8d258100ddfa6a8b4d}
-      \strng{authorfullhash}{ec272244d95f162d641094503964708b}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Database}
-      \field{note}{\href{https://doi.org/10.1093/database/baag033}{[OxfordPress]}}
-      \field{title}{PhaLP 2.0: extending the community-oriented phage lysin database with a SUBLYME pipeline for metagenomic discovery}
-      \field{volume}{2026}
-      \field{year}{2026}
-      \field{pages}{baag033}
-      \range{pages}{-1}
-    \endentry
-    \entry{gonzales2023protein}{article}{}
-      \name{author}{3}{}{%
-        {{hash=077631a91a4a598809f8b6de2c655021}{%
-           family={Gonzales},
-           familyi={G\bibinitperiod},
-           given={M.\bibnamedelimi E.\bibnamedelimi M.},
-           giveni={M\bibinitperiod\bibinitdelim E\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
-        {{hash=f1d7d51174d77547852878b340f885b2}{%
-           family={Ureta},
-           familyi={U\bibinitperiod},
-           given={J.\bibnamedelimi C.},
-           giveni={J\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
-        {{hash=00bd6ff92f2b83f7f8e555597bf424c2}{%
-           family={Shrestha},
-           familyi={S\bibinitperiod},
-           given={A.\bibnamedelimi M.\bibnamedelimi S.},
-           giveni={A\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
-      }
-      \strng{namehash}{1a59fa590095ea7812f642848c469c06}
-      \strng{fullhash}{1a59fa590095ea7812f642848c469c06}
-      \strng{bibnamehash}{1a59fa590095ea7812f642848c469c06}
-      \strng{authorbibnamehash}{1a59fa590095ea7812f642848c469c06}
-      \strng{authornamehash}{1a59fa590095ea7812f642848c469c06}
-      \strng{authorfullhash}{1a59fa590095ea7812f642848c469c06}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{PLOS ONE}
-      \field{note}{\href{https://doi.org/10.1371/journal.pone.0289030}{[PLOS]}}
-      \field{number}{7}
-      \field{title}{Protein embeddings improve phage-host interaction prediction}
-      \field{volume}{18}
-      \field{year}{2023}
-      \field{pages}{e0289030}
-      \range{pages}{-1}
-    \endentry
-    \entry{du2026high}{article}{}
-      \name{author}{6}{}{%
-        {{hash=faabc745587f94d5332f80e615e842b7}{%
-           family={Du},
-           familyi={D\bibinitperiod},
-           given={Z.},
-           giveni={Z\bibinitperiod}}}%
-        {{hash=3e37ec483e3fa6960ac57b6bdb6d6af8}{%
-           family={tastes},
-           familyi={t\bibinitperiod},
-           given={M.\bibnamedelimi Li},
-           giveni={M\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
-        {{hash=67ff15f0c11685b87b3b5344a6b1e433}{%
-           family={Lin},
-           familyi={L\bibinitperiod},
-           given={K.},
-           giveni={K\bibinitperiod}}}%
-        {{hash=ef065b28c31984323fd6d3483d29aafd}{%
-           family={Li},
-           familyi={L\bibinitperiod},
-           given={J.},
-           giveni={J\bibinitperiod}}}%
-        {{hash=ef065b28c31984323fd6d3483d29aafd}{%
-           family={Li},
-           familyi={L\bibinitperiod},
-           given={J.},
-           giveni={J\bibinitperiod}}}%
-        {{hash=6e6ede3c9de6f73699c90cb2ea78f784}{%
-           family={Xiao},
-           familyi={X\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-      }
-      \strng{namehash}{ff63b9c6fbbb669ee64ebea0013b7c1b}
-      \strng{fullhash}{456791212932f801a89a8b1020c84944}
-      \strng{bibnamehash}{456791212932f801a89a8b1020c84944}
-      \strng{authorbibnamehash}{456791212932f801a89a8b1020c84944}
-      \strng{authornamehash}{ff63b9c6fbbb669ee64ebea0013b7c1b}
-      \strng{authorfullhash}{456791212932f801a89a8b1020c84944}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Nature Communications}
-      \field{note}{\href{https://doi.org/10.1038/s41467-026-70613-x}{[SpringerNature]}}
-      \field{number}{1}
-      \field{title}{High-resolution phage-host assignment through key proteins using large language models}
-      \field{volume}{17}
-      \field{year}{2026}
-      \field{pages}{4439}
-      \range{pages}{1}
-    \endentry
-    \entry{lei2018distribution}{article}{}
-      \name{author}{5}{}{%
-        {{hash=5716652c08e70b34048d4a87afff54d5}{%
-           family={Lei},
-           familyi={L\bibinitperiod},
-           given={Jing},
-           giveni={J\bibinitperiod}}}%
-        {{hash=302ceb7798677f5b7176bd89e99b861b}{%
-           family={G'Sell},
-           familyi={G\bibinitperiod},
-           given={Max},
-           giveni={M\bibinitperiod}}}%
-        {{hash=7512f80d6f525f9a779b62c4fe599e9d}{%
-           family={Rinaldo},
-           familyi={R\bibinitperiod},
-           given={Alessandro},
-           giveni={A\bibinitperiod}}}%
-        {{hash=b43d82ea7435e420b39c05f1ccd1d885}{%
-           family={Tibshirani},
-           familyi={T\bibinitperiod},
-           given={Ryan\bibnamedelima J},
-           giveni={R\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
-        {{hash=6b27f4592197d058b81cb25b0b285942}{%
-           family={Wasserman},
-           familyi={W\bibinitperiod},
-           given={Larry},
-           giveni={L\bibinitperiod}}}%
-      }
-      \list{publisher}{1}{%
-        {Taylor \& Francis}%
-      }
-      \strng{namehash}{04472496e29c33862fa417d8e5383af3}
-      \strng{fullhash}{1f9a4f4509acc4d6121494d4eaed584a}
-      \strng{bibnamehash}{1f9a4f4509acc4d6121494d4eaed584a}
-      \strng{authorbibnamehash}{1f9a4f4509acc4d6121494d4eaed584a}
-      \strng{authornamehash}{04472496e29c33862fa417d8e5383af3}
-      \strng{authorfullhash}{1f9a4f4509acc4d6121494d4eaed584a}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Journal of the American Statistical Association}
-      \field{number}{523}
-      \field{title}{Distribution-free predictive inference for regression}
-      \field{volume}{113}
-      \field{year}{2018}
-      \field{pages}{1094\bibrangedash 1111}
-      \range{pages}{18}
-    \endentry
-    \entry{romano2020classification}{inproceedings}{}
-      \name{author}{3}{}{%
-        {{hash=b2349f448cc200f2492f372e9eda8c1e}{%
-           family={Romano},
-           familyi={R\bibinitperiod},
-           given={Yaniv},
-           giveni={Y\bibinitperiod}}}%
-        {{hash=1720a0d7863976332a4afb550640501b}{%
-           family={Sesia},
-           familyi={S\bibinitperiod},
-           given={Matteo},
-           giveni={M\bibinitperiod}}}%
-        {{hash=4c46f796e938e0e60da2cd56e1004e5a}{%
-           family={Candés},
-           familyi={C\bibinitperiod},
-           given={Emmanuel},
-           giveni={E\bibinitperiod}}}%
-      }
-      \strng{namehash}{339ac5c3b5adf671a662315a5f9d1cd5}
-      \strng{fullhash}{339ac5c3b5adf671a662315a5f9d1cd5}
-      \strng{bibnamehash}{339ac5c3b5adf671a662315a5f9d1cd5}
-      \strng{authorbibnamehash}{339ac5c3b5adf671a662315a5f9d1cd5}
-      \strng{authornamehash}{339ac5c3b5adf671a662315a5f9d1cd5}
-      \strng{authorfullhash}{339ac5c3b5adf671a662315a5f9d1cd5}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{booktitle}{Advances in Neural Information Processing Systems}
-      \field{title}{Classification with Valid and Adaptive Coverage}
-      \field{volume}{33}
-      \field{year}{2020}
-      \field{pages}{3581\bibrangedash 3591}
-      \range{pages}{11}
-    \endentry
-    \entry{bignaud2025phages}{article}{}
-      \name{author}{20}{}{%
-        {{hash=823a308be4c8df281007550539dc44a4}{%
-           family={Bignaud},
-           familyi={B\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod}}}%
-        {{hash=384933504f02e5bfa22c413dfba0b510}{%
-           family={Conti},
-           familyi={C\bibinitperiod},
-           given={D.\bibnamedelimi E.},
-           giveni={D\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
-        {{hash=996be88a9f79aa228ba43e696c2fb6d6}{%
-           family={Thierry},
-           familyi={T\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod}}}%
-        {{hash=60be49fb6bc3cbb125510bacac34289e}{%
-           family={Serizay},
-           familyi={S\bibinitperiod},
-           given={J.},
-           giveni={J\bibinitperiod}}}%
-        {{hash=69e71f318f1beb05e4c2a5dae1a0cf00}{%
-           family={Labadie},
-           familyi={L\bibinitperiod},
-           given={K.},
-           giveni={K\bibinitperiod}}}%
-        {{hash=66c91fddb742f9afc44d7dde5c20b62d}{%
-           family={Poulain},
-           familyi={P\bibinitperiod},
-           given={J.},
-           giveni={J\bibinitperiod}}}%
-        {{hash=6c49e84ad44cda3f9021a8a8a3d2a329}{%
-           family={Cheny},
-           familyi={C\bibinitperiod},
-           given={O.},
-           giveni={O\bibinitperiod}}}%
-        {{hash=e5af701bf5ae445ef051f7044dd85359}{%
-           family={Colón-González},
-           familyi={C\bibinithyphendelim G\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-        {{hash=476921ad97e9d41eaffe22516c0cb8ad}{%
-           family={Debarbieux},
-           familyi={D\bibinitperiod},
-           given={L.},
-           giveni={L\bibinitperiod}}}%
-        {{hash=19cf1a87ea16dbb6689f9bb6436c9bfa}{%
-           family={Guerrero-Osornio},
-           familyi={G\bibinithyphendelim O\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-        {{hash=a64900ce61c43a62fece302d5b3eabec}{%
-           family={Helaine},
-           familyi={H\bibinitperiod},
-           given={S.},
-           giveni={S\bibinitperiod}}}%
-        {{hash=81ec0e070abea1e116142a4c4a7d51c3}{%
-           family={Hill},
-           familyi={H\bibinitperiod},
-           given={P.},
-           giveni={P\bibinitperiod}}}%
-        {{hash=2c89dc54b6d7ea45c91de46eb5a99ba7}{%
-           family={{Le Tinier}},
-           familyi={L\bibinitperiod},
-           given={G.},
-           giveni={G\bibinitperiod}}}%
-        {{hash=8cbf111e80d16fbe2622b091206d23f9}{%
-           family={Millot},
-           familyi={M\bibinitperiod},
-           given={G.\bibnamedelimi A.},
-           giveni={G\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
-        {{hash=e22cb0ab8dd4d9f2d2e11e8fb77d9fa9}{%
-           family={Morales},
-           familyi={M\bibinitperiod},
-           given={L.},
-           giveni={L\bibinitperiod}}}%
-        {{hash=d051b5ef351fed54b4e7327d9a040dbb}{%
-           family={Parada},
-           familyi={P\bibinitperiod},
-           given={A.},
-           giveni={A\bibinitperiod}}}%
-        {{hash=e8fb2541447f594e2c6f7060e94a3d6a}{%
-           family={Riera},
-           familyi={R\bibinitperiod},
-           given={N.},
-           giveni={N\bibinitperiod}}}%
-        {{hash=277ef16c71490846de6a593f127b183e}{%
-           family={Iraola},
-           familyi={I\bibinitperiod},
-           given={G.},
-           giveni={G\bibinitperiod}}}%
-        {{hash=8fe660c66330421f9d209e429dc7517d}{%
-           family={Koszul},
-           familyi={K\bibinitperiod},
-           given={R.},
-           giveni={R\bibinitperiod}}}%
-        {{hash=a1daa5e9d23c5012ecd9d39d6cf91d38}{%
-           family={Marbouty},
-           familyi={M\bibinitperiod},
-           given={M.},
-           giveni={M\bibinitperiod}}}%
-      }
-      \strng{namehash}{d4048d5abb7c4449229ba165de69c430}
-      \strng{fullhash}{1684cdea0993ef762c61435c2f72fe1c}
-      \strng{bibnamehash}{d4048d5abb7c4449229ba165de69c430}
-      \strng{authorbibnamehash}{d4048d5abb7c4449229ba165de69c430}
-      \strng{authornamehash}{d4048d5abb7c4449229ba165de69c430}
-      \strng{authorfullhash}{1684cdea0993ef762c61435c2f72fe1c}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Nature Microbiology}
-      \field{note}{\href{https://doi.org/10.1038/s41564-025-02108-2}{[SpringerNature]}}
-      \field{number}{10}
-      \field{title}{Phages with a broad host range are common across ecosystems}
-      \field{volume}{10}
-      \field{year}{2025}
-      \true{nocite}
-      \field{pages}{2537\bibrangedash 2549}
-      \range{pages}{13}
-    \endentry
-  \enddatalist
-\endrefsection
-\endinput
+\bibitem{bignaud2025phages}
+A.~Bignaud, D.~E. Conti, A.~Thierry, J.~Serizay, K.~Labadie, J.~Poulain, O.~Cheny, M.~Col{\'o}n-Gonz{\'a}lez, L.~Debarbieux, M.~Guerrero-Osornio, S.~Helaine, P.~Hill, G.~{Le Tinier}, G.~A. Millot, L.~Morales, A.~Parada, N.~Riera, G.~Iraola, R.~Koszul, and M.~Marbouty.
+\newblock Phages with a broad host range are common across ecosystems.
+\newblock {\em Nature Microbiology}, 10(10):2537--2549, 2025.
+\newblock \href{https://doi.org/10.1038/s41564-025-02108-2}{[SpringerNature]}.
 
+\bibitem{boulay2025empathi}
+A.~Boulay, A.~Leprince, F.~Enault, E.~Rousseau, and C.~Galiez.
+\newblock Empathi: embedding-based phage protein annotation tool by hierarchical assignment.
+\newblock {\em Nature Communications}, 16(1):9114, 2025.
+\newblock \href{https://doi.org/10.1038/s41467-025-64177-5}{[SpringerNature]}.
+
+\bibitem{boulay2026phalp}
+A.~Boulay, V.~N{\'e}meth, B.~Criel, M.~Stock, B.~{De Baets}, C.~Galiez, E.~Rousseau, Y.~Briers, and R.~V{\'a}zquez.
+\newblock Phalp 2.0: extending the community-oriented phage lysin database with a sublyme pipeline for metagenomic discovery.
+\newblock {\em Database}, 2026:baag033, 2026.
+\newblock \href{https://doi.org/10.1093/database/baag033}{[OxfordPress]}.
+
+\bibitem{coclet2021global}
+C.~Coclet and S.~Roux.
+\newblock Global overview and major challenges of host prediction methods for uncultivated phages.
+\newblock {\em Current Opinion in Virology}, 49:117--126, 2021.
+\newblock \href{https://doi.org/10.1016/j.coviro.2021.05.003}{[ScienceDirect]}.
+
+\bibitem{coutinho2021rafah}
+F.~H. Coutinho, A.~Zaragoza-Solas, M.~L{\'o}pez-P{\'e}rez, J.~Barylski, A.~Zielezinski, B.~E. Dutilh, R.~Edwards, and F.~Rodriguez-Valera.
+\newblock Rafah: Host prediction for viruses of bacteria and archaea based on protein content.
+\newblock {\em Patterns}, 2(7):100274, 2021.
+\newblock \href{https://doi.org/10.1016/j.patter.2021.100274}{[ScienceDirect]}.
+
+\bibitem{dejonge2019molecular}
+P.~A. {de Jonge}, F.~L. Nobrega, S.~J.~J. Brouns, and B.~E. Dutilh.
+\newblock Molecular and evolutionary determinants of bacteriophage host range.
+\newblock {\em Trends in Microbiology}, 27(1):51--63, 2019.
+\newblock \href{https://doi.org/10.1016/j.tim.2018.08.006}{[CellPress]}.
+
+\bibitem{du2026high}
+Z.~Du, M.~Li tastes, K.~Lin, J.~Li, J.~Li, and M.~Xiao.
+\newblock High-resolution phage-host assignment through key proteins using large language models.
+\newblock {\em Nature Communications}, 17(1):4439, 2026.
+\newblock \href{https://doi.org/10.1038/s41467-026-70613-x}{[SpringerNature]}.
+
+\bibitem{elnaggar2022prottrans}
+A.~Elnaggar, M.~Heinzinger, C.~Dallago, G.~Rehawi, Y.~Wang, L.~Jones, T.~Gibbs, T.~Feher, C.~Angerer, M.~Steinegger, D.~Bhowmik, and B.~Rost.
+\newblock Prottrans: Toward understanding the language of life through self-supervised learning.
+\newblock {\em IEEE Transactions on Pattern Analysis and Machine Intelligence}, 44(10):7112--7127, 2022.
+\newblock \href{https://doi.org/10.1109/TPAMI.2021.3095381}{[IEEE]}.
+
+\bibitem{flamholz2024large}
+Z.~N. Flamholz, S.~J. Biller, and L.~Kelly.
+\newblock Large language models improve annotation of prokaryotic viral proteins.
+\newblock {\em Nature Microbiology}, 9(2):537--549, 2024.
+\newblock \href{https://doi.org/10.1038/s41564-023-01584-8}{[SpringerNature]}.
+
+\bibitem{galiez2017wish}
+C.~Galiez, M.~Siebert, F.~Enault, J.~Vincent, and J.~S{\"o}ding.
+\newblock Wish: who is the host? predicting prokaryotic hosts from metagenomic phage contigs.
+\newblock {\em Bioinformatics}, 33(19):3113--3114, 2017.
+\newblock \href{https://doi.org/10.1093/bioinformatics/btx383}{[OxfordPress]}.
+
+\bibitem{gonzales2023protein}
+M.~E.~M. Gonzales, J.~C. Ureta, and A.~M.~S. Shrestha.
+\newblock Protein embeddings improve phage-host interaction prediction.
+\newblock {\em PLOS ONE}, 18(7):e0289030, 2023.
+\newblock \href{https://doi.org/10.1371/journal.pone.0289030}{[PLOS]}.
+
+\bibitem{holtappels2023drivers}
+D.~Holtappels, P.~Alfenas-Zerbini, and B.~Koskella.
+\newblock Drivers and consequences of bacteriophage host range.
+\newblock {\em FEMS Microbiology Reviews}, 47(4):fuad038, 2023.
+\newblock \href{https://doi.org/10.1093/femsre/fuad038}{[OxfordPress]}.
+
+\bibitem{lei2018distribution}
+Jing Lei, Max G'Sell, Alessandro Rinaldo, Ryan~J Tibshirani, and Larry Wasserman.
+\newblock Distribution-free predictive inference for regression.
+\newblock {\em Journal of the American Statistical Association}, 113(523):1094--1111, 2018.
+
+\bibitem{leprince2025strengthening}
+Audrey Leprince, Justine Lefran{\c{c}}ois, Damian Magill, Philippe Horvath, Dennis Romero, Genevi{\`e}ve~M. Rousseau, and Sylvain Moineau.
+\newblock Strengthening phage resistance of \textit{Streptococcus thermophilus} by leveraging complementary defense systems.
+\newblock {\em Nature Communications}, 16(1):7142, 2025.
+
+\bibitem{ochoarivera2024conformal}
+E.~Ochoa Rivera, Y.~Patel, and A.~Tewari.
+\newblock Conformal prediction for ensembles: Improving efficiency via score-based aggregation.
+\newblock In {\em Advances in Neural Information Processing Systems (NeurIPS)}, 2024.
+\newblock \href{https://arxiv.org/abs/2405.16246}{[arXiv]}.
+
+\bibitem{romano2020classification}
+Yaniv Romano, Matteo Sesia, and Emmanuel Cand{\'{e}}s.
+\newblock Classification with valid and adaptive coverage.
+\newblock In {\em Advances in Neural Information Processing Systems}, volume~33, pages 3581--3591, 2020.
+
+\bibitem{steinegger2017mmseqs2}
+M.~Steinegger and J.~S{\"o}ding.
+\newblock Mmseqs2 enables sensitive protein sequence searching for the analysis of massive data sets.
+\newblock {\em Nature Biotechnology}, 35(11):1026--1028, 2017.
+\newblock \href{https://doi.org/10.1038/nbt.3988}{[SpringerNature]}.
+
+\bibitem{villarroel2016hostphinder}
+J.~Villarroel, K.~A. Kleinheinz, V.~I. Jurtz, H.~Zschach, O.~Lund, M.~Nielsen, and P.~Marcatili.
+\newblock Hostphinder: A phage host prediction tool.
+\newblock {\em Viruses}, 8(5):116, 2016.
+\newblock \href{https://doi.org/10.3390/v8050116}{[MDPI]}.
+
+\bibitem{vovk2005algorithmic}
+Vladimir Vovk, Alexander Gammerman, and Glenn Shafer.
+\newblock {\em Algorithmic Learning in a Random World}.
+\newblock Springer Science \& Business Media, 2005.
+
+\end{thebibliography}

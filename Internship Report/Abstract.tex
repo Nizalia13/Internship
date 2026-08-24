@@ -1,7 +1,33 @@
-\thispagestyle{empty}
-\begin{center}
-    \Large \textbf{Abstract}
-\end{center}
+% \thispagestyle{empty}
+% \begin{center}
+%     \Large \textbf{Abstract}
+% \end{center}
 
+\begin{abstract}
+\noindent
+Bacteriophage therapy is emerging as a promising alternative to antibiotics against multi drug resistant bacteria,
+but its clinical use depends on correctly matching a phage to a bacterial host it can infect. Existing computational
+host prediction tools return point predictions or uncalibrated scalar scores, with no finite sample guarantee that
+the true host is among the candidates returned.
+
+This report develops a distribution free conformal prediction framework for phage host classification that closes
+this gap. We build on the Conformal Set Aggregation (CSA) approach and replaced its convex calibration envelopes,
+which may become uninformatively large when the class conditional score clusters are well separated, with three star shaped,
+non convex alternatives (Radial, Strip, and Collapsed 1D) which are suited to the disjoint geometry of classification
+tasks. For each geometry we derived a closed form calibration rule that replaces the iterative binary search used in
+standard CSA with a single sorting pass. We also introduce a class conditional calibration, which can give exact per host
+coverage guarantees rather than a single marginal one, along with a two stage Gram type to host cascade with a
+proven bound on compounded miscoverage.
+
+We validated the framework on a real dataset of bacteriophage protein functional scores, and achieved reliable
+empirical coverage at the target confidence level on both a binary Gram type task and a multiclass host
+classification task spanning 54 candidate hosts. Gram type pre filtering also reduced average prediction set sizes
+by over $60\%$ compared to an unfiltered baseline, and with no loss of coverage.
+\end{abstract}
 \vspace{0.3cm}
+
+
+
+
+
 

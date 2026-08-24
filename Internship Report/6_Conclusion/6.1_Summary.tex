@@ -1,0 +1,52 @@
+\chapter{Conclusion and Future Work}
+\label{sec6: conclusion}
+
+\section{Summary}
+\label{sec6.1: summary}
+
+Existing computational phage host prediction tools output point predictions or scalar scores, which offer no finite 
+sample guarantees that the true host is contained within the predicted candidates. This report addresses this limitation by 
+developing a distribution free conformal prediction framework that is tailored to high dimensional, sparse protein score 
+spaces. We adapted and extended the Conformal Set Aggregation (CSA) technique to classification, by replacing the 
+standard convex envelopes that become unnecessarily large when class clusters are separated
+
+The main aspects of this work are summarized as follows:
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Non Convex Envelope Geometries:} We introduced two non convex geometries (Radial and Strip) alongside a 
+           Collapsed 1D mean pooling envelope. All three envelope methods met the $90.0\%$ target coverage ($90.5\%\text{--}
+           93.9\%$) on the test split ($N_{\text{test}} = 3\,944$ phages across $54$ host genera).
+    
+    \item \textbf{Closed Form Analytical Calibration ($\tau(\mathbf{s})$):} We derived exact, closed form expressions for the 
+           per point inclusion scaling function $\tau(\mathbf{s})$ across all three geometries. This eliminates the iterative 
+           numerical binary search required by standard CSA, which reduces the calibration complexity on the scaling set 
+           $S_2$ from $\mathcal{O}(|S_2| \cdot N_{\text{iter}})$ to a much better $\mathcal{O}(|S_2| \log |S_2|)$ one pass sort.
+    
+    \item \textbf{Class Conditional Host Calibration:} Rather than computing a single global threshold, our framework 
+          calibrates class conditional quantiles $\hat{t}_h$ independently per host. This ensures finite sample coverage 
+          guarantees for individual host classes regardless of severe dataset imbalance (ranging from $>1\,400$ phages down 
+          to single-digit counts).
+    \newpage
+    \item \textbf{Multi Stage Empirical Validation:}
+    \begin{itemize}
+        \item \emph{Synthetic Tests:} Confirmed exact $1-\alpha$ coverage across varied score topologies (Gaussian, correlated, 
+               heavy tailed, sparse) while exposing dimensional bottlenecks (Radial scaling factors $\hat{t}$ inflated with 
+               dimension $K$, whereas Strip remained robust).
+        \item \emph{Gram Type Classification:} Achieved $99.8\%$ coverage and $94\text{--}95\%$ singleton efficiency across all 
+               geometries due to strong underlying score separation.
+        \item \emph{Host Classification:} Exposed clear geometric trade offs under high dimensionality ($K_h \ge 26$). 
+               Collapsed 1D delivered the tightest sets (mean size $6.09$ vs.\ $15.25$ for Radial and $15.35$ for Strip) and 
+               isolated single definitive hosts for $28.6\%$ of test phages at $92.9\%$ precision.
+    \end{itemize}
+    
+    \item \textbf{Gram to Host Cascading:} We proved finite sample validity under cascade composition (Proposition
+          ~\ref{prop:cascade}). We pre filtered hosts first by Gram type conformal set which pruned the candidate spaces 
+          effectively without compromising empirical coverage.
+\end{enumerate}
+
+In summary, this framework provides exact coverage guarantees for phage host prediction using fast, closed form 
+inference. It offers a practical trade off between compact prediction sets and directional sensitivity to fit different 
+application needs.
+
+
+
+

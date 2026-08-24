@@ -1,50 +1,44 @@
 % \subsection{$\hat{t}$ Calculation}
-\subsection{\texorpdfstring{$\hat{t}$}{t̂} Calculation}
+\section{\texorpdfstring{$\hat{t}$}{t̂} Calculation}
 \label{sec3.5: t hat calculation}
 
-\subsubsection{\texorpdfstring{$\tau$ Computation}{tau Computation}}
+\subsection{\texorpdfstring{$\tau$ Computation}{tau Computation}}
 \label{3.5.1: computation}
-\noindent For any test point $\mathbf{s} \in \mathbb{R}^K$, we define the inclusion threshold function $\tau(\mathbf{s})$ (defined 
+For any test point $\mathbf{s} \in \mathbb{R}^K$, we define the inclusion threshold function $\tau(\mathbf{s})$ (defined 
 in \ref{eq: tau-def}) as the minimum scaling factor required for the scaled envelope $t \cdot E$ to contain $\mathbf{s}$:
 \[\tau(\mathbf{s}) = \inf \{ t > 0 : \mathbf{s} \in t \cdot E \}\]
 
-\noindent Given the computed $\tau$ values over the scaling set $S_2$, the calibrated scaling factor $\hat{t}$ is selected as 
+Given the computed $\tau$ values over the scaling set $S_2$, the calibrated scaling factor $\hat{t}$ is selected as 
 the $(1-\alpha)$ empirical quantile:
 \[\hat{t} = \tau_{(k)} \quad \text{where} \quad k = \lceil(|S_2|+1)(1-\alpha)\rceil\]
 \noindent Here, $\tau_{(k)}$ denotes the $k$-th order statistic (the $k$-th smallest value) of $\{\tau(\mathbf{s}_i)\}_
 {\mathbf{s}_i \in S_2}$. 
 
-\vspace{0.15cm}
-\noindent Unlike the original CSA method, which relies on a computationally expensive iterative binary search over candidate 
+Unlike the original CSA method, which relies on a computationally expensive iterative binary search over candidate 
 $t$ values, our closed form expressions allow $\tau(\mathbf{s})$ to be evaluated directly for each point in a single pass 
 over $S_2$. This eliminates the iterative search entirely, which reduces the calibration computational complexity from 
 $O(|S_2| \cdot N_{\text{iter}})$ to $O(|S_2| \log |S_2|)$.
 
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Class Specific \texorpdfstring{$\hat{t}$}{t̂} Calculation}
+\subsection{Class Specific \texorpdfstring{$\hat{t}$}{t̂} Calculation}
 \label{sec3.5.2: class specific t hat}
-\noindent When the dataset has class imbalance (like our dataset), a single global scaling factor $\hat{t}$ can cause under 
+When the dataset has class imbalance (like our dataset), a single global scaling factor $\hat{t}$ can cause under 
 coverage for complex classes and over coverage for simpler ones. To enforce exact class conditional coverage $1 - \alpha$, 
 we partition $S_2$ into class-specific calibration sets $S_2^{(c)} = \{\mathbf{s} \in S_2 : h = c\}$ for each label $c \in 
 \mathcal{H}$.
 
-\vspace{0.15cm}
-\noindent For each class $c$, the class-specific scaling threshold $\hat{t}_c$ is calculated independently on $S_2^{(c)}$:
+For each class $c$, the class-specific scaling threshold $\hat{t}_c$ is calculated independently on $S_2^{(c)}$:
 
 \begin{equation}
 \label{eq: class specific quantile}
 \hat{t}_c = \tau_{(k_c)}^{(c)}, \qquad k_c = \lceil(|S_2^{(c)}|+1)(1-\alpha)\rceil.
 \end{equation}
 
-\noindent The two prediction tasks in this report differ in how envelopes are constructed, which determines how these per 
+The two prediction tasks in this report differ in how envelopes are constructed, which determines how these per 
 class thresholds $\hat{t}_c$ are applied:
 
-\vspace{0.15cm}
-\noindent \textbf{Gram-Type Classification: } We only fit a single envelope, $E$ on the shared shape discovery set $S_1$ 
+\textbf{Gram Type Classification: } We only fit a single envelope, $E$ on the shared shape discovery set $S_1$ 
 containing phages of both classes. If we evaluate a single pooled threshold over $S_2$, it would only yield only marginal 
 coverage. So, we compute the class specific quantiles $\hat{t}_{\text{gram-neg}}$ and $\hat{t}_{\text{gram-pos}}$ using 
 \eqref{eq: class specific quantile} and scale the shared envelope by their maximum:
@@ -53,12 +47,11 @@ coverage. So, we compute the class specific quantiles $\hat{t}_{\text{gram-neg}}
 \hat{t} = \max\big(\hat{t}_{\text{gram-neg}},\, \hat{t}_{\text{gram-pos}}\big).
 \end{equation}
 
-\noindent Since $\hat{t} \ge \hat{t}_c$ for both classes, scaling $E$ by $\hat{t}$ satisfies both coverage requirements 
+Since $\hat{t} \ge \hat{t}_c$ for both classes, scaling $E$ by $\hat{t}$ satisfies both coverage requirements 
 simultaneously, guaranteeing class-conditional validity $\mathbb{P}(\mathbf{s} \in \hat{t} \cdot E \mid H = c) \ge 1-\alpha$ 
 for $c \in \{\text{gram-neg}, \text{gram-pos}\}$.
 
-\vspace{0.15cm}
-\noindent \textbf{Host-Level Classification: } In host-level classification, each candidate host $h \in \mathcal{H}$ has a 
+\textbf{Host Level Classification: } In host-level classification, each candidate host $h \in \mathcal{H}$ has a 
 dedicated envelope $E_h$ fitted exclusively on phages with true host $h$ (Section~\ref{sec3.1: problem formalisation}). 
 Because its calibration set $S_2^{(h)}$ is already single-class, $\hat{t}_h$ is computed directly via \ref{eq: class 
 specific quantile} without taking a maximum across hosts. Each scaled envelope $\hat{t}_h \cdot E_h$ is validated 
@@ -67,12 +60,11 @@ independently, admitting a candidate host $h$ if $\phi_h(\mathbf{s}_h) \in \hat{
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Resolving the Empty Prediction Set}
+\subsection{Resolving the Empty Prediction Set}
 \noindent In section~\ref{sec3.1: problem formalisation} we noted that $C(\mathbf{s},\mathbf{m})$ may be empty when no 
 candidate label's transformed score falls inside $\hat t \cdot E$. In both our tasks we resolve this differently.
 
-\vspace{0.15cm}
-\noindent For gram type classification, we resolve an empty set conservatively by returning both labels, $C(\mathbf{s}) = 
+For gram type classification, we resolve an empty set conservatively by returning both labels, $C(\mathbf{s}) = 
 \mathcal{H}$, rather than an arbitrary tie break, since $N=2$, this is the uninformative but always valid choice. 
 On the other hand, for host-level classification, where $N$ can be large and returning all of $\hat{\mathcal{H}}(\mathbf{s})$ 
 would be uninformative, we resolve an empty set by forcing a singleton at the host with the closest $\tau$ value:
@@ -80,7 +72,7 @@ would be uninformative, we resolve an empty set by forcing a singleton at the ho
 C(\mathbf{s}) = \Big\{ \operatorname*{argmin}_{h \in \hat{\mathcal{H}}(\mathbf{s})} \tau_h(\mathbf{s}_h) \Big\}.
 \end{equation*}
 
-\noindent Both apply only when the primary rule of Equation~\eqref{eq:prediction_set_definition} yields $\emptyset$.
+Both apply only when the primary rule of Equation~\eqref{eq:prediction_set_definition} yields $\emptyset$.
 Coverage guarantee in Theorem~\ref{thm: marginal coverage} remains unaffected as nonempty fallback options strictly 
 enlarge $C(\mathbf{s})$, thus the lower bound $\mathbb{P}(H \in C(\mathbf{s})) \ge 1 - \alpha$ trivially holds. Consequently, 
 the reported \texttt{empty\_rate} is strictly zero by rule rather than an absence of out-of-envelope points. 
@@ -90,24 +82,4 @@ separately.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% \subsubsection{Resolving the Empty Prediction Set}
-% \noindent In section~\ref{sec3.1: problem formalisation} we noted that $C(\mathbf{s},\mathbf{m})$ may be empty when no 
-% candidate label's transformed score falls inside $\hat t \cdot E$. In both our tasks we resolve this issue differently.
 
-% \vspace{0.15cm}
-% \noindent For gram-type classification, we resolve an empty set conservatively by returning both labels, $C(\mathbf{s}) = 
-% \mathcal{H}$, rather than an arbitrary tie-break — since $N=2$, this is the uninformative but always-valid choice. 
-% On the other hand, for host-level classification, where $N$ can be large and returning all of $\hat{\mathcal{H}}(\mathbf{s})$ 
-% would be uninformative, an empty set is instead resolved by forcing a singleton at the host with the closest $\tau$ value:
-% \begin{equation*}
-% C(\mathbf{s}) = \Big\{ \operatorname*{argmin}_{h \in \hat{\mathcal{H}}(\mathbf{s})} \tau_h(\mathbf{s}_h) \Big\}.
-% \end{equation*}
-
-% \noindent Both are applied only when the primary rule of Equation~\eqref{eq:prediction_set_definition} yields $\emptyset$.
-% The coverage guarantee of Theorem~\ref{thm: marginal coverage} remains unaffected as it is established on the primary 
-% construction over $\mathcal{H}$ and empty outcomes are, by definition, cases where that guarantee already requires some label 
-% to be returned to satisfy the $1-\alpha$ bound in expectation. Because set expansion and nonempty fallback options strictly 
-% enlarge $C(\mathbf{s})$, the lower bound $\mathbb{P}(H \in C(\mathbf{s})) \ge 1 - \alpha$ trivially holds. Consequently, 
-% the reported \texttt{empty\_rate} for both tasks is strictly zero by rule rather than an absence of out of envelope points. 
-% To preserve visibility of these points, Section~\ref{sec5: experiments} reports the pre resolution \texttt{forced\_rate} 
-% separately.

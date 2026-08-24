@@ -1,15 +1,16 @@
-\subsection{Current Computational Approaches and Limitations}
+\newpage
+\section{Current Computational Approaches and Limitations}
 \label{sec2.2: current approaches}
 % State of the Art in Uncertainty Quantification for Biological Prediction
-\noindent The problem of predicting which phage infects which host bacteria has been studied computationally for over a 
+The problem of predicting which phage infects which host bacteria has been studied computationally for over a 
 decade and the methods have significantly evolved during this time. Prediction methods have progressed from simple rule 
 based alignemnt to deep representation learning. Here, we will summarize each the primary methodologies of these methods
 and along with the common limitations they share that motivate us for this work.
 
 
-\subsubsection{Sequence Similarity and Protein Content Methods}
+\subsection{Sequence Similarity and Protein Content Methods}
 \label{sec2.2.1: classical methods}
-\noindent The early host prediction tools rely on sequence alignment between a phage and bacterial genomes, assuming that 
+The early host prediction tools rely on sequence alignment between a phage and bacterial genomes, assuming that 
 similarity between the two indicates infection compatibility. HostPhinder \cite{villarroel2016hostphinder} represents each 
 genome $g$ by its normalised $k$-mer frequency vector $\mathbf{v}(g) \in \mathbb{R}^{4^k}$ and assigns the predicted host 
 through nearest-neighbour search over a reference database $\mathcal{D}_{\text{ref}} = \{(g_i, y_i)\}_{i=1}^N$:
@@ -17,7 +18,7 @@ through nearest-neighbour search over a reference database $\mathcal{D}_{\text{r
 \hat{y} = \operatorname*{argmax}_{y \in \mathcal{H}} \max_{g_i:\, y_i = y} \operatorname{sim}\!\left(\mathbf{v}(g_{\text{test}}),\, \mathbf{v}(g_i)\right).
 \end{equation*}
 
-\noindent WIsH \cite{galiez2017wish} uses a probabilistic approach, it models each candidate host genome as a variable-
+WIsH \cite{galiez2017wish} uses a probabilistic approach, it models each candidate host genome as a variable-
 order Markov chain with parameters $\theta_h$ and then selects the host that maximises the log-likelihood of the new test 
 phage sequence $S = (a_1, \ldots, a_L)$:
 \begin{equation*}
@@ -25,7 +26,7 @@ phage sequence $S = (a_1, \ldots, a_L)$:
 ^{L} \log \mathbb{P}(a_i \mid a_{i-k}, \ldots, a_{i-1};\, \theta_h).
 \end{equation*}
 
-\noindent The protein-content methods overcome the limitation of whole-genome alignment by decomposing the phage into its 
+The protein-content methods overcome the limitation of whole-genome alignment by decomposing the phage into its 
 constituent proteins. RaFAH \cite{coutinho2021rafah} clusters phage proteins into $M$ protein clusters via MMseqs2 
 \cite{steinegger2017mmseqs2}, then it represents each phage by a binary membership vector $\mathbf{x} \in \{0,1\}^M$, 
 and trains a random forest 
@@ -37,7 +38,7 @@ $$f_{\text{RF}}: \{0,1\}^M \longrightarrow \Delta^{|\mathcal{H}|-1}, \quad \text
 protein-cluster construction, and the data contamination problem discussed in \ref{sec4.3: contamination fix} arises 
 from the same source.
 
-\subsubsection{Protein Language Models and Embedding-Based Methods}
+\subsection{Protein Language Models and Embedding-Based Methods}
 \label{sec2.2.2: plms}
 \noindent The current state of the art techniques use protein language models (pLMs), which are neural architectures 
 trained on millions of protein sequences through self-supervised learning \cite{elnaggar2022prottrans, flamholz2024large}. 
@@ -48,7 +49,7 @@ an encoder $\Phi_{\text{pLM}}$ produces a residue-level embedding matrix $\mathb
 \mathbf{z} = \frac{1}{n} \sum_{i=1}^{n} \mathbf{Z}_{i,:} \;\in\; \mathbb{R}^d.
 \end{equation*}
 
-\noindent The embedding $\mathbf{z}$ encodes biochemical, structural, and evolutionary information without requiring 
+The embedding $\mathbf{z}$ encodes biochemical, structural, and evolutionary information without requiring 
 explicit sequence alignment. Building on ProtT5 \cite{elnaggar2022prottrans}, tools such as EMPATHI 
 \cite{boulay2025empathi} and SUBLYME \cite{boulay2026phalp} use these representations for phage protein functional 
 annotation and metagenomic lysin discovery respectively. These tools are directly involved in this work: the 
@@ -59,191 +60,24 @@ similarity baselines \cite{gonzales2023protein, du2026high}. So this suggests th
 information for reliable host assignment.
 
 
-\subsubsection{Shared Limitation: Absence of Uncertainty Quantification}
+\subsection{Limitation: Absence of Uncertainty Quantification}
 \label{sec2.2.3: limitations}
 \noindent Despite their empirical success of all the methods seen, they all share a fundamental limitation: they produce 
 point predictions (a single host label $\hat{y}$ or a scalar score $\hat{s}(x,y) \in [0,1]$) without any formal 
 uncertainty quantification. 
 
-\vspace{0.15cm}
-\noindent \textbf{Uncertainty Quantification (UQ)} is defined as the mathematical framework used to rigorously measure, 
+\textbf{Uncertainty Quantification (UQ)} is the mathematical framework used to rigorously measure, 
 propagate, and bound prediction errors. A raw scalar output $\hat{s}(x,y) = 0.87$ merely reflects an uncalibrated 
 relative ranking statistic, not a true conditional probability $\mathbb{P}(Y = y \mid X = x)$. Existing host prediction 
 tools fail to provide UQ because no tool offers a finite sample statistical guarantee that the true bacterial host is 
 contained within a candidate prediction set with a predefined target probability $1-\alpha$.
 
-\vspace{0.15cm}
-\noindent Existing UQ frameworks only offer partial solutions. For example, the Bayesian approaches require strong assumptions 
+Existing UQ frameworks only offer partial solutions. For example, the Bayesian approaches require strong assumptions 
 on the distribution distributional that are difficult to justify for biological score data, while post-hoc calibration methods 
 such as Platt scaling provide no finite-sample guarantees on unseen test data \cite{angelopoulos2023conformal}. 
 
-\vspace{0.15cm}
-\noindent These limitations are consequential in phage therapy, where an incorrectly predicted host can directly harm a 
+These limitations are consequential in phage therapy, where an incorrectly predicted host can directly harm a 
 patient. This motivates the adoption of conformal prediction \cite{vovk2005algorithmic}. This is a distribution-free 
 framework that wraps any existing scoring model in a statistical construction, and produces prediction sets $C(X) 
 \subseteq \mathcal{H}$ with exact finite-sample coverage guarantees while only requiring exchangeability of calibration 
 and test data.
-
-
-
-
-
-
-
-
-
-% \subsubsection{Sequence Similarity Approaches}
-% \label{sec2.2.1: SSA}
-% \noindent The earliest host prediction tools relied on sequence alignment between a phage and bacterial genomes, assuming that 
-% similarity between the two indicates infection compatibility. This was motivated by the known transfer of genetic material between the 
-% phages and their hosts through horizontal gene transfer.
-
-% \vspace{0.15cm}
-% \noindent One of the tools, HostPhinder \cite{villarroel2016hostphinder}, works by building a reference database of phage genomes with the
-% known hosts. Then for a new phage in question, it assigns the host that is the host of its nearest neighbour under a k-mer similarity
-% metric. Mathematically, let $v(g) \in \mathbb{R}^{4^k}$ be the normalised k-mer frequency vector of a genome $g$. So given a new
-% test phage $g_{\text{test}}$ and a reference database $\mathcal{D}_{\text{ref}} = \left\{(g_i, y_i)\right\}_{i = 1}^N$ its 
-% predicted host is
-
-% $$\hat{y} = \operatorname*{argmax}_{y \in \mathcal{H}} \left\{ \max_{g_i : y_i = y} \operatorname{sim}\left(\mathbf{v}
-% (g_{\text{test}}), \mathbf{v}(g_i)\right) \right\}$$
-
-% \noindent where $\operatorname*{sim}(., .)$ is a similarity measure.
-
-% \vspace{0.15cm}
-% \noindent Another method, WIsH \cite{galiez2017wish}, uses a probabilistic approach by modelling the genome of each candidate
-% host, $h \in \mathcal{H}$, as a variable order Markov chain with parameter vector, $\theta_h$. It then computes the likelihood 
-% of the new phage genome sequence, $S = (a_1, \cdots, a_L)$ under each host model:
-% $$\ell(S \mid \theta_h) = \sum_{i=k+1}^L \log \mathbb{P}\left(a_i \mid a_{i-k}, \dots, a_{i-1}; \theta_h\right)$$
-% The predicted host is $\hat{y} = \operatorname*{argmax}_{h \in \mathcal{H}} \ell(S \mid \theta_h)$, 
-% which maximizes this likelihood.
-
-% \vspace{0.15cm}
-% \noindent Despite the fact that these methods are relitively simpler, they perform reasonably well when they have a phage
-% reference that is closely related. But for a new phage that is not very common and is only a distant relative of the phages
-% already there in the database, they degrade sharply. And this scenario is very common in metagenomic settings \cite{coclet2021global}.
-
-
-% \subsubsection{Protein Content Approaches}
-% \label{sec2.2.2: PCA}
-% \noindent Instead of comparing and aligning the whole genomes, like the methods in \ref{sec2.2.1: SSA} these methods 
-% break down the phage genome into its constituent proteins and then analyze their specific features from their functional
-% or sequence properties. This approach is motivated by the fact that the proteins responsible for infecting a host are much
-% more evolutionary conserved than the rest of the genome \cite{coutinho2021rafah}.
-
-% \vspace{0.15cm}
-% \noindent RaFAH \cite{coutinho2021rafah} (Random Forest with protein Amino acid compositions for phage Host prediction)
-% works by clustering all the known phage proteins into protein clusters using MMseqs2 \cite{steinegger2017mmseqs2}.
-% It computes the amino acid composition vector of each cluster's representative sequence and then trains a random forest
-% classifier to predict the host genus from the protein cluster membership profile of the new phage. Let $x \in \{0,1\}^M$ 
-% be the binary indicator that encodes which of the $M$ protein clusters are present in a given phage. Then the random forest 
-% maps this vector to the probability simplex over the host categories $\Delta^{|\mathcal{H}|-1}$ :
-% $$f_{\text{RF}}: \{0,1\}^M \longrightarrow \Delta^{|\mathcal{H}|-1}, \quad \text{where } \hat{\mathbf{p}} = 
-%     f_{\text{RF}}(\mathbf{x}), \quad \sum_{y \in \mathcal{H}} \hat{p}_y = 1$$
-
-  
-% \vspace{0.15cm}
-% \noindent RaFAH is also relevant to this report, since we also work with similar protein based cluster representation
-% and the contamination problem discussed in \todo{add section reference} also arises exactly from this protein-cluster 
-% construction. 
-
-% \vspace{0.15cm}
-% \noindent These techniques are more robust to sequence divergence than the sequence alignment methods \ref{sec2.2.1: SSA}, 
-% but they rely on the availibility of explicit functional annotations, which are missing for a large percentage of the 
-% already discovered phage genomes.
-
-%Furthermore, as discussed in 
-% Section~\ref{sec4.3: train test split}, the overlap of protein clusters across phage genomes introduces non-trivial data 
-% leakage risks, necessitating a careful protein-level split assignment protocol.
-
-
-% \subsubsection{Protein Language Models and Embedding Based Approaches}
-% \label{sec2.2.3: PLMs}
-% \noindent The latest host prediction methods use protein language models (pLMs) \cite{elnaggar2022prottrans, flamholz2024large}.
-% Similar to how large language models (LLMs) are trained on massive text datasets, pLMs are neural networks trained on 
-% millions of protein sequences through self-supervised learning.
-
-% \vspace{0.15cm}
-% \noindent A protein sequence of length $n$ can be represented as $A = (a_1, \dots, a_n) \in \mathcal{A}^n$, where 
-% $\mathcal{A}$ represents the standard amino acid alphabet of size 20. $A$ is mapped by an encoder 
-% $\Phi_{\text{pLM}}$ (e.g., ProtT5-XL-UniRef50) \cite{elnaggar2022prottrans} to a embedding matrix:
-% $$Z = \Phi_{\text{pLM}}(A) \in \mathbb{R}^{n \times d}$$. 
-
-% \noindent where $d$ is the embedding dimension (typically 1024 or larger). This is followed
-% by mean pooling along the sequence length which provides us with a fixed length embedding $z \in \mathbb{R}^d$. 
-% $$\mathbf{z} = \frac{1}{n} \sum_{i=1}^n \mathbf{Z}_{i, :}$$
-
-% \noindent This embedding vector, $z$, captures the sequence's biochemical, structural, and evolutionary properties without 
-% requiring an explicit sequence alignment. A primary foundational model in this domain is ProtTrans/ProtT5 \cite{elnaggar2022prottrans}, 
-% which is trained on hundreds of millions of UniRef protein sequences.
-
-% \vspace{0.15cm}
-% \noindent Several tools for phage protein protein annotation and host prediction have been developed using these embeddings.
-% For instance, EMPATHI \cite{boulay2025empathi} uses a heirarchical classification pipeline to assigns functioal labels 
-% to phage proteins. It embeds the sequences using ProtT5 and performs nearest neighbour retreival witihin the embedding space,
-% mapping them to a biological function ontology. SUBLYME \cite{boulay2026phalp} then extends this methodology for metagenomics
-% which enables lysin discovery directly from environmemtal samples. These tools are directly involved in this work as rhe 
-% score matrix that is used as an input to this conformal framework is generated by a pipeline which is built on these annotations.
-
-% \vspace{0.15cm}
-% \noindent For host prediction, we can see in \cite{gonzales2023protein} that protein embeddings actually improve the 
-% predictions for the phage host interactions compared to the sequence-similarity baselines \ref{sec2.2.1: SSA}. In 
-% \cite{du2026high} Du et al. show that through some key protein embeddings LLMs can acheive high resolution host assignments.
-% Such results support the theory that embedding represenations contain information that is sufficeint for an accurate 
-% host-prediction. But at the same time, all these methods output point predictions, a single score ot a single host label,
-% and they do not provide us with any measure of uncertainity.
-
-
-% \subsubsection{Limitations of Existing Methods and Need for Uncertainit Quantification}
-% \label{sec2.2.4: limitations}
-% \noindent Despite the diversity and the empirical succcess of all the methods we have seen above, they all share a fundamental
-% limitation, they all produce point predictions (a single predicted host or a single score) without quantifying the uncertainity 
-% of these predictions. For example, a score of $\hat s (x,y) = 0.87$ does not mean that there is a $87\%$ chance of infection, 
-% it is just a relative ranking metric not a true probability of infection. More importantly none of these methods provide any mathematical guaranatee for coverage (that the true host would
-% be included in the prediction set) with a given confidence level. This lack of uncertainity quantification can be a 
-% critical problem in some scenarios, like phage therapy, where picking the wrong phage for treatment can harm the patient.
-
-% \vspace{0.15cm}
-% \noindent Similarly, some phages are just genuinely difficult to classify which could be due to their host range having 
-% multiple hosts or simply the protein content may be insufficient to determine the exact host with confidence. In such cases
-% a good method should be able to return all the plausible hosts rather than just forcing a singlem potentially wrong host. 
-% The existing methods do not have a formal way of doing this.
-
-% \vspace{0.15cm}
-% \noindent There are several existing frameworks for uncertainity quantification in machine learning, but most of them are
-% not very well suited to this problem. These incluse methods such as Bayesian inference and post-hoc calibration methods 
-% which offer partial solutions but they either require strong distributional assumptions or they are unable to provide 
-% finite-sample guarantees on unseen data \cite{angelopoulos2023conformal}.
-
-% For example, Bayesian approaches place a prior distribution over the model parameters
-% and then compute a posterior given the observed data. Even though these approaches are supported theoretically, the issue 
-% with is that they require strong distributional assumptions that are difficult to justify fot biological score datasets. Also, 
-% computing or approximating the posterior is computationally expensive when we have a phage database with several hundred
-% thousand genomes. Another problem is that the resulting uncertainity estimates depend heavily on the choice of the prior
-% which introduces a degree of subjectivity which should be avoided in a clinical setup where the guarantee must be transparent
-% and verifiable.
-
-% \vspace{0.15cm}
-% \noindent Other techniques, like the calibration methods include techniques like Platt scaling or temperature scaling.They
-% adjust the raw output scores of the model so that they reflect the empirical probabilities better
-% $$\mathbb{P}\left(Y = y \;\Big|\; \hat{s}(X, y) = p\right) = p \quad \forall p \in [0, 1]$$
-% \noindent For example, they make sure that among all the predictions which are assigned the score of $0.8$, around $80\%$ 
-% should be correct. This is easy to apply on top of any existing models and is also compuationally cheap, but they do not 
-% provide us with any formal finite sample guarantees. The calibration is verified empirically on a validation set but it can 
-% degrade on new data with no bounds on how far the calibrated probabilities may deviate from the truth on the unseen test set. 
-
-% \vspace{0.15cm}
-% \noindent These observations lead us to us the conformal prediction, \cite{vovk2005algorithmic}, which offers exactly 
-% the properties required here. It is distribution-free, it requires no assumption on the underlying score distribution. 
-% It provides a finite-sample coverage guarantee rather than an asymptotic or empirical one. Its only requirement is 
-% exchangeability between calibration and test data. Also, it is computationally light, it requires only the computation 
-% of empirical quantiles rather than any iterative optimisation or sampling. Instead of replacing the currently existing 
-% methods, conformal prediction complements them by taking their raw scores inputs and then provides prediction sets with 
-% proven mathematical guanatees that can be proven and are detailes in \todo{refer to the correct section}. For these 
-% reasons, conformal prediction is the framework adopted in this report. 
-
-
-
-
-
-

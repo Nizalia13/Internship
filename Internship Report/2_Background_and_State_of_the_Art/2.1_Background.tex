@@ -1,6 +1,6 @@
-\section{Background \& State of the Art}
+\chapter{Background \& State of the Art}
 \label{sec2: background}
-\noindent In this section, we provide the biological, computational and mathematical background and context for the 
+In this section, we provide the biological, computational and mathematical background and context for the 
 methods developed in this report. 
 We will begin by introducing bacteriophages and the host-prediction problem in Section \ref{sec2.1: host prediction 
 problem}, which motivates the need for computational approaches to find a solution. We will then go over the already 
@@ -17,33 +17,30 @@ aggregation method of in \cite{ochoarivera2024conformal}, on which we will build
 % therefore essential to prioritize candidate phages prior to experimental validation or to infer host information directly 
 % from genomic data.
 
-\subsection{Bacteriophages and Host-Prediction Problem}
+\section{Bacteriophages and Host-Prediction Problem}
 \label{sec2.1: host prediction problem}
-\noindent Bacteriophages, commonly referred to as phages, are viruses that specifically infect and replicate within 
+Bacteriophages, commonly referred to as phages, are viruses that specifically infect and replicate within 
 bacteria. They are one of the most abundant biological entities on Earth with an estimated population of $10^{31}$ in the 
 global biosphere \cite{dejonge2019molecular}, and therefore play a very important role in shaping the microbial communities 
 and evolution. In the recent years the interest in bacteriophages has increased due to the growing threat of antimicrobial 
 resistance and the development of phage therapy as an alternate treatment method to the traditional antibiotics 
 \cite{leprince2025strengthening}.
 
-\vspace{0.15cm} 
-\noindent One of the key characteristics of of phages is its host range, i.e. the set of bacterial hosts that the phage 
-is capable of infecting. The host range of a phage is not a fixed property, it is determined by molecular interactions 
-between the phage and the bacterial surface structures during the cycle of infection \cite{dejonge2019molecular}, 
-\cite{holtappels2023drivers}. Each phage attaches itself to the bacterial host, injects its viral genetic material which 
-are able to replicate inside the host. Therefore, some of the phages only infect a few hosts (have a small host range) as 
-they can only infect a limited number of bacterial strains while there are other which are capable of infecting a broad 
-range of bacterias. 
+One of the key characteristics of of phages is its host range, which is the set of bacterial hosts that a phage can infect. 
+This host range is not fixed for a phage, it is determined by molecular interactions between the phage and the bacterial 
+surface structures during the cycle of infection \cite{dejonge2019molecular}, \cite{holtappels2023drivers}. Each phage 
+attaches itself to the bacterial host, injects its viral genetic material which are able to replicate inside the host. 
+Therefore, some of the phages have a small host range as they can only infect a limited number of 
+bacterial strains while there are other which are capable of infecting a broad range of bacterias. 
 
-\vspace{0.15cm}
-\noindent Identifying which phage infects which host, can have several applications both in environmental and clinical 
+
+Identifying which phage infects which host, can have several applications both in environmental and clinical 
 studies. In clinical, the host range helps us determine how suitable a phage is for designing the treatment for phage 
 therapy (an alternate method to antibiotics). In environmental studies it is valuable to know the host being 
 infected to understand the ecological interactions between viruses and microbial communities \cite{holtappels2023drivers}
 and evolution in the biosphere.
 
-\vspace{0.15cm}
-\noindent However, host range has also brings its own obstacles. In phage therapy, we need to find precisely the phage 
+However, host range has also brings its own obstacles. In phage therapy, we need to find precisely the phage 
 that infects the given bacterial pathogen which is the cause of the infection, and for that we need a fast 
 reliable host prediction method. Traditionally, the method of determining the host range used to depend on laboratory 
 experiments in which candidate phages were tested aginst a number of bacterial hosts; although this method was able to 
@@ -53,21 +50,18 @@ astronomically, and this leads us to the need of having a compuational predictio
 complement the lab experiment by providing with a shorter list of candidate phages before we move on to expermiental 
 validation \cite{coclet2021global} or even directly infer the host information directly from a given phage.
 
-\vspace{0.15cm}
-\noindent We can formulate this host prediction problem as follows:
+We can formulate this host prediction problem as follows:
 % over a probability space $\left(\Omega, \mathcal{F}, \mathbb{P}\right)$. 
 let $\mathcal{X} \subseteq \mathbb{R}^d$ be the feature space representing phage representations, and let $\mathcal{H} 
 = \{h_1, \cdots, h_N\}$ be the finite label space of possible bacterial hosts. 
 
-\vspace{0.15cm}
-\noindent In a single-host classification setting, we observe random pairs $(X, H) \sim \mathbb{P}_{X,H}$, where 
+In a single host classification setting, we observe random pairs $(X, H) \sim \mathbb{P}_{X,H}$, where 
 $X \in \mathcal{X}$ is a feature vector representing a phage and $H \in \mathcal{H}$ represents the true host. 
 In a general multi-host setting, the target is a non-empty subset of hosts $H^* \subseteq \mathcal{H}$, i.e., 
 $H^* \in \mathcal{P}(\mathcal{H}) \setminus \{\emptyset\}$, where $\mathcal{P}(\mathcal{H}) = 2^{\mathcal{H}}$ denotes 
 the power set of $\mathcal{H}$ \ref{sec3.1: problem formalisation}. 
 
-\vspace{0.15cm}
-\noindent Our primary objective is to construct a set-valued prediction mapping:
+Our primary objective is to construct a set-valued prediction mapping:
 $$ C: \mathcal{X} \longrightarrow \mathcal{P}(\mathcal{H})$$
 which maps an unlabelled test phage $X_{n+1} \in \mathcal{X}$ to a prediction set $C(X_{n+1}) \subseteq \mathcal{H}$ 
 such that it guarantees that the true host is included in the prediction set with a with a user specified statistical 
@@ -77,4 +71,3 @@ confidence, $1 - \alpha \in (0, 1)$:
 \mathbb{P}\left( H_{n+1} \in C(X_{n+1}) \right) \ge 1 - \alpha
 \end{equation*}
 \noindent where $\alpha \in (0, 1)$ denotes the target error probability.
-this 

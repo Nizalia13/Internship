@@ -1,33 +1,12 @@
-% \subsection{Protein to Phage Aggregation}
-% - The raw data is at the protein level but conformal prediction operates at the phage level — aggregation is needed\\
-% - NaN-aware mean pooling: for each phage and each functional score column, compute the mean across all proteins of that phage that 
-%   have a non-NaN value for that column. Proteins with NaN for a given column are excluded from the mean for that column only\\
-% - Why not replace NaN with zero before pooling: treating an unannotated protein as having zero evidence would push the phage's 
-%   aggregated score artificially toward zero, misrepresenting its biology\\ 
-% - After aggregation: result is a matrix of shape (number of phages) × 40, still with NaNs in cells where none of the phage's 
-%   proteins were annotated with that function
-
-
-% \subsubsection{NaN handling after aggregation}
-% - After mean pooling, some phages still have NaN in certain columns -> this happens when none of their proteins were annotated with 
-%   a particular function\\
-% - Strategy: fill remaining NaNs using column-wise medians computed strictly on the training set (never the test set, to prevent 
-%   data leakage)
-% - The median cap: any training median above 0.6 is capped at 0.5 -> this prevents an imputed value from falsely pushing a phage 
-%   toward a particular class
-% - any remaining NaNs after median imputation are filled with 0.5 (neutral value)
-
-
-\subsection{Protein-to-Phage Aggregation and NaN-Aware Pooling}
+\section{Protein to Phage Aggregation and NaN-Aware Pooling}
 \label{sec4.2: aggregation}
-\noindent The base classifiers only score individual proteins $p \in \mathcal{P}_i$, while host infection is a property of the 
+The base classifiers only score individual proteins $p \in \mathcal{P}_i$, while host infection is a property of the 
 phage as a whole, so we need to aggregate the protein level scores into a single phage-level score vector. For each phage 
 $i \in \{1, \ldots, N_{\text{phage}}\}$ ($N_{\text{phage}} = 18{,}474$) with protein set $\mathcal{P}_i$, let $M_{p,k} = 
 \mathbf{1}(\text{protein } p \text{ has a valid prediction for column } k)$ denote the protein-level mask. We compute the 
 aggregation using running sums and counts per phage, this avoids holding the full $1.85 \times 10^6$-row protein matrix in memory.
 
-\vspace{0.15cm}
-\noindent For each of the $K$ functional dimensions, we get the aggregated phage level score using dimension wise, NaN aware 
+For each of the $K$ functional dimensions, we get the aggregated phage level score using dimension wise, NaN aware 
 mean pooling:
 \begin{equation}
 \label{eq: nan-mean-pooling}
@@ -38,13 +17,12 @@ s_{i,k} = \begin{cases}
 \end{cases}
 \end{equation}
 
-\noindent Equation~\eqref{eq: nan-mean-pooling} excludes missing entries ($\texttt{NA}$) from both the numerator and denominator, 
+Equation~\eqref{eq: nan-mean-pooling} excludes missing entries ($\texttt{NA}$) from both the numerator and denominator, 
 and takes the average strictly over observed proteins. A score is $\texttt{NA}$ if and only if no protein of phage $i$ has a 
 valid prediction for column $k$.
 
 
-\vspace{0.15cm}
-\noindent The phage-level mask follows directly:
+The phage-level mask follows directly:
 \begin{equation}
 \label{eq: phage-mask}
 m_{i,k} = \mathbf{1}\left( \sum_{p \in \mathcal{P}_i} M_{p,k} > 0 \right).
@@ -53,8 +31,7 @@ i.e. $m_{i,k}=1$ if at least one protein of phage $i$ has an observed score for 
 the protein data to a phage-level matrix $\mathbf{S} \in ([0,1]\cup\{\text{NA}\})^{N_{\text{phage}} \times K}$ paired with a 
 binary mask for missingness $\mathbf{M} \in \{0,1\}^{N_{\text{phage}} \times K}$.
 
-\vspace{0.15cm}
-\noindent As we have already established in Section~\ref{sec3: methodology}, our conformal envelope constructions operate 
+As we have already established in Section~\ref{sec3: methodology}, our conformal envelope constructions operate 
 natively on the paired observation $(\mathbf{s}_i, \mathbf{m}_i)$.  This preserves the structural missingness without 
 fabricating values in place of it. Consequently, all conformal classification results reported in Section~\ref{sec5: experiments} 
 rely entirely on this native representation, and require no imputation after aggregation. The task dependent rules that determine 

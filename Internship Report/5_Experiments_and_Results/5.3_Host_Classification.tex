@@ -1,17 +1,15 @@
-\subsection{Host Level Classification}
+\section{Host Level Classification}
 \label{sec5.3: host results}
-\noindent Host level prediction extends our conformal prediction framework from binary attributes to a multiclass task across 
+Host level prediction extends our conformal prediction framework from binary attributes to a multiclass task across 
 $N = 54$ candidate bacterial hosts ($\mathcal{H} = \{h_1, \ldots, h_54\}$). This setting introduces statistical and dimensional 
 challenges: heavy label imbalance, small per host calibration samples, and inference through a hierarchical two-stage cascade. 
 Rather than attempting to fit a $2\,036$ dimensional global envelope across the joint feature space, we constructed class 
 conditional envelopes which were calibrated independently for each candidate host $h \in \mathcal{H}$ on its dedicated $K_h$ 
 dimensional score sub vectors $\mathbf{s}_h$.
 
-
-
-\subsubsection{Experimental Protocol}
+\subsection{Experimental Protocol}
 \label{sec5.3.1: host formulation}
-\noindent We apply the split conformal framework of Section~\ref{sec3: methodology} to the reconstructed score vectors (\ref{eq: 
+We apply the split conformal framework of Section~\ref{sec3: methodology} to the reconstructed score vectors (\ref{eq: 
 host nc transformation}) of the $N_{\text{tot}} = 15{,}638$ annotated phages across $54$ candidate hosts ($K_h \in [26, 40]$ per 
 host; $K_{\text{tot}} = 2{,}036$). 
 We again use a three way partition of the genome cluster data:
@@ -23,13 +21,12 @@ We again use a three way partition of the genome cluster data:
     \item $D_{\text{test}}$ (Split $0$, $N_{\text{test}} = 3{,}944$): held out and evaluated once after fixing all 
           parameters.
 \end{itemize}
-\noindent Unlike Gram type classification (Section~\ref{sec5.2: gram results}), host level scores use per model split 
+Unlike Gram type classification (Section~\ref{sec5.2: gram results}), host level scores use per model split 
 assignments (Section~\ref{sec4.3: contamination fix}) to ensure the out of split validity across all five splits rather than 
 restricting calibration to split $0$ alone. Missing entries ($\text{NA}$) are handled by each envelope geometry without data 
 imputation
 
-\vspace{0.15cm}
-\noindent At test time, the Gram restriction $\hat{\mathcal{H}}(\mathbf{s})$ narrows the host space to $16$ for Gram positive 
+At test time, the Gram restriction $\hat{\mathcal{H}}(\mathbf{s})$ narrows the host space to $16$ for Gram positive 
 and $38$ for Gram negative predictions. The cascaded prediction set $C_{\text{host}}(\mathbf{s})$ is evaluated using the per 
 host inclusion rule of Equation~\eqref{eq: host-prediction-set}. The cascade coverage guarantee of Proposition~\ref{prop:cascade} 
 applies directly, bounding theoretical miscoverage by $\le 2\alpha = 0.20$. If a test 
@@ -45,21 +42,20 @@ which normalizes distances across different host geometries without defaulting t
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Hyperparameter Selection on Validation Data}
+\subsection{Hyperparameter Selection on Validation Data}
 \label{sec5.3.2: host tuning}
 
-\noindent We optimized the hyperparameters on $D_{\text{val}}$ (Split 1) by minimizing the average set size subject to empirical 
+We optimized the hyperparameters on $D_{\text{val}}$ (Split 1) by minimizing the average set size subject to empirical 
 coverage constraints at target level $1 - \alpha = 0.90$::
 \begin{equation}
 \label{eq: constrained-opt}
 \theta^\star \in \arg\min_{\theta} \overline{|C|}_{\text{val}}(\theta) \quad \text{subject to} \quad \hat{c}_{\text{val}}(\theta) 
 \ge 1 - \alpha.
 \end{equation}
-\noindent with ties or near constraint cases resolved by minimizing the coverage discrepancy $|\hat{c}_{\text{val}}(\theta) - 
+with ties or near constraint cases resolved by minimizing the coverage discrepancy $|\hat{c}_{\text{val}}(\theta) - 
 (1 - \alpha)|$.
 
-\vspace{0.15cm}
-\noindent Validation under the unrestricted candidate space selected:
+Validation under the unrestricted candidate space selected:
 \begin{itemize}
     \item \textbf{Strip Binning ($N_B$):} Swept over $N_B \in \{3, 5, 8, 10, 15, 20\}$ with windowed monotonic smoothing ($w=2$). 
            $N_B = 10$ was selected, achieving $90.5\%$ validation coverage with an average prediction set size of $12.97$ 
@@ -72,11 +68,10 @@ coverage constraints at target level $1 - \alpha = 0.90$::
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Empirical Test Results (Split 0)}
+\subsection{Empirical Test Results (Split 0)}
 \label{sec5.3.3: host test results}
 
-
-\noindent Table~\ref{tab: host_results} and Figure~\ref{fig: host coverage set size} summarize the empirical performance metrics evaluated on 
+Table~\ref{tab: host_results} and Figure~\ref{fig: host coverage set size} summarize the empirical performance metrics evaluated on 
 the test split ($N_{\text{test}} = 3{,}944$ phages) across all 54 hosts.
 
 \begin{table}[htbp]
@@ -105,12 +100,11 @@ Collapsed 1D                        & 0.929 & 6.09  & 0.286 & 0.937 & 0.014 \\
     \label{fig: host coverage set size}
 \end{figure}
 
-\noindent As demonstrated in Table~\ref{tab: host_results} and Figure~\ref{fig: host coverage set size}, all three geometries 
+As demonstrated in Table~\ref{tab: host_results} and Figure~\ref{fig: host coverage set size}, all three geometries 
 achieve empirical coverage close to the $90.0\%$ target. While the binary Gram setting produced an over conservative coverage 
 (99.8\%) due to global max threshold, the independent per host envelope calibration prevents over coverage (90.5\%--93.9\%).
 
-\vspace{0.15cm}
-\noindent Prediction efficiency diverges sharply:
+Prediction efficiency diverges sharply:
 \begin{enumerate}[label=(\roman*)]
     \item \textbf{Efficiency of Collapsed 1D:} Collapsed 1D achieves an average prediction set size of $6.09$, which is less than 
            half that of Radial ($15.25$) or Strip ($15.35$). In moderate to high dimensions ($K_h \ge 26$), 1D mean pooling avoids 
@@ -126,7 +120,7 @@ achieve empirical coverage close to the $90.0\%$ target. While the binary Gram s
 \end{enumerate}
 
 
-\noindent Figure~\crefrange{fig: per_host_coverage_1}{fig: per_host_coverage_2} in the Appendix \ref{app: plots} illustrates the class 
+Figure~\crefrange{fig: per_host_coverage_1}{fig: per_host_coverage_2} in the Appendix \ref{app: plots} illustrates the class 
 conditional validity across all hosts. The coverage remains well calibrated across major host types (e.g., \emph{Escherichia}, 
 \emph{Pseudomonas}, \emph{Staphylococcus}, and \emph{Mycobacterium}), but we can also find low coverage to the host classes with 
 sparse data.
@@ -134,10 +128,10 @@ sparse data.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Geometric Boundary Visualization Across All Methods}
+\subsection{Geometric Boundary Visualization Across All Methods}
 \label{sec5.3.4: geometric comparison}
 
-\noindent In sections~\ref{sec5.3.3: host test results} we have seen the aggregate metrics report which tell us \emph{how much} the 
+In sections~\ref{sec5.3.3: host test results} we have seen the aggregate metrics report which tell us \emph{how much} the 
 three envelope construction methods differ in coverage and set size, but not \emph{why}. To illustrate the structural mechanisms 
 resulting in these differences, Figure~\crefrange{fig: staph both good}{fig: staph 1 good 1 bad} displays the calibrated boundary 
 projections on a two dimensional subspace.
@@ -164,28 +158,24 @@ along the uninformative ray.}
 \label{fig: staph 1 good 1 bad}
 \end{figure}
 
-\vspace{0.15cm}
-\noindent Collapsed 1D's boundary is the straight anti diagonal line implied by its scalar mean threshold (Section~\ref{sec3.4.1: 
+Collapsed 1D's boundary is the straight anti diagonal line implied by its scalar mean threshold (Section~\ref{sec3.4.1: 
 collapsed 1d}). A phage that is strong in lysin but weak in annealing is treated identically to one with the reverse profile, as long 
 as the average clears the threshold. This produces its smallest false positive count of the three ($21$, $\texttt{own\_cov}=0.94$), 
 but at the cost of giving us $15$ false negatives. The true infectors whose infectors whose evidence concentrates in one dimension 
 rather than both are missed by a boundary which is blind to that asymmetry.
 
-\vspace{0.15cm}
-\noindent The boundary of the Radial method is the smooth arc produced by the radius of Equation~\eqref{eq: radial boundary}. It 
+The boundary of the Radial method is the smooth arc produced by the radius of Equation~\eqref{eq: radial boundary}. It 
 curves inward for phages strong in one dimension but weak in the other. This recovers more true infectors ($10$ false negatives, vs.\ 
 Collapsed's $15$) but at teh cost of efficiency: $2{,}568$ false positives, since a boundary calibrated from points concentrated near 
 the axes extends generously along both axes individually. So the higher dimensional inflation behavior anticipated in Section~
 \ref{sec5.1.2: dimensionality scaling}'s synthetic $K$-sweep, can now be visualized in real data.
 
-\vspace{0.15cm}
-\noindent Strip's staircase boundary sits between the two: it tracks the true cluster's shape more tightly than Collapsed's line, 
+Strip's staircase boundary sits between the two: it tracks the true cluster's shape more tightly than Collapsed's line, 
 and without the smooth over extension of Radial's arc. It achieves the fewest false negatives of the three ($5$) but at the cost of 
 the most false positives ($2{,}540$). It has piecewise constant conditioning (Section~\ref{sec3.4.3: strip}), so it captures the 
 cluster's shape well locally, but each bin transition risks admitting points just past a true infector's actual boundary.
 
-\vspace{0.15cm}
-\noindent Across both functional feature projections, the geometric trade offs are consistent: Collapsed 1D enforces a global linear 
+Across both functional feature projections, the geometric trade offs are consistent: Collapsed 1D enforces a global linear 
 trade-off that produces tight rejection regions at the cost of directional blindness; the Radial envelope smoothly hugs directional 
 density but expands along sparse orthant rays in higher dimensions; and the Strip envelope captures non linear conditional dependencies 
 along dense axes via its staircase structure, but becomes overly permissive in sparse bins due to marginal fallback quantile padding.
@@ -196,8 +186,9 @@ along dense axes via its staircase structure, but becomes overly permissive in s
     \caption{\textbf{Clustermap of Predicted Phage Host Interactions (Collapsed 1D).} 
     Binary prediction matrix evaluated across all $N_{\text{test}} = 3{,}944$ test phages (rows) and $54$ candidate host genera 
     (columns) under the Collapsed 1D method ($1-\alpha=0.90$). Dark pixels denote host inclusion in the conformal prediction set 
-    $C(s)$. Left sidebars indicate ground-truth Gram phenotype (blue: Gram-negative, orange: Gram-positive) and top true host genera. 
-    Dendrograms represent average linkage hierarchical clustering}
+    $C(s)$. Left sidebars indicate ground-truth Gram phenotype (blue: Gram-negative, orange: Gram-positive) and top true host genera.
+    %Dendrograms represent average linkage hierarchical clustering under Jaccard distance.
+    }
     \label{fig:phage_host_clustermap_collapsed}
 \end{figure}
 
@@ -207,19 +198,18 @@ entire test set ($N_{\text{test}} = 3{,}944$). The cluster map reveals that the 
 Gram positive phages (top and bottom orange blocks) strictly activate Gram positive host columns on the right (e.g., 
 \emph{Mycobacterium},     \emph{Gordonia}, \emph{Streptomyces}), with zero cross Gram false inclusions.
 
-\noindent Comparative clustermaps for the Radial and Strip envelopes are provided in Appendix~\ref{app: full_clustermaps} 
+Comparative clustermaps for the Radial and Strip envelopes are provided in Appendix~\ref{app: full_clustermaps} 
 (Figures~\ref{fig:clustermap_radial_app} and \ref{fig:clustermap_strip_app}), these visually demonstrate how high dimensional 
 sparsity forces broad, uninformative multi host inclusion blocks across the entire Gram negative sub matrix.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Effect of Hierarchical Gram-Type Filtering}
+\subsection{Effect of Hierarchical Gram-Type Filtering}
 \label{sec5.3.5: gram filtering effect}
 
-\noindent Table~\ref{tab: gram filtering effect} compares the performance of of the three methods with and without Gram type pre 
+Table~\ref{tab: gram filtering effect} compares the performance of of the three methods with and without Gram type pre 
 filtering.
-
 
 \begin{table}[htbp]
 \centering
@@ -230,7 +220,7 @@ filtering.
 \multirow{2}{*}{Radial Envelope} &  Unrestricted (Full $\mathcal{H}$, $N=54$)         & 0.923  &  39.22  \\
                                  &  Gram-Type Filtered ($\mathcal{H}_{\text{cand}}$)  & 0.939  &  15.25  \\
 \multirow{2}{*}{Strip Envelope}  &  Unrestricted (Full $\mathcal{H}$, $N=54$)         & 0.905  &  39.35  \\
-                                 &  Gram-Type Filtered ($\mathcal{H}_{\text{cand}}$)  & 0.939  &  15.35  \\
+                                 &  Gram-Type Filtered ($\mathcal{H}_{\text{cand}}$)  & 0.905  &  15.35  \\
 \multirow{2}{*}{Collapsed 1D}    &  Unrestricted (Full $\mathcal{H}$, $N=54$)         & 0.924  &  6.09  \\
                                  &  Gram-Type Filtered ($\mathcal{H}_{\text{cand}}$)  & 0.929  &  6.09  \\
 \bottomrule
@@ -239,21 +229,23 @@ filtering.
 \label{tab: gram filtering effect}
 \end{table}
 
-\noindent Gram-type filtering produces no change in the avergage set size for the collapsed 1D method which shows that the 1D mean score
+Gram type filtering produces no change in the average set size for the collapsed 1D method which shows that the 1D mean score
 already provides strong discrimination between gram types. But it delivers a significant efficiency gain for both the multidimensional 
 envelopes. The average prediction set size decreases by over $60\%$ for both of the Radial ($39.22 \to 15.25$) and the Strip envelope 
 ($39.35 \to 15.35$) and the empirical coverage also improves slightly.  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Robustness Ablations and Methodological Limitations}
+\subsection{Robustness Ablations and Methodological Limitations}
 \label{sec5.3.6: host ablations}
 
-\noindent We conducted three targeted ablation experiments to evaluate specific operational boundaries:
+We conducted three targeted ablation experiments to evaluate specific operational boundaries:
 \begin{itemize}
-    \item \textbf{Low Data Host Sensitivity:} Restricting evaluation to the 17 host genera with $\ge 100$ calibration phages 
-           increases the coverage of the Strip method from $0.897$ to $0.969$. This confirms that slight aggregate under coverage 
-           of the strip method is driven primarily by low sample hosts where bin marginals cannot be estimated robustly.
+     \item \textbf{Low Data Host Sensitivity:} Restricting evaluation to the 17 host genera with $\ge 100$ calibration phages 
+           increases the coverage of the Strip method from $0.897$ to $0.969$. This confirms that slight under coverage 
+           of the strip method is driven primarily by low sample hosts where bin marginals cannot be estimated robustly. Also, 
+           this ablation also reduces the Strip bin count from the validation-tuned $N_B = 10$ to $N_B = 5$ in the same 
+           step, so part of the observed gain may be attributable to coarser binning rather than host sample size alone.
     \item \textbf{Dimensionality Reduction:} Restricting host subspaces to their top $3$, $5$, or $8$ most informative functional 
            dimensions degraded empirical coverage to $86\text{--}88\%$. This indicates that secondary functional annotations provide 
            discriminative signal rather than noise.
@@ -262,8 +254,7 @@ envelopes. The average prediction set size decreases by over $60\%$ for both of 
            Strip outperforms other geometries in this low dimensional regime, where its 2D grid avoids the curse of dimensionality.
 \end{itemize}
 
-
-\noindent In an alternative calibration strategy we aimed at bounding false positive rates by incorporating non infector scores 
+In an alternative calibration strategy we aimed at bounding false positive rates by incorporating non infector scores 
 ("impostor calibration"). This formulation led to near total prediction abstention (empty sets in $>99.9\%$ of test cases), resulting 
 in $0\%$ empirical coverage across all geometries. Because this reflects an over constrained optimization rather than a valid 
 conformal set predictor, we will document it as an open limitation to be addressed in future work (Section~\ref{sec6.3: future work}).

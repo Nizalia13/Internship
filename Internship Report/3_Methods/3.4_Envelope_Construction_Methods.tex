@@ -20,9 +20,9 @@
 % \end{itemize}
 
 
-\subsection{Envelope Construction}
+\section{Envelope Construction}
 \label{sec3.4: envelope construction}
-\noindent Here we will present the three envelope geometries that we have evaluated in this report. Each method follows the 
+Here we will present the three envelope geometries that we have evaluated in this report. Each method follows the 
 two-stage calibration procedure: the shape-discovery set $S_1$ determines the geometric form of the envelope, and the 
 size scaling set $S_2$ determines the scaling factor $\hat{t}$. All three envelopes are star-shaped with respect to the origin, 
 so the per-point scaling function
@@ -31,42 +31,43 @@ so the per-point scaling function
 \tau(\mathbf{s}) = \inf\{t > 0 : \mathbf{s} \in t \cdot E\}
 \end{equation}
 
-\noindent is well-defined as a single scalar for every $\mathbf{s} \in \mathbb{R}^K_+$. For each envelope type, we derive a 
+is well-defined as a single scalar for every $\mathbf{s} \in \mathbb{R}^K_+$. For each envelope type, we derive a 
 closed form expression for $\tau(\mathbf{s})$ that eliminates the need for iterative search. The scaling factor $\hat{t}$ is 
 then computed using class conditional quantile aggregation over $S_2$, as detailed in Section~\ref{sec3.5: t hat calculation}.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Collapsed 1D Envelope Method}
+\subsection{Collapsed 1D Envelope Method}
 \label{sec3.4.1: collapsed 1d}
-\noindent The simplest envelope construction method just collapses the $K$-dimensional (or $K_h$-dimensional) NC vector to a 
+The simplest envelope construction method just collapses the $K$-dimensional (or $K_h$-dimensional) NC vector to a 
 scalar value by taking the mean over the over observed dimensions,
 \begin{equation*}
 \bar{s} = \frac{1}{|\mathbf{m}|_1} \sum_{k : m_k = 1} v_k,
 \end{equation*}
-\noindent and calibrates a single quantile on $S_1$:
+\newpage
+and calibrates a single quantile on $S_1$:
 
 \begin{equation*}
 \tilde{q} = \operatorname{Quantile}_{1-\alpha}\big(\{\bar{s}_i\}_{i \in S_1}\big), \qquad 
 \tau(\mathbf{s}) = \frac{\bar{s}}{\tilde{q}}, \qquad E = \{\mathbf{s} : \bar{s} \le \tilde{q}\}.
 \end{equation*}
 
-\noindent This envelope is star-shaped (Section~\ref{sec3.2: non-convex envelopes}), it is unaffected by the dimensionality 
+This envelope is star-shaped (Section~\ref{sec3.2: non-convex envelopes}), it is unaffected by the dimensionality 
 $K$, but at the same time is also discards all the geometric information that the $K$ dimensions provide us with. Any two 
 vectors with the same mean are treated identically regardless of the individual coordinates.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Radial Envelope Method}
+\subsection{Radial Envelope Method}
 \label{sec3.4.2: radial}
-\noindent The Radial envelope method retains the directional structure of the scores by calibrating a boundary radius as a 
+The Radial envelope method retains the directional structure of the scores by calibrating a boundary radius as a 
 function of direction on the unit sphere which is restricted only to the positive orthant (since all NC values are 
 non-negative). In this method, we draw $M$ directional vectors $\{\mathbf{u}_m\}_{m=1}^M$ uniformly over the orthant by 
 sampling $\mathbf{v}_m \sim |\mathcal{N}(0, I_K)|$ coordinate-wise and normalizing: $\mathbf{u}_m = \mathbf{v}_m / \|
 \mathbf{v}_m\|$.
 
-\vspace{0.15cm}
-\noindent For each $S_1$ point $\mathbf{s}_i$, over the observed dimensions only, we compute its magnitude and unit direction, 
+For each $S_1$ point $\mathbf{s}_i$, over the observed dimensions only, we compute its magnitude and unit direction, 
 $r_i = \|\mathbf{s}_{i,\mathbf{m}_i}\|$, $\mathbf{d}_i = \mathbf{s}_{i,\mathbf{m}}/r_i$. For each sample direction 
 $\mathbf{u}_m$, we collect $n_m$ calibration points within an angular sector of half-width $\delta = 30^\circ$ (where 
 $\mathbf{d}_i \cdot \mathbf{u}_m \ge \cos\delta$). The directional radius $\tilde{q}_m$ is then calibrated as:
@@ -80,13 +81,12 @@ w_m \cdot \operatorname{Quantile}_{1-\alpha}\big(\{r_i : \mathbf{d}_i \cdot \mat
 \end{cases}
 \end{equation*}
 
-\noindent where $n_m$ is the number of $S_1$ points within the band of direction $m$, $n_{\min}$ a minimum-support threshold, $w_m = 
+where $n_m$ is the number of $S_1$ points within the band of direction $m$, $n_{\min}$ a minimum-support threshold, $w_m = 
 n_m/n_{\min}$, and $\tilde{q}_{\text{marg}} = \operatorname{Quantile}_{1-\alpha}(\{r_i\}_{i \in S_1})$ the marginal fallback 
 radius. This blend enables us to avoids a hard cutoff between sufficient and insufficient local support (number of points in 
 that region).
 
-\vspace{0.15cm}
-\noindent To ensure that we get a smooth boundary, we compute the radius at an arbitrary direction $\mathbf{d}$ as a 
+To ensure that we get a smooth boundary, we compute the radius at an arbitrary direction $\mathbf{d}$ as a 
 directional weighted average of all $M$ calibrated radii:
 \begin{equation}
 \label{eq: radial boundary}
@@ -108,9 +108,9 @@ for all $\lambda \in [0,1]$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Strip Envelope Method}
+\subsection{Strip Envelope Method}
 \label{sec3.4.3: strip}
-\noindent The Strip envelope defines conditional bounds for each target dimension $i$ based on the bin occupied by another dimension 
+The Strip envelope defines conditional bounds for each target dimension $i$ based on the bin occupied by another dimension 
 $j$. We partition the range of dimension $j$ into $NB$ equal-width bins. For each bin $n$ containing $n_{j,n}$ calibration 
 points, the upper limit along dimension $i \neq j$ is calibrated as:
 
@@ -122,31 +122,32 @@ w_{j,n} \cdot \operatorname{Quantile}_{1-\alpha}\big(\{s_{\cdot,i} : s_{\cdot,j}
 \tilde{q}_i & \text{if } n_{j,n} = 0,
 \end{cases}
 \end{equation*}
-\noindent where $\tilde{q}_i$ is the marginal $(1-\alpha)$ quantile for dimension $i$ over $S_1$ , and $w_{j,n} = n_{j,n} / n_{\min}$ 
+\noindent where $\tilde{q}_i$ is the marginal $(1-\alpha)$ quantile for dimension $i$ over $S_1$ , and $w_{j,n} = n_{j,n} / 
+n_{\min}$ 
 shrinks underpopulated bins toward it (it mirrors the blending rule of the radial envelope).
 
 \vspace{0.15cm}
-\noindent A windowed monotonicity pass then enforces $\text{limits}[j,i,n] \ge \text{limits}[j,i,n']$ for $n' \in (n, n+w]$ 
+A windowed monotonicity pass then enforces $\text{limits}[j,i,n] \ge \text{limits}[j,i,n']$ for $n' \in (n, n+w]$ 
 within a fixed window $w$.
 \begin{equation*}
 \text{limits}[j,i,n] \leftarrow \max_{n' \,\in\, [n,\, \min(n+w,\, NB-1)]} \text{limits}_{\text{raw}}[j,i,n'].
 \end{equation*}
 
-\noindent This is done to ensure that a bin's limit cannot be undercut by a bin immediately ahead of it in the same conditioning 
+This is done to ensure that a bin's limit cannot be undercut by a bin immediately ahead of it in the same conditioning 
 dimension. The monotonicity is necessary to ensure that a phage with a smaller value (more confident) in the conditioning 
 dimension $j$, does not recieve a tighter bound in dimension $i$ than a phage with a larger value in $j$, which makes sure that 
 the conditional envelope is logically correct. This ensures that a single sparse or fallback-driven bin at one end of the range 
 cannot set the limit for every bin behind it. This report uses $w \ge NB$ for gram type classification and $w=2$ for host-level 
 classification, reflecting the difference in how many bins ($NB$) each task typically calibrates.
 
-\vspace{0.15cm}
-\noindent The scaling function $\tau(\mathbf{s})$ aggregates the worst-case ratio over all conditioning pairs $(j,i)$:
+The scaling function $\tau(\mathbf{s})$ aggregates the worst-case ratio over all conditioning pairs $(j,i)$:
 \begin{equation*}
 \tau(\mathbf{s}) = \max_{j \neq i} \frac{s_i}{\text{limits}[j,i,\text{bin}_j(\mathbf{s})]}, \qquad E = \{\mathbf{s} : 
 \forall j\neq i,\; s_i \le \text{limits}[j,i,\text{bin}_j(\mathbf{s})]\}.
 \end{equation*}
 
-\noindent Missing dimensions ($m_k = 0$) are handled pairwise: 
+\newpage
+Missing dimensions ($m_k = 0$) are handled pairwise: 
 \begin{itemize}
     \item \textbf{Conditioning $j$ missing, Target $i$ present} ($m_j = 0$, $m_i = 1$): The bin index along $j$ is undefined, so 
            $s_i$ falls back to its unconditional marginal ratio: $\frac{s_i}{\tilde{q}_i}$.

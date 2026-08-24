@@ -1,137 +1,68 @@
-% ==========================================
-%               PREAMBLE.TEX
-% ==========================================
-% !TEX option = --shell-escape
+%!TEX root = main.tex
+\documentclass[12pt, a4paper]{memoir}
+\usepackage[french,english]{babel}
 
-% --- Encoding and Language ---
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[english]{babel}
-\usepackage{lmodern}
-\usepackage{csquotes}
-\usepackage{todonotes}
+% Page layout (Fixed header height & memoir compatibility)
+% \usepackage[vscale=0.76, includehead, headheight=18pt, headsep=10pt]{geometry} %%%% for print
+\usepackage[vscale=0.76, includehead, headheight=18pt, headsep=10pt, hmarginratio=1:1]{geometry}
 
-% --- Page Layout and Geometry ---
-\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
-\usepackage{xcolor}
-\usepackage{setspace}
-\usepackage{indentfirst}
-\onehalfspacing
-
-% --- Math Packages ---
-\usepackage{amsmath, amssymb, amsfonts, amsthm, mathtools, stmaryrd, yhmath}
-
-% --- Scientific and Physics Tools (MUST BE LOADED BEFORE HYPERREF) ---
-\usepackage{physics} % Loaded before hyperref to prevent breaking \ref
-\usepackage{dsfont}
-\usepackage{mathrsfs}
-
-% --- Graphics, Figures, and Plots ---
+% Packages
+\usepackage{lipsum}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{mathptmx} % font = times
+\usepackage{helvet}   % font sf = helvetica
+\usepackage{relsize}
+\usepackage[T1]{fontenc}
 \usepackage{tikz}
-\usepackage{pgfplots}
-\pgfplotsset{compat=1.18, width=10cm}
-\usetikzlibrary{patterns, positioning, arrows.meta, shapes.geometric}
-\usepackage{subcaption}
-\usepackage{float}
-\usepackage{placeins}
-\usepackage{enumitem}
-
-% --- Tables and Text Formatting ---
-\usepackage{colortbl}
-\usepackage[normalem]{ulem}
-\usepackage{diagbox}
-\usepackage{array}
 \usepackage{booktabs}
-\usepackage{grffile}
-\usepackage{tabularx}
-\usepackage{pdflscape}
+\usepackage{textcomp}
 \usepackage{multirow}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{url}
+\usepackage{footnote}
+\usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{cleveref}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{float}
 
+% Paragraph spacing (memoir-native replacement for parskip[parfill])
+\abnormalparskip{\medskipamount}
+\nonzeroparskip
+\setlength{\parindent}{0pt}
 
-% --- Hyperlinks Configuration ---
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks=true,
-    linkcolor=blue,
-    urlcolor=cyan,
-    citecolor=magenta
-}
-
-% --- Theorem Styles & Environments (Restored Exact Original Definitions) ---
+%%%%% Theorem setting
+\theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
-\newtheorem{prop}[theorem]{Proposition}
-\newtheorem{corolT}[theorem]{Corollary}
-\newtheorem{corolP}[theorem]{Corollary}
-\newtheorem{lemme}[theorem]{Lemma}
-
-\newtheoremstyle{definitionSautLigne}{} {} {} {} {\bfseries} {.} {\newline} {}
-\theoremstyle{definitionSautLigne}
-\newtheorem{definition}[theorem]{Definition}
-
-\newtheoremstyle{remarkNoItalics}{} {} {} {} {\bfseries} {.} {0.5em} {}
-\theoremstyle{remarkNoItalics}
-\newtheorem*{remark}{Remark}
-
-\newtheoremstyle{propositionItalicBreak}{} {} {\itshape} {} {\bfseries} {.} {\newline} {}
-\theoremstyle{propositionItalicBreak}
+\newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{proposition}[theorem]{Proposition}
 
-\newtheoremstyle{theoremBreak}{} {} {\itshape} {} {\bfseries} {.} {\newline} {}
-\theoremstyle{theoremBreak}
-\newtheorem{theorem2}[theorem]{Theorem}
+%%%%%% Definition setting
+\theoremstyle{definition} 
+\newtheorem{definition}{Definition}[section]
 
-\numberwithin{equation}{section}
+% Tikz configuration
+\usetikzlibrary{arrows,shapes,positioning,shadows,trees}
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
 
-% --- Bibliography ---
-\usepackage[backend=biber,style=ieee]{biblatex}
-\addbibresource{references.bib}
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
 
-% --- Source Code Block Styling ---
-\usepackage{listings}
-\definecolor{LightGray}{gray}{0.9}
-\lstset{
-    basicstyle=\ttfamily\small,
-    keywordstyle=\color{blue},
-    commentstyle=\color{gray},
-    stringstyle=\color{red},
-    breaklines=true,
-    showstringspaces=false,
-    frame=single,
-    backgroundcolor=\color{LightGray}
-}   
+% Header and Chapter styling
+\headstyles{komalike}
+\nouppercaseheads
+\chapterstyle{dash}
+\makeevenhead{headings}{\sffamily\thepage}{}{\sffamily\leftmark} 
+\makeoddhead{headings}{\sffamily\rightmark}{}{\sffamily\thepage}
+\makeoddfoot{plain}{}{}{} 
+\makeheadrule{headings}{\textwidth}{\normalrulethickness}
 
-% --- Custom TikZ Node Styles ---
-\tikzset{
-    block/.style={rectangle, draw, fill=blue!10, text width=4em, text centered, rounded corners, minimum height=3em},
-    avgblock/.style={rectangle, draw, fill=green!10, text width=3em, text centered, minimum height=2.5em},
-    line/.style={draw, -Latex, thick},
-    node distance=1.5cm and 2cm
-}
+\renewcommand{\chaptername}{\relax}
+\renewcommand{\chaptitlefont}{\sffamily\bfseries\LARGE}
+\renewcommand{\chapnumfont}{\sffamily\bfseries\LARGE}
+\setsecnumdepth{subsection}
 
-% --- Custom Math Commands ---
-\DeclareMathOperator{\sinc}{sinc}
-\DeclareMathOperator{\degtwo}{deg}
-
-% --- Headers and Footers Layout ---
-\usepackage{fancyhdr}
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[L]{\small \leftmark}
-% \fancyfoot[L]{\small Nizalia SIDDIQUI}
-\fancyfoot[R]{\thepage}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.4pt}
-
-\fancypagestyle{plain}{
-  \fancyhf{}
-  \fancyhead[L]{\small \leftmark}
-  \fancyfoot[L]{\small Nizalia SIDDIQUI}
-  \fancyfoot[R]{\thepage}
-  \renewcommand{\headrulewidth}{0.4pt}
-  \renewcommand{\footrulewidth}{0.4pt}
-}
-
-\setlength{\marginparwidth}{2cm}
+\pagestyle{plain}

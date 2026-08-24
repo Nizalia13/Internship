@@ -1,4 +1,4 @@
-\section{Host Classification Results}
+\chapter{Host Classification Results}
 \label{app: plots}
 
 % PER HOST COVERAGE
@@ -12,7 +12,8 @@
 % \end{figure}
 
 % PER HOST COVERAGE
-\subsection{Class Conditional Coverage Breakdown}
+\section{Class Conditional Coverage Breakdown}
+\newpage
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth,height=0.90\textheight,keepaspectratio]{Plots/coverage_frequent_hosts.pdf}
@@ -21,9 +22,9 @@
   \label{fig: per_host_coverage_1}
 \end{figure}
 
-\begin{figure}[p]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{Plots/coverage_rare_hosts.pdf}
+  \includegraphics[width=\textwidth,height=0.92\textheight,keepaspectratio]{Plots/coverage_rare_hosts.pdf}
   \caption{Class conditional empirical coverage across all 54 candidate bacterial hosts on Split 0 test phages. The red dashed line 
   denotes the nominal $1 - \alpha = 0.90$ target.}
   \label{fig: per_host_coverage_2}
@@ -31,7 +32,7 @@
 
 
 %%%%%%%%%% SET SIZE DISTRIBUTION %%%%%%%%%%
-\subsection{Set Size Distribution Per Host}
+\section{Set Size Distribution Per Host}
 % PREDICTION SET SIZE - HISTOGRAM
 % \begin{figure}[p]
 %   \centering
@@ -42,14 +43,14 @@
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{Plots/set_size_hist_top50.pdf}
+  \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{Plots/set_size_hist_top50.pdf}
    \caption{Prediction set size histograms for all 54 host types across Collapsed 1D, Radial, and Strip envelopes.}
   \label{fig: set_size_distribution_histogram1}
 \end{figure}
 
 \begin{figure}[p]
   \centering
-  \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{Plots/set_size_hist_bottom50.pdf}
+  \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{Plots/set_size_hist_bottom50.pdf}
    \caption{Prediction set size histograms for all 54 host types across Collapsed 1D, Radial, and Strip envelopes.}
   \label{fig: set_size_distribution_histogram2}
 \end{figure}
@@ -81,7 +82,7 @@
 
 \newpage
 %%%%%%% HEATMAPS %%%%%%%
-\subsection{Prediction Set Inclusion Heatmaps}
+\section{Prediction Set Inclusion Heatmaps}
 % HEATMAP - 1D COLLAPSED    
 \begin{figure}[H]
   \centering
@@ -93,7 +94,7 @@
 
 
 % HEATMAP - RADIAL
-\begin{figure}[p]
+\begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth,height=1\textheight,keepaspectratio]{Plots/heatmap_radial.png}
   \caption{Prediction set inclusion frequency heatmap for the Radial envelope across all 54 true hosts (rows) vs. predicted candidate 
@@ -103,7 +104,7 @@
 
 
 % HEATMAP - STRIP
-\begin{figure}[p]
+\begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth,height=1\textheight,keepaspectratio]{Plots/heatmap_strip.png}
     \caption{Prediction set inclusion frequency heatmap for the Strip envelope across all 54 true hosts (rows) vs. predicted candidate 
@@ -111,15 +112,14 @@
   \label{fig: heatmap_strip}
 \end{figure}
 
-
-\clearpage
+\newpage
 % CLUSTER MAP FOR PREDICTIONS
-\subsection{Phage Host IPrediction Clustermaps}
+\section{Phage Host Prediction Clustermaps}
 \label{app: full_clustermaps}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.92\textwidth]{Plots/phage_host_binary_clustermap_radial.png}
+    \includegraphics[width=0.92\textwidth, height = 0.82\textheight]{Plots/phage_host_binary_clustermap_radial.png}
     \caption{\textbf{Clustermap of Predicted Phage Host Interactions (Radial Envelope).} 
     Binary prediction matrix across $N_{\text{test}} = 3{,}944$ test phages and $54$ host genera for the Radial envelope ($M=100, 
     \kappa=4.0$).}
@@ -127,7 +127,7 @@
 \end{figure}
 
 \clearpage
-\begin{figure}[p]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.92\textwidth]{Plots/phage_host_binary_clustermap_strip.png}
     \caption{\textbf{Clustermap of Predicted Phage Host Interactions (Strip Envelope).} 

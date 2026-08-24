@@ -24,16 +24,16 @@
 % Discuss variance across runs: radial method has higher variance than strip and collapsed due to the random direction sampling
 
 
-\subsection{Gram Type Classification}
+\section{Gram Type Classification}
 \label{sec5.2: gram results}
-\noindent We evaluated the three envelope geometries (Radial, Strip, and Collapsed 1D) on the real phage data for a binary 
+We evaluated the three envelope geometries (Radial, Strip, and Collapsed 1D) on the real phage data for a binary 
 Gram type classification ($\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$). We only used the 
 $4433$ phages in split 0 to ensure that all scores remain out of fold by construction and there is no contamination.
 
 
-\subsubsection{Experimental Setup}
+\subsection{Experimental Setup}
 \label{sec5.2.1: gram setup}
-\noindent We partitioned the split 0 subset into shape discovery ($|S_1| = 1\,768$), size scaling ($|S_2| = 1\,326$), and 
+We partitioned the split 0 subset into shape discovery ($|S_1| = 1\,768$), size scaling ($|S_2| = 1\,326$), and 
 test evaluation ($|S_{\text{test}}| = 1\,328$) sets using a $40/30/30$ split. For each geometry, we fitted a single shared envelope $E$ 
 on $S_1$, and then calculated the class conditional scaling factors $\hat{t}_{\text{neg}}$ and $\hat{t}_{\text{pos}}$ on $S_2$ 
 using \eqref{eq: class specific quantile}. To ensure validity across both classes simultaneously, we scaled the envelope by 
@@ -43,46 +43,44 @@ their maximum:
 \hat{t} = \max\big(\hat{t}_{\text{neg}},\, \hat{t}_{\text{pos}}\big).
 \end{equation}
 
-\noindent At test time, we evaluated the Gram type nonconformity transformation under both candidate hypotheses. For an empty 
+At test time, we evaluated the Gram type nonconformity transformation under both candidate hypotheses. For an empty 
 candidate set ($\emptyset$), we returned both labels ($C(\mathbf{s}) = \mathcal{H}$) as established in Section~\ref{sec3.5: t 
 hat calculation}.
 
-%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Coverage and Prediction Efficiency}
+\subsection{Coverage and Prediction Efficiency}
 \label{sec5.2.2: gram coverage}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{Plots/comparison_plots.png}
+    \includegraphics[width=1\textwidth]{Plots/comparison_plot.png}
     \caption{Gram type classification performance across Radial, Strip, and Collapsed 1D geometries on the test split 
-(Fold 0, nominal target $1-\alpha = 0.90$). Panels show (left to right): prediction set size distribution, marginal empirical 
-coverage, class-conditional coverage, and singleton accuracy with sample counts ($n$).}
+            (Fold 0, nominal target $1-\alpha = 0.90$). Panels show (left to right): prediction set size distribution, marginal empirical 
+             coverage, class-conditional coverage, and singleton accuracy with sample counts ($n$).}
     \label{fig: gram results}
 \end{figure}
 
-\noindent As we can see in Figure~\ref{fig: gram results} (middle panels), all three envelope geometries achieve $99.8\%$ empirical 
+As we can see in Figure~\ref{fig: gram results} (middle panels), all three envelope geometries achieve $99.8\%$ empirical 
 coverage, which is well above the nominal $90\%$ target (red dashed line). The class conditional breakdown 
 confirms that the coverage is balanced for both Gram negative ($99.9\%$) and Gram positive ($99.8\%$) phages. This demonstrates 
 that the max threshold calibration $\hat{t} = \max(\hat{t}_{\text{neg}}, \hat{t}_{\text{pos}})$ effectively eliminates coverage 
 disparity between classes.
 
-\vspace{0.15cm}
-\noindent We can also see that the high coverage does not compromise efficiency. The set size distribution chart of Figure~\ref{fig: 
+We can also see that the high coverage does not compromise efficiency. The set size distribution chart of Figure~\ref{fig: 
 gram results} (left panel), shows that $94\text{--}95\%$ of test phages receive singleton predictions, while only $5\text
 {--}6\%$ require size 2 uncertain sets ($C(\mathbf{s}) = \mathcal{H}$). The empty set rate is $0\%$ by construction due to the 
 conservative fallback rule. When singleton sets are produced, the prediction accuracy is $99.8\%$ across all three geometries 
 ($n \ge 1\,249$), which tells us that when the model is confident enough to output exactly one label, it is almost always correct. 
 
-\vspace{0.15cm}
-\noindent Acheiving this coverage that is over the target highlights a trade off, it suggests the calibrated 
+Acheiving this coverage that is over the target highlights a trade off, it suggests the calibrated 
 envelopes are wider than strictly necessary to meet $1-\alpha=0.90$ (due to the max threshold calibration). So we are trading 
 efficiency for a safety margin the task may not require. We will return to this trade off in Section~\ref{sec6: conclusion}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Score Separation and Geometric Equivalence}
+\subsection{Score Separation and Geometric Equivalence}
 \label{sec5.2.3: score separation}
 
 \begin{figure}[htbp]
@@ -94,14 +92,13 @@ concentrate tightly near 0 while Gram positive phages concentrate near 1, leavin
 \label{fig: gram score separation}
 \end{figure}
 
-\noindent All three envelope constructions yield nearly identical performance metrics in Figure~\ref{fig: gram results}. 
+All three envelope constructions yield nearly identical performance metrics in Figure~\ref{fig: gram results}. 
 This equivalence can directly be explained by the empirical raw score distribution in Figure~\ref{fig: gram score separation}: 
 Gram negative phages concentrate tightly near the origin (mean $0.055 \pm 0.054$), whereas Gram positive phages concentrate 
 near $1.0$ (mean $0.918 \pm 0.066$). The two classes form disjoint, well separated clusters with negligible density 
 in the ambiguous zone ($0.25\text{--}0.75$), any sensible star shaped boundary cleanly separates them. 
 
-\vspace{0.15cm}
-\noindent This near identical 
+This near identical 
 performance across the three geometries suggests that the choice of envelope geometry is less critical for low dimensional task 
 with strongly separated scores. The advantages of non convex can be seen more prominently in the 
 higher dimensional, multi class host level classification task in Section~\ref{sec5.3: host results}

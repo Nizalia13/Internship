@@ -3,15 +3,14 @@
 % - Property we require: $phi_y(\mathbf{s})$ is small when $\mathbf{s}$ is consistent with label $y$, large otherwise\\
 % - we make a single unified envelope coherent across all classes
 
-\subsection{Nonconformity Score Transformation}
+\section{Nonconformity Score Transformation}
 \label{sec3.3: nc transformation}
-\noindent The raw score vectors are not directly comparable across candidate labels and cannot be used directly as nonconformity 
+The raw score vectors are not directly comparable across candidate labels and cannot be used directly as nonconformity 
 measures. Recall from Section~\ref{sec2.4.1: ensemble score vectors} that the CSA framework requires a label-dependent 
 transformation $\phi_h: ([0,1] \cup \{\texttt{NA}\})^K \times \{0,1\}^K \to \left(\mathbb{R}_+ \cup \{\texttt{NA}\}\right)^K$ 
 that maps candidate hypotheses into a  nonconformity score space centered near the origin. 
 
-\vspace{0.15cm}
-\noindent The raw functional category scores $s_k \in [0, 1]$ quantify evidence in favor of functional compatibility, therefore a raw 
+The raw functional category scores $s_k \in [0, 1]$ quantify evidence in favor of functional compatibility, therefore a raw 
 score close to $1$ reflects strong infection compatibility (low nonconformity), whereas a score near $0$ reflects high 
 nonconformity. Thus, the mapping is defined such that when a candidate hypothesis $h \in \mathcal{H}$ corresponds to the true 
 host label, the resulting vector $\mathbf{v} = \phi_h(\mathbf{s}, \mathbf{m})$ concentrates near $\mathbf{0} 
@@ -19,8 +18,7 @@ host label, the resulting vector $\mathbf{v} = \phi_h(\mathbf{s}, \mathbf{m})$ c
 formalize $\phi_h$ for both classification settings while explicitly preserving structural missingness via the 
 mask vector $\mathbf{m}$.
 
-\vspace{0.15cm}
-\noindent To map all the score vectors into one unified nonconformity space near the origin, we define label-dependent 
+To map all the score vectors into one unified nonconformity space near the origin, we define label-dependent 
 transformations $\phi_h$. Formally, for a single score dimension $s_k \in [0,1]$ with the binary mask $m_k \in \{0,1\}$, 
 we define the general coordinate wise mapping:
 
@@ -33,19 +31,19 @@ we define the general coordinate wise mapping:
 \end{cases}
 \qquad c_h \in \{0, 1\},
 \end{equation}
-
-\noindent where the $c_h$ tells us whether a low ($c_h = 0$) or high ($c_h = 1$) raw score provides the evidence for hypothesis $h$. 
+where the $c_h$ tells us whether a low ($c_h = 0$) or high ($c_h = 1$) raw score provides the evidence for hypothesis $h$. 
 $s_k \in [0,1]$, \eqref{eq: general nc transform} can be simplified to $\phi_h(s_k) = s_k$ when $c_h = 0$, and 
 $\phi_h(s_k) = 1 - s_k$ when $c_h = 1$, this ensures that $\phi_h(s_k) \to 0$ whenever $s_k \to c_h$.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Gram Type Classification Nonconformity Mapping}
+\subsection{Gram Type Classification Nonconformity Mapping}
 \label{sec3.3.1: gram nc mapping}
-\noindent In the binary Gram-type classification, $\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$, all the $K$ functional 
+In the binary Gram-type classification, $\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$, all the $K$ functional 
 score models measure a single Gram-positive evidence scale. Empirically, true Gram-negative phages have low raw scores 
 (mean $\approx 0.055 \pm 0.054$), whereas true Gram-positive phages exhibit high raw scores (mean $\approx 0.918 \pm 0.066$).
 
-\noindent Since the scale is shared, the $c_h$ must differ by hypothesis: $c_{\text{gramneg}} = 0$ and $c_{\text{grampos}} = 1$. 
+Since the scale is shared, the $c_h$ must differ by hypothesis: $c_{\text{gramneg}} = 0$ and $c_{\text{grampos}} = 1$. 
 This gives us the elementwise transformation for dimension $k \in \{1, \ldots, K\}$:
 \begin{equation}
 \label{eq: gram nc transformation}
@@ -56,18 +54,20 @@ s_k & \text{if } h = \text{gram-neg} \text{ and } m_k = 1, \\
 \end{cases}
 \end{equation}
 
-\noindent Using \eqref{eq: gram nc transformation}, we get a high nonconformity score if we test an incorrect hypothesis, and 
+Using \eqref{eq: gram nc transformation}, we get a high nonconformity score if we test an incorrect hypothesis, and 
 the scores for the true hypothesis are mapped near the origin $\mathbf{0} \in \mathbb{R}_+^K$. This allows both classes 
 to be calibrated against a shared reference envelope $E \subset \mathbb{R}_+^K$.
 
-\subsubsection{Host Level Classification Nonconformity Mapping}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Host Level Classification Nonconformity Mapping}
 \label{sec3.3.2: host nc mapping}
-\noindent In the host level setting ($N > 2$), the candidate labels do not share the scores. Instead, each candidate host $h 
+In the host level setting ($N > 2$), the candidate labels do not share the scores. Instead, each candidate host $h 
 \in \mathcal{H}$ is evaluated on a host-specific sub-vector $\mathbf{s}_h \in ([0,1] \cup \{\text{NA}\})^{K_h}$. This measures
 the direct functional compatibility with host $h$. 
 
-\vspace{0.15cm}
-\noindent A high raw score $s_{h,k}$ indicates high likelihood of infection, $c_h = 1$ for all hosts, using this we can get the 
+A high raw score $s_{h,k}$ indicates high likelihood of infection, $c_h = 1$ for all hosts, using this we can get the 
 following host-specific mapping across $k \in \{1, \ldots, K_h\}$:
 \begin{equation}
 \label{eq: host nc transformation}
@@ -77,13 +77,12 @@ v_{h,k} = (\phi_h(\mathbf{s}_h, \mathbf{m}_h))_k = \begin{cases}
 \end{cases}
 \end{equation}
 
-\noindent Unlike the Gram classification task, in host level prediction we construct $N$ separate host envelopes $E_h \subset 
+Unlike the Gram classification task, in host level prediction we construct $N$ separate host envelopes $E_h \subset 
 \mathbb{R}_+^{K_h}$ which are fitted independently on calibration phages with true label $H = h$. At test time, $\mathbf{s}_h$ 
 is transformed using \eqref{eq: host nc transformation} and tested against $E_h$, this avoids forcing unrelated host signatures 
 into a single shared coordinate system.
 
-\vspace{0.15cm}
-\noindent Both transforms are strictly monotone fixed maps that require no parameter estimation from data. Therefore, they do 
+Both transforms are strictly monotone fixed maps that require no parameter estimation from data. Therefore, they do 
 not have sample dependencies that could break the exchangeability argument (which is necessary for the coverage guarantee, Theorem
 ~\ref{thm: marginal coverage}). The missingness masks $\mathbf{m}$ propagate unchanged as $\texttt{NA}$ values, and the 
 envelope constructions of Section~\ref{sec3.4: envelope construction} operate directly on this representation.
