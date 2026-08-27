@@ -20,24 +20,39 @@ The challenges identified in \ref{sec6.2: limitations} point toward several aven
         %    Learning a Mahalanobis distance metric may help us preserve local support for the Radial envelope in higher 
         %    dimensions and reduce reliance on the marginal fallback.
 
-    \item \textbf{Specificity Control:} The impostor calibration experiment (\ref{sec5.3.7: host ablations}) shows 
+    \item \textbf{Specificity Control:} The impostor experiment (\ref{sec5.3.7: host ablations}) shows 
           that naively incorporating non infector scores collapses the prediction sets to near total abstention. Future work 
           may investigate two sided nonconformity functions that jointly penalize false negatives and false positives, 
           this may bound the false discovery rate and yet avoid the coverage loss.
     
-    \item \textbf{Handling of Missing Scores:} Instead of defaulting to the conservative marginal quantile when 
+    \item \textbf{Handling of Missing Scores:} Instead of defaulting to the marginal quantile when 
           functional categories are absent, future envelope constructions could condition fallbacks on the observed 
           missingness patterns. This may be done by observing the sparsity pattern, which itself may be carrying some 
           information about the host.
 
-      \item \textbf{Dimensionality Reduction} As demonstrated by our core functional analysis (Section~\ref{sec5.3.6: 
-           sufficiency}), most discriminative information lives in a low dimensional subspace. In higher dimensions ($K_h 
+      \item \textbf{Dimensionality Reduction} As demonstrated by our analysis of core functions (Section~\ref{sec5.3.6:core-set}), 
+             most discriminative information lives in a low dimensional subspace. In higher dimensions ($K_h 
            \approx 40$), sample sparsity forces directional cones and grid bins to fall back onto conservative marginal 
            bounds. Future work should explore linear dimensionality reduction such as class specific Principal Component 
            Analysis (PCA) to extract dominant functional variance directions. Supervised linear/non-linear projections 
            $\Phi_h: \mathbb{R}^{K_h} \to \mathbb{R}^d$ ($d \in [2, 5]$) optimized to maximize infector/non infector 
            separation. Calibrating Radial and Strip envelopes within these compact, orthogonal PCA subspaces would 
-           eliminate the curse of dimensionality while preserving directional sensitivity
+           eliminate the curse of dimensionality while preserving directional sensitivity/
+
+      % \item \textbf{Per Direction Quantile Level:} In this work the strip envelope calibrates each individual bound (each $(j,i)$ 
+      %        constraint) at the $1 \alpha$ quantile level, and the final envelope is the intersection of all of these bounds across 
+      %        every pair of dimensions. We then calibrate every direction at $1-\alpha$ and then take the intersection of then which 
+      %        means that we throw away $\alpha$ fraction of the data from each direction. So, when the number of dimensions grow, the 
+      %        the combined envelope ends up much smaller than intended. This makes the shape discovery envelope overly tight, and forces 
+      %        the size scaling factor $\hat t$ to grow much larger than it otherwise would to restore the target coverage. A simple fix 
+      %        would be to calibrate each individual direction at a stricter quantile level of $1-\alpha/d$ (where $d$ is the number of 
+      %        dimensions), so that each direction only removes just its share of the data and the intersection ends up close to the 
+      %        intended $1-\alpha$ level overall. This should also produce a $\hat t$ much closer to $1$ and a better shaped, less 
+      %        conservative envelope.
+      \item \textbf{Per Direction Quantile Level:} To address the conservativeness of strip envelopes, a next step is to calibrate 
+             each individual direction at a stricter quantile level of $1-\alpha/d$ (where $d$ is the number of dimensions). This 
+             would ensure each that direction only removes a small of data. This would allow the final intersection to match the 
+             target $1-\alpha$ coverage, and produce a $\hat{t}$ that is closer to $1$ and is less conservative.
 \end{itemize}
 
 

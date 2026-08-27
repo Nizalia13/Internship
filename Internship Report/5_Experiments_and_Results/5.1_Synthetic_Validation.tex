@@ -84,6 +84,11 @@ $\text{Host D}$). Applying these class conditional thresholds shrinks the predic
 \{\text{Host B}, \text{Host D}\}$, reducing set size from 3 to 2 while preserving true label coverage.
 
 
+Similarly, we also evaluated the non convex Radial and Strip methods on this same 2D synthetic dataset ($K=2$, $\alpha=0.10$). The 
+results confirmed that they both successfully adapt to the negatively correlated score distribution, and achieve the exact target 
+coverage of $90.0\%$ with and have size scaling factors of $\hat{t} = 0.996$ and $\hat{t} = 0.944$, respectively. These values are 
+comparable to the convex baseline method, which has a $\hat{t} \approx 1$ on this dataset and is also consistent with the coverage 
+results reported for all three methods in Section~\ref{sec5.1.2: dimensionality scaling}.
 % \subsubsection{Single-Host Coverage Across Dimension}
 % \label{sec5.1.1: single host coverage}
 % \noindent We first validates the original convex CSA construction (Section~\ref{sec2.4.2: csa framework}) as a 
@@ -149,7 +154,9 @@ $K = 20$ & 90.0 & 1.021 & 90.0 & 2.925 & -- & -- \\
 \end{tabular}
 }
 \caption{Dimensionality scaling experiment ($K \in \{2,5,10,20\}$, nominal $1-\alpha = 0.900$, $N = 1\,000$). Empirical 
-coverage and calibrated size-scaling factors $\hat{t}$ are reported across envelope geometries.}
+coverage and calibrated size-scaling factors $\hat{t}$ are reported across envelope geometries. Strip results at $K=20$ 
+are omitted (--) because at fixed $N=1\,000$ its $M_{\text{bin}}=20$ bins per conditioning dimension leave too few points 
+per bin for reliable quantile estimation as $K$ grows.}
 \label{tab: dim scaling results}
 \end{table}
 
@@ -243,8 +250,8 @@ The results in Table~\ref{tab: 3d topology results} highlight several key proper
           conditional bounds are slightly conservative for this geometry, so the calibration step fine tunes the 
           scale downward.
     \item \textbf{Heavy-Tail Sensitivity:} The heavy tailed Laplace distribution induces the largest inflation factor for 
-           the Strip envelope ($\hat{t} = 1.232$). This is because heavy tails produce extreme nonconformity values that 
-           force wider bin wise quantile limits during shape discovery.
+           the Strip envelope ($\hat{t} = 1.232$). This is because heavy tails produce extreme nonconformity values which 
+           result in higher quantile thresholds during the shape discovery step.
 \end{itemize}
 
 

@@ -36,6 +36,12 @@ Despite the empirical results, this framework has several methodological and bio
            was near zero in our evaluation, any systematic bias in the first stage classification, (for example, on phages with 
            ambiguous raw scores near the $0.25\text{--} 0.75$ zone) prunes the true host before the host level envelope is even 
            evaluated, and this cannot be corrected.
+       
+     \item \textbf{Conservativeness of Strip Envelopes in High Dimensions:} The strip envelope calibrates each individual limit 
+            (each $(j,i)$ constraint) at the $1-\alpha$ quantile level before taking their intersection. Every direction 
+            independently discards an $\alpha$ fraction of the data, therefore their intersection compounds these discarded data. This 
+            makes the shape discovery envelope overly tight as dimensions increase. So the the size scaling factor $\hat{t}$ is forced 
+            to grow much larger than necessary to restore target coverage.
 
 \end{itemize}
 

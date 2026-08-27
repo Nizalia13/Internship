@@ -34,7 +34,9 @@ The feature extraction and score generation pipeline is structured in five stage
     \item \textbf{Host Function Base Classifiers ($M_{h,k}$):} For each candidate host $h \in \mathcal{H}$ ($N = 54$) and functional 
            category $k$ ($K_h \le 40$), an independent supervised classifier $M_{h,k}$ is trained on the functional embeddings. 
            Each classifier outputs a probability score $s_{p,h,k} \in [0, 1]$ measuring the compatibility of protein $p$ with host 
-           $h$ for functional role $k$, yielding $M = 2{,}160$ base models.
+           $h$ for functional role $k$, yielding $M = 2{,}160$ base models. Not every host has valid models for all 40 categories, so 
+           the per host dimensionality is not fixed and $K_h$ ranges from 26 to 40. Summing $K_h$ over all 54 hosts gives the final 
+           dimensionality, $K_{\text{tot}} = 2{,}036$, which is smaller than $M = 2{,}160 = 54 \times 40$/
     \item \textbf{Phage-Level Aggregation:} For each phage genome, predictions across all its constituent proteins are aggregated via 
            dimension wise, $\mathrm{NaN}$ aware mean pooling (Section~\ref{sec4.2: aggregation}), producing a $K_{\text{tot}} = 
            2{,}036$-dimensional phage score vector.
@@ -160,7 +162,7 @@ Each protein sequence is linked to its phage accession, host genus label $H \in 
 \caption{Overview of the feature extraction and score generation pipeline. Phage genomes are translated into proteins and encoded using 
 protein language model embeddings. The EMPATHI pipeline assigns functional categories, which are evaluated across $M = 2{,}160$ host 
 function base classifiers ($M_{h,k}$). Finally, $\text{NaN}$ aware mean pooling aggregates protein predictions into a $K_{\text{tot}} 
-= 2{,}036$-dimensional phage clevel score vector.}
+= 2{,}036$-dimensional phage level score vector.}
 \label{fig:data_generation_pipeline}
 \end{figure}
 

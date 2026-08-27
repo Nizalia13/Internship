@@ -73,10 +73,17 @@ gram results} (left panel), shows that $94\text{--}95\%$ of test phages receive 
 conservative fallback rule. When singleton sets are produced, the prediction accuracy is $99.8\%$ across all three geometries 
 ($n \ge 1\,249$), which tells us that when the model is confident enough to output exactly one label, it is almost always correct. 
 
-Acheiving this coverage that is over the target highlights a trade off, it suggests the calibrated 
-envelopes are wider than strictly necessary to meet $1-\alpha=0.90$ (due to the max threshold calibration). So we are trading 
-efficiency for a safety margin the task may not require. We will return to this trade off in Section~\ref{sec6: conclusion}.
+% Acheiving this coverage that is over the target highlights a trade off, it suggests the calibrated 
+% envelopes are wider than strictly necessary to meet $1-\alpha=0.90$ (due to the max threshold calibration). So we are trading 
+% efficiency for a safety margin the task may not require. We will return to this trade off in Section~\ref{sec6: conclusion}.
 
+Achieving empirical coverage of $99.8\%$ which is well above the $90.0\%$ target is a consequence of the underlying data distribution 
+rather than a calibration defect. As shown in Figure~\ref{fig:raw_score_dist}, Gram negative and Gram positive phages form two very 
+disjoint score clusters ($0.055 \pm 0.054$ vs. $0.918 \pm 0.066$) with almost zero sample density in the intermediate ambiguous zone 
+($0.25 - 0.75$). The calibrated $(1-\alpha)$ boundary falls inside this empty margin, coverage systematically approaches $100\%$ across 
+random $S_1/S_2/S_{\text{test}}$ splits. While the maximum scaling operator $\hat{t} = \max(\hat{t}_{\text{neg}}, \hat{t}_{\text{pos}})$ 
+ensures strict simultaneous class-conditional validity, this over-coverage does not degrade predictive efficiency: $94 \text{--} 95\%$ 
+of test phages receive definitive singleton predictions with $99.8\%$ accuracy.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

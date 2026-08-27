@@ -1,5 +1,5 @@
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Contents}{i}{chapter*.1}%
+\contentsline {chapter}{Contents}{i}{section*.1}%
 \contentsline {chapter}{\chapternumberline {1}Introduction}{1}{chapter.1}%
 \contentsline {chapter}{\chapternumberline {2}Background \& State of the Art}{5}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Bacteriophages and Host-Prediction Problem}{5}{section.2.1}%
@@ -43,21 +43,21 @@
 \contentsline {section}{\numberline {5.2}Gram Type Classification}{38}{section.5.2}%
 \contentsline {subsection}{\numberline {5.2.1}Experimental Setup}{38}{subsection.5.2.1}%
 \contentsline {subsection}{\numberline {5.2.2}Coverage and Prediction Efficiency}{39}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Score Separation and Geometric Equivalence}{39}{subsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.2.3}Score Separation and Geometric Equivalence}{40}{subsection.5.2.3}%
 \contentsline {section}{\numberline {5.3}Host Level Classification}{40}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Experimental Protocol}{40}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.1}Experimental Protocol}{41}{subsection.5.3.1}%
 \contentsline {subsection}{\numberline {5.3.2}Hyperparameter Selection on Validation Data}{41}{subsection.5.3.2}%
 \contentsline {subsection}{\numberline {5.3.3}Empirical Test Results (Split 0)}{42}{subsection.5.3.3}%
 \contentsline {subsection}{\numberline {5.3.4}Geometric Boundary Visualization Across All Methods}{43}{subsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.3.5}Effect of Gram-Type Filtering}{46}{subsection.5.3.5}%
-\contentsline {subsection}{\numberline {5.3.6}Functional Dimension Sufficiency}{46}{subsection.5.3.6}%
+\contentsline {subsection}{\numberline {5.3.5}Effect of Gram-Type Filtering}{45}{subsection.5.3.5}%
+\contentsline {subsection}{\numberline {5.3.6}Functional Dimension Sufficiency}{45}{subsection.5.3.6}%
 \contentsline {subsection}{\numberline {5.3.7}Performance under Different Constraints}{47}{subsection.5.3.7}%
 \contentsline {chapter}{\chapternumberline {6}Conclusion and Future Work}{49}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Summary}{49}{section.6.1}%
 \contentsline {section}{\numberline {6.2}Limitations}{50}{section.6.2}%
 \contentsline {section}{\numberline {6.3}Future Work}{51}{section.6.3}%
-\contentsline {chapter}{Bibliography}{53}{chapter*.4}%
-\contentsline {appendix}{\chapternumberline {A}Host Classification Results}{55}{chapter.A}%
+\contentsline {chapter}{Bibliography}{53}{chapter*.3}%
+\contentsline {appendix}{\chapternumberline {A}Host Classification Results}{55}{appendix.A}%
 \contentsline {section}{\numberline {A.1}Class Conditional Coverage Breakdown}{55}{section.A.1}%
 \contentsline {section}{\numberline {A.2}Set Size Distribution Per Host}{58}{section.A.2}%
 \contentsline {section}{\numberline {A.3}Prediction Set Inclusion Heatmaps}{62}{section.A.3}%
