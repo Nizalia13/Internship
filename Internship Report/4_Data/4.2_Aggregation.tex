@@ -3,8 +3,9 @@
 The base classifiers only score individual proteins $p \in \mathcal{P}_i$, while host infection is a property of the 
 phage as a whole, so we need to aggregate the protein level scores into a single phage-level score vector. For each phage 
 $i \in \{1, \ldots, N_{\text{phage}}\}$ ($N_{\text{phage}} = 18{,}474$) with protein set $\mathcal{P}_i$, let $M_{p,k} = 
-\mathbf{1}(\text{protein } p \text{ has a valid prediction for column } k)$ denote the protein-level mask. We compute the 
+\mathbf{1}(\text{protein } p \text{ has a valid prediction for function\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ } k)$ denotes the protein-level mask. We compute the 
 aggregation using running sums and counts per phage, this avoids holding the full $1.85 \times 10^6$-row protein matrix in memory.
+
 
 For each of the $K$ functional dimensions, we get the aggregated phage level score using dimension wise, NaN aware 
 mean pooling:
@@ -18,8 +19,8 @@ s_{i,k} = \begin{cases}
 \end{equation}
 
 Equation~\eqref{eq: nan-mean-pooling} excludes missing entries ($\texttt{NA}$) from both the numerator and denominator, 
-and takes the average strictly over observed proteins. A score is $\texttt{NA}$ if and only if no protein of phage $i$ has a 
-valid prediction for column $k$.
+and takes the average strictly over observed proteins. A score is $\mathrm{NA}$ if and only if no protein of phage $i$ 
+has an observed prediction for function $k$.
 
 
 The phage-level mask follows directly:

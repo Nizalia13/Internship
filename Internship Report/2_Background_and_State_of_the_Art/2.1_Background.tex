@@ -5,9 +5,9 @@ methods developed in this report.
 We will begin by introducing bacteriophages and the host-prediction problem in Section \ref{sec2.1: host prediction 
 problem}, which motivates the need for computational approaches to find a solution. We will then go over the already 
 existing and state-of-the-art computational techniques in Section \ref{sec2.2: current approaches}, progressing from the 
-classical sequence similarity techniques to the much nore efficient and modern protein embeddings techniques. We will 
-also look at the limitations that all the currently exisiting methods have in common, for example the absence of rigourous 
-distribution-free uncertainity quantification. In the remaining part of the section, \ref{sec2.3: conformal prediction} 
+classical sequence similarity techniques to the much more efficient and modern protein embeddings techniques. We will 
+also look at the limitations that all the currently existing methods have in common, for example the absence of rigorous 
+distribution-free uncertainty quantification. In the remaining part of the section, \ref{sec2.3: conformal prediction} 
 and \ref{sec2.4: CSA Method} we will introduce the mathematical framework of conformal prediction and the score-based 
 aggregation method of in \cite{ochoarivera2024conformal}, on which we will build our work.
 
@@ -20,13 +20,11 @@ aggregation method of in \cite{ochoarivera2024conformal}, on which we will build
 \section{Bacteriophages and Host-Prediction Problem}
 \label{sec2.1: host prediction problem}
 Bacteriophages, commonly referred to as phages, are viruses that specifically infect and replicate within 
-bacteria. They are one of the most abundant biological entities on Earth with an estimated population of $10^{31}$ in the 
-global biosphere \cite{dejonge2019molecular}, and therefore play a very important role in shaping the microbial communities 
-and evolution. In the recent years the interest in bacteriophages has increased due to the growing threat of antimicrobial 
-resistance and the development of phage therapy as an alternate treatment method to the traditional antibiotics 
-\cite{leprince2025strengthening}.
+bacteria. As discussed in Chapter~\ref{sec1:introduction}, the growing threat of antimicrobial resistance and the development 
+of phage therapy as an alternative to traditional antibiotics \cite{dejonge2019molecular} have renewed interest in their study; 
+beyond therapy, they also play a very important role in shaping microbial communities and evolution in the biosphere.
 
-One of the key characteristics of of phages is its host range, which is the set of bacterial hosts that a phage can infect. 
+One of the key characteristics of phages is their host range, which is the set of bacterial hosts that a phage can infect. 
 This host range is not fixed for a phage, it is determined by molecular interactions between the phage and the bacterial 
 surface structures during the cycle of infection \cite{dejonge2019molecular}, \cite{holtappels2023drivers}. Each phage 
 attaches itself to the bacterial host, injects its viral genetic material which are able to replicate inside the host. 
@@ -34,40 +32,49 @@ Therefore, some of the phages have a small host range as they can only infect a 
 bacterial strains while there are other which are capable of infecting a broad range of bacterias. 
 
 
-Identifying which phage infects which host, can have several applications both in environmental and clinical 
-studies. In clinical, the host range helps us determine how suitable a phage is for designing the treatment for phage 
-therapy (an alternate method to antibiotics). In environmental studies it is valuable to know the host being 
-infected to understand the ecological interactions between viruses and microbial communities \cite{holtappels2023drivers}
-and evolution in the biosphere.
+Identifying which phage infects which host, can have several applications both in environmental 
+and clinical studies. In clinical, the host range helps us determine how suitable a phage is for 
+designing the treatment for phage therapy. In environmental studies it is valuable to know the 
+host being infected to understand the ecological interactions between viruses and microbial 
+communities \cite{holtappels2023drivers} and evolution in the biosphere. Precise host range 
+knowledge is equally important for avoiding harm, an imprecise or overly broad host assignment 
+risks eliminating bacteria that are not the intended target, including beneficial species, so 
+correctly identifying a phage's host range is as much about protecting non target bacteria as 
+it is about targeting the pathogens.
 
-However, host range has also brings its own obstacles. In phage therapy, we need to find precisely the phage 
-that infects the given bacterial pathogen which is the cause of the infection, and for that we need a fast 
-reliable host prediction method. Traditionally, the method of determining the host range used to depend on laboratory 
-experiments in which candidate phages were tested aginst a number of bacterial hosts; although this method was able to 
-give accurate reliable results but it was extremely expensive and time consuming. Given the rapid increase in 
-the phage genomes generated by modern technology, the number of possible phage-host interacions has increased 
-astronomically, and this leads us to the need of having a compuational prediction method. We need a way which can 
-complement the lab experiment by providing with a shorter list of candidate phages before we move on to expermiental 
-validation \cite{coclet2021global} or even directly infer the host information directly from a given phage.
+However, host range also brings its own obstacles. In phage therapy, we need to find the exact phage that infects 
+the bacteria which is the cause of the infection, and for that we need a fast, reliable host prediction 
+method. As noted in Chapter~\ref{sec1:introduction}, traditional laboratory screening is accurate but expensive and time 
+consuming, so realistically only a small portion of phage-host pairs can ever be tested, especially since many phages are 
+difficult or impossible to culture in the laboratory. Metagenomic sequencing has bypassed this culturing barrier and revealed 
+a vast number of new phages directly from the environment; as a result, the number of possible phage-host interactions has 
+grown astronomically and computational predictions have become essential \cite{coclet2021global}.
 
-We can formulate this host prediction problem as follows:
-% over a probability space $\left(\Omega, \mathcal{F}, \mathbb{P}\right)$. 
-let $\mathcal{X} \subseteq \mathbb{R}^d$ be the feature space representing phage representations, and let $\mathcal{H} 
-= \{h_1, \cdots, h_N\}$ be the finite label space of possible bacterial hosts. 
+% Compounding this, isolating and culturing a phage in the first place is itself far from trivial, since many phages 
+% depend on hosts that are difficult or impossible to culture under standard laboratory conditions, which limits how 
+% many phage-host pairs can even be brought forward for testing. The advent of metagenomic sequencing has partly bypassed 
+% this bottleneck, uncovering vast numbers of previously uncharacterized phage genomes directly from environmental samples 
+% without requiring culturing or isolation at all. Given this rapid, culture-independent increase in the number of known 
+% phage genomes, the number of possible phage-host interactions has grown astronomically, and this leads us to the need 
+% for a computational prediction method \cite{coclet2021global}.
 
-In a single host classification setting, we observe random pairs $(X, H) \sim \mathbb{P}_{X,H}$, where 
-$X \in \mathcal{X}$ is a feature vector representing a phage and $H \in \mathcal{H}$ represents the true host. 
-In a general multi-host setting, the target is a non-empty subset of hosts $H^* \subseteq \mathcal{H}$, i.e., 
-$H^* \in \mathcal{P}(\mathcal{H}) \setminus \{\emptyset\}$, where $\mathcal{P}(\mathcal{H}) = 2^{\mathcal{H}}$ denotes 
-the power set of $\mathcal{H}$ \ref{sec3.1: problem formalisation}. 
+We formulate the host prediction problem as follows: let $\mathcal{X} \subseteq \mathbb{R}^{d}$ denote the feature space 
+of phage representations, and let $\mathcal{H} = \{h_{1}, \dots, h_{N}\}$ be the discrete label space of candidate bacterial
+hosts.
 
-Our primary objective is to construct a set-valued prediction mapping:
-$$ C: \mathcal{X} \longrightarrow \mathcal{P}(\mathcal{H})$$
-which maps an unlabelled test phage $X_{n+1} \in \mathcal{X}$ to a prediction set $C(X_{n+1}) \subseteq \mathcal{H}$ 
-such that it guarantees that the true host is included in the prediction set with a with a user specified statistical 
-confidence, $1 - \alpha \in (0, 1)$:
-\begin{equation*}
-\label{eq: core coverage guarantee objective}
-\mathbb{P}\left( H_{n+1} \in C(X_{n+1}) \right) \ge 1 - \alpha
-\end{equation*}
-\noindent where $\alpha \in (0, 1)$ denotes the target error probability.
+In a single-host classification setting, we observe random pairs $(X, H) \sim \mathbb{P}_{X, H}$, where $X \in \mathcal{X}$ is 
+a feature vector representing a phage and $H \in \mathcal{H}$ denotes its true host. In a generalized multi-host setting, the 
+target is a non-empty subset $H^* \subseteq \mathcal{H}$, i.e., $H^* \in \mathcal{P}(\mathcal{H}) \setminus \{\emptyset\}$, 
+where $\mathcal{P}(\mathcal{H}) = 2^{\mathcal{H}}$ denotes the power set of $\mathcal{H}$.
+
+Our primary objective is to construct a set valued prediction mapping
+\begin{equation}
+C: \mathcal{X} \longrightarrow \mathcal{P}(\mathcal{H})
+\end{equation}
+which maps an unlabelled test phage $X \in \mathcal{X}$ to a prediction set $C(X) \subseteq \mathcal{H}$ satisfying the finite 
+sample coverage guarantee at a user specified significance level $\alpha \in (0, 1)$:
+\begin{equation}
+\mathbb{P}(H \in C(X)) \ge 1 - \alpha.
+\end{equation}
+
+where $\alpha \in (0,1)$ denotes the target error probability.

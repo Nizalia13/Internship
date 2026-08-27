@@ -10,7 +10,7 @@ measures. Recall from Section~\ref{sec2.4.1: ensemble score vectors} that the CS
 transformation $\phi_h: ([0,1] \cup \{\texttt{NA}\})^K \times \{0,1\}^K \to \left(\mathbb{R}_+ \cup \{\texttt{NA}\}\right)^K$ 
 that maps candidate hypotheses into a  nonconformity score space centered near the origin. 
 
-The raw functional category scores $s_k \in [0, 1]$ quantify evidence in favor of functional compatibility, therefore a raw 
+The raw functional category scores $s_{k,h} \in [0, 1]$ quantify evidence in favor of functional compatibility, therefore a raw 
 score close to $1$ reflects strong infection compatibility (low nonconformity), whereas a score near $0$ reflects high 
 nonconformity. Thus, the mapping is defined such that when a candidate hypothesis $h \in \mathcal{H}$ corresponds to the true 
 host label, the resulting vector $\mathbf{v} = \phi_h(\mathbf{s}, \mathbf{m})$ concentrates near $\mathbf{0} 
@@ -18,10 +18,10 @@ host label, the resulting vector $\mathbf{v} = \phi_h(\mathbf{s}, \mathbf{m})$ c
 formalize $\phi_h$ for both classification settings while explicitly preserving structural missingness via the 
 mask vector $\mathbf{m}$.
 
-To map all the score vectors into one unified nonconformity space near the origin, we define label-dependent 
-transformations $\phi_h$. Formally, for a single score dimension $s_k \in [0,1]$ with the binary mask $m_k \in \{0,1\}$, 
+To map all the score vectors into a nonconformity space near the origin, we define class dependent 
+transformations $\phi_h$. 
+Formally, for a single score dimension $s_k \in [0,1]$ with the binary mask $m_k \in \{0,1\}$, 
 we define the general coordinate wise mapping:
-
 \begin{equation}
 \label{eq: general nc transform}
 \phi_h(s_k, m_k) = 
@@ -31,20 +31,53 @@ we define the general coordinate wise mapping:
 \end{cases}
 \qquad c_h \in \{0, 1\},
 \end{equation}
-where the $c_h$ tells us whether a low ($c_h = 0$) or high ($c_h = 1$) raw score provides the evidence for hypothesis $h$. 
-$s_k \in [0,1]$, \eqref{eq: general nc transform} can be simplified to $\phi_h(s_k) = s_k$ when $c_h = 0$, and 
-$\phi_h(s_k) = 1 - s_k$ when $c_h = 1$, this ensures that $\phi_h(s_k) \to 0$ whenever $s_k \to c_h$.
+% where the $c_h$ tells us whether a low ($c_h = 0$) or high ($c_h = 1$) raw score provides the evidence for hypothesis $h$. 
+% $s_k \in [0,1]$, \eqref{eq: general nc transform} can be simplified to $\phi_h(s_k) = s_k$ when $c_h = 0$, and 
+% $\phi_h(s_k) = 1 - s_k$ when $c_h = 1$, this ensures that $\phi_h(s_k) \to 0$ whenever $s_k \to c_h$.
+
+where every hypothesis uses $c_h = 1$ to measure deviation from maximal evidence. For any observed dimension ($m_k=1$), 
+this simplifies directly to $\phi_h(s_k) = 1 - s_{h,k}$, this ensures that $\phi_h(s_k) \to 0$ whenever $s_{h,k} \to 1$.
+
+
+% Universally across all tasks, candidate hypothesis $h$ is evaluated against a class specific evidence vector $\mathbf{s}_h 
+% \in [0, 1]^{K_h}$, where coordinates close to $1$ indicate strong evidence for hypothesis $h$. Nonconformity is therefore 
+% defined as the distance from maximum evidence ($c_h = 1$):
+
+% \begin{equation}
+% \label{eq: nc-mapping-general}
+% (\phi_h(\mathbf{s}_h, \mathbf{m}_h))_k = \begin{cases} 1 - s_{h,k} & \text{if } m_{h,k} = 1, \\ \text{NA} & \text{if } 
+%     m_{h,k} = 0. \end{cases}
+% \end{equation}
+% When candidate $h$ is the true label, $\phi_h(\mathbf{s}_h, \mathbf{m}_h)$ concentrates near the origin $\mathbf{0} \in 
+% \mathbb{R}_{+}^{K_h}$, whereas for incorrect hypotheses the coordinates are situated further from the origin.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Gram Type Classification Nonconformity Mapping}
 \label{sec3.3.1: gram nc mapping}
-In the binary Gram-type classification, $\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$, all the $K$ functional 
-score models measure a single Gram-positive evidence scale. Empirically, true Gram-negative phages have low raw scores 
-(mean $\approx 0.055 \pm 0.054$), whereas true Gram-positive phages exhibit high raw scores (mean $\approx 0.918 \pm 0.066$).
+% In the binary Gram-type classification, $\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$, all the $K$ functional 
+% score models measure a single Gram-positive evidence scale. Empirically, true Gram-negative phages have low raw scores 
+% (mean $\approx 0.055 \pm 0.054$), whereas true Gram-positive phages exhibit high raw scores (mean $\approx 0.918 \pm 0.066$).
 
-Since the scale is shared, the $c_h$ must differ by hypothesis: $c_{\text{gramneg}} = 0$ and $c_{\text{grampos}} = 1$. 
-This gives us the elementwise transformation for dimension $k \in \{1, \ldots, K\}$:
+% Since the scale is shared, the $c_h$ must differ by hypothesis: $c_{\text{gramneg}} = 0$ and $c_{\text{grampos}} = 1$. 
+% This gives us the elementwise transformation for dimension $k \in \{1, \ldots, K\}$:
+
+In the Gram type classification setting ($N = 2$, $\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$), we treat the task as 
+a standard two class classification problem where each candidate hypothesis $h \in \mathcal{H}$ is evaluated on a candidate 
+score vector $s_h \in ([0,1] \cup \{\text{NA}\})^K$.  The functional models output a Gram positive evidence score $s \in 
+[0,1]^K$, therefore the we write the class specific evidence vectors as $s_{\text{grampos}} = s$ and $s_{\text{gramneg}} = 
+1 - s$. A high score represents strong evidence in favor of hypothesis $h$, so we have $c_h = 1$ for all classes. 
+After applying $\phi_h(s_h, m_h)_k = 1 - s_{h,k}$ we get the host specific mapping across $k \in \{1, \dots, K\}$:
+
+% In binary Gram-type classification, $\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$ ($N = 2$), the problem is treated as 
+% two class classification where the raw model scores $s_k \in [0,1]$ represent evidence for the Gram positives. Empirically, 
+% true Gram negative phages have low raw scores ($\text{mean} \approx 0.055 \pm 0.054$), whereas true Gram positive phages 
+% exhibit high raw scores ($\text{mean} \approx 0.918 \pm 0.066$).
+
+% Under the unified nonconformity mapping with $c_h = 1$ ($\text{NC} = 1 - \text{evidence}$), the class specific evidence for 
+% Gram positive is $s_k$ (yielding $\text{NC} = 1 - s_k$), while the evidence for Gram-negative is $1  s_k$ (yielding $\text{NC} 
+% = 1 - (1 - s_k) = s_k$). This gives the elementwise transformation for dimension $k \in \{1, \dots, K\}$:
+
 \begin{equation}
 \label{eq: gram nc transformation}
 v_k = (\phi_h(\mathbf{s}, \mathbf{m}))_k = \begin{cases} 

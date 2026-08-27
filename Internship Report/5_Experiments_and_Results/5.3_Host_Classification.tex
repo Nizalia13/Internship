@@ -1,7 +1,7 @@
 \section{Host Level Classification}
 \label{sec5.3: host results}
 Host level prediction extends our conformal prediction framework from binary attributes to a multiclass task across 
-$N = 54$ candidate bacterial hosts ($\mathcal{H} = \{h_1, \ldots, h_54\}$). This setting introduces statistical and dimensional 
+$N = 54$ candidate bacterial hosts ($\mathcal{H} = \{h_1, \ldots, h_{54}\}$). This setting introduces statistical and dimensional 
 challenges: heavy label imbalance, small per host calibration samples, and inference through a hierarchical two-stage cascade. 
 Rather than attempting to fit a $2\,036$ dimensional global envelope across the joint feature space, we constructed class 
 conditional envelopes which were calibrated independently for each candidate host $h \in \mathcal{H}$ on its dedicated $K_h$ 
@@ -26,19 +26,27 @@ assignments (Section~\ref{sec4.3: contamination fix}) to ensure the out of split
 restricting calibration to split $0$ alone. Missing entries ($\text{NA}$) are handled by each envelope geometry without data 
 imputation
 
-At test time, the Gram restriction $\hat{\mathcal{H}}(\mathbf{s})$ narrows the host space to $16$ for Gram positive 
-and $38$ for Gram negative predictions. The cascaded prediction set $C_{\text{host}}(\mathbf{s})$ is evaluated using the per 
-host inclusion rule of Equation~\eqref{eq: host-prediction-set}. The cascade coverage guarantee of Proposition~\ref{prop:cascade} 
-applies directly, bounding theoretical miscoverage by $\le 2\alpha = 0.20$. If a test 
-phage falls outside the calibrated envelopes of all candidate hosts ($C_{\text{host}}(\mathbf{s}) = \emptyset$), the empty set is 
-resolved by selecting the candidate minimizing normalized nonconformity:
-\begin{equation}
-\label{eq: empty-set-resolution}
-h_{\text{forced}}(\mathbf{s}) = \operatorname*{arg\,min}_{h \in \hat{\mathcal{H}}(\mathbf{s})} \frac{\tau_h(\mathbf{s}_h)}
-{\hat{t}_h},
-\end{equation}
-which normalizes distances across different host geometries without defaulting to the uninformative full label set.
+% At test time, the Gram restriction $\hat{\mathcal{H}}(\mathbf{s})$ narrows the host space to $16$ for Gram positive 
+% and $38$ for Gram negative predictions. The cascaded prediction set $C_{\text{host}}(\mathbf{s})$ is evaluated using the per 
+% host inclusion rule of Equation~\eqref{eq: host-prediction-set}. The cascade coverage guarantee of Proposition~\ref{prop:cascade} 
+% applies directly, bounding theoretical miscoverage by $\le 2\alpha = 0.20$. If a test 
+% phage falls outside the calibrated envelopes of all candidate hosts ($C_{\text{host}}(\mathbf{s}) = \emptyset$), the empty set is 
+% resolved by selecting the candidate minimizing normalized nonconformity:
+% \begin{equation}
+% \label{eq: empty-set-resolution}
+% h_{\text{forced}}(\mathbf{s}) = \operatorname*{arg\,min}_{h \in \hat{\mathcal{H}}(\mathbf{s})} \frac{\tau_h(\mathbf{s}_h)}
+% {\hat{t}_h},
+% \end{equation}
+% which normalizes distances across different host geometries without defaulting to the uninformative full label set.
 
+At test time, the Gram type prediction set restricts the candidate hosts to $\mathcal{H}_{\text{cand}}(s,m)$. The host 
+prediction set $C_{\text{host}}(s,m)$ is evaluated via Equation \ref{eq: host-prediction-set}. If a test phage falls outside 
+all candidate envelopes ($C_{\text{host}}(s,m) = \emptyset$), we get an empty set which is resolved by selecting the 
+candidate which minimizes the normalized nonconformity:
+\begin{equation}
+h_{\text{forced}}(s) = \arg\min_{h \in \mathcal{H}_{\text{cand}}(s,m)} \frac{\tau_h(s_h)}{\hat{t}_h},
+\end{equation}
+which selects the closest boundary without defaulting to the uninformative full label set.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -46,7 +54,7 @@ which normalizes distances across different host geometries without defaulting t
 \label{sec5.3.2: host tuning}
 
 We optimized the hyperparameters on $D_{\text{val}}$ (Split 1) by minimizing the average set size subject to empirical 
-coverage constraints at target level $1 - \alpha = 0.90$::
+coverage constraints at target level $1 - \alpha = 0.90$:
 \begin{equation}
 \label{eq: constrained-opt}
 \theta^\star \in \arg\min_{\theta} \overline{|C|}_{\text{val}}(\theta) \quad \text{subject to} \quad \hat{c}_{\text{val}}(\theta) 
@@ -161,7 +169,7 @@ along the uninformative ray.}
 Collapsed 1D's boundary is the straight anti diagonal line implied by its scalar mean threshold (Section~\ref{sec3.4.1: 
 collapsed 1d}). A phage that is strong in lysin but weak in annealing is treated identically to one with the reverse profile, as long 
 as the average clears the threshold. This produces its smallest false positive count of the three ($21$, $\texttt{own\_cov}=0.94$), 
-but at the cost of giving us $15$ false negatives. The true infectors whose infectors whose evidence concentrates in one dimension 
+but at the cost of giving us $15$ false negatives. The true infectors  whose evidence concentrates in one dimension 
 rather than both are missed by a boundary which is blind to that asymmetry.
 
 The boundary of the Radial method is the smooth arc produced by the radius of Equation~\eqref{eq: radial boundary}. It 
@@ -182,7 +190,7 @@ along dense axes via its staircase structure, but becomes overly permissive in s
 
 \begin{figure}[p]
     \centering
-    \includegraphics[width=0.95\textwidth]{Plots/phage_host_binary_clustermap_collapsed.png}
+    \includegraphics[width=0.90\textwidth]{Plots/phage_host_binary_clustermap_collapsed.png}
     \caption{\textbf{Clustermap of Predicted Phage Host Interactions (Collapsed 1D).} 
     Binary prediction matrix evaluated across all $N_{\text{test}} = 3{,}944$ test phages (rows) and $54$ candidate host genera 
     (columns) under the Collapsed 1D method ($1-\alpha=0.90$). Dark pixels denote host inclusion in the conformal prediction set 
@@ -194,9 +202,12 @@ along dense axes via its staircase structure, but becomes overly permissive in s
 
 
 Figure~\ref{fig:phage_host_clustermap_collapsed} visualizes the global inclusion topology of the Collapsed 1D predictor across the 
-entire test set ($N_{\text{test}} = 3{,}944$). The cluster map reveals that the Gram type cascade completely segregates predictions. 
-Gram positive phages (top and bottom orange blocks) strictly activate Gram positive host columns on the right (e.g., 
-\emph{Mycobacterium},     \emph{Gordonia}, \emph{Streptomyces}), with zero cross Gram false inclusions.
+test set ($N_{\text{test}} = 3{,}944$). 
+% The cluster map reveals that the Gram type cascade completely segregates predictions. 
+% Gram positive phages (top and bottom orange blocks) strictly activate Gram positive host columns on the right (e.g., 
+% \emph{Mycobacterium},     \emph{Gordonia}, \emph{Streptomyces}), with zero cross Gram false inclusions.
+The clustermap confirms the gram type seperationion: Gram positive phages strictly activate Gram positive host columns 
+(e.g., \textit{Mycobacterium}, \textit{Gordonia}, \textit{Streptomyces}) with zero cross gram type false positive inclusions
 
 Comparative clustermaps for the Radial and Strip envelopes are provided in Appendix~\ref{app: full_clustermaps} 
 (Figures~\ref{fig:clustermap_radial_app} and \ref{fig:clustermap_strip_app}), these visually demonstrate how high dimensional 
@@ -245,7 +256,7 @@ of these dimensions are actually necessary? Here we checked if a single subset o
 all $54$ hosts, can reproduce the performance of full dimensional. We selected the $\texttt{TOP\_N\_CORE}$ most informative 
 functional categories. To select the top functions, for each host we ranked its functional dimensions by their mean score on 
 the phages that truly infect the host in the training set, then took the top 5 ranked functions per host and then finally, we 
-pooled the top 5 list across the $54$ hostsand selected the top 7 function names that occured most frequently. This yielded  
+pooled the top 5 list across the $54$ hosts and selected the top 7 function names that occured most frequently. This yielded  
 a core score matrix of $356$ columns (17.5\% of the original $K_{\text{tot}} = 2{,}036$). 
 
 Figure~\ref{fig:core-vs-full} summarizes the results. Collapsed1D's coverage
@@ -256,8 +267,8 @@ smaller average set size ($15.35 \to 13.64$), the largest efficiency gain of the
 
 These results suggest that most of the discriminative signal in the $2{,}036$-dimensional score space is concentrated in a 
 relatively small subset of functional categories, and that the remaining dimensions contribute comparatively little. 
-Section~\ref{sec5.3.7: host ablations} examines this dimensionality sensitivity further at a finer and provides preliminary 
-empirical support for the learned projection approach proposed as future work in Section~\ref{sec6.3:future-work}.
+This indicates that most discriminative functional evidence concentrates in a compact subspace of core categories, and gives 
+us empirical motivation for the learned low dimensional projections proposed in Section~\ref{sec6.3: future work}.
 
 % \begin{table}[h]
 % \centering
@@ -292,7 +303,7 @@ empirical support for the learned projection approach proposed as future work in
 We conducted three targeted experiments to evaluate specific operational boundaries:
 \begin{itemize}
      \item \textbf{Low Data Host Sensitivity:} Restricting evaluation to the 17 host genera with $\ge 100$ calibration phages 
-           increases the coverage of the Strip method from $0.897$ to $0.969$. This confirms that slight under coverage 
+           increases the coverage of the Strip method from $0.905$ to $0.969$. This confirms that slight under coverage 
            of the strip method is driven primarily by low sample hosts where bin marginals cannot be estimated robustly. Also, 
            this ablation also reduces the Strip bin count from the validation-tuned $N_B = 10$ to $N_B = 5$ in the same 
            step, so part of the observed gain may be attributable to coarser binning rather than host sample size alone.
@@ -305,8 +316,12 @@ We conducted three targeted experiments to evaluate specific operational boundar
            Strip outperforms other geometries in this low dimensional regime, where its 2D grid avoids the curse of dimensionality.
 \end{itemize}
 
-In an alternative calibration strategy we aimed at bounding false positive rates by incorporating non infector scores 
-("impostor calibration"). This formulation led to near total prediction abstention (empty sets in $>99.9\%$ of test cases), resulting 
-in $0\%$ empirical coverage across all geometries. Because this reflects an over constrained optimization rather than a valid 
-conformal set predictor, we will document it as an open limitation to be addressed in future work (Section~\ref{sec6.3: future work}).
+% In an alternative calibration strategy we aimed at bounding false positive rates by incorporating non infector scores 
+% ("impostor calibration"). This formulation led to near total prediction abstention (empty sets in $>99.9\%$ of test cases), resulting 
+% in $0\%$ empirical coverage across all geometries. Because this reflects an over constrained optimization rather than a valid 
+% conformal set predictor, we will document it as an open limitation to be addressed in future work (Section~\ref{sec6.3: future work}).
 
+In an alternative calibration scheme in which we incorporated non infector scores, we evaluated to bound false positives. 
+However, penalizing non infector overlap resulted in over constraining, resulting in prediction abstention 
+($\vert{}C(s)\vert{} = 0$) on $>99.9\%$ of test phages. This invalidates conformal coverage guarantees, therefore we will 
+document it as an open methodological challenge in Section~\ref{sec6.3: future work}

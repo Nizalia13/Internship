@@ -53,8 +53,14 @@ and calibrates a single quantile on $S_1$:
 \end{equation*}
 
 This envelope is star-shaped (Section~\ref{sec3.2: non-convex envelopes}), it is unaffected by the dimensionality 
-$K$, but at the same time is also discards all the geometric information that the $K$ dimensions provide us with. Any two 
-vectors with the same mean are treated identically regardless of the individual coordinates.
+$K$, but at the same time is also discards all the geometric information that the $K$ dimensions provide us with. 
+% Any two vectors with the same mean are treated identically regardless of the individual coordinates.
+Any two vectors with the same scalar average are treated identically regardless of their coordinate wise distribution. 
+Consequently, if a single functional dimension has a highly confident infection signal (e.g., $s_{h,k} \approx 1$, so 
+$v_k \approx 0$) while the others contains a small one, mean pooling dilutes this primary signal across 
+the remaining axes. In contrast, the multidimensional non convex envelopes developed in Sections \ref{sec3.4.2: radial} 
+and \ref{sec3.4.3: strip} preserve the coordinate wise geometry, they are able to isolate the strong single dimension 
+evidence from noisy background dimensions.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -95,7 +101,8 @@ w_m(\mathbf{d}) = \frac{\exp(\kappa \, \mathbf{d}\cdot\mathbf{u}_m)}{\sum_{m'=1}
 \end{equation}
 where $\kappa > 0$ controls the angular smoothness of the interpolation across directions (larger $\kappa$ approaches 
 nearest-direction assignment). This makes the envelope boundary a continuous function of direction rather than a piecewise 
-constant one. The scaling function follows directly from this:
+constant one. 
+The scaling function follows directly from this:
 \begin{equation*}
 \tau(\mathbf{s}) = \frac{\|\mathbf{s}_{\mathbf{m}}\|}{r(\mathbf{d})}, \qquad \mathbf{d} = 
 \frac{\mathbf{s}_{\mathbf{m}}}{\|\mathbf{s}_{\mathbf{m}}\|}, \qquad E = \{\mathbf{s} : \|\mathbf{s}_{\mathbf{m}}\| \le 
@@ -103,11 +110,25 @@ r(\mathbf{d})\}.
 \end{equation*}
 As established in Section~\ref{sec3.2: non-convex envelopes}, this construction is star-shaped by design. This is because $r$ 
 depends only on direction and not on magnitude, $\mathbf{s} \in t\cdot E$ for some $t$ implies $\lambda\mathbf{s} \in t\cdot E$ 
-for all $\lambda \in [0,1]$.
+for all $\lambda \in [0,1]$. Figure \ref{fig:radial envelope} illustrates this construction, sample directions $u_m$ collect calibration points within 
+angular cones of half angle $\delta$, establishing local radii $\tilde{q}_m$ that are kernel smoothed into a continuous boundary.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{Plots/radial envelope.png}
+\caption{Geometric construction of the radial envelope in 2D score space. The score space is partitioned into angular sectors around reference rays 
+$\theta_1, \theta_2, \theta_3$. For each sector, the empirical $(1-\alpha)$ quantile radius $\hat{q}_{1-\alpha}(\theta)$ is computed from calibration 
+scores (gray dots) to define the envelope boundary $L(\theta)$ (solid black curve). A test score vector $v$ with polar coordinates $(r, \theta_v)$ is 
+included in the conformal region if its radial magnitude satisfies $r = \|v\| \le L(\theta_v)$.}
+
+\label{fig:radial envelope}
+\end{figure}
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \subsection{Strip Envelope Method}
 \label{sec3.4.3: strip}
 The Strip envelope defines conditional bounds for each target dimension $i$ based on the bin occupied by another dimension 
@@ -126,6 +147,14 @@ w_{j,n} \cdot \operatorname{Quantile}_{1-\alpha}\big(\{s_{\cdot,i} : s_{\cdot,j}
 n_{\min}$ 
 shrinks underpopulated bins toward it (it mirrors the blending rule of the radial envelope).
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.80\textwidth]{Plots/Strip envlelope.png}
+    \caption{Strip envelope 2D staircase construction and marginal fallback. Dimension $v_1$ is partitioned into equal-width bins with vertical upper bounds $U_j$, while dimension $v_2$ defines horizontal bounds $V_i$. The intersection of both directional constraints forms the coordinate-wise monotone staircase envelope $E$ (shaded region). When a coordinate is unobserved or falls back due to sparsity, its conditional limit relaxes to the unconditional marginal quantile ($\tilde{q}_1$ or $\tilde{q}_2$).}
+    \label{fig:strip_envelope}
+\end{figure}
+
+
 \vspace{0.15cm}
 A windowed monotonicity pass then enforces $\text{limits}[j,i,n] \ge \text{limits}[j,i,n']$ for $n' \in (n, n+w]$ 
 within a fixed window $w$.
@@ -140,22 +169,29 @@ the conditional envelope is logically correct. This ensures that a single sparse
 cannot set the limit for every bin behind it. This report uses $w \ge NB$ for gram type classification and $w=2$ for host-level 
 classification, reflecting the difference in how many bins ($NB$) each task typically calibrates.
 
-The scaling function $\tau(\mathbf{s})$ aggregates the worst-case ratio over all conditioning pairs $(j,i)$:
-\begin{equation*}
-\tau(\mathbf{s}) = \max_{j \neq i} \frac{s_i}{\text{limits}[j,i,\text{bin}_j(\mathbf{s})]}, \qquad E = \{\mathbf{s} : 
-\forall j\neq i,\; s_i \le \text{limits}[j,i,\text{bin}_j(\mathbf{s})]\}.
-\end{equation*}
+Geometrically, the strip envelope forms a coordinate wise monotone staircase region defined by the intersection of 
+conditional bin regions across all dimension pairs:
+\begin{equation}
+E = \bigcap_{j=1}^K \bigcap_{i \ne j} \bigcup_{k=1}^{N_B} \left\{ v \in \mathbb{R}_+^K : v_i \le \text{limits}[j, i, k] \right\}.
+\end{equation}
 
-\newpage
-Missing dimensions ($m_k = 0$) are handled pairwise: 
+For any test score vector $v$ the scaling function for inclusion $\tau(v)$, computes the maximum constraint ratio across all 
+target conditioning pairs $(j, i)$ with $j \ne i$:
+\begin{equation*}
+\tau(v) = \max_{j \ne i} \frac{v_i}{\text{limits}[j, i, \text{bin}_j(v_j)]}.
+\end{equation*}  
+
+Structural missingness is handled directly by relaxing conditional bounds to unconditional marginal quantiles:
+
+
 \begin{itemize}
-    \item \textbf{Conditioning $j$ missing, Target $i$ present} ($m_j = 0$, $m_i = 1$): The bin index along $j$ is undefined, so 
-           $s_i$ falls back to its unconditional marginal ratio: $\frac{s_i}{\tilde{q}_i}$.
-    \item \textbf{Target dimension $i$ missing and conditioning dimension $j$ is present} ($m_i= 0$ \& $m_j = 1$): The missing 
-           target score $s_i$ is replaced by its marginal quantile $\tilde{q}_i$, which gives us the ratio $\tilde{q_i}/ \text{limits}
-           [j, i, \text{bin}_j(s)].$
-    \item \textbf{Both missing:} ($m_i= 0$ \& $m_j = 0$)The pair contributes no constraint ($\text{ratio} = 0$), this ensures that the 
-          unobserved dimensions do not lead to a false rejection
+    \item \textbf{Observed Dimensions:} For any observed target dimension $i$, its nonconformity score $v_i$ is evaluated 
+          against the conditional upper limit $\text{limits}[j, i, \text{bin}_j(v_j)]$ set by the active conditioning bin of 
+          dimension $j$.
+    \item \textbf{Missing Dimensions} ($m_i = 0$): If dimension $i$ is missing for a test phage, its conditional bin limit is 
+          replaced by its unconditional marginal $(1-\alpha)$ quantile $\tilde{q}_i$ computed over all $S_1$ calibration points. 
+          This relaxes the constraint along the missing coordinate to its widest empirical bound rather than manufacturing an 
+          imputed value.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5

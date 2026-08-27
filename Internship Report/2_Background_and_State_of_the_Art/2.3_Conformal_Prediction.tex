@@ -21,10 +21,15 @@ $$\mathbb{P}(Z_1 \in A_1, Z_2 \in A_2, \dots, Z_m \in A_m) = \mathbb{P}(Z_{\sigm
 \dots, Z_{\sigma(m)} \in A_m)$$ 
 \end{definition}
 
-Independent and identically distributed (i.i.d.) seqeunces are always exchangeable, but the converse does 
-not always hold. Thus, exchangeability is considered to be a weaker condition than i.i.d., since it requires that the 
-observations have no special ordering. This condition can easily be met by splitting any dataset randomly 
-\cite{ochoarivera2024conformal, vovk2005algorithmic}.  
+
+Independent and identically distributed (i.i.d.) sequences are always exchangeable, but the converse does 
+not always hold. 
+For example, let us draw two values without replacement from a fixed set $\{0,1\}$. The two outcomes are $(Z_1, Z_2)=
+(0,1)$ or $(1,0)$ and both occur with equal probability $\frac{1}{2}$, so the pair is exchangeable as the joint distribution 
+does not change even if we swap $Z_1$ and $Z_2$. But, the two variables are not independent, since conditioning on the 
+first draw fully determines the second, i.e., $\mathbb{P}(Z_2 = 1 \mid Z_1 = 1) = 0 \neq \mathbb{P}(Z_2 = 1) = \frac{1}{2}$. 
+Therefore, exchangeability is a weaker condition than i.i.d., as it requires that the observations have no special ordering. 
+This condition can easily be met by splitting any dataset randomly \cite{ochoarivera2024conformal, vovk2005algorithmic}.  
 
 
 \subsection{Mathematical Setup and Prediction Set}
@@ -38,10 +43,10 @@ space that represents our object of interest (in our case it is the phage protei
 \{h_1, \cdots, h_N\}$ is the discrete label space (set of candidate hosts). 
 
 We assume that we have a calibration dataset, $D_{\text{cal}} = \{(X_1, H_1), \cdots , (X_n, H_n)\}$, of $n$ 
-exchangable data points drawn from an unknown joint distribution, $P_{X,H}$. Then, for a new unlabelled test input, 
-$X_{n+1}$ our aim is to to construct a prediction set function $C: \mathcal{X} \rightarrow 2^{\mathcal{H}}$ dependening on 
+exchangeable data points drawn from an unknown joint distribution, $P_{X,H}$. Then, for a new unlabelled test input, 
+$X_{n+1}$ our aim is to construct a prediction set function $C: \mathcal{X} \rightarrow 2^{\mathcal{H}}$ depending on 
 the data which maps the test input to a subset of candidate labels, i.e., $C(X_{n+1}) \subseteq \mathcal{H}$, such that 
-the true label falls in in the set with a defined coverage that is:
+the true label falls in the set with a defined coverage that is:
 $$\mathbb{P}(H_{n+1} \in C(X_{n+1})) \geq 1 - \alpha$$
 where $\alpha \in (0,1)$ is the significance level. In our experiments we set $\alpha = 0.1$  so that the guarantee is 
 $90\%$.
@@ -50,7 +55,7 @@ $90\%$.
 Unlike point predictors, $C(X)$ dynamically reflects model uncertainty. It returns a singleton $|C(X)| = 1$ 
 when confident, a multi-label set $|C(X)| \ge 2$ when uncertain between candidates, or an empty set $|C(X)| = 0$ for 
 out-of-distribution inputs. The efficiency of the model can be quantified by the expected set size $\mathbb{E}[|C(X)|]$, 
-an optimal predictor should acheive a coverage $\geq 1-\alpha$ with the smallest possible set size.
+an optimal predictor should achieve a coverage $\geq 1-\alpha$ with the smallest possible set size.
 
 % \vspace{0.15cm}
 % \noindent The expected set size, $\mathbb{E}[|C(x)|]$ can help us determine the efficiency of the model. If the coverage
@@ -66,12 +71,12 @@ In split conformal prediction, the available data is divided into a training set
 set, $D_{\text{cal}} = \{(X_i, H_i)\}_{i=1}^n$. The training set is used to fit an underlying scoring model $\hat{f}: 
 \mathcal{X} \times \mathcal{H} \to \mathbb{R}$. We then define a nonconformity score function $s: \mathcal{X} \times 
 \mathcal{H} \to \mathbb{R}$ based on $\hat{f}$. This score function quantifies how unusual a pair $(x, h)$ is relative 
-to the learned patterns, smaller values of $s(x,y)$ indicate stronger conformity between $x$ and label $h$
+to the learned patterns, smaller values of $s(x,y)$ indicate stronger conformity between $x$ and label $h$.
 
 Then using the calibration set , $\{(X_i, H_i)\}^n_{i=1}$, we evaluate the nonconformity scores:
-$$S_i = S(X_i, H_i), \quad \forall i = 1, \cdots, n$$
+$$S_i = s(X_i, H_i), \quad \forall i = 1, \cdots, n$$
 
-To guranatee that out error rate is less than $\alpha$ we need to compute the conformal calibration qunatile,
+To guarantee that our error rate is less than $\alpha$ we need to compute the conformal calibration quantile,
 $\hat q$, from these calibration scores
 
 \begin{definition}[Conformal Calibration Quantile]
@@ -82,8 +87,14 @@ q_{\alpha} := \text{Quantile}\left( \{S_1, \dots, S_n\} \,;\, \frac{\lceil (n+1)
 \end{equation*}
 Equivalently, expressed using the empirical cumulative distribution function:
 \begin{equation*}
-q_{\alpha} = \inf \left\{ q \in \mathbb{R} : \frac{1}{n}\sum_{i=1}^{n} \mathbf{1}(S_i \le q) \ge \frac{\lceil (n+1)(1-\alpha) \rceil}{n} \right\}
+q_{\alpha} = \inf \left\{ q \in \mathbb{R} : \frac{1}{n}\sum_{i=1}^{n} \mathbf{1}(S_i \le q) \ge \frac{\lceil 
+(n+1)(1-\alpha) \rceil}{n} \right\} \;=\; S_{\left(\lceil (n+1)(1-\alpha) \rceil\right)}
 \end{equation*}
+where $S_{(1)} \leq S_{(2)} \leq \cdots \leq S_{(n)}$ denote the order statistics of the calibration scores, that is, the values
+$\{S_1, \dots, S_n\}$ sorted in non decreasing order. With $k = \lceil (n+1)(1-\alpha) \rceil$, the counting function 
+$\frac{1}{n}\sum_{i=1}^{n} \mathbf{1}(S_i \le q)$ jumps from $\frac{k-1}{n}$ to $\frac{k}{n}$ exactly at $q = S_{(k)}$, so the 
+smallest feasible $q$ is the $k$-th smallest calibration score. In words, $q_{\alpha}$ is obtained by sorting the calibration 
+scores and retaining the $\lceil (n+1)(1-\alpha) \rceil$-th smallest value.
 \end{definition}
 
 Then, for a new input, $X_{n+1}$ the conformal prediction set, $C(X_{n+1})$ , is constructed by collecting all 
@@ -101,13 +112,15 @@ C(X_{n+1}) = \left\{ H \in \mathcal{H} \;\Big|\; s(X_{n+1}, H) \le q_{\alpha} \r
 % \right) = \frac{\lceil(n+1)(1-\alpha)\rceil}{n+1} \geq 1 - \alpha.$$
 % \noindent Theorem~\ref{thm: marginal coverage} formalises this argument.
 
-The validity of this construction follows from exchangeability. Let $S_{(1)} \leq \dots \leq S_{(n)}$ denote the order 
-statistics of the calibration scores $\{S_1,\dots,S_n\}$, and augment this sequence with $S_{(n+1)} = +\infty$. Then 
-$q_{\alpha} = S_{(\lceil(n+1)(1-\alpha)\rceil)}$ is the $\lceil(n+1)(1-\alpha)\rceil$-th order statistic of the augmented 
-set $\{S_1,\dots,S_n,S_{n+1}\}$. Since $(Z_1,\dots,Z_{n+1})$ are exchangeable, the rank of $S_{n+1}$ among the $n+1$ augmented 
-scores is uniformly distributed on $\{1,\dots,n+1\}$. Consequently:
-$$\mathbb{P}\bigl(S_{n+1} \leq q_{\alpha}\bigr) 
-= \mathbb{P}\!\left(\operatorname{rank}(S_{n+1}) \leq \lceil(n+1)(1-\alpha)\rceil\right) 
+The validity of this construction follows from exchangeability. By the definition above, 
+$q_{\alpha} = S_{(\lceil(n+1)(1-\alpha)\rceil)}$, where $S_{(1)} \leq \dots \leq S_{(n)}$ are the order statistics of 
+the calibration scores. Now let $S_{n+1} := s(X_{n+1}, H_{n+1})$ denote the nonconformity score of the true label of 
+the new test point. Since the pairs $(X_1, H_1), \dots, (X_{n+1}, H_{n+1})$ are exchangeable and the score function $s$ 
+is applied identically to every pair, the sequence of scores $(S_1, \dots, S_n, S_{n+1})$ is exchangeable as well: all 
+$(n+1)!$ relative orderings are equally likely, hence the rank of $S$ within this sequence is uniformly distributed 
+on $\{1, \dots, n+1\}$. Consequently:
+$$\mathbb{P}\bigl(S \leq q_{\alpha}\bigr) 
+= \mathbb{P}\!\left(\operatorname{rank}(S) \leq \lceil(n+1)(1-\alpha)\rceil\right) 
 = \frac{\lceil(n+1)(1-\alpha)\rceil}{n+1} \geq 1-\alpha.$$
 
 % We first isolate the probabilistic core of the argument in a lemma.
@@ -162,6 +175,15 @@ assumptions on $s(\cdot, \cdot)$ or $\mathbb{P}_{X,H}$. While the choice of scor
 size), valid statistical coverage is guaranteed by construction in a single computational pass over $D_{\text{cal}}$ 
 \cite{ochoarivera2024conformal}.
 
+The score function $s$ is chosen so that it can separate plausible hosts from implausible ones. $s(x,h)$ should take a 
+small value when $h$ is likely to be the true host of $x$, and if $h'$ is not the host $s(x, h')$ should take a high
+score which typically exceeds $q_{\alpha}$. $h'$ then fails the test in Equation~\ref{eq:prediction_set_definition} 
+and is not selected into the prediction set $C(X_{n+1})$. This discriminative behaviour is not created by conformal 
+prediction itself, it is already exhibited by many standard supervised learning models. A classifier which is trained to
+output a class probability $\hat p(h \mid x)$ naturally produces this pattern since $1-\hat p(h\mid x)$ is
+small for the true class and large for incorrect ones. A poorly discriminating score function never invalidates the 
+method as the coverage guarantee of Theorem~\ref{thm: marginal coverage} holds regardless, but the resulting prediction 
+sets become larger. 
 
 
 \subsection{Marginal \& Conditional Coverage}
@@ -176,7 +198,7 @@ However, the marginal coverage does not ensure the conditional coverage, given s
 specific classes ($H=h$). So, for a dataset that has class imbalance, which is very common in phage-host interaction, a 
 marginal model can satisfy the coverage guarantee by potentially over-covering a majority class ($100\%$) and under-
 covering a small class ($0\%$) \cite{ochoarivera2024conformal, romano2020classification}. For instance, if $\mathcal{H} 
-= \{-1, 1\}$ with class proportion $\mathbb{P}(H = -1) = 0.9$, a predictor acheiving $100\%$ coverage on $H = -1$ and 
+= \{-1, 1\}$ with class proportion $\mathbb{P}(H = -1) = 0.9$, a predictor achieving $100\%$ coverage on $H = -1$ and 
 $0\%$ coverage on $Y = 1$ still attains an overall $90\%$. In phage-host classification, such conditional under-coverage 
 on minority host may be a problem. 
  

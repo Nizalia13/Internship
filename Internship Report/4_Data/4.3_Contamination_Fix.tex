@@ -16,14 +16,15 @@ during training.
 
 Formally, let $F_{p,k} \in \{0,1,2,3,4\}$ denote the fold held out when training the base model for feature $k$. A naive 
 aggregation which uses scores where $F_{p,k} \neq f_p$ introduces optimistic bias, by carrying training information into test 
-evaluations. This breaks the exchangeability assumption that is a requiremenr of Theorem~\ref{thm: marginal coverage}.
+evaluations. This breaks the exchangeability assumption that is a requirement of Theorem~\ref{thm: marginal coverage}.
 
 The underlying prediction models for host level and gram type classification differ in structure, hence we correct for data 
 contamination at the appropriate granularity for each task:
 
 For \textbf{host level classification}, each of the $M = 2\,160$ host function models were trained on an independent 
-five fold split of the protein cluster space. \texttt{all\_random\_pc\_splits.pkl} is the file that records $F_{p,k}$ for every 
-protein and model. We have enforced a out of fold masking rule before aggregation:
+five fold split of the protein cluster space. Let $F_{p,k} \in \{0, 1, 2, 3, 4\}$ denote the held out fold identifier 
+for protein $p$ under the model for feature $k$. To prevent homology leakage across splits, we enforce an out of fold 
+masking operator prior to phage aggregation
 \begin{equation}
 \label{eq: contamination-mask}
 s_{p,k} \leftarrow \text{NA} \quad \text{if } F_{p,k} \neq f_p.

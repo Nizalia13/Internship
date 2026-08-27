@@ -1,16 +1,65 @@
 \section{Conformal Set Aggregation (CSA)}
 \label{sec2.4: CSA Method}
-The standard split conformal framework in \ref{sec2.3.2: split conformal} takes a scalar non-conformity 
-score $S(x, h) \in \mathbb{R}$. In this report, the prediction pipeline produces a $K$-dimensional score vector of 
-scores $s \in [0, 1]^K$ for each phage, where $K$ is the number of distinct functional categories. We may lose the 
+The standard split conformal framework in \ref{sec2.3.2: split conformal} takes a scalar non conformity 
+score $S(x, h) \in \mathbb{R}$. In this report, the protein language model pipeline (Section~\ref{sec2.2.2: plms}) produces a multidimensional representation, a 
+$K$-dimensional score vector $\mathbf{s} \in [0, 1]^K$ for each phage, whose entries corresponding to specific 
+functional categories (Figure~\ref{fig: score vector scheme}). We may lose the 
 geometric structure of the score distribution if we aggregate this vector to a scalar value before applying 
 conformal prediction. For such settings, Ochoa Rivera, Patel and Tewari \cite{ochoarivera2024conformal} 
 have proposed a score-based aggregation (CSA) method for conformal prediction.
 
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    node distance=0.6cm,
+    every node/.style={font=\footnotesize},
+    process/.style={
+        draw=blue!60!black!70,
+        fill=blue!5!white,
+        rounded corners=4pt,
+        minimum height=1.1cm,
+        inner xsep=8pt,
+        inner ysep=4pt,
+        align=center,
+        line width=0.7pt
+    },
+    result/.style={
+        draw=teal!70!black!80,
+        fill=teal!6!white,
+        rounded corners=4pt,
+        minimum height=1.1cm,
+        inner xsep=10pt,
+        inner ysep=4pt,
+        align=center,
+        line width=0.7pt
+    }
+]
+
+% Nodes
+\node[process] (seq) {Phage\\Proteins};
+\node[process, right=of seq] (plm) {pLM Encoder\\$\Phi_{\text{pLM}}$};
+\node[process, right=of plm] (func) {Per-Function\\Scores};
+\node[result, right=of func] (vec) {$\mathbf{s} \in [0,1]^K$};
+
+% Arrows
+\draw[->, line width=0.9pt, draw=gray!70!black] (seq) -- (plm);
+\draw[->, line width=0.9pt, draw=gray!70!black] (plm) -- (func);
+\draw[->, line width=0.9pt, draw=gray!70!black] (func) -- (vec);
+
+% Sub-annotation
+%\node[below=0.18cm of func, font=\scriptsize\itshape, text=gray!80!black] {(capsid, tail, lysin, \dots)};
+
+\end{tikzpicture}
+\caption{Construction of the $K$-dimensional functional score vector $\mathbf{s}$ from a phage's protein sequences.}
+\label{fig: score vector scheme}
+\end{figure}
+
 \subsection{Ensemble Score Vectors}
 \label{sec2.4.1: ensemble score vectors}
 Let $\mathcal{S} \subseteq [0, 1]^K$ be the score space and let $s = (s_1, \cdots, s_K) \in \mathcal{S}$ be 
-the vector of scores produces by the $K$ models, for each phage. Now, the CSA method treats the entire vector as the 
+the vector of scores produced by the $K$ models, for each phage. Now, the CSA method treats the entire vector as the 
 object of inference rather than reducing it into a single value. The main idea is to define a region, called an envelope, 
 $E \subseteq [0,1]^K$. This envelope consists of the region where the score vectors of the true hosts for that particular 
 phage are concentrated.
@@ -49,7 +98,7 @@ $\phi_h$ used in this work is formalized in Section~ \ref{sec3.3: nc transformat
 The core innovation of the CSA method is in the calibration process. It splits the calibration data into
 two subsets which have different roles. This is necessary for the exchangeability argument that provides us with the
 coverage guarantee. If we used the same calibration points to construct both, we would get overfitting which would 
-introduce bias which would invalidate the distruibution free coverage guarantee \cite{ochoarivera2024conformal}.
+introduce bias which would invalidate the distribution-free coverage guarantee \cite{ochoarivera2024conformal}.
 
 \begin{enumerate}[label=(\roman*)]
     \item \textbf{Shape Discovery Set ($S_1$):} Used to model the spatial distribution of scores and learn the geometric
@@ -128,22 +177,28 @@ This CSA framework was originally developed and analyzed in a regression setting
 and has some major limitations when it is applied to classification problems:
 \begin{enumerate}[label=(\roman*)]
 \item \textbf{Convexity of Envelope:} In \cite{ochoarivera2024conformal}, the conformal envelope $E$ is constructed 
-      as an intersection of half-spaces and is therefore convex. But in classification, the score vectors for 
-      different classes concentrate in seperate regions in the $[0, 1]^K$ score space. Therefore, if we force a convex 
-      envelope across the regions, we will create a region that covers a large area of empty score space in between, 
-      which would inflate the volume of the envelope. This would lead to an over conservative and uninformative prediction 
-      sets, $|C(\mathbf{s})|$, as they would be really large. 
-\item \textbf{Calibration Inefficiency:} Originally the method uses an iterative numerical optimication or a binary search 
-      to find the optimal scaling factor, $\hat t$ over $S_2$. In cases when the score space is high dimensional, the 
-      iterative approach can be really expensive computationally.
+      as an intersection of half-spaces and is therefore convex. In the original high-dimensional regression setting, 
+      where the score vectors concentrate in a single connected region of the score space, this is a natural and useful 
+      design choice. But in classification, the score vectors for different classes concentrate in separate regions in 
+      the $[0, 1]^K$ score space. Therefore, if we force a convex envelope across the regions, we will create a region 
+      that covers a large area of empty score space in between, which inflates the volume of the envelope and leads to 
+      over-conservative, uninformative prediction sets, as $|C(\mathbf{s})|$ becomes very large.
+\item \textbf{Calibration Inefficiency:} Originally the method uses an iterative numerical optimization or a binary search 
+      to find the optimal scaling factor $\hat{t}$ over $S_2$, which is appropriate in the original regression analysis. 
+      Each trial value of $t$, however, requires evaluating every half-space constraint for every point in $S_2$, and in 
+      classification this cost multiplies across candidate host labels, making the iterative approach prohibitively 
+      expensive and motivating the closed-form computation of Section~\ref{sec3.5: t hat calculation}.
 \item \textbf{Only Marginal Guarantee:} The scaling calculations in the original method only provide us with a 
-      marginal guarantee. This can lead to poor performance on the biological datasets, which are imbalances 
+      marginal guarantee. This can lead to poor performance on the biological datasets, which are imbalanced.
+\item \textbf{Handling of Missing Scores (NaN):} The original CSA formulation assumes that every score vector is fully 
+      observed across all $K$ dimensions. In our setting, phage score vectors exhibit structural missingness (Section 
+      \ref{sec4.1: data description}), a phage may simply lack a protein annotated for a given functional category. 
+      If we naively impute these missing entries, for example to zero, we would get a bias the nonconformity score 
+      toward interpreting absence as evidence against infection, and would invalidate the exchangeability assumption 
+      underlying Theorem \ref{thm: marginal coverage}. 
 \end{enumerate}
 
-These limitations directly motivate our methodological contributions in \ref{sec3: methodology}. This 
-includes designing non-convex envelopes \ref{sec3.4: envelope construction}, deriving closed-form analytical 
-solutions for per-point $\tau$-values to enable one-pass calibration \ref{sec3.5: t hat calculation}, and integrating class 
-conditional thresholds to guarantee reliable host-range predictions.
+These limitations directly motivate the methodology developed in Chapter~\ref{sec3: methodology}.
 
 % \noindent These limitations provide us with the oppurtunity to improve efficiency, to acheivee the same covergae but 
 % with smaller prediction sets. An this is the main motivation behind this work: designing the non-convex envelopes, 

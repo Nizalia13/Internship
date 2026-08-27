@@ -1,63 +1,64 @@
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Contents}{i}{section*.1}%
+\contentsline {chapter}{Contents}{i}{chapter*.1}%
 \contentsline {chapter}{\chapternumberline {1}Introduction}{1}{chapter.1}%
 \contentsline {chapter}{\chapternumberline {2}Background \& State of the Art}{5}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Bacteriophages and Host-Prediction Problem}{5}{section.2.1}%
 \contentsline {section}{\numberline {2.2}Current Computational Approaches and Limitations}{7}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Sequence Similarity and Protein Content Methods}{7}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Protein Language Models and Embedding-Based Methods}{8}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Limitation: Absence of Uncertainty Quantification}{8}{subsection.2.2.3}%
-\contentsline {section}{\numberline {2.3}Conformal Prediction}{9}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Mathematical Setup and Prediction Set}{9}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Split conformal prediction}{10}{subsection.2.3.2}%
-\contentsline {subsection}{\numberline {2.3.3}Marginal \& Conditional Coverage}{11}{subsection.2.3.3}%
-\contentsline {section}{\numberline {2.4}Conformal Set Aggregation (CSA)}{12}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Ensemble Score Vectors}{12}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}The CSA Framework}{13}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}Limitations of CSA in Classification}{13}{subsection.2.4.3}%
-\contentsline {chapter}{\chapternumberline {3}Methodology}{15}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Problem Formalization}{15}{section.3.1}%
-\contentsline {section}{\numberline {3.2}Non-Convex Envelopes in Classification}{17}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Nonconformity Score Transformation}{18}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}Gram Type Classification Nonconformity Mapping}{19}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Host Level Classification Nonconformity Mapping}{19}{subsection.3.3.2}%
-\contentsline {section}{\numberline {3.4}Envelope Construction}{20}{section.3.4}%
-\contentsline {subsection}{\numberline {3.4.1}Collapsed 1D Envelope Method}{20}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Radial Envelope Method}{21}{subsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.4.3}Strip Envelope Method}{22}{subsection.3.4.3}%
-\contentsline {section}{\numberline {3.5}$\hat {t}$ Calculation}{23}{section.3.5}%
-\contentsline {subsection}{\numberline {3.5.1}$\tau $ Computation}{23}{subsection.3.5.1}%
-\contentsline {subsection}{\numberline {3.5.2}Class Specific $\hat {t}$ Calculation}{23}{subsection.3.5.2}%
-\contentsline {subsection}{\numberline {3.5.3}Resolving the Empty Prediction Set}{24}{subsection.3.5.3}%
-\contentsline {chapter}{\chapternumberline {4}Data and Preprocessing Pipeline}{25}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Data Description and Structural Missingness}{25}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Protein to Phage Aggregation and NaN-Aware Pooling}{26}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Task Specific Filtering and Data Partitioning}{27}{section.4.3}%
-\contentsline {chapter}{\chapternumberline {5}Experiments and Results}{29}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Synthetic Validation}{29}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}2D Geometric Proof and Class Conditional Efficiency}{29}{subsection.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Dimensionality Scaling and Finite-Sample Coverage}{30}{subsection.5.1.2}%
-\contentsline {subsection}{\numberline {5.1.3}Geometric Robustness Across Score Topologies}{31}{subsection.5.1.3}%
-\contentsline {subsection}{\numberline {5.1.4}Multi-Host Benchmark Verification}{32}{subsection.5.1.4}%
-\contentsline {section}{\numberline {5.2}Gram Type Classification}{32}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Experimental Setup}{32}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Coverage and Prediction Efficiency}{33}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Score Separation and Geometric Equivalence}{33}{subsection.5.2.3}%
-\contentsline {section}{\numberline {5.3}Host Level Classification}{34}{section.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Experimental Protocol}{34}{subsection.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Hyperparameter Selection on Validation Data}{35}{subsection.5.3.2}%
-\contentsline {subsection}{\numberline {5.3.3}Empirical Test Results (Split 0)}{36}{subsection.5.3.3}%
-\contentsline {subsection}{\numberline {5.3.4}Geometric Boundary Visualization Across All Methods}{37}{subsection.5.3.4}%
-\contentsline {subsection}{\numberline {5.3.5}Effect of Gram-Type Filtering}{40}{subsection.5.3.5}%
-\contentsline {subsection}{\numberline {5.3.6}Functional Dimension Sufficiency}{40}{subsection.5.3.6}%
-\contentsline {subsection}{\numberline {5.3.7}Performance under Different Constraints}{41}{subsection.5.3.7}%
-\contentsline {chapter}{\chapternumberline {6}Conclusion and Future Work}{43}{chapter.6}%
-\contentsline {section}{\numberline {6.1}Summary}{43}{section.6.1}%
-\contentsline {section}{\numberline {6.2}Limitations}{44}{section.6.2}%
-\contentsline {section}{\numberline {6.3}Future Work}{45}{section.6.3}%
-\contentsline {chapter}{Bibliography}{47}{chapter*.3}%
-\contentsline {appendix}{\chapternumberline {A}Host Classification Results}{49}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Class Conditional Coverage Breakdown}{49}{section.A.1}%
-\contentsline {section}{\numberline {A.2}Set Size Distribution Per Host}{52}{section.A.2}%
-\contentsline {section}{\numberline {A.3}Prediction Set Inclusion Heatmaps}{56}{section.A.3}%
-\contentsline {section}{\numberline {A.4}Phage Host Prediction Clustermaps}{59}{section.A.4}%
+\contentsline {subsection}{\numberline {2.2.1}Sequence Similarity Methods}{7}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Protein Content Based Supervised Classifiers}{8}{subsection.2.2.2}%
+\contentsline {subsection}{\numberline {2.2.3}Protein Language Models and Embedding-Based Methods}{8}{subsection.2.2.3}%
+\contentsline {subsection}{\numberline {2.2.4}Limitation: Absence of Uncertainty Quantification}{9}{subsection.2.2.4}%
+\contentsline {section}{\numberline {2.3}Conformal Prediction}{10}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Mathematical Setup and Prediction Set}{10}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Split conformal prediction}{11}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Marginal \& Conditional Coverage}{12}{subsection.2.3.3}%
+\contentsline {section}{\numberline {2.4}Conformal Set Aggregation (CSA)}{13}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Ensemble Score Vectors}{13}{subsection.2.4.1}%
+\contentsline {subsection}{\numberline {2.4.2}The CSA Framework}{14}{subsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.4.3}Limitations of CSA in Classification}{15}{subsection.2.4.3}%
+\contentsline {chapter}{\chapternumberline {3}Methodology}{17}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Problem Formalization}{17}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Non-Convex Envelopes in Classification}{19}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Nonconformity Score Transformation}{20}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}Gram Type Classification Nonconformity Mapping}{21}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Host Level Classification Nonconformity Mapping}{21}{subsection.3.3.2}%
+\contentsline {section}{\numberline {3.4}Envelope Construction}{22}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}Collapsed 1D Envelope Method}{22}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Radial Envelope Method}{23}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Strip Envelope Method}{25}{subsection.3.4.3}%
+\contentsline {section}{\numberline {3.5}$\hat {t}$ Calculation}{26}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}$\tau $ Computation}{26}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.5.2}Class Specific $\hat {t}$ Calculation}{27}{subsection.3.5.2}%
+\contentsline {subsection}{\numberline {3.5.3}Resolving the Empty Prediction Set}{28}{subsection.3.5.3}%
+\contentsline {chapter}{\chapternumberline {4}Data and Preprocessing Pipeline}{29}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Data Description and Structural Missingness}{29}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Protein to Phage Aggregation and NaN-Aware Pooling}{31}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Task Specific Filtering and Data Partitioning}{32}{section.4.3}%
+\contentsline {chapter}{\chapternumberline {5}Experiments and Results}{35}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Synthetic Validation}{35}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}2D Geometric Proof and Class Conditional Efficiency}{35}{subsection.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Dimensionality Scaling and Finite-Sample Coverage}{36}{subsection.5.1.2}%
+\contentsline {subsection}{\numberline {5.1.3}Geometric Robustness Across Score Topologies}{37}{subsection.5.1.3}%
+\contentsline {subsection}{\numberline {5.1.4}Multi-Host Benchmark Verification}{38}{subsection.5.1.4}%
+\contentsline {section}{\numberline {5.2}Gram Type Classification}{38}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Experimental Setup}{38}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Coverage and Prediction Efficiency}{39}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Score Separation and Geometric Equivalence}{39}{subsection.5.2.3}%
+\contentsline {section}{\numberline {5.3}Host Level Classification}{40}{section.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Experimental Protocol}{40}{subsection.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Hyperparameter Selection on Validation Data}{41}{subsection.5.3.2}%
+\contentsline {subsection}{\numberline {5.3.3}Empirical Test Results (Split 0)}{42}{subsection.5.3.3}%
+\contentsline {subsection}{\numberline {5.3.4}Geometric Boundary Visualization Across All Methods}{43}{subsection.5.3.4}%
+\contentsline {subsection}{\numberline {5.3.5}Effect of Gram-Type Filtering}{46}{subsection.5.3.5}%
+\contentsline {subsection}{\numberline {5.3.6}Functional Dimension Sufficiency}{46}{subsection.5.3.6}%
+\contentsline {subsection}{\numberline {5.3.7}Performance under Different Constraints}{47}{subsection.5.3.7}%
+\contentsline {chapter}{\chapternumberline {6}Conclusion and Future Work}{49}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Summary}{49}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Limitations}{50}{section.6.2}%
+\contentsline {section}{\numberline {6.3}Future Work}{51}{section.6.3}%
+\contentsline {chapter}{Bibliography}{53}{chapter*.4}%
+\contentsline {appendix}{\chapternumberline {A}Host Classification Results}{55}{chapter.A}%
+\contentsline {section}{\numberline {A.1}Class Conditional Coverage Breakdown}{55}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Set Size Distribution Per Host}{58}{section.A.2}%
+\contentsline {section}{\numberline {A.3}Prediction Set Inclusion Heatmaps}{62}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Phage Host Prediction Clustermaps}{65}{section.A.4}%
