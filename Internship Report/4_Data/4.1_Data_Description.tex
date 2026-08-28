@@ -36,7 +36,7 @@ The feature extraction and score generation pipeline is structured in five stage
            Each classifier outputs a probability score $s_{p,h,k} \in [0, 1]$ measuring the compatibility of protein $p$ with host 
            $h$ for functional role $k$, yielding $M = 2{,}160$ base models. Not every host has valid models for all 40 categories, so 
            the per host dimensionality is not fixed and $K_h$ ranges from 26 to 40. Summing $K_h$ over all 54 hosts gives the final 
-           dimensionality, $K_{\text{tot}} = 2{,}036$, which is smaller than $M = 2{,}160 = 54 \times 40$/
+           dimensionality, $K_{\text{tot}} = 2{,}036$, which is smaller than $M = 2{,}160 = 54 \times 40$.
     \item \textbf{Phage-Level Aggregation:} For each phage genome, predictions across all its constituent proteins are aggregated via 
            dimension wise, $\mathrm{NaN}$ aware mean pooling (Section~\ref{sec4.2: aggregation}), producing a $K_{\text{tot}} = 
            2{,}036$-dimensional phage score vector.
@@ -195,8 +195,8 @@ we preserve missingness via $\mathrm{NaN}$ aware aggregation (Section \ref{sec4.
 \midrule
 Full Dataset & 18,474 & 10,735 & 7,708 \\
 Test Split (Split 0) & 4,433 & 2,811 & 1,611 \\
-Validation Split (Split 1) & 3,173 & -- & -- \\
-Training Splits (Splits 2--4) & 10,868 & 7,924 & 6,097 \\
+Validation Split (Split 1) & 3,173 & 1,833 & 1,340 \\
+Training Splits (Splits 2--4) & 10,868 & 6,091 & 4,757 \\
 \bottomrule
 \end{tabular}
 \caption{Dataset Summary and Class Distributions}

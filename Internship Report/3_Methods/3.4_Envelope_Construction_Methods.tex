@@ -44,7 +44,7 @@ scalar value by taking the mean over the over observed dimensions,
 \begin{equation*}
 \bar{s} = \frac{1}{|\mathbf{m}|_1} \sum_{k : m_k = 1} v_k,
 \end{equation*}
-\newpage
+
 and calibrates a single quantile on $S_1$:
 
 \begin{equation*}
@@ -159,11 +159,9 @@ constraints involving that dimension are ignored, so the missing dimension is
 neither used as a target nor as a conditioning dimension.}
     \label{fig:strip_envelope}
 
-
 \end{figure}
 
-
-\vspace{0.15cm}
+\newpage
 A windowed monotonicity pass then enforces $\text{limits}[j,i,n] \ge \text{limits}[j,i,n']$ for $n' \in (n, n+w]$ 
 within a fixed window $w$.
 \begin{equation*}
@@ -235,10 +233,7 @@ So, a pairwise constraint contributes to $\tau(v)$ if and only if both its targe
 m_j=m_i=1,\quad j\neq i.
 \]
 
-If either dimension is missing,
-\[
-m_j=0\quad\text{or}\quad m_i=0,
-\]
+If either dimension is missing, $m_j=0\quad\text{or}\quad m_i=0,$
 the corresponding pairwise constraint is omitted from the maximum.
 
 Structural missingness is handled by dropping dimensions that are unobserved for the score vector under consideration. Let

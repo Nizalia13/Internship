@@ -133,6 +133,18 @@ $K \in \{2, 5, 10, 20\}$ at target level $1-\alpha = 0.900$ ($\alpha = 0.10, N =
 $K$-dimensional multivariate normal distribution with mean vector $\mathbf{0.3}$, variance $0.02$, and off diagonal feature 
 correlation $\rho = 0.30$, clipped to $[0,1]^K$.
 
+
+
+As shown in Table~\ref{tab: dim scaling results}, every method achieves exactly $90.0\%$ empirical coverage across 
+all tested dimensions. This empirically confirms the distribution free guarantee of Theorem~\ref{thm: marginal coverage}. 
+However, their statistical efficiency, which is reflected by the scaling factor $\hat{t}$, is significantly different as $K$ 
+increases. For the reference CSA method, the $\hat{t}$ only slightly changes from $0.996$ to $1.021$ between $K=2$ and $K=20$.
+For the radial method the $\hat t$ value inflates for high dimensions, it nearly triples from $\hat{t} = 0.972$ at $K=2$ to 
+$\hat{t} = 2.925$ at $K=20$. This is due to the curse of dimensionality, the directional cones ($\delta = 15^\circ$) capture 
+fewer local calibration points in sparse high dimensional spaces, so more directions fall back to the conservative global 
+marginal quantile $\tilde{q}_{\text{marg}}$, inflating $\hat{t}$. Finally, the strip method maintains the robust sample 
+efficiency (reaching only $\hat{t} = 1.212$ at $K=20$), and outperforms the radial method by using axis aligned pairwise projections. 
+
 \begin{table}[htbp]
 \centering
 \small
@@ -157,19 +169,6 @@ $K = 20$ & 90.0 & 1.021 & 90.0 & 2.925 & 90.0 & 1.222 \\
 coverage and calibrated size scaling factors $\hat{t}$ are reported across envelope geometries.}
 \label{tab: dim scaling results}
 \end{table}
-
-
-As shown in Table~\ref{tab: dim scaling results}, every method achieves exactly $90.0\%$ empirical coverage across 
-all tested dimensions. This empirically confirms the distribution free guarantee of Theorem~\ref{thm: marginal coverage}. 
-However, their statistical efficiency, which is reflected by the scaling factor $\hat{t}$, is significantly different as $K$ 
-increases. For the reference CSA method, the $\hat{t}$ only slightly changes from $0.996$ to $1.021$ between $K=2$ and $K=20$.
-For the radial method the $\hat t$ value inflates for high dimensions, it nearly triples from $\hat{t} = 0.972$ at $K=2$ to 
-$\hat{t} = 2.925$ at $K=20$. This is due to the curse of dimensionality, the directional cones ($\delta = 15^\circ$) capture 
-fewer local calibration points in sparse high dimensional spaces, so more directions fall back to the conservative global 
-marginal quantile $\tilde{q}_{\text{marg}}$, inflating $\hat{t}$. Finally, the strip method maintains the robust sample 
-efficiency (reaching only $\hat{t} = 1.212$ at $K=20$), and outperforms the radial method by using axis aligned pairwise projections. 
-
-
 
 % \subsubsection{Robustness to Score Distribution Shape}
 % \label{sec5.1.2: distribution robustness}

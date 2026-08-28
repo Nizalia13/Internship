@@ -1,5 +1,5 @@
 \babel@toc {english}{}\relax 
-\contentsline {chapter}{Contents}{i}{section*.1}%
+\contentsline {chapter}{Contents}{i}{chapter*.1}%
 \contentsline {chapter}{\chapternumberline {1}Introduction}{1}{chapter.1}%
 \contentsline {chapter}{\chapternumberline {2}Background \& State of the Art}{5}{chapter.2}%
 \contentsline {section}{\numberline {2.1}Bacteriophages and Host-Prediction Problem}{5}{section.2.1}%
@@ -24,10 +24,10 @@
 \contentsline {subsection}{\numberline {3.3.2}Host Level Classification Nonconformity Mapping}{21}{subsection.3.3.2}%
 \contentsline {section}{\numberline {3.4}Envelope Construction}{22}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}Collapsed 1D Envelope Method}{22}{subsection.3.4.1}%
-\contentsline {subsection}{\numberline {3.4.2}Radial Envelope Method}{23}{subsection.3.4.2}%
-\contentsline {subsection}{\numberline {3.4.3}Strip Envelope Method}{25}{subsection.3.4.3}%
-\contentsline {section}{\numberline {3.5}$\hat {t}$ Calculation}{27}{section.3.5}%
-\contentsline {subsection}{\numberline {3.5.1}$\tau $ Computation}{27}{subsection.3.5.1}%
+\contentsline {subsection}{\numberline {3.4.2}Radial Envelope Method}{22}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}Strip Envelope Method}{24}{subsection.3.4.3}%
+\contentsline {section}{\numberline {3.5}$\hat {t}$ Calculation}{26}{section.3.5}%
+\contentsline {subsection}{\numberline {3.5.1}$\tau $ Computation}{26}{subsection.3.5.1}%
 \contentsline {subsection}{\numberline {3.5.2}Class Specific $\hat {t}$ Calculation}{27}{subsection.3.5.2}%
 \contentsline {subsection}{\numberline {3.5.3}Resolving the Empty Prediction Set}{28}{subsection.3.5.3}%
 \contentsline {chapter}{\chapternumberline {4}Data and Preprocessing Pipeline}{29}{chapter.4}%
@@ -56,8 +56,8 @@
 \contentsline {section}{\numberline {6.1}Summary}{49}{section.6.1}%
 \contentsline {section}{\numberline {6.2}Limitations}{50}{section.6.2}%
 \contentsline {section}{\numberline {6.3}Future Work}{51}{section.6.3}%
-\contentsline {chapter}{Bibliography}{53}{chapter*.3}%
-\contentsline {appendix}{\chapternumberline {A}Host Classification Results}{55}{appendix.A}%
+\contentsline {chapter}{Bibliography}{53}{chapter*.4}%
+\contentsline {appendix}{\chapternumberline {A}Host Classification Results}{55}{chapter.A}%
 \contentsline {section}{\numberline {A.1}Class Conditional Coverage Breakdown}{55}{section.A.1}%
 \contentsline {section}{\numberline {A.2}Set Size Distribution Per Host}{58}{section.A.2}%
 \contentsline {section}{\numberline {A.3}Prediction Set Inclusion Heatmaps}{62}{section.A.3}%

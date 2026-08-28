@@ -15,9 +15,11 @@ this gap. We build on the Conformal Set Aggregation (CSA) approach and replaced 
 which may become uninformatively large when the class conditional score clusters are well separated. We used three star shaped,
 non convex alternatives (Radial, Strip, and Collapsed 1D) which are suited to the disjoint geometry of classification
 tasks. For each geometry we derived a closed form calibration rule that replaces the iterative binary search used in
-standard CSA with a single sorting pass. We also introduce a class conditional calibration, which can give exact per host
-coverage guarantees rather than a single marginal one, along with a two stage Gram type to host cascade with a
-proven bound on compounded miscoverage.
+standard CSA with a single sorting pass. We also introduce a class conditional calibration, which provides class conditional 
+finite sample validity under the exchangeability assumptions within each host class, rather than a single marginal one. 
+Finally, we use a two stage Gram type, to host cascade with a proven bound on compounded miscoverage.
+
+provides class-conditional finite-sample validity under the exchangeability assumptions within each host class
 
 We validated the framework on a real dataset of bacteriophage protein functional scores, and achieved reliable
 empirical coverage at the target confidence level on both a binary Gram type task and a multiclass host

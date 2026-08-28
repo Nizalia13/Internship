@@ -55,13 +55,14 @@ hat calculation}.
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\textwidth]{Plots/comparison_plot_2.png}
-    \caption{Gram type classification performance across Radial, Strip, and Collapsed 1D geometries on the test split 
-            (Fold 0, nominal target $1-\alpha = 0.90$). Panels show (left to right): prediction set size distribution, marginal empirical 
-             coverage, class-conditional coverage, and singleton accuracy with sample counts ($n$).}
+     \caption{Gram type classification performance across Radial, Strip, and Collapsed 1D geometries on the test split (Split 
+              0, target $1 - \alpha = 0.90$). Panels show: (top-left) prediction set size distribution, (top-right) marginal 
+              empirical coverage, (bottom-left) class-conditional coverage, and (bottom-right) singleton accuracy with sample 
+              counts ($n$).}
     \label{fig: gram results}
 \end{figure}
 
-As we can see in Figure~\ref{fig: gram results} (middle panels), all three envelope geometries achieve $99.8\%$ empirical 
+As we can see in Figure~\ref{fig: gram results}, all three envelope geometries achieve $99.8\%$ empirical 
 coverage, which is well above the nominal $90\%$ target (red dashed line), this is a consequence of the underlying data 
 distribution . The class conditional breakdown 
 confirms that the coverage is balanced for both Gram negative ($99.9\%$) and Gram positive ($99.8\%$) phages. This demonstrates 
@@ -125,7 +126,8 @@ in the ambiguous zone ($0.25\text{--}0.75$), any sensible star shaped boundary c
 
 This near identical 
 performance across the three geometries suggests that the choice of envelope geometry is less critical for low dimensional task 
-with strongly separated scores. The advantages of non convex can be seen more prominently in the 
+with strongly separated scores. 
+The advantages of non convex can be seen more prominently in the 
 higher dimensional, multi class host level classification task in Section~\ref{sec5.3: host results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -13,11 +13,59 @@
 
 \section{Non-Convex Envelopes in Classification}
 \label{sec3.2: non-convex envelopes}
-Section~\ref{sec2.4.3: csa limitations} identified envelope convexity as one of the main limitations of standard CSA 
-method \cite{ochoarivera2024conformal} when applied to classification. While convex envelopes naturally model 
-continuous target spaces in regression, classification score vectors concentrate in disjoint, class-specific clusters across 
-the score space. Therefore, it leads to the envelope being stretched over regions of empty spaces, making the prediction sets 
-unnecessarily large. Here, we will describe the alternate method that we have used in this report.
+Envelope convexity was identified as one of the main limitations of standard CSA method \cite{ochoarivera2024conformal} 
+when applied to classification in Section~\ref{sec2.4.3: csa limitations}. While convex envelopes naturally model continuous 
+target spaces in regression, classification score vectors concentrate in disjoint, class-specific clusters across the score 
+space. Fitting a single shared convex envelope forces the boundary to bridge across empty intermediate space, resulting in 
+uninformatively large prediction sets. To prevent this over extension, we construct dedicated class conditional envelopes 
+$E_h$ for each candidate host, this allows the boundaries to closely adapt closely to the non linear structure of true 
+infector scores.
+
+% Also very importantly, dropping convexity does not violate statistical validity; the conformal coverage guarantee holds for 
+% any measurable envelope $E \subseteq \mathbb{R}_+^K$ under exchangeability \cite{ochoarivera2024conformal}. To ensure that 
+% the boundary is both computationally tractable and biologically sensible, the envelope must satisfy two geometric properties:
+% \begin{enumerate}
+%     \item \textbf{Star shapedness with respect to the origin:} To ensure the scaling function $\tau(\mathbf{s}) = \inf\{t > 0 
+%            : \mathbf{s} \in t \cdot E\}$ is continuous and yields a unique scalar threshold.
+%     \item \textbf{Coordinate wise monotonicity (convexity toward the axes):} In nonconformity space, the origin $\mathbf{0}$ 
+%            represents perfect conformity (maximum infection evidence). If a score vector $\mathbf{x} \in E$ is accepted, any 
+%            point $\mathbf{y}$ with $0 \le y_k \le x_k$ for all $k$ exhibits even stronger evidence and must also be accepted.
+% \end{enumerate}
+
+Also very importantly, dropping convexity does not violate statistical validity; the conformal coverage guarantee holds for 
+any measurable envelope $E \subseteq \mathbb{R}_+^K$ under exchangeability \cite{ochoarivera2024conformal}. 
+To ensure that the boundary is both computationally tractable and biologically sensible, the envelope must satisfy two 
+geometric properties: star shapedness (Definiton \ref{def: star shaped}) with respect to the origin (ensuring a unique, 
+continuous scaling threshold $\tau(s)$) and coordinate wise monotonicity (Definition \ref{def:coordinate-monotone}) which 
+ensures convexity toward the axes, so stronger conformity vectors closer to the origin are 
+unconditionally included.
+
+\begin{definition}[Star-Shaped Set]
+\label{def: star shaped}
+A set $E \subseteq \mathbb{R}^K$ is said to be \emph{star-shaped with respect to the origin} $\textbf{0} \in \mathbb{R}^K$ if 
+for every point $x \in E$ and every scalar $\lambda \in [0, 1]$, the line segment connecting the origin to $x$ lies entirely 
+within $E$:
+$$\lambda x \in E \quad \forall x \in E, \; \forall \lambda \in [0, 1].$$
+\end{definition}
+
+
+\begin{definition}[Coordinate Wise Monotone Set]
+\label{def:coordinate-monotone}
+A set $E \subseteq \mathbb{R}_+^K$ is coordinate wise monotone if for all $\mathbf{x} \in E$ and $\mathbf{y} \in 
+\mathbb{R}_+^K$:
+\begin{equation*}
+\mathbf{0} \le \mathbf{y} \le \mathbf{x} \implies \mathbf{y} \in E,
+\end{equation*}
+where $\mathbf{y} \le \mathbf{x}$ denotes $y_k \le x_k$ for all coordinates $k \in \{1, \dots, K\}$.
+\end{definition}
+
+
+
+
+% While convex envelopes naturally model 
+% continuous target spaces in regression, classification score vectors concentrate in disjoint, class-specific clusters across 
+% the score space. Therefore, it leads to the envelope being stretched over regions of empty spaces, making the prediction sets 
+% unnecessarily large. Here, we will describe the alternate method that we have used in this report.
 
 % Formally, let $\mathcal{C}_h \subseteq \mathbb{R}^K_+$ denote the support of the transformed score vector 
 % $\phi_h(\mathbf{s})$ for true label $H = h \in \mathcal{H}$. In multi-class classification, these supports are strictly 
@@ -44,11 +92,11 @@ unnecessarily large. Here, we will describe the alternate method that we have us
 % This mirrors our phage data, where the score vectors cluster tightly around distinct class centroids, this is consistent with 
 % the score separation established in Section~\ref{sec2.2.3: limitations}.
 
-In classification, score vectors for different classes occupy separated regions in the score space. If we attempt to fit a 
-single shared convex envelope, we would force the boundary to bridge across empty intermediate space, which would lead to 
-uninformatively large prediction sets. To prevent this, we fit dedicated class conditional envelopes $E_h$ for each 
-candidate hos. This allows the boundary to closely adapt to the non linear structure of true infector scores without the 
-convex over extension.
+% In classification, score vectors for different classes occupy separated regions in the score space. If we attempt to fit a 
+% single shared convex envelope, we would force the boundary to bridge across empty intermediate space, which would lead to 
+% uninformatively large prediction sets. To prevent this, we fit dedicated class conditional envelopes $E_h$ for each 
+% candidate host. This allows the boundary to closely adapt to the non linear structure of true infector scores without the 
+% convex over extension.
 
 % Also very importantly, dropping convexity does not violate the statistical validity: the marginal coverage guarantee holds for 
 % any measurable envelope $E \subseteq \mathbb{R}^K_+$ by exchangeability \cite{ochoarivera2024conformal}.
@@ -58,41 +106,8 @@ convex over extension.
 % \mathbf{x} \in E \implies \lambda \mathbf{x} \in E, \qquad \forall \lambda \in [0,1].
 % \end{equation*}
 
-Also very importantly, dropping convexity does not violate statistical validity: the conformal coverage guarantee holds for 
-any measurable envelope $E \subseteq \mathbb{R}_+^K$ under exchangeability \cite{ochoarivera2024conformal}. To ensure that 
-the boundary is both computationally tractable and biologically sensible, the envelope must satisfy two geometric properties:
-\begin{enumerate}
-    \item \textbf{Star shapedness with respect to the origin:} To ensure the scaling function $\tau(\mathbf{s}) = \inf\{t > 0 
-           : \mathbf{s} \in t \cdot E\}$ is continuous and yields a unique scalar threshold.
-    \item \textbf{Coordinate wise monotonicity (convexity toward the axes):} In nonconformity space, the origin $\mathbf{0}$ 
-           represents perfect conformity (maximum infection evidence). If a score vector $\mathbf{x} \in E$ is accepted, any 
-           point $\mathbf{y}$ with $0 \le y_k \le x_k$ for all $k$ exhibits even stronger evidence and must also be accepted.
-\end{enumerate}
 
-To ensure that the boundary is both computationally tractable and biologically sensible, the envelope must satisfy two 
-geometric properties: star shapedness (Definiton \ref{def: star shaped}) with respect to the origin (ensuring a unique, 
-continuous scaling threshold $\tau(s)$) and coordinate wise monotonicity (Definition \ref{def:coordinate-monotone}) which 
-ensures convexity toward the axes, so stronger conformity vectors closer to the origin are 
-unconditionally included.
-
-\begin{definition}[Star-Shaped Set]
-\label{def: star shaped}
-A set $E \subseteq \mathbb{R}^K$ is said to be \emph{star-shaped with respect to the origin} $0 \in \mathbb{R}^K$ if for 
-every point $x \in E$ and every scalar $\lambda \in [0, 1]$, the line segment connecting the origin to $x$ lies entirely 
-within $E$:
-$$\lambda x \in E \quad \forall x \in E, \; \forall \lambda \in [0, 1].$$
-\end{definition}
-
-
-\begin{definition}[Coordinate Wise Monotone Set]
-\label{def:coordinate-monotone}
-A set $E \subseteq \mathbb{R}_+^K$ is coordinate wise monotone if for all $\mathbf{x} \in E$ and $\mathbf{y} \in 
-\mathbb{R}_+^K$:
-\begin{equation*}
-\mathbf{0} \le \mathbf{y} \le \mathbf{x} \implies \mathbf{y} \in E,
-\end{equation*}
-where $\mathbf{y} \le \mathbf{x}$ denotes $y_k \le x_k$ for all coordinates $k \in \{1, \dots, K\}$.
-\end{definition}
 
 % Star-shapedness guarantees that $\{t > 0 : \mathbf{s} \in t \cdot E\}$ forms a continuous interval, preserving simple 
 % single-pass calibration while allowing the envelope to tightly hug non-convex cluster geometries.
+

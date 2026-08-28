@@ -24,7 +24,7 @@ We again use a three way partition of the genome cluster data:
 Unlike Gram type classification (Section~\ref{sec5.2: gram results}), host level scores use per model split 
 assignments (Section~\ref{sec4.3: contamination fix}) to ensure the out of split validity across all five splits rather than 
 restricting calibration to split $0$ alone. Missing entries ($\text{NA}$) are handled by each envelope geometry without data 
-imputation
+imputation.
 
 % At test time, the Gram restriction $\hat{\mathcal{H}}(\mathbf{s})$ narrows the host space to $16$ for Gram positive 
 % and $38$ for Gram negative predictions. The cascaded prediction set $C_{\text{host}}(\mathbf{s})$ is evaluated using the per 
@@ -113,6 +113,7 @@ As demonstrated in Table~\ref{tab: host_results} and Figure~\ref{fig: host cover
 achieve empirical coverage close to the $90.0\%$ target. While the binary Gram setting produced an over conservative coverage 
 (99.8\%) due to global max threshold, the independent per host envelope calibration prevents over coverage (90.5\%--93.9\%).
 
+\newpage
 Prediction efficiency diverges sharply:
 \begin{enumerate}[label=(\roman*)]
     \item \textbf{Efficiency of Collapsed 1D:} Collapsed 1D achieves an average prediction set size of $6.09$, which is less than 
@@ -147,11 +148,13 @@ differences, Figure~\crefrange{fig: staph both good}{fig: staph 1 good 1 bad} di
 dimensional subspace (built only using two of the functional dimensions while holding the values on the remaining $K_h - 2$ dimensions 
 fixed). Therefore, the boundary shown is just a 2D a slice of the true $K_h$ dimensional envelope.
 
+
+
 \begin{figure}[ht]
 \centering
-\includegraphics[width=\linewidth]{Plots/staph_both_good_1.png}
+\includegraphics[width=\linewidth]{Plots/staph_1good_1bad_2.png}
 \caption{\textbf{2D Projection of Calibrated Boundaries on Good Predictors.} Per host envelope boundary comparison for 
-Staphylococcus projected onto the 2D plane of two discriminative functional features (transcriptional\_activator vs. annealing). 
+Staphylococcus projected onto the 2D plane of two discriminative functional features (transcriptional\_activator vs. reductase). 
 Left (Collapsed 1D): Linear boundary defined by equal weight mean nonconformity. Centre (Radial): Smooth angular kernel boundary 
 ($\kappa=4.0$), closely enveloping the nonconformity cluster. Right (Strip): Piecewise constant staircase boundary enforcing local 
 monotonicity ($w=2$).}
@@ -160,7 +163,7 @@ monotonicity ($w=2$).}
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=\linewidth]{Plots/staph_1good_1bad_2.png}
+\includegraphics[width=\linewidth]{Plots/staph_both_good_1.png}
 \caption{\textbf{2D Projection of Calibrated Boundaries on One Good and One Bad Predictor}. Per host envelope boundary comparison for 
 Staphylococcus projected onto one informative and one uninformative functional feature (transcriptional\_activator vs. capsid)
 When one dimension contains non infector noise, Collapsed 1D's linear projection dilutes the strong signal across both axes. The 
@@ -210,7 +213,7 @@ test set ($N_{\text{test}} = 3{,}944$).
 % Gram positive phages (top and bottom orange blocks) strictly activate Gram positive host columns on the right (e.g., 
 % \emph{Mycobacterium},     \emph{Gordonia}, \emph{Streptomyces}), with zero cross Gram false inclusions.
 The clustermap confirms the gram type seperationion: Gram positive phages strictly activate Gram positive host columns 
-(e.g., \textit{Mycobacterium}, \textit{Gordonia}, \textit{Streptomyces}) with zero cross gram type false positive inclusions
+(e.g., \textit{Mycobacterium}, \textit{Gordonia}, \textit{Streptomyces}) with zero cross gram type false positive inclusions.
 
 The clustermaps for the Radial and Strip envelopes are provided in Appendix~\ref{app: full_clustermaps} 
 (Figures~\ref{fig:clustermap_radial_app} and \ref{fig:clustermap_strip_app1}), these visually demonstrate how high dimensional 
@@ -256,7 +259,7 @@ envelopes. The average prediction set size decreases by over $60\%$ for both of 
 
 The high dimensionality of the host level score space ($K_h \in [26, 40]$ per host) raises a natural question: how many 
 of these dimensions are actually necessary? Here we checked if a single subset of functional categories, retained across 
-all $54$ hosts, can reproduce the performance of full dimensional. We selected the $\texttt{TOP\_N\_CORE}$ most informative 
+all $54$ hosts, can reproduce the performance of full dimensional. We selected the "Top N Core" most informative 
 functional categories. To select the top functions, for each host we ranked its functional dimensions by their mean score on 
 the phages that truly infect the host in the training set, then took the top 5 ranked functions per host and then finally, we 
 pooled the top 5 list across the $54$ hosts and selected the top 7 function names that occured most frequently. This yielded  

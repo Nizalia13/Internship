@@ -42,6 +42,7 @@ Here, $D_{\text{train}}$ provides us with the the shape-discovery and size-scali
 $D_{\text{val}}$ is used to tune envelope hyperparameters (e.g., bin count $NB$, directional resolution $M$, and kernel smoothing 
 $\kappa$), and $D_{\text{test}}$ is held out for final evaluation.
 
+\newpage
 For \textbf{gram type classification}, the $K = 40$ functional category models used for gram type classification do not 
 have per column split assignment tables. As a conservative, unambiguous fallback, we restrict the gram type dataset strictly to 
 phages in Fold 0 ($\text{split}_i = 0$). Because Fold 0 phages are consistently held out at the genome cluster level, all 
