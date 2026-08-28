@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  27 AUG 2026 17:24
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  28 AUG 2026 18:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1163,8 +1163,8 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.38 T
-      he main objective of this work is to resolve this limitation by constr... [1
+l.43 
+      [1
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
@@ -1189,7 +1189,7 @@ l.66
      ] [14]) [15] (./3_Methods/3.1_Problem.tex [16
 
 ] [17] [18]
-Overfull \hbox (4.49756pt too wide) detected at line 125
+Overfull \hbox (4.49756pt too wide) detected at line 126
 []
  []
 
@@ -1198,7 +1198,7 @@ LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 10
  (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 ) [20] [21]) (./3_Methods/3.4_Envelope_Construction_Methods.tex [22] [23]
-<Plots/radial envelope.png, id=632, 1027.84pt x 684.5575pt>
+<Plots/radial envelope.png, id=633, 1027.84pt x 684.5575pt>
 File: Plots/radial envelope.png Graphic file (type png)
 <use Plots/radial envelope.png>
 Package pdftex.def Info: Plots/radial envelope.png  used on input line 118.
@@ -1213,13 +1213,13 @@ Overfull \hbox (23.42805pt too wide) detected at line 145
 []\OT1/ztmcm/m/n/12 [\OML/ztmcm/m/it/12 j; i; n\OT1/ztmcm/m/n/12 ] = []
  []
 
-<Plots/Strip envlelope.png, id=638, 1606.0pt x 881.2925pt>
+<Plots/Strip envlelope.png, id=639, 1653.17625pt x 958.58125pt>
 File: Plots/Strip envlelope.png Graphic file (type png)
 <use Plots/Strip envlelope.png>
 Package pdftex.def Info: Plots/Strip envlelope.png  used on input line 152.
-(pdftex.def)             Requested size: 334.60422pt x 183.61111pt.
+(pdftex.def)             Requested size: 334.60422pt x 194.00925pt.
 
-Overfull \hbox (3.37648pt too wide) in paragraph at lines 159--161
+Overfull \hbox (3.37648pt too wide) in paragraph at lines 167--169
 []\T1/ptm/m/n/12 A win-dowed mono-tonic-ity pass then en-forces $[]\OT1/ztmcm/m/n/12 [\OML/ztmcm/m/it/12 j; i; n\OT1/ztmcm/m/n/12 ] \OMS/ztmcm/m/n/12 ^^U []\OT1/ztmcm/m/n/12 [\OML/ztmcm/m/it/12 j; i; n[]\OT1/ztmcm/m/n/12 ]$ \T1/ptm/m/n/12 for $\OML/ztmcm/m/it/12 n[] \OMS/ztmcm/m/n/12 2 \OT1/ztmcm/m/n/12 (\OML/ztmcm/m/it/12 n; n \OT1/ztmcm/m/n/12 +
  []
 
@@ -1227,17 +1227,13 @@ Overfull \hbox (3.37648pt too wide) in paragraph at lines 159--161
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.171 
-       <./Plots/Strip envlelope.png>]
-LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 188.
- (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
-File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-)) (./3_Methods/3.5_Tau_Computation.tex
+l.179 
+       <./Plots/Strip envlelope.png (PNG copy)>] [26]) (./3_Methods/3.5_Tau_Computation.tex
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 2.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 5.
- [26] [27]) [28] (./4_Data/4.1_Data_Description.tex [29
+ [27]) [28] (./4_Data/4.1_Data_Description.tex [29
 
 ] (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfit.code.tex
 File: tikzlibraryfit.code.tex 2023-01-15 v3.1.10 (3.1.10)
@@ -1256,141 +1252,133 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.4.1}) ha
 l.5 
     ] [32]) [33] (./5_Experiments_and_Results/5.1_Synthetic_Validation.tex [34
 
-] [35] [36] [37
+] [35] [36]
+LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 243.
+ (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+) [37
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.247     \item \textbf
-                       {Adaptation to Correlation:} On highly correlated dat...
+l.250     \item \textbf
+                       {Heavy-Tail Sensitivity:} The heavy tailed Laplace di...
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.247     \item \textbf
-                       {Adaptation to Correlation:} On highly correlated dat...]) (./5_Experiments_and_Results/5.2_Gram_type_classification.tex [38]
-<Plots/comparison_plot.png, id=757, 4396.425pt x 993.7125pt>
-File: Plots/comparison_plot.png Graphic file (type png)
-<use Plots/comparison_plot.png>
-Package pdftex.def Info: Plots/comparison_plot.png  used on input line 57.
-(pdftex.def)             Requested size: 418.25368pt x 94.52496pt.
-
-
-LaTeX Warning: Reference `fig:raw_score_dist' on page 39 undefined on input line 81.
-
-[39
+l.250     \item \textbf
+                       {Heavy-Tail Sensitivity:} The heavy tailed Laplace di...]) (./5_Experiments_and_Results/5.2_Gram_type_classification.tex [38]
+<Plots/comparison_plot_2.png, id=759, 1003.8303pt x 747.2718pt>
+File: Plots/comparison_plot_2.png Graphic file (type png)
+<use Plots/comparison_plot_2.png>
+Package pdftex.def Info: Plots/comparison_plot_2.png  used on input line 57.
+(pdftex.def)             Requested size: 418.25368pt x 311.35487pt.
+ [39
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.87 
-      <./Plots/comparison_plot.png>]
-<Plots/raw_score_distribution.png, id=768, 992.70876pt x 391.4625pt>
+l.76 
+      <./Plots/comparison_plot_2.png>]
+<Plots/raw_score_distribution.png, id=771, 714.7503pt x 281.853pt>
 File: Plots/raw_score_distribution.png Graphic file (type png)
 <use Plots/raw_score_distribution.png>
-Package pdftex.def Info: Plots/raw_score_distribution.png  used on input line 95.
-(pdftex.def)             Requested size: 368.06528pt x 145.14348pt.
-) (./5_Experiments_and_Results/5.3_Host_Classification.tex [40
+Package pdftex.def Info: Plots/raw_score_distribution.png  used on input line 113.
+(pdftex.def)             Requested size: 368.06528pt x 145.14516pt.
+ [40
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.9 
-     <./Plots/raw_score_distribution.png>] [41]
-<Plots/Host coverage and set size.png, id=791, 1789.68625pt x 485.815pt>
+l.125 
+       <./Plots/raw_score_distribution.png>]) (./5_Experiments_and_Results/5.3_Host_Classification.tex [41]
+<Plots/Host coverage and set size.png, id=792, 1789.68625pt x 485.815pt>
 File: Plots/Host coverage and set size.png Graphic file (type png)
 <use Plots/Host coverage and set size.png>
-Package pdftex.def Info: Plots/Host coverage and set size.png  used on input line 105.
+Package pdftex.def Info: Plots/Host coverage and set size.png  used on input line 106.
 (pdftex.def)             Requested size: 418.25368pt x 113.53644pt.
  [42
 pdfTeX warning (ext4): destination with the same identifier (name{table.5.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.122     \item \textbf
-                       {Singleton Accuracy:} Collapsed 1D produces a single ...
+l.123     \item \textbf
+                       {Singleton Accuracy:} Collapsed 1D produces a single ...]
+<Plots/staph_both_good_1.png, id=814, 1289.2968pt x 349.7868pt>
+File: Plots/staph_both_good_1.png Graphic file (type png)
+<use Plots/staph_both_good_1.png>
+Package pdftex.def Info: Plots/staph_both_good_1.png  used on input line 152.
+(pdftex.def)             Requested size: 418.25368pt x 113.4712pt.
+ [43
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.122     \item \textbf
-                       {Singleton Accuracy:} Collapsed 1D produces a single ... <./Plots/Host coverage and set size.png>]
-
-LaTeX Warning: Reference `eq: empty-set-resolution' on page 43 undefined on input line 125.
-
-<Plots/staph_both_good.png, id=812, 1289.2968pt x 349.7868pt>
-File: Plots/staph_both_good.png Graphic file (type png)
-<use Plots/staph_both_good.png>
-Package pdftex.def Info: Plots/staph_both_good.png  used on input line 149.
+l.159 \end{figure}
+                   <./Plots/Host coverage and set size.png>]
+<Plots/staph_1good_1bad_2.png, id=829, 1289.2968pt x 349.7868pt>
+File: Plots/staph_1good_1bad_2.png Graphic file (type png)
+<use Plots/staph_1good_1bad_2.png>
+Package pdftex.def Info: Plots/staph_1good_1bad_2.png  used on input line 163.
 (pdftex.def)             Requested size: 418.25368pt x 113.4712pt.
-<Plots/staph_1good_1bad.png, id=813, 1289.2968pt x 349.7868pt>
-File: Plots/staph_1good_1bad.png Graphic file (type png)
-<use Plots/staph_1good_1bad.png>
-Package pdftex.def Info: Plots/staph_1good_1bad.png  used on input line 160.
-(pdftex.def)             Requested size: 418.25368pt x 113.4712pt.
-[43]
-Underfull \vbox (badness 1024) has occurred while \output is active []
-
  [44
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.190 
+l.177 
       
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.5}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.190 
-       <./Plots/staph_both_good.png> <./Plots/staph_1good_1bad.png>]
-<Plots/phage_host_binary_clustermap_collapsed.png, id=837, 571.4148pt x 795.9336pt>
-File: Plots/phage_host_binary_clustermap_collapsed.png Graphic file (type png)
-<use Plots/phage_host_binary_clustermap_collapsed.png>
-Package pdftex.def Info: Plots/phage_host_binary_clustermap_collapsed.png  used on input line 193.
-(pdftex.def)             Requested size: 376.42575pt x 524.33406pt.
+l.177 
+       <./Plots/staph_both_good_1.png> <./Plots/staph_1good_1bad_2.png>]
+<Plots/clustermap_collaped_1.png, id=841, 586.1097pt x 807.9786pt>
+File: Plots/clustermap_collaped_1.png Graphic file (type png)
+<use Plots/clustermap_collaped_1.png>
+Package pdftex.def Info: Plots/clustermap_collaped_1.png  used on input line 196.
+(pdftex.def)             Requested size: 376.42575pt x 518.9292pt.
 
 
-LaTeX Warning: Float too large for page by 14.201pt on input line 201.
+LaTeX Warning: Float too large for page by 8.79614pt on input line 204.
 
-
-Overfull \hbox (7.383pt too wide) in paragraph at lines 212--215
-[]\T1/ptm/m/n/12 Comparative clus-termaps for the Ra-dial and Strip en-velopes are pro-vided in Ap-pendix []A.4[]
- []
-
-[45
-pdfTeX warning (ext4): destination with the same identifier (name{table.5.4}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.261 
-      ] [46
+[45] [46
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.261 
-       <./Plots/phage_host_binary_clustermap_collapsed.png>]
-<Plots/core_vs_full.png, id=858, 1000.2168pt x 349.7868pt>
+l.250 
+       <./Plots/clustermap_collaped_1.png>]
+<Plots/core_vs_full.png, id=862, 1000.2168pt x 349.7868pt>
 File: Plots/core_vs_full.png Graphic file (type png)
 <use Plots/core_vs_full.png>
-Package pdftex.def Info: Plots/core_vs_full.png  used on input line 293.
+Package pdftex.def Info: Plots/core_vs_full.png  used on input line 297.
 (pdftex.def)             Requested size: 418.25368pt x 146.26897pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
  [47
+pdfTeX warning (ext4): destination with the same identifier (name{table.5.4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.309      \item \textbf
+                        {Low Data Host Sensitivity:} Restricting evaluation ...]) (./6_Conclusion/6.1_Summary.tex [48
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5.7}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.310 
-       <./Plots/core_vs_full.png>]) (./6_Conclusion/6.1_Summary.tex [48] [49
+l.1 \chapter
+            {Conclusion and Future Work} <./Plots/core_vs_full.png>] [49
 
-]) (./6_Conclusion/6.2_Limitations.tex [50]) (./6_Conclusion/6.3_future_work.tex [51]
-Overfull \hbox (2.10149pt too wide) in paragraph at lines 52--56
-[]\T1/ptm/b/n/12 Per Di-rec-tion Quan-tile Level: \T1/ptm/m/n/12 To ad-dress the con-ser-va-tive-ness of strip en-velopes,
- []
-
-) [52] (./main.bbl
+]) (./6_Conclusion/6.2_Limitations.tex [50]) (./6_Conclusion/6.3_future_work.tex [51]) [52] (./main.bbl
 bibitemlist
 [53
 
 ]) (./Appendix/plots.tex [54] [55
 
 ]
-<Plots/coverage_frequent_hosts.pdf, id=928, 711.48997pt x 855.65736pt>
+<Plots/coverage_frequent_hosts.pdf, id=932, 711.48997pt x 855.65736pt>
 File: Plots/coverage_frequent_hosts.pdf Graphic file (type pdf)
 <use Plots/coverage_frequent_hosts.pdf>
 Package pdftex.def Info: Plots/coverage_frequent_hosts.pdf  used on input line 19.
 (pdftex.def)             Requested size: 418.25554pt x 503.0056pt.
-<Plots/coverage_rare_hosts.pdf, id=929, 711.46803pt x 855.65736pt>
+<Plots/coverage_rare_hosts.pdf, id=933, 711.46803pt x 855.65736pt>
 File: Plots/coverage_rare_hosts.pdf Graphic file (type pdf)
 <use Plots/coverage_rare_hosts.pdf>
 Package pdftex.def Info: Plots/coverage_rare_hosts.pdf  used on input line 27.
@@ -1404,11 +1392,11 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.A.1}) h
                                                   \__shipout_drop_firstpage_...
 l.32 
       <./Plots/coverage_frequent_hosts.pdf>]
-<Plots/set_size_hist_top50.pdf, id=1021, 921.93181pt x 1183.9801pt>
-File: Plots/set_size_hist_top50.pdf Graphic file (type pdf)
-<use Plots/set_size_hist_top50.pdf>
-Package pdftex.def Info: Plots/set_size_hist_top50.pdf  used on input line 46.
-(pdftex.def)             Requested size: 392.18861pt x 503.66364pt.
+<Plots/set_size_hist_top50.png, id=1025, 924.3333pt x 1183.7826pt>
+File: Plots/set_size_hist_top50.png Graphic file (type png)
+<use Plots/set_size_hist_top50.png>
+Package pdftex.def Info: Plots/set_size_hist_top50.png  used on input line 46.
+(pdftex.def)             Requested size: 393.28073pt x 503.66994pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1418,12 +1406,12 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.A.2}) h
                                                   \__shipout_drop_firstpage_...
 l.50 
       <./Plots/coverage_rare_hosts.pdf>]
-<Plots/set_size_hist_bottom50.pdf, id=1108, 915.7368pt x 1183.9801pt>
-File: Plots/set_size_hist_bottom50.pdf Graphic file (type pdf)
-<use Plots/set_size_hist_bottom50.pdf>
-Package pdftex.def Info: Plots/set_size_hist_bottom50.pdf  used on input line 53.
-(pdftex.def)             Requested size: 389.55328pt x 503.66364pt.
-<Plots/set_size_distribution_top50.pdf, id=1109, 710.91599pt x 855.39197pt>
+<Plots/set_size_hist_bottom50.png, id=1112, 916.3836pt x 1183.7826pt>
+File: Plots/set_size_hist_bottom50.png Graphic file (type png)
+<use Plots/set_size_hist_bottom50.png>
+Package pdftex.def Info: Plots/set_size_hist_bottom50.png  used on input line 53.
+(pdftex.def)             Requested size: 389.89835pt x 503.66994pt.
+<Plots/set_size_distribution_top50.pdf, id=1113, 710.91599pt x 855.39197pt>
 File: Plots/set_size_distribution_top50.pdf Graphic file (type pdf)
 <use Plots/set_size_distribution_top50.pdf>
 Package pdftex.def Info: Plots/set_size_distribution_top50.pdf  used on input line 70.
@@ -1436,13 +1424,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.A.3}) h
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.74 
-      <./Plots/set_size_hist_top50.pdf>] [59
+      <./Plots/set_size_hist_top50.png>] [59
 pdfTeX warning (ext4): destination with the same identifier (name{figure.A.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.74 
-      <./Plots/set_size_hist_bottom50.pdf>]
-<Plots/set_size_distribution_bottom50.pdf, id=1269, 711.03894pt x 855.39197pt>
+      <./Plots/set_size_hist_bottom50.png>]
+<Plots/set_size_distribution_bottom50.pdf, id=1125, 711.03894pt x 855.39197pt>
 File: Plots/set_size_distribution_bottom50.pdf Graphic file (type pdf)
 <use Plots/set_size_distribution_bottom50.pdf>
 Package pdftex.def Info: Plots/set_size_distribution_bottom50.pdf  used on input line 77.
@@ -1461,16 +1449,16 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.A.6}) h
                                                   \__shipout_drop_firstpage_...
 l.83 \newpage
               <./Plots/set_size_distribution_bottom50.pdf>]
-<Plots/heatmap_collapsed.png, id=1488, 1499.6025pt x 1389.19pt>
+<Plots/heatmap_collapsed.png, id=1343, 1079.7138pt x 1000.2168pt>
 File: Plots/heatmap_collapsed.png Graphic file (type png)
 <use Plots/heatmap_collapsed.png>
 Package pdftex.def Info: Plots/heatmap_collapsed.png  used on input line 89.
-(pdftex.def)             Requested size: 418.23833pt x 387.44435pt.
-<Plots/heatmap_radial.png, id=1489, 1499.6025pt x 1389.19pt>
+(pdftex.def)             Requested size: 418.25298pt x 387.4579pt.
+<Plots/heatmap_radial.png, id=1344, 1079.7138pt x 1000.2168pt>
 File: Plots/heatmap_radial.png Graphic file (type png)
 <use Plots/heatmap_radial.png>
 Package pdftex.def Info: Plots/heatmap_radial.png  used on input line 99.
-(pdftex.def)             Requested size: 418.23833pt x 387.44435pt.
+(pdftex.def)             Requested size: 418.25298pt x 387.4579pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1480,11 +1468,11 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.A.7}) h
                                                   \__shipout_drop_firstpage_...
 l.104 
        <./Plots/heatmap_collapsed.png>]
-<Plots/heatmap_strip.png, id=1497, 1499.6025pt x 1389.19pt>
+<Plots/heatmap_strip.png, id=1352, 1079.7138pt x 1000.2168pt>
 File: Plots/heatmap_strip.png Graphic file (type png)
 <use Plots/heatmap_strip.png>
 Package pdftex.def Info: Plots/heatmap_strip.png  used on input line 109.
-(pdftex.def)             Requested size: 418.23833pt x 387.44435pt.
+(pdftex.def)             Requested size: 418.25298pt x 387.4579pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -1499,53 +1487,51 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.A.9}) h
                                                   \__shipout_drop_firstpage_...
 l.115 \newpage
                <./Plots/heatmap_strip.png>]
-<Plots/phage_host_binary_clustermap_radial.png, id=1510, 571.4148pt x 795.9336pt>
-File: Plots/phage_host_binary_clustermap_radial.png Graphic file (type png)
-<use Plots/phage_host_binary_clustermap_radial.png>
-Package pdftex.def Info: Plots/phage_host_binary_clustermap_radial.png  used on input line 122.
-(pdftex.def)             Requested size: 384.79027pt x 503.68764pt.
+<Plots/clustermap_radial_1.png, id=1366, 560.0925pt x 806.5332pt>
+File: Plots/clustermap_radial_1.png Graphic file (type png)
+<use Plots/clustermap_radial_1.png>
+Package pdftex.def Info: Plots/clustermap_radial_1.png  used on input line 131.
+(pdftex.def)             Requested size: 384.80626pt x 503.6882pt.
  [65
 pdfTeX warning (ext4): destination with the same identifier (name{figure.A.10}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.129 \clearpage
-                 <./Plots/phage_host_binary_clustermap_radial.png>]
-<Plots/phage_host_binary_clustermap_strip.png, id=1516, 571.4148pt x 795.9336pt>
-File: Plots/phage_host_binary_clustermap_strip.png Graphic file (type png)
-<use Plots/phage_host_binary_clustermap_strip.png>
-Package pdftex.def Info: Plots/phage_host_binary_clustermap_strip.png  used on input line 132.
-(pdftex.def)             Requested size: 384.7926pt x 535.98106pt.
+l.140 \clearpage
+                 <./Plots/clustermap_radial_1.png>]
+<Plots/clustermap_strip_1.png, id=1372, 591.8913pt x 801.4743pt>
+File: Plots/clustermap_strip_1.png Graphic file (type png)
+<use Plots/clustermap_strip_1.png>
+Package pdftex.def Info: Plots/clustermap_strip_1.png  used on input line 154.
+(pdftex.def)             Requested size: 384.7926pt x 521.04996pt.
 ) [66
+
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{figure.A.11}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
 l.72 \end{document}
-                    <./Plots/phage_host_binary_clustermap_strip.png>]
+                    <./Plots/clustermap_strip_1.png>]
 \tf@toc=\write6
 \openout6 = `main.toc'.
 
  (./main.aux)
-
-LaTeX Warning: There were undefined references.
-
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 6A2E6D65B5F6F97FA9BE93ABB95DA20B;13699.
+(rerunfilecheck)             Checksum: A204FE34E84AEEEF643281B5DDB72432;13637.
  ) 
 Here is how much of TeX's memory you used:
- 43210 strings out of 476091
- 980560 string characters out of 5794081
- 1869330 words of memory out of 5000000
- 62512 multiletter control sequences out of 15000+600000
+ 43212 strings out of 476091
+ 980277 string characters out of 5794081
+ 1868330 words of memory out of 5000000
+ 62514 multiletter control sequences out of 15000+600000
  635595 words of font info for 222 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 89i,14n,92p,1284b,945s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,14n,92p,1276b,945s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/rsfs/rsfs10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt1200.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (71 pages, 4519499 bytes).
+Output written on main.pdf (71 pages, 4891201 bytes).
 PDF statistics:
- 1635 PDF objects out of 1728 (max. 8388607)
- 1003 compressed objects within 11 object streams
+ 1490 PDF objects out of 1728 (max. 8388607)
+ 989 compressed objects within 10 object streams
  236 named destinations out of 1000 (max. 500000)
  723 words of extra memory for PDF output out of 10000 (max. 10000000)
 

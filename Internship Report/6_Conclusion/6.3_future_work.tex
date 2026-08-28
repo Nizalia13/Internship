@@ -25,10 +25,14 @@ The challenges identified in \ref{sec6.2: limitations} point toward several aven
           may investigate two sided nonconformity functions that jointly penalize false negatives and false positives, 
           this may bound the false discovery rate and yet avoid the coverage loss.
     
-    \item \textbf{Handling of Missing Scores:} Instead of defaulting to the marginal quantile when 
-          functional categories are absent, future envelope constructions could condition fallbacks on the observed 
-          missingness patterns. This may be done by observing the sparsity pattern, which itself may be carrying some 
-          information about the host.
+%     \item \textbf{Handling of Missing Scores:} Instead of defaulting to the marginal quantile when 
+%           functional categories are absent, future envelope constructions could condition fallbacks on the observed 
+%           missingness patterns. This may be done by observing the sparsity pattern, which itself may be carrying some 
+%           information about the host.
+     \item \textbf{Missingness Aware Envelope:} The current Strip construction handles structural missingness by removing
+            unobserved dimensions from the pairwise envelope. Future work could investigate whether the observed missingness pattern 
+            itself contains some information about the host and if it could be used to get a missingness aware conditional envelope 
+            construction.
 
       \item \textbf{Dimensionality Reduction} As demonstrated by our analysis of core functions (Section~\ref{sec5.3.6:core-set}), 
              most discriminative information lives in a low dimensional subspace. In higher dimensions ($K_h 
@@ -49,7 +53,7 @@ The challenges identified in \ref{sec6.2: limitations} point toward several aven
       %        dimensions), so that each direction only removes just its share of the data and the intersection ends up close to the 
       %        intended $1-\alpha$ level overall. This should also produce a $\hat t$ much closer to $1$ and a better shaped, less 
       %        conservative envelope.
-      \item \textbf{Per Direction Quantile Level:} To address the conservativeness of strip envelopes, a next step is to calibrate 
+      \item \textbf{Per Direction Quantile Level:} For the conservativeness of strip envelopes, a next step is to calibrate 
              each individual direction at a stricter quantile level of $1-\alpha/d$ (where $d$ is the number of dimensions). This 
              would ensure each that direction only removes a small of data. This would allow the final intersection to match the 
              target $1-\alpha$ coverage, and produce a $\hat{t}$ that is closer to $1$ and is less conservative.

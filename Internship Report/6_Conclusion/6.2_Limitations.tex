@@ -20,14 +20,13 @@ Despite the empirical results, this framework has several methodological and bio
           $K_h$ grows toward $40$: sparse angular or bin-wise support forces frequent fallback to the conservative marginal 
           quantile, which is the direct cause of their larger average prediction sets relative to Collapsed 1D.
 
-    \item \textbf{Structural Missingness and Marginal Fallbacks:} Phages frequently lack entire functional protein classes, 
-           producing $30\%\text{--}36\%$ missing values per score vector. These missing coordinates force the multi dimensional 
-           envelopes to fall back on marginal quantiles rather than the tighter conditional bounds, which widens prediction 
-           boundaries and increases co-prediction among closely related host genera (e.g.\ within \emph{Enterobacteriaceae}) 
-           that share similar missingness patterns.
+    \item \textbf{Structural Missingness:} Phages frequently lack entire functional protein classes, producing
+           $30\%--36\%$ missing values per score vector. The Strip envelope handles these missing coordinates by removing the 
+           corresponding dimensions from the pairwise construction. Consequently, only pairs $(j,i)$ for which both dimensions are
+           observed contribute to the Strip scaling function.
 
     \item \textbf{Large Absolute Set Sizes:} Even where coverage is valid, the prediction sets of Radial and Strip are on average 
-           os size $15+$ out of $54$ candidate hots. A list of that size is of limited direct use as a clinical or laboratory 
+           of size $15+$ out of $54$ candidate hots. A list of that size is of limited direct use as a clinical or laboratory 
            shortlist, even though it is a large efficiency gain over the unrestricted, non Gram filtered setting (avg.\ size 
            $\approx 39$, Table \ref{tab: gram filtering effect}). 
 

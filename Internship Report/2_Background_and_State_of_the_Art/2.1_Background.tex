@@ -9,7 +9,7 @@ classical sequence similarity techniques to the much more efficient and modern p
 also look at the limitations that all the currently existing methods have in common, for example the absence of rigorous 
 distribution-free uncertainty quantification. In the remaining part of the section, \ref{sec2.3: conformal prediction} 
 and \ref{sec2.4: CSA Method} we will introduce the mathematical framework of conformal prediction and the score-based 
-aggregation method of in \cite{ochoarivera2024conformal}, on which we will build our work.
+aggregation method in \cite{ochoarivera2024conformal}, on which we will build our work.
 
 % However, identifying specific host-range interactions brings some challenges. Traditional laboratory screening via 
 % plaque assays is accurate but expensive, labor-intensive, and incapable of scaling to the astronomical number of novel 
@@ -21,8 +21,8 @@ aggregation method of in \cite{ochoarivera2024conformal}, on which we will build
 \label{sec2.1: host prediction problem}
 Bacteriophages, commonly referred to as phages, are viruses that specifically infect and replicate within 
 bacteria. As discussed in Chapter~\ref{sec1:introduction}, the growing threat of antimicrobial resistance and the development 
-of phage therapy as an alternative to traditional antibiotics \cite{dejonge2019molecular} have renewed interest in their study; 
-beyond therapy, they also play a very important role in shaping microbial communities and evolution in the biosphere.
+of phage therapy as an alternative to traditional antibiotics \cite{dejonge2019molecular} have renewed interest in the study 
+of phages; beyond therapy, they also play a very important role in shaping microbial communities and evolution in the biosphere.
 
 One of the key characteristics of phages is their host range, which is the set of bacterial hosts that a phage can infect. 
 This host range is not fixed for a phage, it is determined by molecular interactions between the phage and the bacterial 
@@ -32,13 +32,13 @@ Therefore, some of the phages have a small host range as they can only infect a 
 bacterial strains while there are other which are capable of infecting a broad range of bacterias. 
 
 
-Identifying which phage infects which host, can have several applications both in environmental 
+Identifying which phage infects which host, can have several applications in both environmental 
 and clinical studies. In clinical, the host range helps us determine how suitable a phage is for 
 designing the treatment for phage therapy. In environmental studies it is valuable to know the 
 host being infected to understand the ecological interactions between viruses and microbial 
-communities \cite{holtappels2023drivers} and evolution in the biosphere. Precise host range 
+communities and evolution in the biosphere \cite{holtappels2023drivers}. Precise host range 
 knowledge is equally important for avoiding harm, an imprecise or overly broad host assignment 
-risks eliminating bacteria that are not the intended target, including beneficial species, so 
+risks eliminating bacteria that are not the intended target. This may include beneficial species, so 
 correctly identifying a phage's host range is as much about protecting non target bacteria as 
 it is about targeting the pathogens.
 

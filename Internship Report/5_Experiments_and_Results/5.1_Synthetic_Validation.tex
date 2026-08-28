@@ -86,9 +86,9 @@ $\text{Host D}$). Applying these class conditional thresholds shrinks the predic
 
 Similarly, we also evaluated the non convex Radial and Strip methods on this same 2D synthetic dataset ($K=2$, $\alpha=0.10$). The 
 results confirmed that they both successfully adapt to the negatively correlated score distribution, and achieve the exact target 
-coverage of $90.0\%$ with and have size scaling factors of $\hat{t} = 0.996$ and $\hat{t} = 0.944$, respectively. These values are 
-comparable to the convex baseline method, which has a $\hat{t} \approx 1$ on this dataset and is also consistent with the coverage 
-results reported for all three methods in Section~\ref{sec5.1.2: dimensionality scaling}.
+coverage of $90.0\%$ with and have size scaling factors of $\hat{t} = 0.996$ and $\hat{t} = 0.944$, respectively. These are consistent 
+with the coverage results reported for all three methods in Section~\ref{sec5.1.2: dimensionality scaling}.
+
 % \subsubsection{Single-Host Coverage Across Dimension}
 % \label{sec5.1.1: single host coverage}
 % \noindent We first validates the original convex CSA construction (Section~\ref{sec2.4.2: csa framework}) as a 
@@ -149,14 +149,12 @@ correlation $\rho = 0.30$, clipped to $[0,1]^K$.
 $K = 2$  & 90.0 & 0.996 & 90.0 & 0.972 & 90.0 & 0.893 \\
 $K = 5$  & 90.0 & 1.009 & 90.0 & 1.179 & 90.0 & 1.031 \\
 $K = 10$ & 90.0 & 1.016 & 90.0 & 1.920 & 90.0 & 1.107 \\
-$K = 20$ & 90.0 & 1.021 & 90.0 & 2.925 & -- & -- \\
+$K = 20$ & 90.0 & 1.021 & 90.0 & 2.925 & 90.0 & 1.222 \\
 \bottomrule
 \end{tabular}
 }
-\caption{Dimensionality scaling experiment ($K \in \{2,5,10,20\}$, nominal $1-\alpha = 0.900$, $N = 1\,000$). Empirical 
-coverage and calibrated size-scaling factors $\hat{t}$ are reported across envelope geometries. Strip results at $K=20$ 
-are omitted (--) because at fixed $N=1\,000$ its $M_{\text{bin}}=20$ bins per conditioning dimension leave too few points 
-per bin for reliable quantile estimation as $K$ grows.}
+\caption{Dimensionality scaling experiment ($K \in \{2,5,10,20\}$, nominal $1-\alpha = 0.900$, $N = 2\,000$). Empirical 
+coverage and calibrated size scaling factors $\hat{t}$ are reported across envelope geometries.}
 \label{tab: dim scaling results}
 \end{table}
 
@@ -169,8 +167,8 @@ For the radial method the $\hat t$ value inflates for high dimensions, it nearly
 $\hat{t} = 2.925$ at $K=20$. This is due to the curse of dimensionality, the directional cones ($\delta = 15^\circ$) capture 
 fewer local calibration points in sparse high dimensional spaces, so more directions fall back to the conservative global 
 marginal quantile $\tilde{q}_{\text{marg}}$, inflating $\hat{t}$. Finally, the strip method maintains the robust sample 
-efficiency up to $K=10$ ($\hat{t} = 1.107$), and outperforms the radial method by using axis aligned pairwise projections. 
-(Evaluations at $K=20$ were omitted as per-bin sample counts shrink rapidly at fixed $N$).
+efficiency (reaching only $\hat{t} = 1.212$ at $K=20$), and outperforms the radial method by using axis aligned pairwise projections. 
+
 
 
 % \subsubsection{Robustness to Score Distribution Shape}

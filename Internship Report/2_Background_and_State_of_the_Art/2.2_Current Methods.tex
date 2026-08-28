@@ -5,7 +5,7 @@
 The problem of predicting which phage infects which host bacteria has been studied computationally for over a 
 decade and the available methods have significantly evolved during this time. These methods have progressed 
 from simple rule based alignment to deep representation learning. Today, this field comprises of three main 
-families of methods, the sequence similarity approaches, protein content based supervised classifiers, and protein 
+families of methods: the sequence similarity approaches, protein content based supervised classifiers, and protein 
 language model (pLM) embedding approaches. There exist far more tools than we can review here \cite{coclet2021global}, 
 so we will only look at a few representative examples of each family, and conclude with the common limitation they 
 share that motivates this work.
@@ -39,8 +39,8 @@ v(g)) \right),
 \end{equation*}
 where $y(g)$ denotes the host label associated with reference genome $g \in \mathcal{D}_{\text{ref}}$.
 
-Both approaches offer practical advantages, they both do not require any protein level annotation, are computationally 
-not expensive, can be applied to any newly sequenced phage or host genome. However, they share some notable limitations. 
+Both approaches offer practical advantages: they both do not require any protein level annotation, are computationally 
+not expensive and can be applied to any newly sequenced phage or host genome. However, they share some notable limitations. 
 Phage to phage transfer methods such as HostPhinder degrade sharply when a novel phage has no close relative in the 
 reference database, since the entire prediction rests on a single nearest neighbour. Phage to host methods such as 
 WIsH depend on the availability of well characterised host genomes. Neither of them exploits protein level functional 
@@ -51,9 +51,9 @@ what is discussed here.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Protein Content Based Supervised Classifiers}
 \label{sec2.2.2: protein content classifiers}
-This is a different family of tools that does not compare sequences at all. They overcome the limitation of whole 
-genome sequence alignment by decomposing each phage into its protein content, and they treat host prediction as a
-standard supervised classification task. RaFAH \cite{coutinho2021rafah} is an example of these type of methods, it works 
+To overcome the limitations of whole senome sequence alignment, protein content based supervised classifiers avoid sequence 
+comparisons entirely by decomposing each phage into its constituent protein profile. They treat host prediction as a standard 
+classification task. RaFAH \cite{coutinho2021rafah} is an example of these type of methods, it works 
 by clustering phage proteins into $M$ protein clusters via MMseqs2 \cite{steinegger2017mmseqs2}, then it represents 
 each phage by a binary membership vector $\mathbf{x} \in \{0,1\}^M$, and trains a random forest to map this profile to 
 a distribution over host genera:
@@ -119,8 +119,7 @@ conformal framework. This is consistent with earlier host prediction work using 
 % \label{fig: score vector scheme}
 % \end{figure}
 % underlying premise is that the presence, absence, and confidence of specific functional categories is informative of the host 
-% range of a phage, even though no single tool used here performs the host prediction.
-
+% range of a phage, even though no single tool used here performs the host prediction
 
 \subsection{Limitation: Absence of Uncertainty Quantification}
 \label{sec2.2.3: limitations}
@@ -142,9 +141,9 @@ methods such as Platt scaling provide no finite-sample guarantees on unseen test
 These limitations are consequential in phage therapy. In practice, a computational host prediction is not used to 
 directly inject a phage into a patient, it is used to narrow a large candidate space down to a shortlist for laboratory 
 confirmation before any clinical decision is made. However, an unreliable or overconfident prediction can still cause 
-real harm at this triage stage, for example a false negative can exclude the true host from the shortlist entirely, 
+real harm at this trial stage. For example a false negative can exclude the true host from the shortlist entirely, 
 which may delay the treatment while further candidates are screened, and a false positive can take up experimental 
 validation time on a phage that was never going to work. This motivates the adoption of conformal prediction 
-\cite{vovk2005algorithmic}: a distribution free framework producing prediction sets that contain the true host with user 
-specified probability $1-\alpha$, requiring only exchangeability of calibration and test data. Its formal construction follows 
+\cite{vovk2005algorithmic}: a distribution free framework that produces prediction sets which contain the true host with user 
+specified probability $1-\alpha$, and require only exchangeability of calibration and test data. Its formal construction follows 
 in Section~\ref{sec2.3: conformal prediction}.

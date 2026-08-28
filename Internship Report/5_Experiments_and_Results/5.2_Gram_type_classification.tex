@@ -54,7 +54,7 @@ hat calculation}.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{Plots/comparison_plot.png}
+    \includegraphics[width=1\textwidth]{Plots/comparison_plot_2.png}
     \caption{Gram type classification performance across Radial, Strip, and Collapsed 1D geometries on the test split 
             (Fold 0, nominal target $1-\alpha = 0.90$). Panels show (left to right): prediction set size distribution, marginal empirical 
              coverage, class-conditional coverage, and singleton accuracy with sample counts ($n$).}
@@ -62,7 +62,8 @@ hat calculation}.
 \end{figure}
 
 As we can see in Figure~\ref{fig: gram results} (middle panels), all three envelope geometries achieve $99.8\%$ empirical 
-coverage, which is well above the nominal $90\%$ target (red dashed line). The class conditional breakdown 
+coverage, which is well above the nominal $90\%$ target (red dashed line), this is a consequence of the underlying data 
+distribution . The class conditional breakdown 
 confirms that the coverage is balanced for both Gram negative ($99.9\%$) and Gram positive ($99.8\%$) phages. This demonstrates 
 that the max threshold calibration $\hat{t} = \max(\hat{t}_{\text{neg}}, \hat{t}_{\text{pos}})$ effectively eliminates coverage 
 disparity between classes.
@@ -77,13 +78,30 @@ conservative fallback rule. When singleton sets are produced, the prediction acc
 % envelopes are wider than strictly necessary to meet $1-\alpha=0.90$ (due to the max threshold calibration). So we are trading 
 % efficiency for a safety margin the task may not require. We will return to this trade off in Section~\ref{sec6: conclusion}.
 
-Achieving empirical coverage of $99.8\%$ which is well above the $90.0\%$ target is a consequence of the underlying data distribution 
-rather than a calibration defect. As shown in Figure~\ref{fig:raw_score_dist}, Gram negative and Gram positive phages form two very 
-disjoint score clusters ($0.055 \pm 0.054$ vs. $0.918 \pm 0.066$) with almost zero sample density in the intermediate ambiguous zone 
-($0.25 - 0.75$). The calibrated $(1-\alpha)$ boundary falls inside this empty margin, coverage systematically approaches $100\%$ across 
-random $S_1/S_2/S_{\text{test}}$ splits. While the maximum scaling operator $\hat{t} = \max(\hat{t}_{\text{neg}}, \hat{t}_{\text{pos}})$ 
-ensures strict simultaneous class-conditional validity, this over-coverage does not degrade predictive efficiency: $94 \text{--} 95\%$ 
-of test phages receive definitive singleton predictions with $99.8\%$ accuracy.
+% rather than a calibration defect. As shown in Figure~\ref{fig:raw_score_dist}, Gram negative and Gram positive phages form two very 
+% disjoint score clusters ($0.055 \pm 0.054$ vs. $0.918 \pm 0.066$) with almost zero sample density in the intermediate ambiguous zone 
+% ($0.25 - 0.75$). The calibrated $(1-\alpha)$ boundary falls inside this empty margin, coverage systematically approaches $100\%$ across 
+% random $S_1/S_2/S_{\text{test}}$ splits. While the maximum scaling operator $\hat{t} = \max(\hat{t}_{\text{neg}}, \hat{t}_{\text{pos}})$ 
+% ensures strict simultaneous class-conditional validity, this over-coverage does not degrade predictive efficiency: $94 \text{--} 95\%$ 
+% of test phages receive definitive singleton predictions with $99.8\%$ accuracy.
+
+
+To check where this over coverage comes from, we evaluated coverage directly on the calibration set $S_2$ itself, the set on which 
+$\hat t$ is calibrated. All three methods already exceed the $90\%$ target on $S_2$, Radial reaches $94.9\%$, Strip $93.6\%$, and 
+Collapsed 1D $94.5\%$. Since this gap appears before the envelope is applied to test data, we can say that the over coverage is a 
+property of the calibration itself. Two factors can explain this
+\begin{itemize}
+    \item the class conditional thresholds are combined using Equation~\eqref{eq: gram-max-scaling}, so whichever class requires the
+          smaller threshold is scaled past its own target level by construction
+    \item the nonconformity scores of the two classes are extremely well separated (Section~\ref{sec5.2.3: score separation}), so the 
+          $(1-\alpha)$ quantile of the correct class already sits far below where the wrong class's scores begin, this leaves a 
+          wide margin that increases the coverage well past the target even at the calibration stage. 
+\end{itemize}
+% Adjusting the combination rule ---
+% for instance, applying each class's own $\hat t_c$ directly instead of the
+% shared maximum --- would recover tighter, less conservative envelopes
+% without sacrificing validity, and is a natural target for future
+% refinement (Section~\ref{sec:future-work}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -93,14 +111,14 @@ of test phages receive definitive singleton predictions with $99.8\%$ accuracy.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.88\linewidth]{Plots/raw_score_distribution.png}
-\caption{Distribution of raw scores per test phage, separated by true Gram type. Gram negative phages 
-concentrate tightly near 0 while Gram positive phages concentrate near 1, leaving the intermediate ambiguous zone 
-($0.25\text{--}0.75$, dashed red lines) almost empty.}
-\label{fig: gram score separation}
+\caption{Distribution of raw scores per test phage  (mean over all $K = 40$ functional category dimensions), separated by true Gram 
+         type. Gram negative phages concentrate tightly near 0 while Gram positive phages concentrate near 1, leaving the intermediate 
+         ambiguous zone ($0.25\text{--}0.75$, dashed red lines) almost empty.}
+\label{fig:raw_score_dist}
 \end{figure}
 
 All three envelope constructions yield nearly identical performance metrics in Figure~\ref{fig: gram results}. 
-This equivalence can directly be explained by the empirical raw score distribution in Figure~\ref{fig: gram score separation}: 
+This equivalence can directly be explained by the empirical raw score distribution in Figure~\ref{fig:raw_score_dist}: 
 Gram negative phages concentrate tightly near the origin (mean $0.055 \pm 0.054$), whereas Gram positive phages concentrate 
 near $1.0$ (mean $0.918 \pm 0.066$). The two classes form disjoint, well separated clusters with negligible density 
 in the ambiguous zone ($0.25\text{--}0.75$), any sensible star shaped boundary cleanly separates them. 

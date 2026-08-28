@@ -79,7 +79,8 @@ We apply this framework to two host prediction tasks:
 \end{enumerate}
 
 In practice, host-level classification is not evaluated over the full host space $\mathcal{H}$ at test time. 
-We first obtain a gram-type prediction set $C_{\text{gram}}(s, m) \subseteq \{\text{gram-neg}, \text{gram-pos}\}$ \ref{sec3.3.1: 
+We first obtain a gram-type prediction set $C_{\text{gram}}(s, m) \subseteq \{\text{gram-neg}, \text{gram-pos}\}$ 
+Section \ref{sec3.3.1: 
 gram nc mapping}, and use it to restrict the candidate host set to
 \begin{equation*}
 \mathcal{H}_{\text{cand}}(s, m) = \bigcup_{g \in C_{\text{gram}}(s, m)} \mathcal{H}_g \subseteq \mathcal{H},

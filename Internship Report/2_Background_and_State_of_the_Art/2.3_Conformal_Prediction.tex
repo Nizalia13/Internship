@@ -23,13 +23,12 @@ $$\mathbb{P}(Z_1 \in A_1, Z_2 \in A_2, \dots, Z_m \in A_m) = \mathbb{P}(Z_{\sigm
 
 
 Independent and identically distributed (i.i.d.) sequences are always exchangeable, but the converse does 
-not always hold. 
-For example, let us draw two values without replacement from a fixed set $\{0,1\}$. The two outcomes are $(Z_1, Z_2)=
-(0,1)$ or $(1,0)$ and both occur with equal probability $\frac{1}{2}$, so the pair is exchangeable as the joint distribution 
-does not change even if we swap $Z_1$ and $Z_2$. But, the two variables are not independent, since conditioning on the 
-first draw fully determines the second, i.e., $\mathbb{P}(Z_2 = 1 \mid Z_1 = 1) = 0 \neq \mathbb{P}(Z_2 = 1) = \frac{1}{2}$. 
-Therefore, exchangeability is a weaker condition than i.i.d., as it requires that the observations have no special ordering. 
-This condition can easily be met by splitting any dataset randomly \cite{ochoarivera2024conformal, vovk2005algorithmic}.  
+not always hold. For example, if we draw two values without replacement from $\{0,1\}$ we get the output $(Z_1, Z_2) \in 
+\{(0,1), (1,0)\}$, both with probability $\frac{1}{2}$. This pair is exchangeable as its joint distribution 
+does not change if we swap $Z_1$ and $Z_2$. But, the two variables are not independent, since conditioning on the 
+first draw fully determines the second, $\left(\mathbb{P}(Z_2 = 1 \mid Z_1 = 1) = 0 \neq \mathbb{P}(Z_2 = 1) = \frac{1}{2}\right)$. 
+Thus, exchangeability is a weaker condition than i.i.d., as it requires the observations to not have any special ordering. 
+This condition can easily be met if we split any dataset randomly \cite{ochoarivera2024conformal, vovk2005algorithmic}.  
 
 
 \subsection{Mathematical Setup and Prediction Set}
@@ -44,13 +43,14 @@ space that represents our object of interest (in our case it is the phage protei
 
 We assume that we have a calibration dataset, $D_{\text{cal}} = \{(X_1, H_1), \cdots , (X_n, H_n)\}$, of $n$ 
 exchangeable data points drawn from an unknown joint distribution, $P_{X,H}$. Then, for a new unlabelled test input, 
-$X_{n+1}$ our aim is to construct a prediction set function $C: \mathcal{X} \rightarrow 2^{\mathcal{H}}$ depending on 
+$X_{n+1}$, our aim is to construct a prediction set function $C: \mathcal{X} \rightarrow 2^{\mathcal{H}}$ depending on 
 the data which maps the test input to a subset of candidate labels, i.e., $C(X_{n+1}) \subseteq \mathcal{H}$, such that 
 the true label falls in the set with a defined coverage that is:
-$$\mathbb{P}(H_{n+1} \in C(X_{n+1})) \geq 1 - \alpha$$
-where $\alpha \in (0,1)$ is the significance level. In our experiments we set $\alpha = 0.1$  so that the guarantee is 
-$90\%$.
+$$\mathbb{P}(H_{n+1} \in C(X_{n+1})) \geq 1 - \alpha,  \qquad \text{where } \alpha \in (0,1) \text{ is the significance level} $$  
 
+% $\alpha \in (0,1)$ is the significance level. 
+
+% In our experiments we set $\alpha = 0.1$ to get a $90\%$ coverage.
 
 Unlike point predictors, $C(X)$ dynamically reflects model uncertainty. It returns a singleton $|C(X)| = 1$ 
 when confident, a multi-label set $|C(X)| \ge 2$ when uncertain between candidates, or an empty set $|C(X)| = 0$ for 
@@ -74,12 +74,13 @@ set, $D_{\text{cal}} = \{(X_i, H_i)\}_{i=1}^n$. The training set is used to fit 
 to the learned patterns, smaller values of $s(x,y)$ indicate stronger conformity between $x$ and label $h$.
 
 Then using the calibration set , $\{(X_i, H_i)\}^n_{i=1}$, we evaluate the nonconformity scores:
-$$S_i = s(X_i, H_i), \quad \forall i = 1, \cdots, n$$
+$$S_i = s(X_i, H_i), \quad \forall i = 1, \cdots, n.$$
 
-To guarantee that our error rate is less than $\alpha$ we need to compute the conformal calibration quantile,
-$\hat q$, from these calibration scores
+To make sure that our error rate is less than $\alpha$ we need to compute the conformal calibration quantile,
+$\hat q$, from these calibration scores.
 
 \begin{definition}[Conformal Calibration Quantile]
+\label{def: conformal calibration quantile}
 The conformal calibration quantile $q_{\alpha}$ is defined as the empirical $\frac{\lceil (n+1)(1-\alpha) \rceil}{n}$-th 
 quantile of calibration scores $\{S_1, \dots, S_n\}$:
 \begin{equation*}
@@ -112,11 +113,11 @@ C(X_{n+1}) = \left\{ H \in \mathcal{H} \;\Big|\; s(X_{n+1}, H) \le q_{\alpha} \r
 % \right) = \frac{\lceil(n+1)(1-\alpha)\rceil}{n+1} \geq 1 - \alpha.$$
 % \noindent Theorem~\ref{thm: marginal coverage} formalises this argument.
 
-The validity of this construction follows from exchangeability. By the definition above, 
+The validity of this construction follows from exchangeability. By the definition \ref{def: conformal calibration quantile}, 
 $q_{\alpha} = S_{(\lceil(n+1)(1-\alpha)\rceil)}$, where $S_{(1)} \leq \dots \leq S_{(n)}$ are the order statistics of 
 the calibration scores. Now let $S_{n+1} := s(X_{n+1}, H_{n+1})$ denote the nonconformity score of the true label of 
 the new test point. Since the pairs $(X_1, H_1), \dots, (X_{n+1}, H_{n+1})$ are exchangeable and the score function $s$ 
-is applied identically to every pair, the sequence of scores $(S_1, \dots, S_n, S_{n+1})$ is exchangeable as well: all 
+is applied identically to every pair, the sequence of scores $(S_1, \dots, S_n, S_{n+1})$ is exchangeable as well. All 
 $(n+1)!$ relative orderings are equally likely, hence the rank of $S$ within this sequence is uniformly distributed 
 on $\{1, \dots, n+1\}$. Consequently:
 $$\mathbb{P}\bigl(S \leq q_{\alpha}\bigr) 
@@ -176,7 +177,7 @@ size), valid statistical coverage is guaranteed by construction in a single comp
 \cite{ochoarivera2024conformal}.
 
 The score function $s$ is chosen so that it can separate plausible hosts from implausible ones. $s(x,h)$ should take a 
-small value when $h$ is likely to be the true host of $x$, and if $h'$ is not the host $s(x, h')$ should take a high
+small value when $h$ is likely to be the true host of $x$, and if $h'$ is not the host, $s(x, h')$ should take a high
 score which typically exceeds $q_{\alpha}$. $h'$ then fails the test in Equation~\ref{eq:prediction_set_definition} 
 and is not selected into the prediction set $C(X_{n+1})$. This discriminative behaviour is not created by conformal 
 prediction itself, it is already exhibited by many standard supervised learning models. A classifier which is trained to
@@ -190,7 +191,7 @@ sets become larger.
 \label{sec2.3.3: coverage types}
 Standard conformal prediction satisfies marginal coverage, which means that the $(1-\alpha)\%$ coverage guarantee 
 holds on average across all possible choices of the calibration set, $D_{\text{cal}}$, and test samples, $(X_{n+1}, 
-H_{n+1})$:
+H_{n+1})$. So, 
 $$\mathbb{E}_{D_{cal}, (X_{n+1}, H_{n+1})} \left[ \mathbb{I}(H_{n+1} \in C(X_{n+1})) \right] = \mathbb{P}(H_{n+1} \in 
 C(X_{n+1})) \geq 1 - \alpha$$
 

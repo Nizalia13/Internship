@@ -26,7 +26,7 @@ level representations and then predict the host range from these representations
 laboratory validation \cite{coclet2021global}.
 
 However, state of the art computational prediction tools suffer from a fundamental limitation. They produce point 
-predictions or uncalibrated scalar scores in $[0,1]$ without rigorous, finite sample uncertainty quantification. In high stakes 
+predictions or uncalibrated scalar scores in $[0,1]$ without any finite sample uncertainty quantification. In high stakes 
 medical applications, point predictions offer no guarantee of reliability: a confidence score reflects only a relative ranking of 
 candidates, not a calibrated probability that the predicted host is correct. The clinical risk runs in both directions, failing to 
 recognize that a phage kills the infecting bacterium can mean missing a life saving treatment, while overlooking that the same 
@@ -63,7 +63,7 @@ three major challenges that arise when applying CSA to classification datasets:
 
 \begin{enumerate}[label=(\roman*)]
     \item \textbf{Non-convex geometry in classification space:} We demonstrate why traditional convex envelopes, developed 
-           primarily for continuous regression spaces, are inefficient in classification settings. Here class conditional score 
+           primarily for continuous regression spaces, are inefficient in classification settings, since the class conditional score 
            vectors occupy disjoint, bounded clusters in $[0,1]^K$. So, we propose non-convex (Radial and Strip) and Collapsed 1D 
            envelope geometries that adapt to cluster topologies, and eliminate unpopulated empty space, which helps us reduce 
            prediction set sizes.

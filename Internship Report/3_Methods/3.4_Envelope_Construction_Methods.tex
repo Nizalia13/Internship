@@ -150,8 +150,16 @@ shrinks underpopulated bins toward it (it mirrors the blending rule of the radia
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.80\textwidth]{Plots/Strip envlelope.png}
-    \caption{Strip envelope 2D staircase construction and marginal fallback. Dimension $v_1$ is partitioned into equal-width bins with vertical upper bounds $U_j$, while dimension $v_2$ defines horizontal bounds $V_i$. The intersection of both directional constraints forms the coordinate-wise monotone staircase envelope $E$ (shaded region). When a coordinate is unobserved or falls back due to sparsity, its conditional limit relaxes to the unconditional marginal quantile ($\tilde{q}_1$ or $\tilde{q}_2$).}
+\caption{Strip envelope 2D staircase construction and missing dimension handling.
+Dimension $v_1$ is partitioned into equal width bins with vertical upper bounds
+$U_j$, while dimension $v_2$ defines horizontal bounds $V_i$. The intersection
+of both directional constraints forms the coordinate wise monotone staircase
+envelope $E$ (shaded region). If a coordinate is unobserved, all pairwise
+constraints involving that dimension are ignored, so the missing dimension is
+neither used as a target nor as a conditioning dimension.}
     \label{fig:strip_envelope}
+
+
 \end{figure}
 
 
@@ -175,25 +183,95 @@ conditional bin regions across all dimension pairs:
 E = \bigcap_{j=1}^K \bigcap_{i \ne j} \bigcup_{k=1}^{N_B} \left\{ v \in \mathbb{R}_+^K : v_i \le \text{limits}[j, i, k] \right\}.
 \end{equation}
 
-For any test score vector $v$ the scaling function for inclusion $\tau(v)$, computes the maximum constraint ratio across all 
-target conditioning pairs $(j, i)$ with $j \ne i$:
-\begin{equation*}
-\tau(v) = \max_{j \ne i} \frac{v_i}{\text{limits}[j, i, \text{bin}_j(v_j)]}.
-\end{equation*}  
+% For any test score vector $v$ the scaling function for inclusion $\tau(v)$, computes the maximum constraint ratio across all 
+% target conditioning pairs $(j, i)$ with $j \ne i$:
+% \begin{equation*}
+% \tau(v) = \max_{j \ne i} \frac{v_i}{\text{limits}[j, i, \text{bin}_j(v_j)]}.
+% \end{equation*}  
 
-Structural missingness is handled directly by relaxing conditional bounds to unconditional marginal quantiles:
+% For a test score vector $v$ with the observed dimension set $\mathcal{A}(v)$, the Strip scaling function is
+% \[\tau(v) = \max_{\substack{j,i\in\mathcal{A}(v)\\j\neq i}} \frac{v_i} {\mathrm{limits}[j,i,\operatorname{bin}_j(v_j)]},
+% \]
+% with the convention that $\tau(v)=0$ when
+% $|\mathcal{A}(v)|<2$.
+
+% For a score vector $v$ with an observed dimension set $\mathcal{A}(v)$, the Strip scaling function is
+% \[\tau(v) = \max_{\substack{j,i\in\mathcal{A}(v)\\j\neq i}} \frac{v_i} {\mathrm{limits}[j,i,\operatorname{bin}_j(v_j)]}.\]
+
+% So, a pairwise constraint contributes to $\tau(v)$ if and only if both its target and conditioning dimensions are observed:
+% \[(j,i)\text{ contributes to }\tau(v) \quad\Longleftrightarrow\quad m_j=m_i=1,\quad j\neq i.\]
+
+% If either dimension is missing, \[ m_j=0\;\text{or}\;m_i=0, \]
+% that is, the corresponding pairwise constraint is omitted from the maximum.
 
 
-\begin{itemize}
-    \item \textbf{Observed Dimensions:} For any observed target dimension $i$, its nonconformity score $v_i$ is evaluated 
-          against the conditional upper limit $\text{limits}[j, i, \text{bin}_j(v_j)]$ set by the active conditioning bin of 
-          dimension $j$.
-    \item \textbf{Missing Dimensions} ($m_i = 0$): If dimension $i$ is missing for a test phage, its conditional bin limit is 
-          replaced by its unconditional marginal $(1-\alpha)$ quantile $\tilde{q}_i$ computed over all $S_1$ calibration points. 
-          This relaxes the constraint along the missing coordinate to its widest empirical bound rather than manufacturing an 
-          imputed value.
-\end{itemize}
+% % Structural missingness is handled by completely removing the missing dimensions for each host while doing the pairwise strip construction. 
+% % Let $v$ be a score vector with an observation mask $m = \bigr(m_1, \cdots, m_K \bigl) \in \{0,1\}^K$. We can write the set of observed 
+% % dimensions as \[\mathcal{A}(v)=\{i\in\{1,\ldots,K\}:m_i=1\}.\]
 
+% Structural missingness is handled by dropping dimensions that are unobserved for the score vector that is under consideration. 
+
+% For a missing dimension $i\notin\mathcal{A}(v)$, we discard all the conditional limits for which $i$ is the conditioning dimension:
+% \[ \text{limits}[i,j,k]\;\text{is ignored for all }j\neq i,\; k=1,\ldots,N_B.\]
+
+% For every remaining limit, where $i$ is the target dimension, the constraint is also ignored because the target value $v_i$ is unobserved:
+% \[
+% \text{limits}[j,i,k]\;\text{does not contribute to }\tau(v),
+% \qquad i\notin\mathcal{A}(v).
+% \]
+
+
+
+For a score vector $v$ with an observed dimension set $\mathcal{A}(v)$, the Strip scaling function is
+\[
+\tau(v) = \max_{\substack{j,i\in\mathcal{A}(v)\\j\neq i}}
+\frac{v_i}{\mathrm{limits}[j,i,\operatorname{bin}_j(v_j)]}.
+\]
+
+So, a pairwise constraint contributes to $\tau(v)$ if and only if both its target and conditioning dimensions are observed:
+\[
+(j,i)\text{ contributes to }\tau(v)
+\quad\Longleftrightarrow\quad
+m_j=m_i=1,\quad j\neq i.
+\]
+
+If either dimension is missing,
+\[
+m_j=0\quad\text{or}\quad m_i=0,
+\]
+the corresponding pairwise constraint is omitted from the maximum.
+
+Structural missingness is handled by dropping dimensions that are unobserved for the score vector under consideration. Let
+\[
+\mathcal{A}(v)=\{i\in\{1,\ldots,K\}:m_i=1\}
+\]
+be the set of observed dimensions of a score vector $v$, where $m_i\in\{0,1\}$ is its observation mask.
+
+For a missing dimension $i\notin\mathcal{A}(v)$, we discard all the conditional limits for which $i$ is the conditioning dimension:
+\[
+\text{limits}[i,j,k]\;\text{is ignored for all }j\neq i,\; k=1,\ldots,N_B.
+\]
+
+Similarly, the limits for which $i$ is the target dimension are ignored because the target value $v_i$ is unobserved:
+\[
+\text{limits}[j,i,k]\;\text{does not contribute to }\tau(v),
+\qquad i\notin\mathcal{A}(v).
+\]
+
+Therefore, the Strip construction is evaluated only over pairs of observed dimensions:
+\[
+j,i\in\mathcal{A}(v),\qquad j\neq i.
+\]
+
+
+% which $i$ is the conditioning dimension:
+% \[B_{i,j,k}\;\text{is removed for all }j\neq i,\; k=1,\ldots,N_B.\]
+
+% For every remaining box, where $i$ is the target dimension, the missing coordinate is collapsed to zero:
+% \[B_{j,i,k} = \left( \ldots,\, 0,\, \ldots \right), \qquad i\notin\mathcal{A}(v). \]
+
+% Therefore, a missing dimension does not contribute to any constraint and is not used as a conditioning dimension either. So, the Strip 
+% construction is only evaluated over the observed dimensions.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % \subsubsection{Class-Conditional Calibration}
 % \label{sec3.4.4: class-conditional}
