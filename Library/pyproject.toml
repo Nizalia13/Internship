@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "conformal-envelopes"
+version = "0.2.0"
+description = "NaN-aware class-conditional conformal prediction sets using collapsed, radial and strip envelopes."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+  {name = "Nizalia Siddiqui"}
+]
+dependencies = [
+  "numpy>=1.23",
+  "pandas>=1.5",
+  "matplotlib>=3.6"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["conformal_envelopes*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
