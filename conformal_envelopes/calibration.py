@@ -1,4 +1,4 @@
-# TURNS CALIBRATION NONCONFROMITY SCORES INTO CONFORMAL THRESHOLDS
+# TURNS CALIBRATION NONCONFROMITY SCORES (TAU VALUES) INTO CONFORMAL THRESHOLDS (T_HAT)
 
 from __future__ import annotations
 
@@ -12,7 +12,8 @@ def conformal_quantile(values, alpha: float) -> float:
         Calibration scores --> sort them --> calculate conformal rank k --> take the k-th value --> conformal threshold t_hat = c
 
         - Input: 1D array of calibration scores and a significance level alpha in (0, 1).
-        - It sorts the calibration scores and returns the appropriate statistic to guarantee coverage at least 1-alpha.
+        - It sorts the calibration scores and returns the finite-sample conformal quantile used to target 
+          coverage of at least 1-alpha
         - Output: conformal threshold t_hat such that the conformal prediction set has coverage at least 1-alpha.
     """
     
@@ -39,8 +40,7 @@ def conformal_quantile(values, alpha: float) -> float:
 
 ##################################################################################
 
-# Applying the conformal quantile function to each class separately
-# Then taking the maximum of these thresholds to get a single threshold for all classes.
+# Select one class's calibration scores and compute its threshold.
 
 def quantile_for_class(tau_scores, labels, cls, alpha: float) -> float:
     """
@@ -76,14 +76,14 @@ def quantile_for_class(tau_scores, labels, cls, alpha: float) -> float:
 ################################################################################
 
 
-def compute_t_hat_multiclass(tau_scores, labels, classes, alpha: float) -> float:
-    """
-       Maximum class specific threshold for a shared envelope.
-    """
-    classes = list(classes)
+# def compute_t_hat_multiclass(tau_scores, labels, classes, alpha: float) -> float:
+#     """
+#        Maximum class specific threshold for a shared envelope.
+#     """
+#     classes = list(classes)
 
-    if not classes:
-        raise ValueError("At least one class is required.")
+#     if not classes:
+#         raise ValueError("At least one class is required.")
 
-    # If we use a shared envelope
-    return max(quantile_for_class(tau_scores, labels, cls, alpha) for cls in classes)
+#     # If we use a shared envelope
+#     return max(quantile_for_class(tau_scores, labels, cls, alpha) for cls in classes)

@@ -1,25 +1,13 @@
 from __future__ import annotations
-
 import numpy as np
-
 from ..calibration import conformal_quantile
 
 EPS = 1e-12
 
 
-def strip_shape_discovery(
-    S1,
-    alpha: float,
-    n_bins: int,
-    *,
-    smoothing_window: int = 2,
-    min_samples: int = 3,
-):
-    """Discover NaN-aware conditional strip limits.
-
-    This follows the supplied cleaned notebook. A small robustness guard is
-    added for dimensions that are entirely NaN so they do not create invalid
-    bin edges.
+def strip_shape_discovery(S1, alpha: float, n_bins: int, *, smoothing_window: int = 2, min_samples: int = 3,):
+    """
+       Discover NaN-aware conditional strip limits.
     """
     S1 = np.asarray(S1, dtype=float)
     _, K = S1.shape
@@ -45,9 +33,7 @@ def strip_shape_discovery(
             hi += pad
 
         bin_edges.append(np.linspace(lo, hi, n_bins + 1))
-        marginal_quantiles[j] = np.quantile(
-            finite, 1.0 - alpha
-        )
+        marginal_quantiles[j] = np.quantile(finite, 1.0 - alpha)
 
     bin_edges = np.asarray(bin_edges)
     limits = np.zeros((K, K, n_bins))
@@ -56,12 +42,7 @@ def strip_shape_discovery(
         for n in range(n_bins):
             lo, hi = bin_edges[j, n], bin_edges[j, n + 1]
 
-            # The original notebook uses [lo, hi) for its bins.
-            in_strip = (
-                (~np.isnan(S1[:, j]))
-                & (S1[:, j] >= lo)
-                & (S1[:, j] < hi)
-            )
+            in_strip = ((~np.isnan(S1[:, j])) & (S1[:, j] >= lo) & (S1[:, j] < hi))
 
             for i in range(K):
                 if i == j:
@@ -71,27 +52,18 @@ def strip_shape_discovery(
                 n_src = int(src_mask.sum())
 
                 non_nan_i = S1[~np.isnan(S1[:, i]), i]
-                marginal_i = (
-                    np.quantile(non_nan_i, 1.0 - alpha)
-                    if len(non_nan_i) > 0
-                    else marginal_quantiles[i]
-                )
+                marginal_i = (np.quantile(non_nan_i, 1.0 - alpha) if len(non_nan_i) > 0
+                              else marginal_quantiles[i])
 
                 if n_src >= min_samples:
-                    limits[j, i, n] = np.quantile(
-                        S1[src_mask, i], 1.0 - alpha
-                    )
+                    limits[j, i, n] = np.quantile(S1[src_mask, i], 1.0 - alpha)
+
                 elif n_src == 0:
                     limits[j, i, n] = marginal_i
                 else:
                     w = n_src / min_samples
-                    conditional_i = np.quantile(
-                        S1[src_mask, i], 1.0 - alpha
-                    )
-                    limits[j, i, n] = (
-                        w * conditional_i
-                        + (1.0 - w) * marginal_i
-                    )
+                    conditional_i = np.quantile(S1[src_mask, i], 1.0 - alpha)
+                    limits[j, i, n] = (w * conditional_i + (1.0 - w) * marginal_i)
 
     limits_raw = limits.copy()
 
@@ -101,9 +73,7 @@ def strip_shape_discovery(
                 continue
             for n in range(n_bins):
                 hi_n = min(n + int(smoothing_window), n_bins - 1)
-                limits[j, i, n] = np.max(
-                    limits_raw[j, i, n:hi_n + 1]
-                )
+                limits[j, i, n] = np.max(limits_raw[j, i, n:hi_n + 1])
 
     return bin_edges, limits, marginal_quantiles
 
@@ -113,26 +83,11 @@ def get_bin_indices(scores, bin_edges):
     K = scores.shape[1]
     n_bins = bin_edges.shape[1] - 1
 
-    return np.array([
-        np.clip(
-            np.where(
-                np.isnan(scores[:, j]),
-                0,
-                np.digitize(scores[:, j], bin_edges[j]) - 1,
-            ),
-            0,
-            n_bins - 1,
-        )
-        for j in range(K)
-    ]).T
+    return np.array([np.clip(np.where(np.isnan(scores[:, j]), 0, np.digitize(scores[:, j], bin_edges[j]) - 1,),
+                             0, n_bins - 1,) for j in range(K)]).T
 
 
-def strip_tau_scores(
-    S,
-    bin_edges,
-    limits,
-    marginal_quantiles,
-):
+def strip_tau_scores(S, bin_edges, limits, marginal_quantiles,):
     """Raw strip scaling score, preserving the notebook's NaN rules."""
     S = np.asarray(S, dtype=float)
     N, K = S.shape
