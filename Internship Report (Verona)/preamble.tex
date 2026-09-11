@@ -1,0 +1,90 @@
+%!TEX root = main.tex
+
+% --- Language Settings ---
+\usepackage[french,italian,main=english]{babel}
+
+% --- Italian Thesis Title Page ---
+\usepackage{frontespizio}
+
+% --- Page Geometry ---
+\usepackage[vscale=0.76, includehead, headheight=18pt, headsep=10pt, hmarginratio=1:1]{geometry}
+
+% --- Font: Latin Modern (Matches LaTeX reference standard) ---
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% --- Core Math Packages ---
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{relsize}
+
+% --- Graphics & Tables ---
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{xcolor}
+
+% --- TikZ & PGFPlots ---
+\usepackage{tikz}
+\usetikzlibrary{arrows,arrows.meta,positioning,calc,patterns,decorations.pathreplacing,shapes,shadows,trees}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% --- Utilities & References ---
+\usepackage{lipsum}
+\usepackage{textcomp}
+\usepackage{url}
+\usepackage{footnote}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{caption}
+
+% --- Table Footnote Handling ---
+\makesavenoteenv{tabular}
+\makesavenoteenv{table}
+
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+% --- Paragraph Spacing (Memoir Native) ---
+\abnormalparskip{\medskipamount}
+\nonzeroparskip
+\setlength{\parindent}{0pt}
+
+% --- Theorem & Definition Environments ---
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition} 
+\newtheorem{definition}{Definition}[section]
+
+% --- Chapter & Section Heading Styling (Serif, Reference Layout) ---
+\chapterstyle{default}
+\headstyles{default}
+
+% Format: "1  Introduction" (Serif bold, minimal top gap)
+\renewcommand{\chapterheadstart}{}
+\renewcommand{\printchaptername}{}
+\renewcommand{\chapternamenum}{}
+\renewcommand{\printchapternum}{\normalfont\Large\bfseries\thechapter\quad}
+\renewcommand{\afterchapternum}{}
+\renewcommand{\printchaptertitle}[1]{\normalfont\Large\bfseries #1}
+\renewcommand{\afterchaptertitle}{\par\nobreak\vskip 2ex}
+
+% Section styling in Serif Bold
+\setsecheadstyle{\normalfont\large\bfseries\raggedright}
+\setsubsecheadstyle{\normalfont\normalsize\bfseries\raggedright}
+\setsubsubsecheadstyle{\normalfont\normalsize\bfseries\raggedright}
+\setsecnumdepth{subsection}
+
+% % --- Running Page Headers (Serif) ---
+% \nouppercaseheads
+% \makeevenhead{headings}{\normalfont\small\thepage}{}{\normalfont\small\leftmark}
+% \makeoddhead{headings}{\normalfont\small\rightmark}{}{\normalfont\small\thepage}
+% \makeheadrule{headings}{\textwidth}{\normalrulethickness}
+
+% --- Simple Page Style (Matching Reference Document) ---
+\pagestyle{plain}

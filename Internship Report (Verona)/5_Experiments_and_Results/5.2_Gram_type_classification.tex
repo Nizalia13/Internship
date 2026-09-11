@@ -1,0 +1,136 @@
+% \noindent using the three envelopes ....
+% - Results: coverage by class, set size distribution, singleton accuracy
+% - analysis of hard cases: ambiguous gram-positive phages
+
+% \subsubsection{Experimental Setup}
+% \noindent - Data: split-0 phages only (80\% calibration, 20\% test), unknown host types excluded\\
+% - Parameters: $\alpha = 0.1 , M=200$ directions (radial),
+% M=20 bins (strip), 10 independent runs to estimate variance\\
+% - The NC transformation used: keep scores as-is for one class, flip with 1 - s for the other 
+% % (motivated by the empirical score semantics described in Chapter 4)
+
+% \subsubsection{Results}
+% \noindent - table: overall coverage, per-class coverage, average set size, empty set rate, size-2 rate, singleton accuracy std across 10 runs for all three methods\\
+% - Bar charts: set size distribution, overall and per-class coverage
+
+
+% \subsubsection{Analysis of Hard Cases}
+% The minority class consistently has lower coverage than the majority class before the class-conditional fix — show this 
+% explicitly with a before/after comparison
+% Identify the ambiguous phages: those whose mean raw score falls in the range [0.3,0.7][0.3, 0.7]
+% [0.3,0.7] — these are phages for which the underlying classifiers are genuinely uncertain
+% Show that coverage on typical phages of each class is much higher than coverage on the ambiguous subset — this is a property 
+% of the data, not a flaw in the conformal framework
+% Discuss variance across runs: radial method has higher variance than strip and collapsed due to the random direction sampling
+
+
+\section{Gram Type Classification}
+\label{sec5.2: gram results}
+We evaluated the three envelope geometries (Radial, Strip, and Collapsed 1D) on the real phage data for a binary 
+Gram type classification ($\mathcal{H} = \{\text{gram-neg}, \text{gram-pos}\}$). We only used the 
+$4422$ phages in split 0 to ensure that all scores remain out of fold by construction and there is no contamination.
+
+
+\subsection{Experimental Setup}
+\label{sec5.2.1: gram setup}
+We partitioned the split 0 subset into shape discovery ($|S_1| = 1\,768$), size scaling ($|S_2| = 1\,326$), and 
+test evaluation ($|S_{\text{test}}| = 1\,328$) sets using a $40/30/30$ split. For each geometry, we fitted a single shared envelope $E$ 
+on $S_1$, and then calculated the class conditional scaling factors $\hat{t}_{\text{neg}}$ and $\hat{t}_{\text{pos}}$ on $S_2$ 
+using \eqref{eq: class specific quantile}. To ensure validity across both classes simultaneously, we scaled the envelope by 
+their maximum:
+\begin{equation}
+\label{eq: gram-max-scaling}
+\hat{t} = \max\big(\hat{t}_{\text{neg}},\, \hat{t}_{\text{pos}}\big).
+\end{equation}
+
+At test time, we evaluated the Gram type nonconformity transformation under both candidate hypotheses. For an empty 
+candidate set ($\emptyset$), we returned both labels ($C(\mathbf{s}) = \mathcal{H}$) as established in Section~\ref{sec3.5: t 
+hat calculation}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Coverage and Prediction Efficiency}
+\label{sec5.2.2: gram coverage}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{Plots/comparison_plot_2.png}
+     \caption{Gram type classification performance across Radial, Strip, and Collapsed 1D geometries on the test split (Split 
+              0, target $1 - \alpha = 0.90$). Panels show: (top-left) prediction set size distribution, (top-right) marginal 
+              empirical coverage, (bottom-left) class-conditional coverage, and (bottom-right) singleton accuracy with sample 
+              counts ($n$).}
+    \label{fig: gram results}
+\end{figure}
+
+As we can see in Figure~\ref{fig: gram results}, all three envelope geometries achieve $99.8\%$ empirical 
+coverage, which is well above the nominal $90\%$ target (red dashed line), this is a consequence of the underlying data 
+distribution . The class conditional breakdown 
+confirms that the coverage is balanced for both Gram negative ($99.9\%$) and Gram positive ($99.8\%$) phages. This demonstrates 
+that the max threshold calibration $\hat{t} = \max(\hat{t}_{\text{neg}}, \hat{t}_{\text{pos}})$ effectively eliminates coverage 
+disparity between classes.
+
+We can also see that the high coverage does not compromise efficiency. The set size distribution chart of Figure~\ref{fig: 
+gram results} (left panel), shows that $94\text{--}95\%$ of test phages receive singleton predictions, while only $5\text
+{--}6\%$ require size 2 uncertain sets ($C(\mathbf{s}) = \mathcal{H}$). The empty set rate is $0\%$ by construction due to the 
+conservative fallback rule. When singleton sets are produced, the prediction accuracy is $99.8\%$ across all three geometries 
+($n \ge 1\,249$), which tells us that when the model is confident enough to output exactly one label, it is almost always correct. 
+
+% Acheiving this coverage that is over the target highlights a trade off, it suggests the calibrated 
+% envelopes are wider than strictly necessary to meet $1-\alpha=0.90$ (due to the max threshold calibration). So we are trading 
+% efficiency for a safety margin the task may not require. We will return to this trade off in Section~\ref{sec6: conclusion}.
+
+% rather than a calibration defect. As shown in Figure~\ref{fig:raw_score_dist}, Gram negative and Gram positive phages form two very 
+% disjoint score clusters ($0.055 \pm 0.054$ vs. $0.918 \pm 0.066$) with almost zero sample density in the intermediate ambiguous zone 
+% ($0.25 - 0.75$). The calibrated $(1-\alpha)$ boundary falls inside this empty margin, coverage systematically approaches $100\%$ across 
+% random $S_1/S_2/S_{\text{test}}$ splits. While the maximum scaling operator $\hat{t} = \max(\hat{t}_{\text{neg}}, \hat{t}_{\text{pos}})$ 
+% ensures strict simultaneous class-conditional validity, this over-coverage does not degrade predictive efficiency: $94 \text{--} 95\%$ 
+% of test phages receive definitive singleton predictions with $99.8\%$ accuracy.
+
+
+To check where this over coverage comes from, we evaluated coverage directly on the calibration set $S_2$ itself, the set on which 
+$\hat t$ is calibrated. All three methods already exceed the $90\%$ target on $S_2$, Radial reaches $94.9\%$, Strip $93.6\%$, and 
+Collapsed 1D $94.5\%$. Since this gap appears before the envelope is applied to test data, we can say that the over coverage is a 
+property of the calibration itself. Two factors can explain this
+\begin{itemize}
+    \item the class conditional thresholds are combined using Equation~\eqref{eq: gram-max-scaling}, so whichever class requires the
+          smaller threshold is scaled past its own target level by construction
+    \item the nonconformity scores of the two classes are extremely well separated (Section~\ref{sec5.2.3: score separation}), so the 
+          $(1-\alpha)$ quantile of the correct class already sits far below where the wrong class's scores begin, this leaves a 
+          wide margin that increases the coverage well past the target even at the calibration stage. 
+\end{itemize}
+% Adjusting the combination rule ---
+% for instance, applying each class's own $\hat t_c$ directly instead of the
+% shared maximum --- would recover tighter, less conservative envelopes
+% without sacrificing validity, and is a natural target for future
+% refinement (Section~\ref{sec:future-work}).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Score Separation and Geometric Equivalence}
+\label{sec5.2.3: score separation}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\linewidth]{Plots/raw_score_distribution.png}
+\caption{Distribution of raw scores per test phage  (mean over all $K = 40$ functional category dimensions), separated by true Gram 
+         type. Gram negative phages concentrate tightly near 0 while Gram positive phages concentrate near 1, leaving the intermediate 
+         ambiguous zone ($0.25\text{--}0.75$, dashed red lines) almost empty.}
+\label{fig:raw_score_dist}
+\end{figure}
+
+All three envelope constructions yield nearly identical performance metrics in Figure~\ref{fig: gram results}. 
+This equivalence can directly be explained by the empirical raw score distribution in Figure~\ref{fig:raw_score_dist}: 
+Gram negative phages concentrate tightly near the origin (mean $0.055 \pm 0.054$), whereas Gram positive phages concentrate 
+near $1.0$ (mean $0.918 \pm 0.066$). The two classes form disjoint, well separated clusters with negligible density 
+in the ambiguous zone ($0.25\text{--}0.75$), any sensible star shaped boundary cleanly separates them. 
+
+This near identical 
+performance across the three geometries suggests that the choice of envelope geometry is less critical for low dimensional task 
+with strongly separated scores. 
+The advantages of non convex can be seen more prominently in the 
+higher dimensional, multi class host level classification task in Section~\ref{sec5.3: host results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+

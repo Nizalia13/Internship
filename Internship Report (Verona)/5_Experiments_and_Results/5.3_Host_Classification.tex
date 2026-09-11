@@ -1,0 +1,335 @@
+\section{Host Level Classification}
+\label{sec5.3: host results}
+Host level prediction extends our conformal prediction framework from binary attributes to a multiclass task across 
+$N = 54$ candidate bacterial hosts ($\mathcal{H} = \{h_1, \ldots, h_{54}\}$). This setting introduces statistical and dimensional 
+challenges: heavy label imbalance, small per host calibration samples, and inference through a hierarchical two-stage cascade. 
+Rather than attempting to fit a $2\,036$ dimensional global envelope across the joint feature space, we constructed class 
+conditional envelopes which were calibrated independently for each candidate host $h \in \mathcal{H}$ on its dedicated $K_h$ 
+dimensional score sub vectors $\mathbf{s}_h$.
+
+\subsection{Experimental Protocol}
+\label{sec5.3.1: host formulation}
+We apply the split conformal framework of Section~\ref{sec3: methodology} to the reconstructed score vectors (\ref{eq: 
+host nc transformation}) of the $N_{\text{tot}} = 15{,}638$ annotated phages across $54$ candidate hosts ($K_h \in [26, 40]$ per 
+host; $K_{\text{tot}} = 2{,}036$). 
+We again use a three way partition of the genome cluster data:
+\begin{itemize}
+    \item $D_{\text{train}}$ (Split $2$--$4$, $N_{\text{train}} = 9{,}101$): For each candidate host with sufficient training 
+          data ($n_h \ge 3$), the infector phages are partitioned $50/50$ into shape-discovery ($S_1^{(h)}$, $\lfloor 
+          n_h/2 \rfloor$) and size-scaling ($S_2^{(h)}$, $\lceil n_h/2 \rceil$) subsets to fit $E_h$ and compute $\hat{t}_h$.
+    \item $D_{\text{val}}$ (Split $1$, $N_{\text{val}} = 2{,}593$): used for envelope hyperparameter tuning.
+    \item $D_{\text{test}}$ (Split $0$, $N_{\text{test}} = 3{,}944$): held out and evaluated once after fixing all 
+          parameters.
+\end{itemize}
+Unlike Gram type classification (Section~\ref{sec5.2: gram results}), host level scores use per model split 
+assignments (Section~\ref{sec4.3: contamination fix}) to ensure the out of split validity across all five splits rather than 
+restricting calibration to split $0$ alone. Missing entries ($\text{NA}$) are handled by each envelope geometry without data 
+imputation.
+
+% At test time, the Gram restriction $\hat{\mathcal{H}}(\mathbf{s})$ narrows the host space to $16$ for Gram positive 
+% and $38$ for Gram negative predictions. The cascaded prediction set $C_{\text{host}}(\mathbf{s})$ is evaluated using the per 
+% host inclusion rule of Equation~\eqref{eq: host-prediction-set}. The cascade coverage guarantee of Proposition~\ref{prop:cascade} 
+% applies directly, bounding theoretical miscoverage by $\le 2\alpha = 0.20$. If a test 
+% phage falls outside the calibrated envelopes of all candidate hosts ($C_{\text{host}}(\mathbf{s}) = \emptyset$), the empty set is 
+% resolved by selecting the candidate minimizing normalized nonconformity:
+% \begin{equation}
+% \label{eq: empty-set-resolution}
+% h_{\text{forced}}(\mathbf{s}) = \operatorname*{arg\,min}_{h \in \hat{\mathcal{H}}(\mathbf{s})} \frac{\tau_h(\mathbf{s}_h)}
+% {\hat{t}_h},
+% \end{equation}
+% which normalizes distances across different host geometries without defaulting to the uninformative full label set.
+
+At test time, the Gram type prediction set restricts the candidate hosts to $\mathcal{H}_{\text{cand}}(s,m)$. The host 
+prediction set $C_{\text{host}}(s,m)$ is evaluated via Equation \ref{eq: host-prediction-set}. If a test phage falls outside 
+all candidate envelopes ($C_{\text{host}}(s,m) = \emptyset$), we get an empty set which is resolved by selecting the 
+candidate which minimizes the normalized nonconformity:
+\begin{equation}
+h_{\text{forced}}(s) = \arg\min_{h \in \mathcal{H}_{\text{cand}}(s,m)} \frac{\tau_h(s_h)}{\hat{t}_h},
+\label{eq: forced fallback}
+\end{equation}
+which selects the closest boundary without defaulting to the uninformative full label set.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Hyperparameter Selection on Validation Data}
+\label{sec5.3.2: host tuning}
+
+We optimized the hyperparameters on $D_{\text{val}}$ (Split 1) by minimizing the average set size subject to empirical 
+coverage constraints at target level $1 - \alpha = 0.90$:
+\begin{equation}
+\label{eq: constrained-opt}
+\theta^\star \in \arg\min_{\theta} \overline{|C|}_{\text{val}}(\theta) \quad \text{subject to} \quad \hat{c}_{\text{val}}(\theta) 
+\ge 1 - \alpha.
+\end{equation}
+with ties or near constraint cases resolved by minimizing the coverage discrepancy $|\hat{c}_{\text{val}}(\theta) - 
+(1 - \alpha)|$.
+
+Validation under the unrestricted candidate space selected:
+\begin{itemize}
+    \item \textbf{Strip Binning ($N_B$):} Swept over $N_B \in \{3, 5, 8, 10, 15, 20\}$ with windowed monotonic smoothing ($w=2$). 
+           $N_B = 10$ was selected, achieving $90.5\%$ validation coverage with an average prediction set size of $12.97$ 
+           candidate hosts.
+    \item \textbf{Radial Resolution ($M, \kappa$):} Swept across $M \in \{100, 250, 500\}$ directions and concentration parameters 
+           $\kappa \in \{4.0, 8.0, 16.0\}$. $M = 100$ with $\kappa = 4.0$ provided the optimal trade-off closest to nominal 
+           validity ($89.0\%$ validation coverage, average set size $12.4$).
+\end{itemize} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Empirical Test Results}
+\label{sec5.3.3: host test results}
+
+Table~\ref{tab: host_results} and Figure~\ref{fig: host coverage set size} summarize the empirical performance metrics evaluated on 
+the test split ($N_{\text{test}} = 3{,}944$ phages) across all 54 hosts.
+
+\begin{table}[htbp]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Method} & \textbf{Coverage} & \textbf{Avg.\ Set Size} & \textbf{Singleton Rate} & \textbf{Singleton Acc.} & \textbf{Forced 
+Rate} \\
+\midrule
+Radial Envelope ($M=100, \kappa=4$) & 0.939 & 15.25 & 0.131 & 0.896 & 0.023 \\
+Strip Envelope ($N_B=10, w=2$)      & 0.905 & 15.35 & 0.007 & 0.321  & 0.002 \\
+Collapsed 1D                        & 0.929 & 6.09  & 0.286 & 0.937 & 0.014 \\
+\bottomrule
+\end{tabular}}
+\caption{Performance metrics on the test split}
+\label{tab: host_results}
+\end{table}
+
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=1\textwidth]{Plots/Host coverage and set size.png}
+    \caption{Host classification performance on Split 0 test phages ($1-\alpha = 0.90$). Left panel: overall empirical coverage 
+            compared against the target (red dashed line). Right panel: average prediction set size across candidate hosts.}
+    \label{fig: host coverage set size}
+\end{figure}
+
+As demonstrated in Table~\ref{tab: host_results} and Figure~\ref{fig: host coverage set size}, all three geometries 
+achieve empirical coverage close to the $90.0\%$ target. While the binary Gram setting produced an over conservative coverage 
+(99.8\%) due to global max threshold, the independent per host envelope calibration prevents over coverage (90.5\%--93.9\%).
+
+\newpage
+Prediction efficiency diverges sharply:
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Efficiency of Collapsed 1D:} Collapsed 1D achieves an average prediction set size of $6.09$, which is less than 
+           half that of Radial ($15.25$) or Strip ($15.35$). In moderate to high dimensions ($K_h \ge 26$), 1D mean pooling avoids 
+           the sample sparsity penalties that arise due to angular cones and multi dimensional bins. The complete per host set size 
+           distributions and boxplots across all 54 hosts are in Appendix \ref{app: plots} 
+           Figure~\crefrange{fig: set_size_distribution_histogram1}{fig: set_size_distribution_boxplot2}
+    \item \textbf{Singleton Accuracy:} Collapsed 1D produces a single host for $28.6\%$ of test phages and achieves $93.7\%$ 
+           accuracy on these singletons. In contrast, Radial produces singletons for only $13.1\%$ of test phages (with $89.6\%$ 
+           accuracy), while Strip almost never gives a singleton output ($0.7\%$).
+    \item \textbf{Forced Decision Rate:} The forced fallback rule \eqref{eq: forced fallback} was only used for $1.4\%$ of 
+           test phages for Collapsed 1D and $2.3\%$ for Radial. This confirms that host specific envelopes reliably capture 
+           empirical infector score distributions.
+\end{enumerate}
+
+
+Figure~\crefrange{fig: per_host_coverage_1}{fig: per_host_coverage_2} in the Appendix \ref{app: plots} illustrates the class 
+conditional validity across all hosts. The coverage remains well calibrated across major host types (e.g., \emph{Escherichia}, 
+\emph{Pseudomonas}, \emph{Staphylococcus}, and \emph{Mycobacterium}), but we can also find low coverage to the host classes with 
+sparse data.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Geometric Boundary Visualization Across All Methods}
+\label{sec5.3.4: geometric comparison}
+
+
+In sections~\ref{sec5.3.3: host test results} we have seen the aggregate metrics report which tell us \emph{how much} the three envelope 
+construction methods differ in coverage and set size, but not \emph{why}. To illustrate the structural mechanisms resulting in these 
+differences, Figure~\crefrange{fig: staph both good}{fig: staph 1 good 1 bad} displays the calibrated boundary projections on a two 
+dimensional subspace (built only using two of the functional dimensions while holding the values on the remaining $K_h - 2$ dimensions 
+fixed). Therefore, the boundary shown is just a 2D a slice of the true $K_h$ dimensional envelope.
+
+
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{Plots/staph_1good_1bad_2.png}
+\caption{\textbf{2D Projection of Calibrated Boundaries on Good Predictors.} Per host envelope boundary comparison for 
+Staphylococcus projected onto the 2D plane of two discriminative functional features (transcriptional\_activator vs. reductase). 
+Left (Collapsed 1D): Linear boundary defined by equal weight mean nonconformity. Centre (Radial): Smooth angular kernel boundary 
+($\kappa=4.0$), closely enveloping the nonconformity cluster. Right (Strip): Piecewise constant staircase boundary enforcing local 
+monotonicity ($w=2$).}
+\label{fig: staph both good}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\linewidth]{Plots/staph_both_good_1.png}
+\caption{\textbf{2D Projection of Calibrated Boundaries on One Good and One Bad Predictor}. Per host envelope boundary comparison for 
+Staphylococcus projected onto one informative and one uninformative functional feature (transcriptional\_activator vs. capsid)
+When one dimension contains non infector noise, Collapsed 1D's linear projection dilutes the strong signal across both axes. The 
+Strip envelope isolates the noisy axis to wide marginal bounds along the horizontal strip, while the Radial envelope expands outward 
+along the uninformative ray.}
+\label{fig: staph 1 good 1 bad}
+\end{figure}
+
+Collapsed 1D's boundary is the straight anti diagonal line implied by its scalar mean threshold (Section~\ref{sec3.4.1: 
+collapsed 1d}). A phage that is strong in lysin but weak in annealing is treated identically to one with the reverse profile, as long 
+as the average clears the threshold. This produces its smallest false positive count of the three ($21$, $\texttt{own\_cov}=0.94$), 
+but at the cost of giving us $15$ false negatives. The true infectors  whose evidence concentrates in one dimension 
+rather than both are missed by a boundary which is blind to that asymmetry.
+
+The boundary of the Radial method is the smooth arc produced by the radius of Equation~\eqref{eq: radial boundary}. It 
+curves inward for phages strong in one dimension but weak in the other. This recovers more true infectors ($10$ false negatives, vs.\ 
+Collapsed's $15$) but at the cost of efficiency: $2{,}568$ false positives, since a boundary calibrated from points concentrated near 
+the axes extends generously along both axes individually. So the higher dimensional inflation behavior anticipated in Section~
+\ref{sec5.1.2: dimensionality scaling}'s synthetic $K$-sweep, can now be visualized in real data.
+
+Strip's staircase boundary sits between the two: it tracks the true cluster's shape more tightly than Collapsed's line, 
+and without the smooth over extension of Radial's arc. It achieves the fewest false negatives of the three ($5$) but at the cost of 
+the most false positives ($2{,}540$). It has piecewise constant conditioning (Section~\ref{sec3.4.3: strip}), so it captures the 
+cluster's shape well locally, but each bin transition risks admitting points just past a true infector's actual boundary.
+
+Across both functional feature projections, the geometric trade offs are consistent: Collapsed 1D enforces a global linear 
+trade-off that produces tight rejection regions at the cost of directional blindness; the Radial envelope smoothly hugs directional 
+density but expands along sparse orthant rays in higher dimensions; and the Strip envelope captures non linear conditional dependencies 
+along dense axes via its staircase structure, but becomes overly permissive in sparse bins due to marginal fallback quantile padding.
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=0.90\textwidth]{Plots/clustermap_collaped_1.png}
+    \caption{\textbf{Clustermap of Predicted Phage Host Interactions (Collapsed 1D).} 
+    Binary prediction matrix evaluated across all $N_{\text{test}} = 3{,}944$ test phages (rows) and $54$ candidate host genera 
+    (columns) under the Collapsed 1D method ($1-\alpha=0.90$). Dark pixels denote host inclusion in the conformal prediction set 
+    $C(s)$. Left sidebars indicate ground-truth Gram phenotype (blue: Gram-negative, orange: Gram-positive) and top true host genera.
+    %Dendrograms represent average linkage hierarchical clustering under Jaccard distance.
+    }
+    \label{fig:phage_host_clustermap_collapsed}
+\end{figure}
+
+
+Figure~\ref{fig:phage_host_clustermap_collapsed} visualizes the global inclusion topology of the Collapsed 1D predictor across the 
+test set ($N_{\text{test}} = 3{,}944$). 
+% The cluster map reveals that the Gram type cascade completely segregates predictions. 
+% Gram positive phages (top and bottom orange blocks) strictly activate Gram positive host columns on the right (e.g., 
+% \emph{Mycobacterium},     \emph{Gordonia}, \emph{Streptomyces}), with zero cross Gram false inclusions.
+The clustermap confirms the gram type seperationion: Gram positive phages strictly activate Gram positive host columns 
+(e.g., \textit{Mycobacterium}, \textit{Gordonia}, \textit{Streptomyces}) with zero cross gram type false positive inclusions.
+
+The clustermaps for the Radial and Strip envelopes are provided in Appendix~\ref{app: full_clustermaps} 
+(Figures~\ref{fig:clustermap_radial_app} and \ref{fig:clustermap_strip_app1}), these visually demonstrate how high dimensional 
+sparsity forces broad, uninformative multi host inclusion blocks across the entire Gram negative sub matrix.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Effect of Gram-Type Filtering}
+\label{sec5.3.5: gram filtering effect}
+
+Table~\ref{tab: gram filtering effect} compares the performance of of the three methods with and without Gram type pre 
+filtering.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{cccc}
+\toprule
+\textbf{Method} & \textbf{Configuration} & \textbf{Coverage} & \textbf{Avg.\ Set Size} \\
+\midrule
+\multirow{2}{*}{Radial Envelope} &  Unrestricted (Full $\mathcal{H}$, $N=54$)         & 0.923  &  39.22  \\
+                                 &  Gram-Type Filtered ($\mathcal{H}_{\text{cand}}$)  & 0.939  &  15.25  \\
+\multirow{2}{*}{Strip Envelope}  &  Unrestricted (Full $\mathcal{H}$, $N=54$)         & 0.905  &  39.35  \\
+                                 &  Gram-Type Filtered ($\mathcal{H}_{\text{cand}}$)  & 0.905  &  15.35  \\
+\multirow{2}{*}{Collapsed 1D}    &  Unrestricted (Full $\mathcal{H}$, $N=54$)         & 0.924  &  6.09  \\
+                                 &  Gram-Type Filtered ($\mathcal{H}_{\text{cand}}$)  & 0.929  &  6.09  \\
+\bottomrule
+\end{tabular}
+\caption{Impact of Gram type filtering on host prediction.}
+\label{tab: gram filtering effect}
+\end{table}
+
+Gram type filtering produces no change in the average set size for the collapsed 1D method which shows that the 1D mean score
+already provides strong discrimination between gram types. But it delivers a significant efficiency gain for both the multidimensional 
+envelopes. The average prediction set size decreases by over $60\%$ for both of the Radial ($39.22 \to 15.25$) and the Strip envelope 
+($39.35 \to 15.35$) and the empirical coverage also improves slightly.  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\subsection{Functional Dimension Sufficiency}
+\label{sec5.3.6:core-set}
+
+The high dimensionality of the host level score space ($K_h \in [26, 40]$ per host) raises a natural question: how many 
+of these dimensions are actually necessary? Here we checked if a single subset of functional categories, retained across 
+all $54$ hosts, can reproduce the performance of full dimensional. We selected the "Top N Core" most informative 
+functional categories. To select the top functions, for each host we ranked its functional dimensions by their mean score on 
+the phages that truly infect the host in the training set, then took the top 5 ranked functions per host and then finally, we 
+pooled the top 5 list across the $54$ hosts and selected the top 7 function names that occured most frequently. This yielded  
+a core score matrix of $356$ columns (17.5\% of the original $K_{\text{tot}} = 2{,}036$). 
+
+Figure~\ref{fig:core-vs-full} summarizes the results. Collapsed1D's coverage
+falls slightly from $0.929$ to $0.905$ (still above the target) with a modest increase in average set size ($6.09 \to
+6.43$). Radial's coverage falls similarly ($0.939 \to 0.915$) while its average set size \emph{decreases}
+($15.25 \to 14.58$). Strip, at its adjusted $\alpha$, achieves both higher coverage ($0.905 \to 0.917$) and a
+smaller average set size ($15.35 \to 13.64$), the largest efficiency gain of the three methods.
+
+These results suggest that most of the discriminative signal in the $40$-dimensional score space is concentrated in a relatively small 
+subset of functional categories, rather than being spread evenly across all of them. Retaining just 7 of the 40 categories $(17.5\%)$, 
+which means $356$ of the $K_{\text{tot}} = 2{,}036$ total host function columns preserves nearly all of the predictive performance. 
+This indicates that most discriminative functional evidence concentrates in a compact subspace of core categories, and gives us 
+empirical motivation for the learned low dimensional projections proposed in Section~\ref{sec6.3: future work}.
+
+% \begin{table}[h]
+% \centering
+% \begin{tabular}{lccc}
+% \toprule
+% Method & Configuration & Coverage & Avg. Set Size \\
+% \midrule
+% Collapsed 1D & Full ($2{,}036$ cols) & 0.929 & 6.09 \\
+% Collapsed 1D & Core ($356$ cols)     & 0.905 & 6.43 \\
+% Radial       & Full ($2{,}036$ cols) & 0.939 & 15.25 \\
+% Radial       & Core ($356$ cols)     & 0.915 & 14.58 \\
+% Strip        & Full ($2{,}036$ cols) & 0.905 & 15.35 \\
+% Strip        & Core ($356$ cols, $\alpha=0.09$) & 0.917 & 13.64 \\
+% \bottomrule
+% \end{tabular}
+% \caption{Coverage and average prediction set size on the full vs.\ core functional score set.}
+% \label{tab:core-vs-full}
+% \end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\textwidth]{Plots/core_vs_full.png}
+\caption{Coverage (left) and average prediction set size (right) on the full ($2{,}036$-column) vs.\ core
+($356$-column) functional score set, across all three envelope geometries.}
+\label{fig:core-vs-full}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\subsection{Performance under Different Constraints}
+\label{sec5.3.7: host ablations}
+
+We conducted three targeted experiments to evaluate specific operational boundaries:
+\begin{itemize}
+     \item \textbf{Low Data Host Sensitivity:} Restricting evaluation to the 17 host genera with $\ge 100$ calibration phages 
+           increases the Strip coverage from $0.905$ to $0.969$. This confirms that the slight under coverage of the strip method 
+           is driven primarily by low sample hosts with poorly estimated bins. Bu this ablation also reduces the Strip bin count 
+           from $N_B = 10$ to $N_B = 5$ in the same step, so part of the observed gain may be due to coarser binning rather than 
+           host sample size alone.
+    
+     \item \textbf{Dimensionality Reduction:} Restricting host subspaces to their top $3$, $5$, or $8$ most informative functional 
+           dimensions degraded empirical coverage to $86\text{--}88\%$. This indicates that secondary functional annotations provide 
+           discriminative signal rather than noise.
+    \item \textbf{Two-Dimensional Functional Subspaces:} Evaluating phages using only lysin and tail fiber dimensions (available for 
+           51 of 54 hosts) yielded coverages of $0.857$, $0.910$, and $0.928$ for Collapsed 1D, Radial, and Strip, respectively. 
+           Strip outperforms other geometries in this low dimensional regime, where its 2D grid avoids the curse of dimensionality.
+\end{itemize}
+
+% In an alternative calibration strategy we aimed at bounding false positive rates by incorporating non infector scores 
+% ("impostor calibration"). This formulation led to near total prediction abstention (empty sets in $>99.9\%$ of test cases), resulting 
+% in $0\%$ empirical coverage across all geometries. Because this reflects an over constrained optimization rather than a valid 
+% conformal set predictor, we will document it as an open limitation to be addressed in future work (Section~\ref{sec6.3: future work}).
+
+In an alternative calibration scheme in which we incorporated non infector scores, we evaluated to bound false positives. 
+However, penalizing non infector overlap resulted in over constraining, resulting in prediction abstention 
+($\vert{}C(s)\vert{} = 0$) on $>99.9\%$ of test phages. This invalidates conformal coverage guarantees, therefore we will 
+document it as an open methodological challenge in Section~\ref{sec6.3: future work}

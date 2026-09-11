@@ -1,0 +1,244 @@
+\section{Conformal Prediction}
+\label{sec2.3: conformal prediction}
+Conformal prediction, initially developed by Vovk, Gammerman and Shafer \cite{vovk2005algorithmic} and then later 
+made accessible by Angelopoulos and Bates \cite{angelopoulos2023conformal}, is a framework for constructing prediction 
+sets that have a coverage guarantee. Unlike the methods seen in \ref{sec2.2: current approaches} it can provide us with a 
+set of possible outcomes (not a point prediction), have a mathematical guarantee and yet requires no distributional 
+assumptions on the data, except for the exchangibility condition. Here, we will formalize the framework of 
+conformal prediction and analyze its finite-sample coverage properties.
+
+\newpage
+\begin{definition}[Exchangeability]
+\label{def: exchangeability}
+A finite sequence of random variables $Z_1, Z_2, \dots, Z_m$ taking values in a space $\mathcal{Z}$ is exchangeable if, 
+for every permutation $\sigma$ of the indices $\{1, 2, \dots, m\}$, the joint distribution of the permuted sequence is 
+identical to that of the original sequence:
+$$(Z_1, Z_2, \dots, Z_m) \overset{d}{=} (Z_{\sigma(1)}, Z_{\sigma(2)}, \dots, Z_{\sigma(m)})$$
+where $\overset{d}{=}$ denotes equality in distribution.
+
+Or, equivalently for all measurable sets $A_1, A_2, \dots, A_m \subseteq \mathcal{Z}$ and all permutations 
+$\sigma \in S_m$:
+$$\mathbb{P}(Z_1 \in A_1, Z_2 \in A_2, \dots, Z_m \in A_m) = \mathbb{P}(Z_{\sigma(1)} \in A_1, Z_{\sigma(2)} \in A_2, 
+\dots, Z_{\sigma(m)} \in A_m)$$ 
+\end{definition}
+
+
+Independent and identically distributed (i.i.d.) sequences are always exchangeable, but the converse does 
+not always hold. For example, if we draw two values without replacement from $\{0,1\}$ we get the output $(Z_1, Z_2) \in 
+\{(0,1), (1,0)\}$, both with probability $\frac{1}{2}$. This pair is exchangeable as its joint distribution 
+does not change if we swap $Z_1$ and $Z_2$. But, the two variables are not independent, since conditioning on the 
+first draw fully determines the second, $\left(\mathbb{P}(Z_2 = 1 \mid Z_1 = 1) = 0 \neq \mathbb{P}(Z_2 = 1) = \frac{1}{2}\right)$. 
+Thus, exchangeability is a weaker condition than i.i.d., as it requires the observations to not have any special ordering. 
+This condition can easily be met if we split any dataset randomly \cite{ochoarivera2024conformal, vovk2005algorithmic}.  
+
+
+\subsection{Mathematical Setup and Prediction Set}
+\label{sec2.3.1: setup}
+% \noindent - framework\\
+% - coverage guarantee\\
+% - exchnagebility
+% state Theorem 2.1 formally with both bounds ???
+Let $(X,H) \in \mathcal{X} \times \mathcal{H}$ be a random input-label pair, where $\mathcal{X}$ is the feature 
+space that represents our object of interest (in our case it is the phage protein level score vectors) and $\mathcal{H} = 
+\{h_1, \cdots, h_N\}$ is the discrete label space (set of candidate hosts). 
+
+We assume that we have a calibration dataset, $D_{\text{cal}} = \{(X_1, H_1), \cdots , (X_n, H_n)\}$, of $n$ 
+exchangeable data points drawn from an unknown joint distribution, $P_{X,H}$. Then, for a new unlabelled test input, 
+$X_{n+1}$, our aim is to construct a prediction set function $C: \mathcal{X} \rightarrow 2^{\mathcal{H}}$ depending on 
+the data which maps the test input to a subset of candidate labels, i.e., $C(X_{n+1}) \subseteq \mathcal{H}$, such that 
+the true label falls in the set with a defined coverage that is:
+$$\mathbb{P}(H_{n+1} \in C(X_{n+1})) \geq 1 - \alpha,  \qquad \text{where } \alpha \in (0,1) \text{ is the significance level} $$  
+
+% $\alpha \in (0,1)$ is the significance level. 
+
+% In our experiments we set $\alpha = 0.1$ to get a $90\%$ coverage.
+
+Unlike point predictors, $C(X)$ dynamically reflects model uncertainty. It returns a singleton $|C(X)| = 1$ 
+when confident, a multi-label set $|C(X)| \ge 2$ when uncertain between candidates, or an empty set $|C(X)| = 0$ for 
+out-of-distribution inputs. The efficiency of the model can be quantified by the expected set size $\mathbb{E}[|C(X)|]$, 
+an optimal predictor should achieve a coverage $\geq 1-\alpha$ with the smallest possible set size.
+
+% \vspace{0.15cm}
+% \noindent The expected set size, $\mathbb{E}[|C(x)|]$ can help us determine the efficiency of the model. If the coverage
+% is maintained, then the smaller the average set size the more efficient the model is, as it provides us with a more informative
+% prediction. An ideal predictor should acheive a coverage $\geq 1-\alpha$ with the smallest possible set size. This is the goal
+% that we will work on in \todo{refer to the correct section}.
+
+
+\subsection{Split conformal prediction} 
+\label{sec2.3.2: split conformal}
+% \noindent - why we use it, the train/calibration/test separation, validity still holds
+In split conformal prediction, the available data is divided into a training set and a disjoint calibration 
+set, $D_{\text{cal}} = \{(X_i, H_i)\}_{i=1}^n$. The training set is used to fit an underlying scoring model $\hat{f}: 
+\mathcal{X} \times \mathcal{H} \to \mathbb{R}$. We then define a nonconformity score function $s: \mathcal{X} \times 
+\mathcal{H} \to \mathbb{R}$ based on $\hat{f}$. This score function quantifies how unusual a pair $(x, h)$ is relative 
+to the learned patterns, smaller values of $s(x,y)$ indicate stronger conformity between $x$ and label $h$.
+
+Then using the calibration set , $\{(X_i, H_i)\}^n_{i=1}$, we evaluate the nonconformity scores:
+$$S_i = s(X_i, H_i), \quad \forall i = 1, \cdots, n.$$
+
+To make sure that our error rate is less than $\alpha$ we need to compute the conformal calibration quantile,
+$\hat q$, from these calibration scores.
+
+\begin{definition}[Conformal Calibration Quantile]
+\label{def: conformal calibration quantile}
+The conformal calibration quantile $q_{\alpha}$ is defined as the empirical $\frac{\lceil (n+1)(1-\alpha) \rceil}{n}$-th 
+quantile of calibration scores $\{S_1, \dots, S_n\}$:
+\begin{equation*}
+q_{\alpha} := \text{Quantile}\left( \{S_1, \dots, S_n\} \,;\, \frac{\lceil (n+1)(1-\alpha) \rceil}{n} \right)
+\end{equation*}
+Equivalently, expressed using the empirical cumulative distribution function:
+\begin{equation*}
+q_{\alpha} = \inf \left\{ q \in \mathbb{R} : \frac{1}{n}\sum_{i=1}^{n} \mathbf{1}(S_i \le q) \ge \frac{\lceil 
+(n+1)(1-\alpha) \rceil}{n} \right\} \;=\; S_{\left(\lceil (n+1)(1-\alpha) \rceil\right)}
+\end{equation*}
+where $S_{(1)} \leq S_{(2)} \leq \cdots \leq S_{(n)}$ denote the order statistics of the calibration scores, that is, the values
+$\{S_1, \dots, S_n\}$ sorted in non decreasing order. With $k = \lceil (n+1)(1-\alpha) \rceil$, the counting function 
+$\frac{1}{n}\sum_{i=1}^{n} \mathbf{1}(S_i \le q)$ jumps from $\frac{k-1}{n}$ to $\frac{k}{n}$ exactly at $q = S_{(k)}$, so the 
+smallest feasible $q$ is the $k$-th smallest calibration score. In words, $q_{\alpha}$ is obtained by sorting the calibration 
+scores and retaining the $\lceil (n+1)(1-\alpha) \rceil$-th smallest value.
+\end{definition}
+
+Then, for a new input, $X_{n+1}$ the conformal prediction set, $C(X_{n+1})$ , is constructed by collecting all 
+the candidate labels in $H \in \mathcal{H}$ whose nonconformity scores do not exceed $q_{\alpha}$:
+\begin{equation}
+\label{eq:prediction_set_definition}
+C(X_{n+1}) = \left\{ H \in \mathcal{H} \;\Big|\; s(X_{n+1}, H) \le q_{\alpha} \right\}
+\end{equation}
+
+% \noindent The validity of this construction follows directly from the exchangeability of the calibration and test points. 
+% Since $(Z_1, \dots, Z_{n+1}) = ((X_1,H_1), \dots, (X_{n+1}, H_{n+1}))$ are exchangeable, the joint distribution of 
+% $(S_1, \dots, S_{n+1})$ is invariant under permutations. Therefore, the rank of $S_{n+1}$ among the $n+1$ scores is 
+% uniformly distributed on $\{1, \dots, n+1\}$, giving:
+% $$\mathbb{P}(S_{n+1} \leq q_{\alpha}) = \mathbb{P}\!\left(\operatorname{rank}(S_{n+1}) \leq \lceil(n+1)(1-\alpha)\rceil
+% \right) = \frac{\lceil(n+1)(1-\alpha)\rceil}{n+1} \geq 1 - \alpha.$$
+% \noindent Theorem~\ref{thm: marginal coverage} formalises this argument.
+
+The validity of this construction follows from exchangeability. By the definition \ref{def: conformal calibration quantile}, 
+$q_{\alpha} = S_{(\lceil(n+1)(1-\alpha)\rceil)}$, where $S_{(1)} \leq \dots \leq S_{(n)}$ are the order statistics of 
+the calibration scores. Now let $S_{n+1} := s(X_{n+1}, H_{n+1})$ denote the nonconformity score of the true label of 
+the new test point. Since the pairs $(X_1, H_1), \dots, (X_{n+1}, H_{n+1})$ are exchangeable and the score function $s$ 
+is applied identically to every pair, the sequence of scores $(S_1, \dots, S_n, S_{n+1})$ is exchangeable as well. All 
+$(n+1)!$ relative orderings are equally likely, hence the rank of $S$ within this sequence is uniformly distributed 
+on $\{1, \dots, n+1\}$. Consequently:
+$$\mathbb{P}\bigl(S \leq q_{\alpha}\bigr) 
+= \mathbb{P}\!\left(\operatorname{rank}(S) \leq \lceil(n+1)(1-\alpha)\rceil\right) 
+= \frac{\lceil(n+1)(1-\alpha)\rceil}{n+1} \geq 1-\alpha.$$
+
+% We first isolate the probabilistic core of the argument in a lemma.
+
+% \begin{lemma}[Uniform Rank]
+% \label{lem: uniform rank}
+% Let $U_1,\dots,U_{n+1}$ be exchangeable real-valued random variables. Let 
+% $R_{n+1}$ denote the rank of $U_{n+1}$ among $\{U_1,\dots,U_{n+1}\}$. Then 
+% $R_{n+1} \sim \mathrm{Uniform}\{1,\dots,n+1\}$.
+% \end{lemma}
+
+% \begin{proof}
+% Exchangeability implies that the joint distribution of 
+% $(U_1,\dots,U_{n+1})$ is invariant under permutations. All $(n+1)!$ orderings 
+% of the indices are equally likely, so the index of the $(n+1)$-th variable is 
+% uniform over $\{1,\dots,n+1\}$.
+% \end{proof}
+
+% Theorem~\ref{thm: marginal coverage} formalises the coverage guarantee.
+
+
+\begin{theorem}[Marginal Coverage Guarantee \cite{vovk2005algorithmic, lei2018distribution}]
+\label{thm: marginal coverage}
+If $(X_1, H_1), \dots, (X_{n+1}, H_{n+1})$ are exchangeable, then the prediction set $C(X_{n+1})$ defined in 
+Equation \ref{eq:prediction_set_definition} satisfies:
+\begin{equation*}
+\mathbb{P}\left( H_{n+1} \in C(X_{n+1}) \right) \ge 1 - \alpha
+\end{equation*}
+Furthermore, if calibration scores $S_1, \dots, S_n$ are almost surely distinct continuous random variables, the coverage 
+bound is tight:
+\begin{equation}
+1 - \alpha \le \mathbb{P}\left( H_{n+1} \in C(X_{n+1}) \right) \le 1 - \alpha + \frac{1}{n+1}
+\end{equation}
+\end{theorem}
+
+% \noindent By the exchangibility assumption \ref{def: exchangeability}, we get that the test score, $S_{n+1} = S \left(X_{n+1}, 
+% Y_{n+1}\right)$ has rank which is uniformly distributed among $\{S_1, \cdots S_n, S_{n+1}\}$. We get the factor of 
+% $\frac{n+1}{n}$ due to the finite-sample exchangeability assumption of the $n$ calibration points added to the $1$ 
+% unseen test point, the probability is split across $n+1$ equal segments. Multiplying $(1-\alpha)$ by $\frac{n+1}{n}$ 
+% guarantees exact finite-sample coverage \cite{lei2018distribution}: 
+% $$\mathbb{P}\left(Y_{n+1} \in C(X_{n+1})\right) = \mathbb{P}(S_{n+1} \leq q_{\alpha}) \ge 1 - \alpha.$$ 
+
+% \vspace{0.15cm}
+% \noindent This mathematical guarantee in Theorem \ref{thm: marginal coverage} holds exactly in finite samples without 
+% any assumptions on the nonconformity score function, $s$, or on the distribution of $(X, Y)$. The choice of $S$ affects 
+% the efficiency as it impacts how tight the prediction sets are, but it does not effect the validity of the method. 
+% This makes seperation makes conformal prediction powerfuls, as it enables us to use any score function and yet have the 
+% coverage guarantee \cite{ochoarivera2024conformal}.
+
+Crucially, theorem \ref{thm: marginal coverage} holds strictly in finite samples without requiring parametric 
+assumptions on $s(\cdot, \cdot)$ or $\mathbb{P}_{X,H}$. While the choice of scoring function $s$ governs efficiency (set 
+size), valid statistical coverage is guaranteed by construction in a single computational pass over $D_{\text{cal}}$ 
+\cite{ochoarivera2024conformal}.
+
+The score function $s$ is chosen so that it can separate plausible hosts from implausible ones. $s(x,h)$ should take a 
+small value when $h$ is likely to be the true host of $x$, and if $h'$ is not the host, $s(x, h')$ should take a high
+score which typically exceeds $q_{\alpha}$. $h'$ then fails the test in Equation~\ref{eq:prediction_set_definition} 
+and is not selected into the prediction set $C(X_{n+1})$. This discriminative behaviour is not created by conformal 
+prediction itself, it is already exhibited by many standard supervised learning models. A classifier which is trained to
+output a class probability $\hat p(h \mid x)$ naturally produces this pattern since $1-\hat p(h\mid x)$ is
+small for the true class and large for incorrect ones. A poorly discriminating score function never invalidates the 
+method as the coverage guarantee of Theorem~\ref{thm: marginal coverage} holds regardless, but the resulting prediction 
+sets become larger. 
+
+
+\subsection{Marginal \& Conditional Coverage}
+\label{sec2.3.3: coverage types}
+Standard conformal prediction satisfies marginal coverage, which means that the $(1-\alpha)\%$ coverage guarantee 
+holds on average across all possible choices of the calibration set, $D_{\text{cal}}$, and test samples, $(X_{n+1}, 
+H_{n+1})$. So, 
+$$\mathbb{E}_{D_{cal}, (X_{n+1}, H_{n+1})} \left[ \mathbb{I}(H_{n+1} \in C(X_{n+1})) \right] = \mathbb{P}(H_{n+1} \in 
+C(X_{n+1})) \geq 1 - \alpha$$
+
+However, the marginal coverage does not ensure the conditional coverage, given specific features ($X = x$), or 
+specific classes ($H=h$). So, for a dataset that has class imbalance, which is very common in phage-host interaction, a 
+marginal model can satisfy the coverage guarantee by potentially over-covering a majority class ($100\%$) and under-
+covering a small class ($0\%$) \cite{ochoarivera2024conformal, romano2020classification}. For instance, if $\mathcal{H} 
+= \{-1, 1\}$ with class proportion $\mathbb{P}(H = -1) = 0.9$, a predictor achieving $100\%$ coverage on $H = -1$ and 
+$0\%$ coverage on $Y = 1$ still attains an overall $90\%$. In phage-host classification, such conditional under-coverage 
+on minority host may be a problem. 
+ 
+While feature-conditional coverage ($\mathbb{P}(H \in C(X) \mid X = x) \ge 1 - \alpha$) is mathematically 
+impossible to achieve in finite samples without strong parametric assumptions \cite{vovk2005algorithmic,ochoarivera2024conformal}, 
+class-conditional coverage (Mondrian conformal prediction) is exact and valid in finite 
+samples. We partition $D_{\text{cal}}$ into $N$ disjoint subsets $D_{\text{cal}}^{(h)} = \{(X_i, H_i) \in D_{\text{cal}} 
+: H_i = h\}$ and evaluate separate class-specific quantiles $q_{\alpha}^{(h)}$, enforcing exact coverage per class:
+\begin{equation}
+\mathbb{P}\left(H_{n+1} \in C(X_{n+1}) \;\Big|\; H_{n+1} = h\right) \ge 1 - \alpha, \quad \forall h \in \mathcal{H}
+\end{equation}
+
+Because exchangeability holds within each class-conditional partition $D_{\text{cal}}^{(h)}$, evaluating 
+per-class quantiles preserves exact finite-sample validity across every candidate host, as formalised in 
+Section \ref{sec3.5.2: class specific t hat}.
+
+
+
+
+% \vspace{0.15cm}
+% \noindent This limitation motivates the class-conditional calibration coverage structure in \todo{refer to section}. In
+% this framework, originally introduced under Mondrian conformal prediction \cite{vovk2005algorithmic}, the guarantee hold 
+% for each class individually:
+% $$\mathbb{P}(Y \in C(X) \mid Y = y) \geq 1-\alpha \quad \forall y \in \mathcal{y}$$
+
+% \noindent It is impossible to get the feature-conditional coverage ($X = x$) without additional assumptions, as it would require the
+% conditional coverage at every point $x$, which is impossible with finite data \cite{ochoarivera2024conformal}. However, we
+% can get the class-conditional coverage ($Y = y$) is exact and valid for finite-sample. We can compute a seperate 
+% threshold for each class using only the calibration points with the true label $y$. This is like class conditional 
+% calibration, which is a justified approximation \todo{justify it mathematically}. 
+
+% \vspace{0.15cm}
+% \noindent This technique has been used in this report and is formalised in \todo{refer to section}. The main point here is
+% that this class conditional calibration still uses the exact same quantile argument as the marginal calibration, it just 
+% applies it seperately to each class. Therefore, it is mathematically valid under the assumption of exchangeability
+% within each class.
+
+
+
+%%%%%%%%%%%%%%%%%%%
+

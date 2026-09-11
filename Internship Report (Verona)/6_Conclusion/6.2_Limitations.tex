@@ -1,0 +1,47 @@
+\section{Limitations}
+\label{sec6.2: limitations}
+
+Despite the empirical results, this framework has several methodological and biological limitations:
+
+\begin{itemize}
+    \item \textbf{Small Sample Host Instability:} Training sample sizes vary widely across hosts (ranging from
+          $>1\,400$ phages for \emph{Mycobacterium} down to fewer than $10$ for rare genera such as \emph{Sulfolobus}
+          and \emph{Microcystis}). Abundant hosts calibrate reliably near the $90\%$ target, but low sample hosts
+          show significantly higher empirical variance, since the quantile estimates on small calibration sets ($n_h < 10$)
+          struggle to capture the tails of the true infector score distribution. If we restrict our evaluation to hosts
+          with $\geq 100$ training phages, we can recover coverage for the Strip method (\ref{sec5.3.7: host ablations}), 
+          but this ablation also reduced the bin count from the validation-tuned $N_B = 10$ to $N_B = 5$ in the same step, 
+          so we cannot attribute the improvement just to sample size.
+         
+    \item \textbf{High Dimensional Sensitivity:} Collapsed 1D achieves compact prediction sets by 
+          compressing score vectors into a scalar mean, making it unable to distinguish a phage whose evidence concentrates in 
+          one informative dimension from one whose evidence is spread thinly across many uninformative ones (Fig \ref{fig: 
+          staph 1 good 1 bad}). Conversely, the Radial and Strip envelopes preserve this directional structure but suffer as 
+          $K_h$ grows toward $40$: sparse angular or bin-wise support forces frequent fallback to the conservative marginal 
+          quantile, which is the direct cause of their larger average prediction sets relative to Collapsed 1D.
+
+          \newpage
+    \item \textbf{Structural Missingness:} Phages frequently lack entire functional protein classes, producing
+           $30\%-36\%$ missing values per score vector. The Strip envelope handles these missing coordinates by removing the 
+           corresponding dimensions from the pairwise construction. Consequently, only pairs $(j,i)$ for which both dimensions are
+           observed contribute to the Strip scaling function.
+
+    \item \textbf{Large Absolute Set Sizes:} Even where coverage is valid, the prediction sets of Radial and Strip are on average 
+           of size $15+$ out of $54$ candidate hots. A list of that size is of limited direct use as a clinical or laboratory 
+           shortlist, even though it is a large efficiency gain over the unrestricted, non Gram filtered setting (avg.\ size 
+           $\approx 39$, Table \ref{tab: gram filtering effect}). 
+
+    \item \textbf{Error Propagation:} Because host level prediction depends on Gram type filtering, the theoretical miscoverage 
+           is added ($\alpha + \max_h \alpha_h$, Proposition \ref{prop:cascade}). Although the empirical Gram type miscoverage 
+           was near zero in our evaluation, any systematic bias in the first stage classification, (for example, on phages with 
+           ambiguous raw scores near the $0.25\text{--} 0.75$ zone) prunes the true host before the host level envelope is even 
+           evaluated, and this cannot be corrected.
+       
+     \item \textbf{Conservativeness of Strip Envelopes in High Dimensions:} The strip envelope calibrates each individual limit 
+            (each $(j,i)$ constraint) at the $1-\alpha$ quantile level before taking their intersection. Every direction 
+            independently discards an $\alpha$ fraction of the data, therefore their intersection compounds these discarded data. This 
+            makes the shape discovery envelope overly tight as dimensions increase. So the the size scaling factor $\hat{t}$ is forced 
+            to grow much larger than necessary to restore target coverage.
+
+\end{itemize}
+

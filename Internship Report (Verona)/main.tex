@@ -1,0 +1,78 @@
+%!TEX root = main.tex
+\documentclass[12pt, a4paper]{memoir}
+
+% % --- Load all configuration styles and packages ---
+\input{preamble}
+
+\begin{document}
+
+\frontmatter
+\input{titlepage}
+
+
+\input{Abstract.tex}
+
+% % \newpage
+% % \input{Acknowledgements.tex}
+
+\clearpage
+\thispagestyle{empty}
+\null
+\clearpage
+% Table of contents
+\pagenumbering{roman}
+\tableofcontents*
+
+\mainmatter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHAPTER 1  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\pagenumbering{arabic}
+\input{1_Introduction/1_Introduction.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHAPTER 2  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\input{2_Background_and_State_of_the_Art/2.1_Background.tex}
+\input{2_Background_and_State_of_the_Art/2.2_Current Methods.tex}
+\input{2_Background_and_State_of_the_Art/2.3_Conformal_Prediction.tex}
+\input{2_Background_and_State_of_the_Art/2.4_CSA_Method.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHAPTER 3  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\input{3_Methods/3.1_Problem.tex}
+\input{3_Methods/3.2_Nonconvex_envelopes.tex}
+\input{3_Methods/3.3_Score_Transformation.tex}
+\input{3_Methods/3.4_Envelope_Construction_Methods.tex}
+\input{3_Methods/3.5_Tau_Computation.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHAPTER 4  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\input{4_Data/4.1_Data_Description.tex}
+\input{4_Data/4.2_Aggregation.tex}
+\input{4_Data/4.3_Contamination_Fix.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHAPTER 5  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\input{5_Experiments_and_Results/5.1_Synthetic_Validation.tex}
+\input{5_Experiments_and_Results/5.2_Gram_type_classification.tex}
+\input{5_Experiments_and_Results/5.3_Host_Classification.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CHAPTER 6  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{6_Conclusion/6.1_Summary.tex}
+\input{6_Conclusion/6.2_Limitations.tex}
+\input{6_Conclusion/6.3_future_work.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% BIBLIOGRAPHY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\backmatter
+\bibliographystyle{plain} % Or 'unsrt', 'alpha', 'ieeetr', etc.
+\bibliography{references}  % Name of your .bib file without the '.bib' extension
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% APPENDIX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix
+\input{Appendix/plots.tex}
+
+
+
+\end{document}

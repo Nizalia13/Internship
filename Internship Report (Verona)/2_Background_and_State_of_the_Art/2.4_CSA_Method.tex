@@ -1,0 +1,206 @@
+\section{Conformal Set Aggregation (CSA)}
+\label{sec2.4: CSA Method}
+The standard split conformal framework in \ref{sec2.3.2: split conformal} takes a scalar non conformity 
+score $S(x, h) \in \mathbb{R}$. In this report, the protein language model pipeline (Section~\ref{sec2.2.2: plms}) produces a multidimensional representation, a 
+$K$-dimensional score vector $\mathbf{s} \in [0, 1]^K$ for each phage, whose entries correspond to specific 
+functional categories (Figure~\ref{fig: score vector scheme}). We may lose the 
+geometric structure of the score distribution if we aggregate this vector to a scalar value before applying 
+conformal prediction. For such settings, Ochoa Rivera, Patel and Tewari \cite{ochoarivera2024conformal} 
+have proposed a score-based aggregation (CSA) method for conformal prediction.
+
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+    >=Stealth,
+    node distance=0.6cm,
+    every node/.style={font=\footnotesize},
+    process/.style={
+        draw=blue!60!black!70,
+        fill=blue!5!white,
+        rounded corners=4pt,
+        minimum height=1.1cm,
+        inner xsep=8pt,
+        inner ysep=4pt,
+        align=center,
+        line width=0.7pt
+    },
+    result/.style={
+        draw=teal!70!black!80,
+        fill=teal!6!white,
+        rounded corners=4pt,
+        minimum height=1.1cm,
+        inner xsep=10pt,
+        inner ysep=4pt,
+        align=center,
+        line width=0.7pt
+    }
+]
+
+% Nodes
+\node[process] (seq) {Phage\\Proteins};
+\node[process, right=of seq] (plm) {pLM Encoder\\$\Phi_{\text{pLM}}$};
+\node[process, right=of plm] (func) {Per-Function\\Scores};
+\node[result, right=of func] (vec) {$\mathbf{s} \in [0,1]^K$};
+
+% Arrows
+\draw[->, line width=0.9pt, draw=gray!70!black] (seq) -- (plm);
+\draw[->, line width=0.9pt, draw=gray!70!black] (plm) -- (func);
+\draw[->, line width=0.9pt, draw=gray!70!black] (func) -- (vec);
+
+% Sub-annotation
+%\node[below=0.18cm of func, font=\scriptsize\itshape, text=gray!80!black] {(capsid, tail, lysin, \dots)};
+
+\end{tikzpicture}
+\caption{Construction of the $K$-dimensional functional score vector, $\mathbf{s}$, from a phage's protein sequences.}
+\label{fig: score vector scheme}
+\end{figure}
+
+\subsection{Ensemble Score Vectors}
+\label{sec2.4.1: ensemble score vectors}
+Let $\mathcal{S} \subseteq [0, 1]^K$ be the score space and let $s = (s_1, \cdots, s_K) \in \mathcal{S}$ be 
+the vector of scores produced by the $K$ models, for each phage. Now, the CSA method treats the entire vector as the 
+object of inference rather than reducing it into a single value. The main idea is to define a region, called an envelope, 
+$E \subseteq [0,1]^K$. This envelope consists of the region where the score vectors of the true hosts for that particular 
+phage are concentrated.
+
+% \noindent Mathematically, we can say that we apply a label dependent transformation $\phi_y: [0,1]^K \rightarrow
+% [0,1]^K$ to the raw score vector. This mapping is constructed such that when $y \in \mathcal{Y}$ is the true host label, 
+% the transformed score vector $\phi_y(\mathbf{s})$ concentrates near the origin in $\mathbb{R}^K$. The exact transformation 
+% $\phi_y$ used in this work is formalized later in \todo{refer}.
+
+Mathematically, let $\{\phi_h\}_{h\in\mathcal{H}}$ be a family of label-dependent maps 
+$\phi_h: [0,1]^K \to [0,1]^K$ such that, when $h$ is the true label, the transformed 
+score vector $\phi_h(\mathbf{s})$ concentrates near the origin in $\mathbb{R}^K_+$. 
+The CSA method constructs an envelope $E \subseteq \mathbb{R}^K_+$ as the intersection 
+of $M$ half-spaces induced by unit directions $\{\mathbf{u}_m\}_{m=1}^M$ and quantile 
+thresholds $\{\tilde{q}_m\}_{m=1}^M$:
+\begin{equation}
+\label{eq: convex envelope}
+E = \bigcap_{m=1}^{M} \bigl\{\mathbf{s} \in \mathbb{R}^K_+ : \langle \mathbf{s}, \mathbf{u}_m \rangle \leq \tilde{q}_m \bigr\}.
+\end{equation}
+By construction, $E$ is convex. Membership of a transformed score in the scaled envelope 
+$t \cdot E$ is tested coordinate-wise along each direction. The exact transformation 
+$\phi_h$ used in this work is formalized in Section~ \ref{sec3.3: nc transformation}.
+
+% \vspace{0.15cm}
+% \noindent Mathematically, we can say that we apply a label dependent transformation $\phi_y: [0,1]^K \rightarrow
+% [0,1]^K$ to the score vector, before actually testing if it is part of the envelope. This transformation needs to be
+% such that the for a phage with the true label $y$, $\phi_y$ should be close to the origin in the score space. So,
+% we can write our prediction set as:
+% $$C(s) = \{y \in \mathcal{Y}: \phi_y(s) \in \hat t \cdot E\},$$
+% \noindent where $t \cdot E = \{t \cdot \mathbf{x} : \mathbf{x} \in E\}$ represents linear dilation of $E$ in $\mathbb{R}^K$
+% and $\hat t$ is the global scaling factor that is calibrated on the calibration set \ref{sec2.3.2: split 
+% conformal}. The $\phi_y$ chosen in this work is defined in \todo{refer to the correct section}.
+
+\subsection{The CSA Framework}
+\label{sec2.4.2: csa framework}
+The core innovation of the CSA method is in the calibration process. It splits the calibration data into
+two subsets which have different roles. This is necessary for the exchangeability argument that provides us with the
+coverage guarantee. If we used the same calibration points to construct both, we would get overfitting which would 
+introduce bias which would invalidate the distribution-free coverage guarantee \cite{ochoarivera2024conformal}.
+
+\begin{enumerate}[label=(\roman*)]
+    \item \textbf{Shape Discovery Set ($S_1$):} Used to model the spatial distribution of scores and learn the geometric
+          shape, orientation, and boundaries of the envelope $E \subset \mathbb{R}^K$. 
+      %     $S_1$ determines the shape of the region without fixing its scale.
+    \item \textbf{Size Scaling Set ($S_2$):} Used to determine the scalar scaling parameter $\hat{t} \in \mathbb{R}^+$. 
+          $\hat{t}$ inflates or deflates $E$ until exact empirical coverage $1 - \alpha$ is attained over $S_2$:
+\end{enumerate}
+ 
+\begin{equation*}
+ \hat{t} = \inf \left\{ t > 0 \;\Big|\; \frac{1}{|S_2|} \sum_{\mathbf{s} \in S_2} \mathbf{1}\left(\phi_H(\mathbf{s}) 
+ \in t \cdot E\right) \ge \frac{\lceil (|S_2|+1)(1-\alpha) \rceil}{|S_2|} \right\}
+ \end{equation*}
+This $\hat t$ is the smallest scaling factor such that the scaled envelope $\hat t \cdot E$ achieves the 
+required $1-\alpha$ coverage. The scaled envelope is defined linearly as:
+$$\hat t \cdot E = \{ t \cdot x : x \in E \}, \quad \hat t > 0$$
+
+In the original CSA paper \cite{ochoarivera2024conformal}, finding $\hat{t}$ is presented as a root-finding 
+problem solved through iterative numerical optimization or binary search over candidate scaling values $t$. At test time, 
+a candidate label $h$ is included in the prediction set $C(\mathbf{s}_{n+1})$ if and only if its transformed score 
+vector falls inside the scaled envelope: $$C(\mathbf{s}_{n+1}) = \{ h \in \mathcal{H} : \phi_h(\mathbf{s}_{n+1}) \in 
+\hat{t} \cdot E \}.$$
+
+
+
+% \noindent Finally, for each calibration point $\mathbf{s} \in S_2$, we define the minimal scaling factor required to 
+% include it in the envelope as:
+% $$\tau(\mathbf{s}) = \inf\{t > 0 : \phi_y(\mathbf{s}) \in t \cdot E\}$$
+% The global scaling factor is then the $(1-\alpha)$ quantile of these values over $S_2$:
+% $$\hat{t} = \tau_{\lceil(|S_2|+1)(1-\alpha)\rceil}$$
+% where $\tau_{(1)} \leq \cdots \leq \tau_{(|S_2|)}$ are the sorted $\tau$-values. By the 
+% same exchangeability argument as Theorem~\ref{thm: marginal coverage}, this construction 
+% guarantees $\mathbb{P}(Y_{n+1} \in C(\mathbf{s})) \geq 1-\alpha$.
+
+% \vspace{0.15cm}
+% \noindent Finally, for a test input a candidate label, $y$ is included in the prediction set its transformed score vector
+% falls inside the scaled envelope:
+% $$C(s) = \{ y \in \mathcal{Y} : \phi_y(\mathbf{s}) \in \hat{t} \cdot E \}$$
+% where $\phi_y$ is a maps the raw scores into the score space.
+
+
+% \vspace{0.15cm}
+% \noindent Splitting calibration into disjoint sets $S_1$ and $S_2$ prevents overfitting and ensures that evaluating 
+% $\hat{t}$ on $S_2$ yields a valid distribution-free coverage guarantee \cite{ochoarivera2024conformal}. For a test phage 
+% with score vector $\mathbf{s}_{n+1}$, candidate label $y$ is included in the prediction set $C(\mathbf{s}_{n+1})$ if and 
+% only if $\phi_y(\mathbf{s}_{n+1}) \in \hat{t} \cdot E$.
+
+% \noindent The global scaling factor $\hat{t} > 0$ is the minimum inflation needed to achieve $(1-\alpha)$ coverage over $S_2$:
+% \begin{equation}
+% \hat{t} = \inf \left\{ t > 0 \;\Big|\; \frac{1}{|S_2|} \sum_{\mathbf{s} \in S_2} \mathbf{1}\left(\phi_Y(\mathbf{s}) \in t \cdot E\right) \ge \frac{\lceil (|S_2|+1)(1-\alpha) \rceil}{|S_2|} \right\}
+% \end{equation}
+% At test time, candidate label $y$ is included in the prediction set $C(\mathbf{s}_{n+1})$ if and only if its transformed vector falls inside the scaled envelope: $C(\mathbf{s}_{n+1}) = \{ y \in \mathcal{Y} : \phi_y(\mathbf{s}_{n+1}) \in \hat{t} \cdot E \}$.
+
+
+% \vspace{0.15cm}
+% \noindent For each calibration point $\mathbf{s} \in S_2$, we evaluate the minimal scaling factor required to include its 
+% transformed score in the envelope:
+% \begin{equation}
+% \tau(\mathbf{s}) = \inf \left\{ t > 0 \;\Big|\; \phi_y(\mathbf{s}) \in t \cdot E \right\}
+% \end{equation}
+% where $t \cdot E = \{ t \cdot \mathbf{x} : \mathbf{x} \in E \}$. The global scaling factor $\hat{t}$ is then evaluated as 
+% the empirical $(1-\alpha)$ quantile of these sorted values:
+% \begin{equation}
+% \hat{t} = \tau_{(\lceil(|S_2|+1)(1-\alpha)\rceil)}
+% \end{equation}
+% where $\tau_{(1)} \le \dots \le \tau_{(|S_2|)}$. Splitting calibration into disjoint sets $S_1$ and $S_2$ prevents 
+% overfitting and ensures that $\hat{t}$ preserves the distribution-free coverage guarantee of 
+% Theorem~\ref{thm: marginal coverage}. At test time, a candidate host label $y$ is included in the prediction 
+% set $C(\mathbf{s}_{n+1})$ if and only if $\phi_y(\mathbf{s}_{n+1}) \in \hat{t} \cdot E$.
+
+
+
+\subsection{Limitations of CSA in Classification}
+\label{sec2.4.3: csa limitations}
+This CSA framework was originally developed and analyzed in a regression setting \cite{ochoarivera2024conformal}, 
+and has some major limitations when it is applied to classification problems:
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Convexity of Envelope:} In \cite{ochoarivera2024conformal}, the conformal envelope $E$ is constructed 
+      as an intersection of half-spaces and is therefore convex. In the original high-dimensional regression setting, 
+      where the score vectors concentrate in a single connected region of the score space, this is a natural and useful 
+      design choice. But in classification, the score vectors for different classes concentrate in separate regions in 
+      the $[0, 1]^K$ score space. Therefore, if we force a convex envelope across the regions, we will create a region 
+      that covers a large area of empty score space in between, which inflates the volume of the envelope and leads to 
+      over-conservative, uninformative prediction sets, as $|C(\mathbf{s})|$ becomes very large.
+\item \textbf{Calibration Inefficiency:} Originally the method uses an iterative numerical optimization or a binary search 
+      to find the optimal scaling factor $\hat{t}$ over $S_2$, which is appropriate in the original regression analysis. 
+      Each trial value of $t$, however, requires evaluating every half-space constraint for every point in $S_2$, and in 
+      classification this cost multiplies across candidate host labels, making the iterative approach prohibitively 
+      expensive and motivating the closed-form computation of Section~\ref{sec3.5: t hat calculation}.
+\item \textbf{Only Marginal Guarantee:} The scaling calculations in the original method only provide us with a 
+      marginal guarantee. This can lead to poor performance on the biological datasets, which are imbalanced.
+\item \textbf{Handling of Missing Scores (NaN):} The original CSA formulation assumes that every score vector is fully 
+      observed across all $K$ dimensions. In our setting, phage score vectors exhibit structural missingness (Section 
+      \ref{sec4.1: data description}), a phage may simply lack a protein annotated for a given functional category. 
+      If we naively impute these missing entries, for example to zero, we would get a bias the nonconformity score 
+      toward interpreting absence as evidence against infection, and would invalidate the exchangeability assumption 
+      underlying Theorem \ref{thm: marginal coverage}. 
+\end{enumerate}
+
+These limitations directly motivate the methodology developed in Chapter~\ref{sec3: methodology}.
+
+% \noindent These limitations provide us with the oppurtunity to improve efficiency, to acheivee the same covergae but 
+% with smaller prediction sets. An this is the main motivation behind this work: designing the non-convex envelopes, 
+% developing an analytical solution for $\hat t$ and finally implementing the class conditional adjustments to ensure that 
+% we get statistical guarantees for the phage-host range prediction.
