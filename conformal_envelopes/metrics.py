@@ -35,8 +35,7 @@ def evaluate_prediction_sets(prediction_sets, true_labels):
 
     return {"coverage": float(np.mean(covered)), "average_set_size": float(np.mean(sizes)),
             "singleton_rate": float(len(singleton_idx) / len(true_labels)),
-            "singleton_accuracy": (float(np.mean([prediction_sets[i][0] == true_labels[i]
-                                                  for i in singleton_idx])) if singleton_idx 
-                                                  else None),
+            "singleton_accuracy": (float(np.mean([covered[i] for i in singleton_idx]))
+                                   if singleton_idx else None),
             "empty_rate": float(np.mean([len(s) == 0 for s in prediction_sets])),
             "per_class_coverage": per_class_coverage,}
