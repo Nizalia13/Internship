@@ -56,6 +56,7 @@ have proposed a score-based aggregation (CSA) method for conformal prediction.
 \label{fig: score vector scheme}
 \end{figure}
 
+\newpage
 \subsection{Ensemble Score Vectors}
 \label{sec2.4.1: ensemble score vectors}
 Let $\mathcal{S} \subseteq [0, 1]^K$ be the score space and let $s = (s_1, \cdots, s_K) \in \mathcal{S}$ be 
@@ -190,6 +191,7 @@ and has some major limitations when it is applied to classification problems:
       expensive and motivating the closed-form computation of Section~\ref{sec3.5: t hat calculation}.
 \item \textbf{Only Marginal Guarantee:} The scaling calculations in the original method only provide us with a 
       marginal guarantee. This can lead to poor performance on the biological datasets, which are imbalanced.
+      \newpage
 \item \textbf{Handling of Missing Scores (NaN):} The original CSA formulation assumes that every score vector is fully 
       observed across all $K$ dimensions. In our setting, phage score vectors exhibit structural missingness (Section 
       \ref{sec4.1: data description}), a phage may simply lack a protein annotated for a given functional category. 

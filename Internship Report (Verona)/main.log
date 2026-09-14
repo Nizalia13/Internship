@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  11 SEP 2026 13:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/Debian) (preloaded format=pdflatex 2026.5.21)  14 SEP 2026 16:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1203,7 +1203,7 @@ Package caption Info: End \AtBeginDocument code.
 <main-frn.pdf, id=151, 597.50829pt x 845.0471pt>
 File: main-frn.pdf Graphic file (type pdf)
 <use main-frn.pdf>
-Package pdftex.def Info: main-frn.pdf  used on input line 3.
+Package pdftex.def Info: main-frn.pdf  used on input line 4.
 (pdftex.def)             Requested size: 597.50682pt x 845.04504pt.
  [1
 
@@ -1211,45 +1211,57 @@ Package pdftex.def Info: main-frn.pdf  used on input line 3.
  <./main-frn.pdf{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}>] [2
 
 ]) (./Abstract.tex
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 27.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 30.
  (/usr/share/texmf/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 27.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 30.
  (/usr/share/texmf/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 27.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 30.
  (/usr/share/texmf/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 27.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 30.
  (/usr/share/texmf/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 27.
+(Font)              <12> on input line 30.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 27.
+(Font)              <8> on input line 30.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 27.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 27.
+(Font)              <6> on input line 30.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 30.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 27.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 30.
  (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
-)) [3] [4
-
-] (./main.toc
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 2.
 )
+pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.35 \chapter
+             *{Abstract} [1
+
+
+]
+pdfTeX warning (ext4): destination with the same identifier (name{page.ii}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.35 \chapter
+             *{Abstract} [2
+
+]) [3] [4
+
+] (./main.toc)
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
@@ -1284,9 +1296,9 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 42.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 42.
- [13] [14]) [15] (./3_Methods/3.1_Problem.tex [16
+ [13] [14] [15]) [16] (./3_Methods/3.1_Problem.tex [17
 
-] [17]
+]
 Overfull \hbox (6.32484pt too wide) in paragraph at lines 82--86
 \T1/lmr/m/n/12 (-20) time. We first ob-tain a gram-type pre-dic-tion set $\OML/lmm/m/it/12 C[]\OT1/lmr/m/n/12 (-20) (\OML/lmm/m/it/12 s; m\OT1/lmr/m/n/12 (-20) ) \OMS/lmsy/m/n/12 ^^R f[]\OML/lmm/m/it/12 ; []\OMS/lmsy/m/n/12 g$
  []
@@ -1306,31 +1318,23 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
  [20]) (./3_Methods/3.4_Envelope_Construction_Methods.tex [21]
-Overfull \hbox (19.69185pt too wide) detected at line 88
+Overfull \hbox (19.69185pt too wide) detected at line 66
 [] \OT1/lmr/m/n/12 = []
  []
 
 [22]
-<Plots/radial envelope.png, id=525, 1027.84pt x 684.5575pt>
+<Plots/radial envelope.png, id=532, 1027.84pt x 684.5575pt>
 File: Plots/radial envelope.png Graphic file (type png)
 <use Plots/radial envelope.png>
-Package pdftex.def Info: Plots/radial envelope.png  used on input line 118.
+Package pdftex.def Info: Plots/radial envelope.png  used on input line 96.
 (pdftex.def)             Requested size: 355.51817pt x 236.77843pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Overfull \hbox (49.62883pt too wide) detected at line 145
-[]\OT1/lmr/m/n/12 [\OML/lmm/m/it/12 j; i; n\OT1/lmr/m/n/12 ] = []
- []
-
-<Plots/Strip envlelope.png, id=526, 1653.17625pt x 958.58125pt>
+ [23]
+<Plots/Strip envlelope.png, id=541, 1653.17625pt x 958.58125pt>
 File: Plots/Strip envlelope.png Graphic file (type png)
 <use Plots/Strip envlelope.png>
-Package pdftex.def Info: Plots/Strip envlelope.png  used on input line 152.
+Package pdftex.def Info: Plots/Strip envlelope.png  used on input line 131.
 (pdftex.def)             Requested size: 334.60422pt x 194.00925pt.
-[23] [24 <./Plots/radial envelope.png>] [25 <./Plots/Strip envlelope.png (PNG copy)>]) (./3_Methods/3.5_Tau_Computation.tex
+ [24 <./Plots/radial envelope.png>] [25 <./Plots/Strip envlelope.png (PNG copy)>]) (./3_Methods/3.5_Tau_Computation.tex
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <14.4> on input line 2.
  [26]) [27] (./4_Data/4.1_Data_Description.tex [28
@@ -1338,6 +1342,9 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 ] (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfit.code.tex
 File: tikzlibraryfit.code.tex 2023-01-15 v3.1.10 (3.1.10)
 )
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 132.
+
 Overfull \hbox (7.49413pt too wide) in paragraph at lines 140--140
  [][]$\OML/lmm/m/it/10 M[]$ 
  []
@@ -1369,40 +1376,43 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 20
  (/usr/share/texmf/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [36] [37]) (./5_Experiments_and_Results/5.2_Gram_type_classification.tex
-<Plots/comparison_plot_2.png, id=662, 1003.8303pt x 747.2718pt>
+<Plots/comparison_plot_2.png, id=669, 1003.8303pt x 747.2718pt>
 File: Plots/comparison_plot_2.png Graphic file (type png)
 <use Plots/comparison_plot_2.png>
-Package pdftex.def Info: Plots/comparison_plot_2.png  used on input line 57.
+Package pdftex.def Info: Plots/comparison_plot_2.png  used on input line 31.
 (pdftex.def)             Requested size: 418.25368pt x 311.35487pt.
+ [38]
+Underfull \vbox (badness 2343) has occurred while \output is active []
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[38] [39 <./Plots/comparison_plot_2.png>]
-<Plots/raw_score_distribution.png, id=681, 714.7503pt x 281.853pt>
+ [39 <./Plots/comparison_plot_2.png>]
+<Plots/raw_score_distribution.png, id=689, 714.7503pt x 281.853pt>
 File: Plots/raw_score_distribution.png Graphic file (type png)
 <use Plots/raw_score_distribution.png>
-Package pdftex.def Info: Plots/raw_score_distribution.png  used on input line 114.
+Package pdftex.def Info: Plots/raw_score_distribution.png  used on input line 88.
 (pdftex.def)             Requested size: 368.06528pt x 145.14516pt.
-) (./5_Experiments_and_Results/5.3_Host_Classification.tex [40 <./Plots/raw_score_distribution.png>] [41]
-<Plots/Host coverage and set size.png, id=708, 1789.68625pt x 485.815pt>
+) (./5_Experiments_and_Results/5.3_Host_Classification.tex
+Underfull \vbox (badness 2293) has occurred while \output is active []
+
+ [40 <./Plots/raw_score_distribution.png>] [41]
+<Plots/Host coverage and set size.png, id=715, 1789.68625pt x 485.815pt>
 File: Plots/Host coverage and set size.png Graphic file (type png)
 <use Plots/Host coverage and set size.png>
 Package pdftex.def Info: Plots/Host coverage and set size.png  used on input line 106.
 (pdftex.def)             Requested size: 418.25368pt x 113.53644pt.
- [42 <./Plots/Host coverage and set size.png>]
-<Plots/staph_1good_1bad_2.png, id=729, 1289.2968pt x 349.7868pt>
+ [42]
+<Plots/staph_1good_1bad_2.png, id=737, 1289.2968pt x 349.7868pt>
 File: Plots/staph_1good_1bad_2.png Graphic file (type png)
 <use Plots/staph_1good_1bad_2.png>
 Package pdftex.def Info: Plots/staph_1good_1bad_2.png  used on input line 155.
 (pdftex.def)             Requested size: 418.25368pt x 113.4712pt.
-<Plots/staph_both_good_1.png, id=730, 1289.2968pt x 349.7868pt>
+ [43 <./Plots/Host coverage and set size.png>]
+<Plots/staph_both_good_1.png, id=753, 1289.2968pt x 349.7868pt>
 File: Plots/staph_both_good_1.png Graphic file (type png)
 <use Plots/staph_both_good_1.png>
 Package pdftex.def Info: Plots/staph_both_good_1.png  used on input line 166.
 (pdftex.def)             Requested size: 418.25368pt x 113.4712pt.
- [43] [44 <./Plots/staph_1good_1bad_2.png> <./Plots/staph_both_good_1.png>]
-<Plots/clustermap_collaped_1.png, id=756, 586.1097pt x 807.9786pt>
+ [44 <./Plots/staph_1good_1bad_2.png> <./Plots/staph_both_good_1.png>]
+<Plots/clustermap_collaped_1.png, id=764, 586.1097pt x 807.9786pt>
 File: Plots/clustermap_collaped_1.png Graphic file (type png)
 <use Plots/clustermap_collaped_1.png>
 Package pdftex.def Info: Plots/clustermap_collaped_1.png  used on input line 199.
@@ -1413,36 +1423,43 @@ Overfull \hbox (1.35616pt too wide) in paragraph at lines 233--245
  []
 
 [45] [46 <./Plots/clustermap_collaped_1.png>]
-<Plots/core_vs_full.png, id=778, 1000.2168pt x 349.7868pt>
+<Plots/core_vs_full.png, id=786, 1000.2168pt x 349.7868pt>
 File: Plots/core_vs_full.png Graphic file (type png)
 <use Plots/core_vs_full.png>
 Package pdftex.def Info: Plots/core_vs_full.png  used on input line 300.
 (pdftex.def)             Requested size: 418.25368pt x 146.26897pt.
- [47 <./Plots/core_vs_full.png>]) (./6_Conclusion/6.1_Summary.tex [48] [49
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[47]) (./6_Conclusion/6.1_Summary.tex [48 <./Plots/core_vs_full.png>] [49
 
 ]) (./6_Conclusion/6.2_Limitations.tex [50]) (./6_Conclusion/6.3_future_work.tex [51]) [52] (./main.bbl
 bibitemlist
 [53
 
 
-]) (./Appendix/plots.tex [54] [55
-
-]
-<Plots/coverage_frequent_hosts.pdf, id=851, 711.48997pt x 855.65736pt>
+]) (./Appendix/plots.tex [54]
+<Plots/coverage_frequent_hosts.pdf, id=855, 711.48997pt x 855.65736pt>
 File: Plots/coverage_frequent_hosts.pdf Graphic file (type pdf)
 <use Plots/coverage_frequent_hosts.pdf>
 Package pdftex.def Info: Plots/coverage_frequent_hosts.pdf  used on input line 19.
 (pdftex.def)             Requested size: 418.25554pt x 503.0056pt.
-<Plots/coverage_rare_hosts.pdf, id=852, 711.46803pt x 855.65736pt>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [55
+
+]
+Overfull \vbox (10.56502pt too high) has occurred while \output is active []
+
+ [56 <./Plots/coverage_frequent_hosts.pdf>]
+<Plots/coverage_rare_hosts.pdf, id=950, 711.46803pt x 855.65736pt>
 File: Plots/coverage_rare_hosts.pdf Graphic file (type pdf)
 <use Plots/coverage_rare_hosts.pdf>
 Package pdftex.def Info: Plots/coverage_rare_hosts.pdf  used on input line 27.
 (pdftex.def)             Requested size: 418.26436pt x 503.03171pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [56 <./Plots/coverage_frequent_hosts.pdf>]
-<Plots/set_size_hist_top50.png, id=943, 924.3333pt x 1183.7826pt>
+<Plots/set_size_hist_top50.png, id=951, 924.3333pt x 1183.7826pt>
 File: Plots/set_size_hist_top50.png Graphic file (type png)
 <use Plots/set_size_hist_top50.png>
 Package pdftex.def Info: Plots/set_size_hist_top50.png  used on input line 46.
@@ -1451,12 +1468,12 @@ Package pdftex.def Info: Plots/set_size_hist_top50.png  used on input line 46.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [57 <./Plots/coverage_rare_hosts.pdf>]
-<Plots/set_size_hist_bottom50.png, id=1030, 916.3836pt x 1183.7826pt>
+<Plots/set_size_hist_bottom50.png, id=1038, 916.3836pt x 1183.7826pt>
 File: Plots/set_size_hist_bottom50.png Graphic file (type png)
 <use Plots/set_size_hist_bottom50.png>
 Package pdftex.def Info: Plots/set_size_hist_bottom50.png  used on input line 53.
 (pdftex.def)             Requested size: 389.89835pt x 503.66994pt.
-<Plots/set_size_distribution_top50.pdf, id=1031, 710.91599pt x 855.39197pt>
+<Plots/set_size_distribution_top50.pdf, id=1039, 710.91599pt x 855.39197pt>
 File: Plots/set_size_distribution_top50.pdf Graphic file (type pdf)
 <use Plots/set_size_distribution_top50.pdf>
 Package pdftex.def Info: Plots/set_size_distribution_top50.pdf  used on input line 70.
@@ -1465,7 +1482,7 @@ Package pdftex.def Info: Plots/set_size_distribution_top50.pdf  used on input li
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [58 <./Plots/set_size_hist_top50.png>] [59 <./Plots/set_size_hist_bottom50.png>]
-<Plots/set_size_distribution_bottom50.pdf, id=1043, 711.03894pt x 855.39197pt>
+<Plots/set_size_distribution_bottom50.pdf, id=1052, 711.03894pt x 855.39197pt>
 File: Plots/set_size_distribution_bottom50.pdf Graphic file (type pdf)
 <use Plots/set_size_distribution_bottom50.pdf>
 Package pdftex.def Info: Plots/set_size_distribution_bottom50.pdf  used on input line 77.
@@ -1474,12 +1491,12 @@ Package pdftex.def Info: Plots/set_size_distribution_bottom50.pdf  used on input
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [60 <./Plots/set_size_distribution_top50.pdf>] [61 <./Plots/set_size_distribution_bottom50.pdf>]
-<Plots/heatmap_collapsed.png, id=1263, 1079.7138pt x 1000.2168pt>
+<Plots/heatmap_collapsed.png, id=1271, 1079.7138pt x 1000.2168pt>
 File: Plots/heatmap_collapsed.png Graphic file (type png)
 <use Plots/heatmap_collapsed.png>
 Package pdftex.def Info: Plots/heatmap_collapsed.png  used on input line 89.
 (pdftex.def)             Requested size: 418.25298pt x 387.4579pt.
-<Plots/heatmap_radial.png, id=1264, 1079.7138pt x 1000.2168pt>
+<Plots/heatmap_radial.png, id=1272, 1079.7138pt x 1000.2168pt>
 File: Plots/heatmap_radial.png Graphic file (type png)
 <use Plots/heatmap_radial.png>
 Package pdftex.def Info: Plots/heatmap_radial.png  used on input line 99.
@@ -1488,7 +1505,7 @@ Package pdftex.def Info: Plots/heatmap_radial.png  used on input line 99.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [62 <./Plots/heatmap_collapsed.png>]
-<Plots/heatmap_strip.png, id=1271, 1079.7138pt x 1000.2168pt>
+<Plots/heatmap_strip.png, id=1279, 1079.7138pt x 1000.2168pt>
 File: Plots/heatmap_strip.png Graphic file (type png)
 <use Plots/heatmap_strip.png>
 Package pdftex.def Info: Plots/heatmap_strip.png  used on input line 109.
@@ -1497,13 +1514,13 @@ Package pdftex.def Info: Plots/heatmap_strip.png  used on input line 109.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [63 <./Plots/heatmap_radial.png>] [64 <./Plots/heatmap_strip.png>]
-<Plots/clustermap_radial_1.png, id=1284, 560.0925pt x 806.5332pt>
+<Plots/clustermap_radial_1.png, id=1292, 560.0925pt x 806.5332pt>
 File: Plots/clustermap_radial_1.png Graphic file (type png)
 <use Plots/clustermap_radial_1.png>
 Package pdftex.def Info: Plots/clustermap_radial_1.png  used on input line 131.
 (pdftex.def)             Requested size: 384.80626pt x 503.6882pt.
  [65 <./Plots/clustermap_radial_1.png>]
-<Plots/clustermap_strip_1.png, id=1290, 591.8913pt x 801.4743pt>
+<Plots/clustermap_strip_1.png, id=1299, 591.8913pt x 801.4743pt>
 File: Plots/clustermap_strip_1.png Graphic file (type png)
 <use Plots/clustermap_strip_1.png>
 Package pdftex.def Info: Plots/clustermap_strip_1.png  used on input line 154.
@@ -1517,21 +1534,21 @@ Package pdftex.def Info: Plots/clustermap_strip_1.png  used on input line 154.
 
  (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 7F1B8DCFF5D7013F95E33CE35223A496;5826.
+(rerunfilecheck)             Checksum: AF754979D4112C5E89EC5F4A2549CF4A;5826.
  ) 
 Here is how much of TeX's memory you used:
- 46858 strings out of 476091
- 1049534 string characters out of 5794081
+ 46844 strings out of 476091
+ 1049392 string characters out of 5794081
  1872330 words of memory out of 5000000
  65727 multiletter control sequences out of 15000+600000
- 660134 words of font info for 317 fonts, out of 8000000 for 9000
+ 659470 words of font info for 309 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  89i,14n,86p,1307b,976s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/usr/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc}{/usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx12.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb></usr/share/texmf/fonts/type1/public/lm/lmbx9.pfb></usr/share/texmf/fonts/type1/public/lm/lmex10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi12.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi6.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi7.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi8.pfb></usr/share/texmf/fonts/type1/public/lm/lmmi9.pfb></usr/share/texmf/fonts/type1/public/lm/lmr10.pfb></usr/share/texmf/fonts/type1/public/lm/lmr12.pfb></usr/share/texmf/fonts/type1/public/lm/lmr6.pfb></usr/share/texmf/fonts/type1/public/lm/lmr7.pfb></usr/share/texmf/fonts/type1/public/lm/lmr8.pfb></usr/share/texmf/fonts/type1/public/lm/lmr9.pfb></usr/share/texmf/fonts/type1/public/lm/lmri12.pfb></usr/share/texmf/fonts/type1/public/lm/lmri8.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy10.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy6.pfb></usr/share/texmf/fonts/type1/public/lm/lmsy8.pfb></usr/share/texmf/fonts/type1/public/lm/lmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on main.pdf (72 pages, 4179855 bytes).
+Output written on main.pdf (74 pages, 4177839 bytes).
 PDF statistics:
- 1476 PDF objects out of 1728 (max. 8388607)
- 936 compressed objects within 10 object streams
- 236 named destinations out of 1000 (max. 500000)
+ 1486 PDF objects out of 1728 (max. 8388607)
+ 944 compressed objects within 10 object streams
+ 238 named destinations out of 1000 (max. 500000)
  81862 words of extra memory for PDF output out of 89155 (max. 10000000)
 

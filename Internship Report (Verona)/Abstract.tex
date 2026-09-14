@@ -3,7 +3,37 @@
 %     \Large \textbf{Abstract}
 % \end{center}
 
-\begin{abstract}
+
+\chapter*{Sommario}
+\markboth{Sommario}{Sommario}
+\noindent
+La terapia fagica si sta affermando come una promettente alternativa agli antibiotici contro i batteri resistenti ai 
+farmaci; tuttavia, la sua applicazione clinica dipende dalla corretta identificazione dell'ospite batterico suscettibile 
+all'infezione da parte del fago. Gli attuali strumenti computazionali per la predizione dell'ospite forniscono stime 
+puntuali o punteggi scalari non calibrati, privi di garanzie a campione finito sulla presenza dell'effettivo ospite tra 
+i candidati selezionati.
+
+Questo lavoro propone un framework di predizione conforme (conformal prediction) distribution-free per la classificazione 
+fago-ospite atto a colmare tale lacuna. Partendo dall'approccio basato su Conformal Set Aggregation (CSA), ne abbiamo 
+sostituito gli inviluppi convessi di calibrazione — suscettibili di un'eccessiva espansione in presenza di cluster di 
+punteggi ben separati — introducendo tre geometrie alternative stellate e non convesse (Radiale, a Striscia e 1D 
+Collassata), adatte a compiti di classificazione con regioni disgiunte. Per ciascuna configurazione geometrica è 
+stata ricavata una regola di calibrazione in forma chiusa che sostituisce la ricerca binaria iterativa della CSA 
+standard con un singolo passaggio di ordinamento. Abbiamo inoltre integrato una procedura di calibrazione condizionata 
+alla classe, garantendo la validità a campione finito subordinata all'ipotesi di scambiabilità all'interno di ciascuna 
+classe di ospiti, anziché una generica garanzia marginale. Infine, abbiamo strutturato una procedura a cascata in due 
+stadi (Gram-tipo verso ospite) provvista di un limite dimostrato sulla probabilità di mancata copertura congiunta.
+
+Il framework è stato validato empiricamente su un dataset reale di profili funzionali di proteine fagiche, confermando 
+una copertura empirica affidabile al livello di confidenza nominale sia su un task binario di classificazione del tipo 
+di Gram, sia su un task multiclasse esteso a 54 ospiti candidati. Il pre-filtraggio basato sulla classificazione di 
+Gram ha consentito una riduzione delle dimensioni medie dei set di predizione superiore al $60\%$ rispetto alla baseline 
+non filtrata, preservando integralmente il livello di copertura.
+
+
+
+\chapter*{Abstract}
+\markboth{Abstract}{Abstract}
 \noindent
 Bacteriophage therapy is emerging as a promising alternative to antibiotics against multi drug resistant bacteria,
 but its clinical use depends on correctly matching a phage to a bacterial host it can infect. Existing computational
@@ -19,13 +49,11 @@ standard CSA with a single sorting pass. We also introduce a class conditional c
 finite sample validity under the exchangeability assumptions within each host class, rather than a single marginal one. 
 Finally, we use a two stage Gram type, to host cascade with a proven bound on compounded miscoverage.
 
-provides class-conditional finite-sample validity under the exchangeability assumptions within each host class
-
 We validated the framework on a real dataset of bacteriophage protein functional scores, and achieved reliable
 empirical coverage at the target confidence level on both a binary Gram type task and a multiclass host
 classification task spanning 54 candidate hosts. Gram type pre filtering also reduced average prediction set sizes
 by over $60\%$ compared to an unfiltered baseline, and with no loss of coverage.
-\end{abstract}
+
 \vspace{0.3cm}
 
 
