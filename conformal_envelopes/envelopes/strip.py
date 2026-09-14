@@ -19,10 +19,13 @@ def strip_shape_discovery(S1, alpha: float, n_bins: int, *, smoothing_window: in
     for j in range(K):
         finite = S1[np.isfinite(S1[:, j]), j]
 
+        # if len(finite) == 0:
+        #     bin_edges.append(np.linspace(0.0, 1.0, n_bins + 1))
+        #     marginal_quantiles[j] = 1.0
+        #     continue
+
         if len(finite) == 0:
-            bin_edges.append(np.linspace(0.0, 1.0, n_bins + 1))
-            marginal_quantiles[j] = 1.0
-            continue
+            raise ValueError("All-NaN S1 columns must be removed before shape discovery.")
 
         lo = float(np.min(finite))
         hi = float(np.max(finite))
@@ -42,7 +45,8 @@ def strip_shape_discovery(S1, alpha: float, n_bins: int, *, smoothing_window: in
         for n in range(n_bins):
             lo, hi = bin_edges[j, n], bin_edges[j, n + 1]
 
-            in_strip = ((~np.isnan(S1[:, j])) & (S1[:, j] >= lo) & (S1[:, j] < hi))
+            upper_check = (S1[:, j] <= hi if n == n_bins - 1 else S1[:, j] < hi)
+            in_strip = ((~np.isnan(S1[:, j])) & (S1[:, j] >= lo) & upper_check)
 
             for i in range(K):
                 if i == j:
@@ -54,6 +58,8 @@ def strip_shape_discovery(S1, alpha: float, n_bins: int, *, smoothing_window: in
                 non_nan_i = S1[~np.isnan(S1[:, i]), i]
                 marginal_i = (np.quantile(non_nan_i, 1.0 - alpha) if len(non_nan_i) > 0
                               else marginal_quantiles[i])
+
+                # marginal_i = marginal_quantiles[i]
 
                 if n_src >= min_samples:
                     limits[j, i, n] = np.quantile(S1[src_mask, i], 1.0 - alpha)
@@ -77,6 +83,8 @@ def strip_shape_discovery(S1, alpha: float, n_bins: int, *, smoothing_window: in
 
     return bin_edges, limits, marginal_quantiles
 
+#################################################################################################################################3
+
 
 def get_bin_indices(scores, bin_edges):
     scores = np.asarray(scores, dtype=float)
@@ -86,114 +94,138 @@ def get_bin_indices(scores, bin_edges):
     return np.array([np.clip(np.where(np.isnan(scores[:, j]), 0, np.digitize(scores[:, j], bin_edges[j]) - 1,),
                              0, n_bins - 1,) for j in range(K)]).T
 
+#################################################################################################################################3
 
-def strip_tau_scores(S, bin_edges, limits, marginal_quantiles,):
-    """Raw strip scaling score, preserving the notebook's NaN rules."""
+def strip_tau_scores(S, bin_edges, limits, marginal_quantiles):
+    """
+       Evaluate constraints between distinct, observed coordinates.
+    """
     S = np.asarray(S, dtype=float)
-    N, K = S.shape
 
-    if K == 1:
-        target_q = max(float(marginal_quantiles[0]), EPS)
-        observed = np.where(np.isnan(S[:, 0]), 0.0, S[:, 0])
-        return observed / target_q
+    if S.ndim != 2 or S.shape[0] == 0 or S.shape[1] == 0:
+        raise ValueError("Expected a nonempty 2D score array.")
+
+    N, K = S.shape
+    if K != bin_edges.shape[0]:
+        raise ValueError("Scores must match the envelope's number of columns.")
+
+    observed = ~np.isnan(S)
+    if np.isnan(S).all(axis=1).any():
+        raise ValueError("A sample has no observed scores for this label.")
+
+    if np.isinf(S[observed]).any() or (S[observed] < 0).any():
+        raise ValueError("Observed scores must be finite and nonnegative.")
 
     bin_idx = get_bin_indices(S, bin_edges)
+    tau = np.zeros(N)
 
-    j_idx = np.arange(K)[None, :, None]
-    i_idx = np.arange(K)[None, None, :]
-    m_idx = bin_idx[:, :, None]
+    for j in range(K):
+        for i in range(K):
+            if i == j:
+                continue
 
-    lims = limits[j_idx, i_idx, m_idx]
+            valid = observed[:, j] & observed[:, i]
+            local_limits = limits[j, i, bin_idx[valid, j]]
+            ratios = S[valid, i] / (local_limits + EPS)
+            tau[valid] = np.maximum(tau[valid], ratios)
 
-    S_i = S[:, np.newaxis, :]
-    S_j = S[:, :, np.newaxis]
+    return tau
 
-    nan_i = np.isnan(S_i)
-    nan_j = np.isnan(S_j)
+#################################################################################################################################3
 
-    mq = marginal_quantiles[np.newaxis, np.newaxis, :]
-    mq_i = np.broadcast_to(mq, (N, K, K))
+def build_strip(S1, S2,  alpha: float, *, n_bins: int = 8, smoothing_window: int = 2, 
+                min_samples: int = 3,) -> dict:
+    """
+         Learn the strip shape on S1 and calibrate its scale on S2.
+    """
+    S1 = np.asarray(S1, dtype=float)
+    S2 = np.asarray(S2, dtype=float)
 
-    ratio = np.zeros((N, K, K))
+    if S1.ndim != 2 or S2.ndim != 2:
+        raise ValueError("S1 and S2 must be 2D arrays.")
 
-    both_avail = (~nan_i) & (~nan_j)
-    miss_i = nan_i & (~nan_j)
-    miss_j = (~nan_i) & nan_j
+    if S1.shape[0] == 0 or S2.shape[0] == 0:
+        raise ValueError("S1 and S2 must contain samples.")
 
-    ratio = np.where(
-        both_avail,
-        np.broadcast_to(S_i, (N, K, K)) / (lims + EPS),
-        ratio,
-    )
+    d = S1.shape[1]
+    if d == 0 or S2.shape[1] != d:
+        raise ValueError("S1 and S2 must have the same positive number of columns.")
 
-    # Target i missing but conditioning j observed:
-    # use the target's marginal quantile against the conditional limit.
-    ratio = np.where(
-        miss_i,
-        mq_i / (lims + EPS),
-        ratio,
-    )
+    if not np.isfinite(alpha) or not 0 < alpha < 1:
+        raise ValueError("alpha must be strictly between 0 and 1.")
 
-    # Conditioning j missing but target i observed:
-    # fall back to the target's own marginal quantile.
-    ratio = np.where(
-        miss_j,
-        np.broadcast_to(S_i, (N, K, K)) / (mq_i + EPS),
-        ratio,
-    )
+    for stage, scores in [("S1", S1), ("S2", S2)]:
+        observed = scores[~np.isnan(scores)]
 
-    # Both missing stay at 0: no constraint is contributed.
-    return np.nanmax(ratio, axis=(1, 2))
+        if np.isinf(observed).any() or (observed < 0).any():
+            raise ValueError(f"{stage}: observed scores must be finite and nonnegative.")
 
+        if np.isnan(scores).all(axis=1).any():
+            raise ValueError(f"{stage}: a sample has no observed scores.")
 
-def build_strip(
-    S1,
-    S2,
-    alpha: float,
-    *,
-    n_bins: int = 8,
-    smoothing_window: int = 2,
-    min_samples: int = 3,
-) -> dict:
-    bin_edges, limits, marginal_quantiles = strip_shape_discovery(
-        S1,
-        alpha,
-        n_bins,
-        smoothing_window=smoothing_window,
-        min_samples=min_samples,
-    )
+    # Learn the retained columns from shape-discovery data only.
+    keep_columns = np.flatnonzero(~np.isnan(S1).all(axis=0))
+    n_input_features = S1.shape[1]
 
-    raw_tau = strip_tau_scores(
-        S2,
-        bin_edges,
-        limits,
-        marginal_quantiles,
-    )
+    if keep_columns.size == 0:
+        raise ValueError("S1 has no observed score columns.")
+
+    S1 = S1[:, keep_columns]
+    S2 = S2[:, keep_columns]
+
+    # Dropping columns can leave an individual sample entirely missing.
+    for stage, scores in [("S1", S1), ("S2", S2)]:
+        if np.isnan(scores).all(axis=1).any():
+            raise ValueError(f"{stage}: a sample has no observed scores after column selection.")
+
+    d = S1.shape[1]
+
+    alpha_shape = alpha / d
+
+    for name, value, minimum in [("n_bins", n_bins, 1), ("min_samples", min_samples, 1), 
+                                 ("smoothing_window", smoothing_window, 0),]:
+         if (isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) 
+             or value < minimum):
+             raise ValueError(f"{name} must be an integer >= {minimum}.")
+
+    bin_edges, limits, marginal_quantiles = strip_shape_discovery(S1, alpha_shape, n_bins, 
+                                                                  smoothing_window=smoothing_window,
+                                                                  min_samples=min_samples,)
+
+    raw_tau = strip_tau_scores(S2, bin_edges, limits, marginal_quantiles,)
 
     t_hat = conformal_quantile(raw_tau, alpha)
 
-    return {
-        "method": "strip",
-        "bin_edges": bin_edges,
-        "limits": limits,
-        "marginal_quantiles": marginal_quantiles,
-        "t_hat": t_hat,
-        "n_bins": int(n_bins),
-        "smoothing_window": int(smoothing_window),
-        "min_samples": int(min_samples),
-    }
+    return {"method": "strip", "bin_edges": bin_edges, "limits": limits, "marginal_quantiles": marginal_quantiles,
+            "t_hat": t_hat, "n_bins": int(n_bins),"smoothing_window": int(smoothing_window),"min_samples": int(min_samples),
+            "keep_columns": keep_columns, "n_input_features": n_input_features,}
 
+#################################################################################################################################3
+
+def _select_strip_columns(scores, envelope):
+    scores = np.asarray(scores, dtype=float)
+
+    if scores.ndim != 2:
+        raise ValueError("Scores must be a 2D array.")
+
+    if scores.shape[1] != envelope["n_input_features"]:
+        raise ValueError("Prediction columns must match the original fit input.")
+
+    return scores[:, envelope["keep_columns"]]
+
+#################################################################################################################################3
 
 def strip_tau(scores, envelope: dict) -> np.ndarray:
-    raw_tau = strip_tau_scores(
-        scores,
-        envelope["bin_edges"],
-        envelope["limits"],
-        envelope["marginal_quantiles"],
-    )
+    scores = _select_strip_columns(scores, envelope)
+    raw_tau = strip_tau_scores(scores, envelope["bin_edges"], envelope["limits"], envelope["marginal_quantiles"],)
 
     return raw_tau / (float(envelope["t_hat"]) + EPS)
 
+#################################################################################################################################3
+
 
 def strip_is_in_region(scores, envelope: dict) -> np.ndarray:
-    return strip_tau(scores, envelope) <= 1.0
+    scores = _select_strip_columns(scores, envelope)
+    raw_tau = strip_tau_scores(scores, envelope["bin_edges"], envelope["limits"],
+                               envelope["marginal_quantiles"],)
+    return raw_tau <= float(envelope["t_hat"])

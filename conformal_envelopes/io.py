@@ -1,3 +1,8 @@
+# user gives data --> isit already a dataframe? --> Yes: make a copy
+#                                               --> No: treat it as a file path (should be CSV) --> read
+# Then:
+#   - look at all the columns --> remove ID column --> Remove label columns 
+#          --> everything else is assumned to be the score column --> check if numeric
 from __future__ import annotations
 
 from pathlib import Path
@@ -5,7 +10,9 @@ import pandas as pd
 
 
 def load_table(data):
-    """Load a pandas DataFrame or CSV path."""
+    """
+        Load a pandas DataFrame or CSV path.
+    """
     if isinstance(data, pd.DataFrame):
         return data.copy()
 
@@ -14,9 +21,12 @@ def load_table(data):
         raise ValueError("Input must be a pandas DataFrame or a .csv file.")
     return pd.read_csv(path)
 
+#################################################################################################################################3
 
 def infer_score_columns(df, id_col: str, label_col: str | None):
-    """Infer numeric predictor columns after removing ID and optional label."""
+    """
+        Work out which columns are the score columns removing ID and optional label.
+    """
     excluded = {id_col}
     if label_col is not None and label_col in df.columns:
         excluded.add(label_col)
