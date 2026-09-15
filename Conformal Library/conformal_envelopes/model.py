@@ -127,7 +127,7 @@ class ConformalSetModel:
         numeric = df[score_cols].apply(pd.to_numeric, errors="raise",)
 
         labels = df[label_col].to_numpy()
-        classes = list(pd.unique(labels))
+        classes = sorted(pd.unique(labels), key=str)
 
         self.id_col_ = id_col
         self.label_col_ = label_col
@@ -201,8 +201,8 @@ class ConformalSetModel:
             S1 = nc_used[idx_s1]
             S2 = nc_used[idx_s2]
 
-            class_seed = int(master_rng.integers(0, np.iinfo(np.int32).max,))
-            class_rng = np.random.default_rng(class_seed)
+            # class_seed = int(master_rng.integers(0, np.iinfo(np.int32).max,))
+            # class_rng = np.random.default_rng(class_seed)
 
             # Which envelope geometry are we using?
             if self.method == "collapsed":
@@ -218,7 +218,7 @@ class ConformalSetModel:
                                                                          self.method_params.get("angular_bandwidth_deg", 30.0),),
                                         neighbor_fraction=self.method_params.get("neighbor_fraction", 
                                                                                  self.method_params.get("neighbor_frac", 0.2),),
-                                        rng=class_rng,)
+                                        rng=master_rng,)
 
             else:
                 envelope = build_strip(S1, S2, self.alpha, 
@@ -233,7 +233,7 @@ class ConformalSetModel:
             # miscoverage level, how many points used, ow many used for conformal envelope, method
             self.envelopes_[cls] = {"label": cls, "method": self.method, "columns": used_columns, "alpha": self.alpha, 
                                     "shape_size": len(S1), "calibration_size": len(S2), "parameters": dict(self.method_params),
-                                    "envelope": envelope,}
+                                    "idx_s1": idx_s1.copy(),"idx_s2": idx_s2.copy(),"envelope": envelope,}
 
             # raw scores, not transformed nonconformity scores.
             self.training_points_[cls] = pd.DataFrame(raw_class, columns=columns,)
@@ -281,25 +281,44 @@ class ConformalSetModel:
 #################################################################################################################################3
 
     # for one candidate class, calculate tau and whether every test sample is inside that class envelope.
-    def _class_tau_and_membership(self, score_frame, cls,):
+    def _class_tau_and_membership(self, score_frame, cls):
         info = self.envelopes_[cls]
-        columns = info["columns"]
         envelope = info["envelope"]
 
-        raw = score_frame[columns].to_numpy(dtype=float)
-        nc = transform_scores(raw, self.score_direction,)
+        raw = score_frame[info["columns"]].to_numpy(dtype=float)
+        nc = transform_scores(raw, self.score_direction)
+
+        # Strip evaluates only the columns retained during fitting.
+        effective_scores = (nc[:, envelope["keep_columns"]] if self.method == "strip" else nc)
+
+        missing = np.isnan(effective_scores).all(axis=1)
+        usable = ~missing
+
+        # Match the notebook's method-specific missing-score behavior.
+        if self.method == "collapsed":
+            tau = np.full(len(nc), np.inf)
+            inside = np.zeros(len(nc), dtype=bool)
+        else:
+            tau = np.zeros(len(nc), dtype=float)
+            inside = np.ones(len(nc), dtype=bool)
+
+        if not usable.any():
+            return tau, inside
+
+        scores = nc[usable]
 
         if self.method == "collapsed":
-            tau = collapsed_tau(nc, envelope)
-            inside = collapsed_is_in_region(nc, envelope,)
+            tau[usable] = collapsed_tau(scores, envelope)
+            inside[usable] = collapsed_is_in_region(scores, envelope)
 
         elif self.method == "radial":
-            tau = radial_tau(nc, envelope)
-            inside = radial_is_in_region(nc, envelope,)
+            tau[usable] = radial_tau(scores, envelope)
+            inside[usable] = tau[usable] <= 1.0
 
         else:
-            tau = strip_tau(nc, envelope)
-            inside = strip_is_in_region(nc, envelope,)
+            tau[usable] = strip_tau(scores, envelope)
+            inside[usable] = strip_is_in_region(scores, envelope)
+
         return tau, inside
 
 #################################################################################################################################3
@@ -326,23 +345,48 @@ class ConformalSetModel:
             # IDs are unique
             raise ValueError("Prediction IDs must be unique.")
 
-        # union of all score columns used by all fitted class envelopes.
-        needed = sorted({column for info in self.envelopes_.values() for column in info["columns"]})
+        # # union of all score columns used by all fitted class envelopes.
+        # needed = sorted({column for info in self.envelopes_.values() for column in info["columns"]})
 
-        # Check test data has those columns
-        missing = [c for c in needed if c not in df.columns]
-        if missing:
-            raise ValueError(f"Prediction data is missing score columns: {missing}")
+        # # Check test data has those columns
+        # missing = [c for c in needed if c not in df.columns]
+        # if missing:
+        #     raise ValueError(f"Prediction data is missing score columns: {missing}")
 
-        score_frame = df[needed].apply(pd.to_numeric, errors="raise",)
+        # score_frame = df[needed].apply(pd.to_numeric, errors="raise",)
+
+        # if candidate_labels is None:
+        #     active_classes = list(self.fitted_classes_)
+        # else:
+        #     active_classes = [cls for cls in candidate_labels if cls in self.envelopes_]
+
+        #     if not active_classes:
+        #         raise ValueError("No requested candidate labels have fitted envelopes.")
 
         if candidate_labels is None:
             active_classes = list(self.fitted_classes_)
         else:
-            active_classes = [cls for cls in candidate_labels if cls in self.envelopes_]
+            if isinstance(candidate_labels, (str, bytes)):
+                raise ValueError("candidate_labels must be a list of labels, not a single string.")
+
+            active_classes = list(dict.fromkeys(candidate_labels))
+
+            unknown = [cls for cls in active_classes if cls not in self.envelopes_]
+            if unknown:
+                raise ValueError(f"Unknown candidate labels: {unknown}")
 
             if not active_classes:
-                raise ValueError("No requested candidate labels have fitted envelopes.")
+                raise ValueError("Provide at least one candidate label.")
+
+        # Require only columns used by the requested classes.
+        needed = list(dict.fromkeys(column for cls in active_classes 
+                                    for column in self.envelopes_[cls]["columns"]))
+
+        missing = [c for c in needed if c not in df.columns]
+        if missing:
+            raise ValueError(f"Prediction data is missing score columns: {missing}")
+
+        score_frame = df[needed].apply(pd.to_numeric, errors="raise")
 
         tau_by_label = {}
         inside_by_label = {}
@@ -379,6 +423,51 @@ class ConformalSetModel:
             return records
 
         raise ValueError("output must be 'dataframe', 'dict', or 'records'.")
+
+
+
+
+#################################################################################################################################3
+
+    def predict_per_sample(self, data, *, candidates_by_id):
+        """
+           Predict using candidate labels supplied separately for each ID.
+
+           candidates_by_id maps each sample ID to a list of fitted labels.
+        """
+        self._check_fitted()
+        df = load_table(data)
+
+        if self.id_col_ not in df.columns:
+            raise ValueError(f"ID column {self.id_col_!r} was not found.")
+
+        ids = df[self.id_col_]
+
+        if ids.isna().any() or ids.duplicated().any():
+            raise ValueError("Prediction IDs must be nonmissing and unique.")
+
+        records = []
+
+        for i, sample_id in enumerate(ids):
+            if sample_id not in candidates_by_id:
+                raise ValueError(f"No candidate labels supplied for ID {sample_id!r}.")
+
+            candidates = list(dict.fromkeys(candidates_by_id[sample_id]))
+
+            unknown = [label for label in candidates if label not in self.envelopes_]
+            if unknown:
+                raise ValueError(f"Unknown candidate labels for ID {sample_id!r}: {unknown}")
+
+            if not candidates:
+                records.append({self.id_col_: sample_id, "prediction_set": [], "set_size": 0, 
+                                "forced": False, "tau_per_label": {},})
+                continue
+
+            result = self.predict(df.iloc[[i]], candidate_labels=candidates, output="records",)
+            records.extend(result)
+
+        return pd.DataFrame(records, columns=[self.id_col_, "prediction_set", "set_size",
+                                              "forced", "tau_per_label",],)
 
 #################################################################################################################################3
 
@@ -449,7 +538,10 @@ class ConformalSetModel:
 
     def plot(self, *, x, y, label, grid_size: int = 160, show_training: bool = True, ax=None,):
         """
-           Plotting a two-score view of one fitted label envelope.
+           Refit and plot a diagnostic envelope using only x and y.
+
+           Reuses this class's shape/calibration row split.
+           This is a separate 2D fit, not a projection or slice of the fitted multidimensional envelope used for prediction.
         """
         self._check_fitted()
 
@@ -493,8 +585,24 @@ def _plot_2d(model, *, x, y, label, grid_size, show_training, ax,):
         lo = float(np.min(values))
         hi = float(np.max(values))
         span = hi - lo
-        pad = 0.08 * span if span > 0 else 0.1
-        return lo - pad, hi + pad
+        pad = (0.08 * span if span > 0 else 0.08 * max(abs(lo), 1.0))
+
+        direction = model.score_direction
+
+        if callable(direction):
+            # Stay within the observed raw range because the
+            # custom transformation's domain is unknown.
+            if span == 0:
+                raise ValueError("Cannot build a plotting range for a constant "
+                                 "score column with a custom transformation.")
+            return lo, hi
+
+        if direction == "higher_is_better":
+            return max(0.0, lo - pad), min(1.0, hi + pad)
+
+        # Nonnegative nonconformity scores can exceed 1.
+        return max(0.0, lo - pad), hi + pad
+    
 
     xlo, xhi = axis_bounds(finite_x)
     ylo, yhi = axis_bounds(finite_y)
@@ -503,24 +611,77 @@ def _plot_2d(model, *, x, y, label, grid_size, show_training, ax,):
     gy = np.linspace(ylo, yhi, int(grid_size))
     XX, YY = np.meshgrid(gx, gy)
 
-    probe = pd.DataFrame(np.nan, index=np.arange(XX.size), columns=columns,)
-    probe[x] = XX.ravel()
-    probe[y] = YY.ravel()
+    # probe = pd.DataFrame(np.nan, index=np.arange(XX.size), columns=columns,)
+    # probe[x] = XX.ravel()
+    # probe[y] = YY.ravel()
 
-    tau, inside = model._class_tau_and_membership(probe, label,)
+    # tau, inside = model._class_tau_and_membership(probe, label,)
+
+    # ZZ = inside.astype(float).reshape(XX.shape)
+
+    # Build a genuine 2D version of this class envelope using only x and y.
+    raw_2d = training[[x, y]].to_numpy(dtype=float)
+    nc_2d = transform_scores(raw_2d, model.score_direction)
+
+    # Use exactly the same S1/S2 split that was used when fitting this class.
+    S1_2d = nc_2d[info["idx_s1"]]
+    S2_2d = nc_2d[info["idx_s2"]]
+
+    if model.method == "collapsed":
+        envelope_2d = build_collapsed(S1_2d, S2_2d, model.alpha,)
+
+    elif model.method == "radial":
+        rng = np.random.default_rng(model.random_state)
+
+        envelope_2d = build_radial(S1_2d, S2_2d, model.alpha,
+                                   n_directions=model.method_params.get("n_directions", model.method_params.get("M", 250),),
+                                   smoothing=model.method_params.get("smoothing", model.method_params.get("kappa", 8.0),),
+                                   angle_deg=model.method_params.get("angle_deg", model.method_params.get("angular_bandwidth_deg", 30.0),),
+                                   neighbor_fraction=model.method_params.get("neighbor_fraction", model.method_params.get("neighbor_frac", 0.2),),
+                                   rng=rng,)
+
+    else: envelope_2d = build_strip(S1_2d, S2_2d, model.alpha,
+                                    n_bins=model.method_params.get("n_bins", model.method_params.get("number_of_bins", model.method_params.get("NB", 8),),),
+                                    smoothing_window=model.method_params.get("smoothing_window", model.method_params.get("monotonic_window", 2),),
+                                    min_samples=model.method_params.get("min_samples", 3),)
+
+    # Evaluate the plotting grid against this genuine 2D envelope.
+    probe_raw = np.column_stack((XX.ravel(), YY.ravel()))
+    probe_nc = transform_scores(probe_raw, model.score_direction)
+
+    if model.method == "collapsed":
+        inside = collapsed_is_in_region(probe_nc, envelope_2d)
+
+    elif model.method == "radial":
+        inside = radial_is_in_region(probe_nc, envelope_2d)
+
+    else:
+        inside = strip_is_in_region(probe_nc, envelope_2d)
 
     ZZ = inside.astype(float).reshape(XX.shape)
 
     if ax is None:
         _, ax = plt.subplots(figsize=(7, 6))
 
-    ax.contour(XX, YY, ZZ, levels = [0.5], linewidths = 2,)
+    if inside.any() and not inside.all():
+        ax.contour(XX, YY, ZZ, levels=[0.5], linewidths=2,)
+    else:
+        message = (
+            "All grid points accepted"
+            if inside.all()
+            else "All grid points rejected"
+        )
+        ax.text(0.02, 0.98, message + "\nNo boundary within the displayed range", transform=ax.transAxes,
+                ha="left", va="top", fontsize=9, bbox=dict(facecolor="white", alpha=0.85, edgecolor="none"),)
+
+    ax.set_xlim(xlo, xhi)
+    ax.set_ylim(ylo, yhi)
 
     if show_training:
         ax.scatter(xv, yv, s = 20, alpha = 0.7,)
 
     ax.set_xlabel(x)
     ax.set_ylabel(y)
-    ax.set_title(f"{model.method.capitalize()} envelope for {label}")
+    ax.set_title(f"{model.method.capitalize()} diagnostic envelope for {label}\n")
 
     return ax

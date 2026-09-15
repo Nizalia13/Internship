@@ -1,11 +1,3 @@
-### DURING TESTING
-### new score vector --> mean over observed dimensions --> one collapsed value
-###        --> compare with q_tilde * t_hat --> inside/outside this label's envelope
-
-
-### DURING TESTING
-### new score vector --> mean observed dims --> one collapsed value --> comapre with q tilde x t hat --> predict
-
 from __future__ import annotations
 
 import numpy as np
@@ -67,29 +59,32 @@ def build_collapsed(S1, S2, alpha: float) -> dict:
 # used to evaluate new observations relative to the fitted envelope
 def collapsed_tau(scores, envelope: dict) -> np.ndarray:
     """
-       Return scores normalized by the calibrated boundary.
+       Return scores normalized by the calibration threshold.
     """
     scores_1d = _checked_row_means(scores, "Prediction")
     q_tilde = float(envelope["q_tilde"])
     t_hat = float(envelope["t_hat"])
 
-    # Avoid 0 * infinity when calibration requires an infinite threshold.
-    if np.isposinf(t_hat):
-        return np.zeros_like(scores_1d)
+    raw_tau = scores_1d / (q_tilde + EPS)
 
-    # gives the position relative to the boundary
-    return scores_1d / (q_tilde * t_hat + EPS)
+    if np.isposinf(t_hat):
+        return np.zeros_like(raw_tau)
+
+    if t_hat == 0.0:
+        return np.where(raw_tau == 0.0, 0.0, np.inf)
+
+    return raw_tau / t_hat
 
 #################################################################################################################################3
 
 # used to check if the new point is inside the envelope or not
 def collapsed_is_in_region(scores, envelope: dict) -> np.ndarray:
-    """Use the host notebook's direct boundary comparison."""
+    """
+       Compare prediction scores with the calibrated threshold.
+    """
     scores_1d = _checked_row_means(scores, "Prediction")
     q_tilde = float(envelope["q_tilde"])
     t_hat = float(envelope["t_hat"])
 
-    if np.isposinf(t_hat):
-        return np.ones(scores_1d.shape, dtype=bool)
-
-    return scores_1d <= q_tilde * t_hat
+    raw_tau = scores_1d / (q_tilde + EPS)
+    return raw_tau <= t_hat

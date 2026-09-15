@@ -126,7 +126,7 @@ def build_radial(S1, S2, alpha: float, *, n_directions: int = 250, neighbor_frac
     U = sample_positive_sphere(rng, int(n_directions), K)
     mags, dirs = _magnitudes_and_directions(S1)
     # creates the missingness mask
-    observed = ~np.isnan(S1)
+    # observed = ~np.isnan(S1)
 
     q_tilde = np.zeros(int(n_directions))
     marginal_mag_q = float(np.quantile(mags, 1.0 - alpha))
@@ -135,10 +135,14 @@ def build_radial(S1, S2, alpha: float, *, n_directions: int = 250, neighbor_frac
 
     for m in range(int(n_directions)):
         # Norm of this reference direction over each sample's observed coordinates.
-        reference_norms = np.sqrt(np.sum(observed * U[m] ** 2, axis=1))
+        # reference_norms = np.sqrt(np.sum(observed * U[m] ** 2, axis=1))
 
-        # Compare directions in the same observed-coordinate subspace. 
-        cos_sims = (dirs @ U[m]) / (reference_norms + EPS)
+        # # Compare directions in the same observed-coordinate subspace. 
+        # cos_sims = (dirs @ U[m]) / (reference_norms + EPS)
+
+
+        # Match the original notebook's directional similarity.
+        cos_sims = dirs @ U[m]
         in_band = cos_sims >= cos_band
         n_in_band = int(in_band.sum())
 
@@ -195,7 +199,13 @@ def radial_tau(scores, envelope: dict) -> np.ndarray:
             
 
         radius = radial_boundary_radius(direction[None, :], U_valid, q_tilde, smoothing,)[0]
-        tau[n] = mag / (radius * t_hat + EPS)
+        # Use the same unscaled score as during calibration.
+        raw_tau = mag / (radius + EPS)
+
+        if t_hat == 0.0:
+            tau[n] = 0.0 if raw_tau == 0.0 else np.inf
+        else:
+            tau[n] = raw_tau / t_hat
 
     return tau
 #################################################################################################################################3

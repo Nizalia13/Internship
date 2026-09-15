@@ -77,6 +77,7 @@ def strip_shape_discovery(S1, alpha: float, n_bins: int, *, smoothing_window: in
         for i in range(K):
             if i == j:
                 continue
+
             for n in range(n_bins):
                 hi_n = min(n + int(smoothing_window), n_bins - 1)
                 limits[j, i, n] = np.max(limits_raw[j, i, n:hi_n + 1])
@@ -118,6 +119,13 @@ def strip_tau_scores(S, bin_edges, limits, marginal_quantiles):
 
     bin_idx = get_bin_indices(S, bin_edges)
     tau = np.zeros(N)
+
+    # With one observed coordinate, use its marginal limit.
+    single_rows = np.flatnonzero(observed.sum(axis=1) == 1)
+
+    if single_rows.size:
+        single_cols = np.argmax(observed[single_rows], axis=1)
+        tau[single_rows] = (S[single_rows, single_cols] / (marginal_quantiles[single_cols] + EPS))
 
     for j in range(K):
         for i in range(K):
@@ -217,9 +225,19 @@ def _select_strip_columns(scores, envelope):
 
 def strip_tau(scores, envelope: dict) -> np.ndarray:
     scores = _select_strip_columns(scores, envelope)
-    raw_tau = strip_tau_scores(scores, envelope["bin_edges"], envelope["limits"], envelope["marginal_quantiles"],)
 
-    return raw_tau / (float(envelope["t_hat"]) + EPS)
+    raw_tau = strip_tau_scores(scores, envelope["bin_edges"], envelope["limits"], 
+                               envelope["marginal_quantiles"],)
+
+    t_hat = float(envelope["t_hat"])
+
+    if np.isposinf(t_hat):
+        return np.zeros_like(raw_tau)
+
+    if t_hat == 0.0:
+        return np.where(raw_tau == 0.0, 0.0, np.inf)
+
+    return raw_tau / t_hat
 
 #################################################################################################################################3
 

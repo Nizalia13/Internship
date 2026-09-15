@@ -83,16 +83,6 @@ def test_metrics():
     assert metrics["per_class_coverage"]["A"] == pytest.approx(0.5)
     assert metrics["per_class_coverage"]["B"] == pytest.approx(1.0)
 
-###############################################################################################################
-
-def test_metrics():
-    predictions = [["A"], ["A", "B"], ["B"]]
-    labels = ["A", "B", "A"]
-
-    metrics = evaluate_prediction_sets(predictions, labels,)
-
-    assert metrics["coverage"] == pytest.approx(2 / 3)
-    assert metrics["average_set_size"] == pytest.approx(4 / 3)
 
 ###############################################################################################################
 
