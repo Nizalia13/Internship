@@ -5,7 +5,7 @@ from ..calibration import conformal_quantile
 EPS = 1e-12
 
 
-def strip_shape_discovery(S1, alpha: float, n_bins: int, *, smoothing_window: int = 2, min_samples: int = 3,):
+def strip_shape_discovery(S1, alpha: float, n_bins: int, *, min_samples: int = 3,):
     """
        Discover NaN-aware conditional strip limits.
     """
@@ -71,16 +71,10 @@ def strip_shape_discovery(S1, alpha: float, n_bins: int, *, smoothing_window: in
                     conditional_i = np.quantile(S1[src_mask, i], 1.0 - alpha)
                     limits[j, i, n] = (w * conditional_i + (1.0 - w) * marginal_i)
 
-    limits_raw = limits.copy()
-
-    for j in range(K):
-        for i in range(K):
-            if i == j:
-                continue
-
-            for n in range(n_bins):
-                hi_n = min(n + int(smoothing_window), n_bins - 1)
-                limits[j, i, n] = np.max(limits_raw[j, i, n:hi_n + 1])
+    # Enforce globally non-increasing limits along conditioning bins.
+    # Moving toward smaller nonconformity scores must never tighten
+    # a constraint.
+    limits = np.maximum.accumulate(limits[:, :, ::-1], axis=2,)[:, :, ::-1].copy()
 
     return bin_edges, limits, marginal_quantiles
 
@@ -141,8 +135,7 @@ def strip_tau_scores(S, bin_edges, limits, marginal_quantiles):
 
 #################################################################################################################################3
 
-def build_strip(S1, S2,  alpha: float, *, n_bins: int = 8, smoothing_window: int = 2, 
-                min_samples: int = 3,) -> dict:
+def build_strip(S1, S2, alpha: float, *, n_bins: int = 8, min_samples: int = 3,) -> dict:
     """
          Learn the strip shape on S1 and calibrate its scale on S2.
     """
@@ -190,23 +183,19 @@ def build_strip(S1, S2,  alpha: float, *, n_bins: int = 8, smoothing_window: int
 
     alpha_shape = alpha / d
 
-    for name, value, minimum in [("n_bins", n_bins, 1), ("min_samples", min_samples, 1), 
-                                 ("smoothing_window", smoothing_window, 0),]:
-         if (isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) 
-             or value < minimum):
-             raise ValueError(f"{name} must be an integer >= {minimum}.")
+    for name, value, minimum in [("n_bins", n_bins, 1), ("min_samples", min_samples, 1),]:
+        if (isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)) 
+            or value < minimum):
+            raise ValueError(f"{name} must be an integer >= {minimum}.")
 
-    bin_edges, limits, marginal_quantiles = strip_shape_discovery(S1, alpha_shape, n_bins, 
-                                                                  smoothing_window=smoothing_window,
-                                                                  min_samples=min_samples,)
+    bin_edges, limits, marginal_quantiles = strip_shape_discovery(S1, alpha_shape, n_bins, min_samples=min_samples,)
 
     raw_tau = strip_tau_scores(S2, bin_edges, limits, marginal_quantiles,)
-
     t_hat = conformal_quantile(raw_tau, alpha)
 
     return {"method": "strip", "bin_edges": bin_edges, "limits": limits, "marginal_quantiles": marginal_quantiles,
-            "t_hat": t_hat, "n_bins": int(n_bins),"smoothing_window": int(smoothing_window),"min_samples": int(min_samples),
-            "keep_columns": keep_columns, "n_input_features": n_input_features,}
+            "t_hat": t_hat, "n_bins": int(n_bins), "min_samples": int(min_samples), "keep_columns": keep_columns,
+            "n_input_features": n_input_features, "shape_rule": "global_monotone",}
 
 #################################################################################################################################3
 

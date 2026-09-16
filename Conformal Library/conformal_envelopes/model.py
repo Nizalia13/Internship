@@ -63,7 +63,6 @@ class ConformalSetModel:
 
         - strip:
             - n_bins=8
-            - smoothing_window=2
             - min_samples=3
     """
 
@@ -93,6 +92,27 @@ class ConformalSetModel:
         self.force_nonempty = bool(force_nonempty)
         self.random_state = int(random_state)
         self.min_class_size = int(min_class_size)
+        allowed_params = {"collapsed": set(),
+                          "radial": {"n_directions", "M", "smoothing", "kappa", "angle_deg", "angular_bandwidth_deg",
+                                     "neighbor_fraction", "neighbor_frac",},
+                          "strip": {"n_bins", "number_of_bins", "NB", "min_samples",},}
+
+        unknown = set(method_params) - allowed_params[method]
+        if unknown:
+            raise ValueError(f"Unknown parameters for {method!r}: {sorted(unknown)}. "
+                             f"Allowed parameters: {sorted(allowed_params[method])}")
+
+        # Reject competing names for the same parameter.
+        alias_groups = {"collapsed": [],
+                        "radial": [("n_directions", "M"), ("smoothing", "kappa"), ("angle_deg", "angular_bandwidth_deg"),
+                                   ("neighbor_fraction", "neighbor_frac"),],
+                        "strip": [("n_bins", "number_of_bins", "NB"),],}
+
+        for aliases in alias_groups[method]:
+            supplied = [name for name in aliases if name in method_params]
+            if len(supplied) > 1:
+                raise ValueError(f"Supply only one of {aliases}; received {supplied}.")
+
         self.method_params = dict(method_params)
 
         # this model exists, but fit() has not been called yet.
@@ -225,9 +245,7 @@ class ConformalSetModel:
                                        n_bins=self.method_params.get("n_bins", 
                                                                      self.method_params.get("number_of_bins", 
                                                                                             self.method_params.get("NB", 8)),),
-                                       smoothing_window=self.method_params.get("smoothing_window",
-                                                                               self.method_params.get("monotonic_window", 2),),
-                min_samples=self.method_params.get("min_samples", 3),)
+                                       min_samples=self.method_params.get("min_samples", 3),)
 
             # for each class we store which label it belongs to, which geometry was used, which score dmensions where used, the
             # miscoverage level, how many points used, ow many used for conformal envelope, method
@@ -429,45 +447,109 @@ class ConformalSetModel:
 
 #################################################################################################################################3
 
+    # def predict_per_sample(self, data, *, candidates_by_id):
+    #     """
+    #        Predict using candidate labels supplied separately for each ID.
+
+    #        candidates_by_id maps each sample ID to a list of fitted labels.
+    #     """
+    #     self._check_fitted()
+    #     df = load_table(data)
+
+    #     if self.id_col_ not in df.columns:
+    #         raise ValueError(f"ID column {self.id_col_!r} was not found.")
+
+    #     ids = df[self.id_col_]
+
+    #     if ids.isna().any() or ids.duplicated().any():
+    #         raise ValueError("Prediction IDs must be nonmissing and unique.")
+
+    #     records = []
+
+    #     for i, sample_id in enumerate(ids):
+    #         if sample_id not in candidates_by_id:
+    #             raise ValueError(f"No candidate labels supplied for ID {sample_id!r}.")
+
+    #         candidates = list(dict.fromkeys(candidates_by_id[sample_id]))
+
+    #         unknown = [label for label in candidates if label not in self.envelopes_]
+    #         if unknown:
+    #             raise ValueError(f"Unknown candidate labels for ID {sample_id!r}: {unknown}")
+
+    #         if not candidates:
+    #             records.append({self.id_col_: sample_id, "prediction_set": [], "set_size": 0, 
+    #                             "forced": False, "tau_per_label": {},})
+    #             continue
+
+    #         result = self.predict(df.iloc[[i]], candidate_labels=candidates, output="records",)
+    #         records.extend(result)
+
+    #     return pd.DataFrame(records, columns=[self.id_col_, "prediction_set", "set_size",
+    #                                           "forced", "tau_per_label",],)
+
     def predict_per_sample(self, data, *, candidates_by_id):
         """
-           Predict using candidate labels supplied separately for each ID.
+           Predict with candidate labels supplied separately for each ID.
 
-           candidates_by_id maps each sample ID to a list of fitted labels.
+          Samples sharing the same ordered candidate list are evaluated
+          together. Output rows follow the original input order.
         """
         self._check_fitted()
         df = load_table(data)
+        id_col = self.id_col_
 
-        if self.id_col_ not in df.columns:
-            raise ValueError(f"ID column {self.id_col_!r} was not found.")
+        output_columns = [id_col, "prediction_set", "set_size","forced","tau_per_label",]
 
-        ids = df[self.id_col_]
+        if id_col not in df.columns:
+            raise ValueError(f"ID column {id_col!r} was not found.")
+
+        ids = df[id_col]
 
         if ids.isna().any() or ids.duplicated().any():
             raise ValueError("Prediction IDs must be nonmissing and unique.")
 
-        records = []
+        if df.empty:
+            return pd.DataFrame(columns=output_columns)
 
-        for i, sample_id in enumerate(ids):
+        groups = {}
+
+        # Validate candidate lists before evaluating any group.
+        for position, sample_id in enumerate(ids):
             if sample_id not in candidates_by_id:
                 raise ValueError(f"No candidate labels supplied for ID {sample_id!r}.")
 
-            candidates = list(dict.fromkeys(candidates_by_id[sample_id]))
+            supplied = candidates_by_id[sample_id]
+
+            if isinstance(supplied, (str, bytes)):
+                raise ValueError(f"Candidates for ID {sample_id!r} must be a "
+                                 "sequence of labels, not a single string.")
+
+            candidates = tuple(dict.fromkeys(supplied))
 
             unknown = [label for label in candidates if label not in self.envelopes_]
             if unknown:
-                raise ValueError(f"Unknown candidate labels for ID {sample_id!r}: {unknown}")
+                raise ValueError(f"Unknown candidate labels for ID " f"{sample_id!r}: {unknown}")
 
-            if not candidates:
-                records.append({self.id_col_: sample_id, "prediction_set": [], "set_size": 0, 
-                                "forced": False, "tau_per_label": {},})
-                continue
+            groups.setdefault(candidates, []).append(position)
 
-            result = self.predict(df.iloc[[i]], candidate_labels=candidates, output="records",)
-            records.extend(result)
+        outputs = []
 
-        return pd.DataFrame(records, columns=[self.id_col_, "prediction_set", "set_size",
-                                              "forced", "tau_per_label",],)
+        for candidates, positions in groups.items():
+            batch = df.iloc[positions]
+
+            if candidates:
+                result = self.predict(batch, candidate_labels=list(candidates), output="dataframe",)
+            else:
+                # No permitted candidates: do not force a label.
+                result = pd.DataFrame({id_col: batch[id_col].tolist(), "prediction_set": [[] for _ in positions],
+                                       "set_size": [0] * len(positions), "forced": [False] * len(positions), 
+                                       "tau_per_label": [{} for _ in positions],})
+
+            outputs.append(result)
+
+        combined = pd.concat(outputs, ignore_index=True)
+
+        return (combined.set_index(id_col).loc[ids.tolist()].reset_index()[output_columns])
 
 #################################################################################################################################3
 
@@ -642,7 +724,6 @@ def _plot_2d(model, *, x, y, label, grid_size, show_training, ax,):
 
     else: envelope_2d = build_strip(S1_2d, S2_2d, model.alpha,
                                     n_bins=model.method_params.get("n_bins", model.method_params.get("number_of_bins", model.method_params.get("NB", 8),),),
-                                    smoothing_window=model.method_params.get("smoothing_window", model.method_params.get("monotonic_window", 2),),
                                     min_samples=model.method_params.get("min_samples", 3),)
 
     # Evaluate the plotting grid against this genuine 2D envelope.
