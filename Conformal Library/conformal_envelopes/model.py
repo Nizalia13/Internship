@@ -731,8 +731,6 @@ def _plot_2d(model, *, x, y, label, grid_size, show_training, ax, show_other_cla
         ax.scatter(points[:, 0], points[:, 1], s=24, alpha=0.55, marker="x", 
                    label=f"Class {other_label}",)
 
-    # if show_training:
-    #     ax.scatter(xv, yv, s=24, alpha=0.8, color="tab:blue", label=f"Class {label}",)
     if show_training:
         complete = np.isfinite(xv) & np.isfinite(yv)
 
@@ -748,7 +746,7 @@ def _plot_2d(model, *, x, y, label, grid_size, show_training, ax, show_other_cla
                            label=(f"Class {label}: {y} missing" if index == 0 else "_nolegend_"),)
 
             for index, value in enumerate(yv[y_only]):
-                ax.axhline(value, color="tab:blue", linestyle=":", linewidth=1, alpha=0.35,
+                ax.axhline(value, color="tab:red", linestyle=":", linewidth=1, alpha=0.35,
                            label=(f"Class {label}: {x} missing" if index == 0 else "_nolegend_"),)
 
     handles, labels = ax.get_legend_handles_labels()
