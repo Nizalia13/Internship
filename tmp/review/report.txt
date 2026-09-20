@@ -1,0 +1,2178 @@
+PAGE 1
+Master of Science in Industrial and Applied Mathematics (MSIAM)
+Master Mathématiques et Applications
+Conformal Set Prediction for Phage
+Host Classification
+Nizalia SIDDIQUI
+September, 2026
+Research project performed at Laboratoire Jean Kuntzmann (LJK)
+Under the supervision of:
+Professor Clovis Galiez
+September 2026
+
+PAGE 2
+
+
+PAGE 3
+Abstract
+Bacteriophage therapy is emerging as a promising alternative to antibiotics against
+multi drug resistant bacteria, but its clinical use depends on correctly matching
+a phage to a bacterial host it can infect. Existing computational host prediction
+tools return point predictions or uncalibrated scalar scores, with no finite sample
+guarantee that the true host is among the candidates returned.
+This report develops a distribution free conformal prediction framework for phage
+host classification that closes this gap. We build on the Conformal Set Aggrega-
+tion (CSA) approach and replaced its convex calibration envelopes, which may
+become uninformatively large when the class conditional score clusters are well
+separated. We used three star shaped, non convex alternatives (Radial, Strip, and
+Collapsed 1D) which are suited to the disjoint geometry of classification tasks. For
+each geometry we derived a closed form calibration rule that replaces the iterative
+binary search used in standard CSA with a single sorting pass. We also introduce
+a class conditional calibration, which provides class conditional finite sample va-
+lidity under the exchangeability assumptions within each host class, rather than a
+single marginal one. Finally, we use a two stage Gram type, to host cascade with a
+proven bound on compounded miscoverage.
+provides class-conditional finite-sample validity under the exchangeability assump-
+tions within each host class
+We validated the framework on a real dataset of bacteriophage protein functional
+scores, and achieved reliable empirical coverage at the target confidence level on
+both a binary Gram type task and a multiclass host classification task spanning 54
+candidate hosts. Gram type pre filtering also reduced average prediction set sizes
+by over 60% compared to an unfiltered baseline, and with no loss of coverage.
+
+PAGE 4
+Contents
+Contents i
+1 Introduction 1
+2 Background & State of the Art 5
+2.1 Bacteriophages and Host-Prediction Problem . . . . . . . . . . . . . . 5
+2.2 Current Computational Approaches and Limitations . . . . . . . . . . . 7
+2.2.1 Sequence Similarity Methods . . . . . . . . . . . . . . . . . . . 7
+2.2.2 Protein Content Based Supervised Classifiers . . . . . . . . . . 8
+2.2.3 Protein Language Models and Embedding-Based Methods . . . 8
+2.2.4 Limitation: Absence of Uncertainty Quantification . . . . . . . 9
+2.3 Conformal Prediction . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+2.3.1 Mathematical Setup and Prediction Set . . . . . . . . . . . . . . 10
+2.3.2 Split conformal prediction . . . . . . . . . . . . . . . . . . . . 11
+2.3.3 Marginal & Conditional Coverage . . . . . . . . . . . . . . . . 12
+2.4 Conformal Set Aggregation (CSA) . . . . . . . . . . . . . . . . . . . . 13
+2.4.1 Ensemble Score Vectors . . . . . . . . . . . . . . . . . . . . . 13
+2.4.2 The CSA Framework . . . . . . . . . . . . . . . . . . . . . . . 14
+2.4.3 Limitations of CSA in Classification . . . . . . . . . . . . . . . 15
+3 Methodology 17
+3.1 Problem Formalization . . . . . . . . . . . . . . . . . . . . . . . . . . 17
+3.2 Non-Convex Envelopes in Classification . . . . . . . . . . . . . . . . . 19
+3.3 Nonconformity Score Transformation . . . . . . . . . . . . . . . . . . 20
+3.3.1 Gram Type Classification Nonconformity Mapping . . . . . . . 21
+3.3.2 Host Level Classification Nonconformity Mapping . . . . . . . 21
+3.4 Envelope Construction . . . . . . . . . . . . . . . . . . . . . . . . . . 22
+3.4.1 Collapsed 1D Envelope Method . . . . . . . . . . . . . . . . . 22
+3.4.2 Radial Envelope Method . . . . . . . . . . . . . . . . . . . . . 22
+3.4.3 Strip Envelope Method . . . . . . . . . . . . . . . . . . . . . . 24
+
+PAGE 5
+3.5 ˆtCalculation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+3.5.1τComputation . . . . . . . . . . . . . . . . . . . . . . . . . . 26
+3.5.2 Class Specific ˆtCalculation . . . . . . . . . . . . . . . . . . . . 27
+3.5.3 Resolving the Empty Prediction Set . . . . . . . . . . . . . . . 28
+4 Data and Preprocessing Pipeline 29
+4.1 Data Description and Structural Missingness . . . . . . . . . . . . . . . 29
+4.2 Protein to Phage Aggregation and NaN-Aware Pooling . . . . . . . . . 31
+4.3 Task Specific Filtering and Data Partitioning . . . . . . . . . . . . . . . 32
+5 Experiments and Results 35
+5.1 Synthetic Validation . . . . . . . . . . . . . . . . . . . . . . . . . . . . 35
+5.1.1 2D Geometric Proof and Class Conditional Efficiency . . . . . . 35
+5.1.2 Dimensionality Scaling and Finite-Sample Coverage . . . . . . 36
+5.1.3 Geometric Robustness Across Score Topologies . . . . . . . . . 37
+5.1.4 Multi-Host Benchmark Verification . . . . . . . . . . . . . . . 38
+5.2 Gram Type Classification . . . . . . . . . . . . . . . . . . . . . . . . . 38
+5.2.1 Experimental Setup . . . . . . . . . . . . . . . . . . . . . . . . 38
+5.2.2 Coverage and Prediction Efficiency . . . . . . . . . . . . . . . 39
+5.2.3 Score Separation and Geometric Equivalence . . . . . . . . . . 40
+5.3 Host Level Classification . . . . . . . . . . . . . . . . . . . . . . . . . 41
+5.3.1 Experimental Protocol . . . . . . . . . . . . . . . . . . . . . . 41
+5.3.2 Hyperparameter Selection on Validation Data . . . . . . . . . . 42
+5.3.3 Empirical Test Results . . . . . . . . . . . . . . . . . . . . . . 42
+5.3.4 Geometric Boundary Visualization Across All Methods . . . . . 43
+5.3.5 Effect of Gram-Type Filtering . . . . . . . . . . . . . . . . . . 45
+5.3.6 Functional Dimension Sufficiency . . . . . . . . . . . . . . . . 47
+5.3.7 Performance under Different Constraints . . . . . . . . . . . . . 48
+6 Conclusion and Future Work 49
+6.1 Summary . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 49
+6.2 Limitations . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 50
+6.3 Future Work . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 51
+Bibliography 53
+A Host Classification Results 55
+A.1 Class Conditional Coverage Breakdown . . . . . . . . . . . . . . . . . 55
+A.2 Set Size Distribution Per Host . . . . . . . . . . . . . . . . . . . . . . 58
+A.3 Prediction Set Inclusion Heatmaps . . . . . . . . . . . . . . . . . . . . 62
+A.4 Phage Host Prediction Clustermaps . . . . . . . . . . . . . . . . . . . . 65
+ii
+
+PAGE 6
+1
+Introduction
+The rapid global emergence of antimicrobial resistance (AMR) represents one of the
+most critical threats that modern medicine is facing. As conventional antibiotics lose
+efficiency against multidrug resistant bacterial pathogens, alternative therapeutic strate-
+gies have gained widespread attention. Among these is phage therapy, it is the targeted
+clinical application of bacteriophages (viruses that specifically infect and destroy bacte-
+ria) and has emerged as a highly promising solution [1].
+Bacteriophages are the most abundant biological entities in the global biosphere, with
+an estimated population exceeding 10 31 particles [1]. One of the main determinants of
+a phage’s therapeutic viability is its host range (the spectrum of bacterial strains it can
+successfully infect), so matching a bacterial infection with an effective phage requires
+knowing precisely which bacteria each phage can infect and which it cannot. Section 2.1
+reviews the biology of phages and of the host-prediction problem in detail.
+Traditional laboratory screening methods, such as plaque assays, are labor intensive,
+costly, and scale poorly against the millions of uncharacterized viral genomes generated
+by modern high throughput metagenomic sequencing. This necessitates the develop-
+ment of fast and scalable computational tools that take genomic sequences as input,
+translate them into protein level representations and then predict the host range from
+these representations directly without requiring any laboratory validation [2].
+However, state of the art computational prediction tools suffer from a fundamental lim-
+itation. They produce point predictions or uncalibrated scalar scores in[0,1]without
+any finite sample uncertainty quantification. In high stakes medical applications, point
+predictions offer no guarantee of reliability; a confidence score reflects only a relative
+ranking of candidates, not a calibrated probability that the predicted host is correct. The
+clinical risk runs in both directions, failing to recognize that a phage kills the infecting
+bacterium can mean missing a life saving treatment, while overlooking that the same
+phage may also attack beneficial bacteria can cause further damage. Therefore, sound
+therapeutic decisions require calibrated knowledge of which phages infect which bacte-
+ria, and equally of which they do not; point predictions alone are clinically insufficient.
+
+PAGE 7
+The main objective of this work is to resolve this limitation by constructing an uncer-
+tainty aware statistical framework for phage-host prediction using conformal prediction
+[3, 4], which is a distribution free method that transforms point scoring models into set
+valued predictionsC(X)⊆H. More importantly, these prediction sets are mathemat-
+ically guaranteed to contain the true host label with a user specified confidence level
+1−α(e.g., 90%), which holds strictly in finite samples under just the assumption of
+data exchangeability.
+Moreover, standard conformal prediction relies on a single score to evaluate each can-
+didate label, whereas our pipeline evaluates phage host compatibility acrossKdistinct
+functional protein categories simultaneously. Simply averaging these scores into one
+value loses useful information, while calibrating each score separately breaks the cover-
+age guarantee; the multi dimensional conformal methods that operate directly on score
+vectors are introduced in Section 2.4.
+In this work we build on the Conformal Set Aggregation (CSA) framework [5]. We
+address three major challenges that arise when applying CSA to classification datasets:
+(i)Non-convex geometry in classification space:We demonstrate why traditional
+convex envelopes, developed primarily for continuous regression spaces, are in-
+efficient in classification settings, since the class conditional score vectors occupy
+disjoint, bounded clusters in[0,1] K. So, we propose non-convex (Radial and
+Strip) and Collapsed 1D envelope geometries that adapt to cluster topologies, and
+eliminate unpopulated empty space, which helps us reduce prediction set sizes.
+(ii)Closed form analytical calibration (τ):We derive exact, closed form analyti-
+cal expressions for the per point inclusion scaling functionτ(s)across all enve-
+lope geometries. This eliminates the computationally expensive numerical binary
+search required by standard CSA, which reduces the calibration time complexity
+fromO(|S 2| ·Niter)to a single forward pass andO(|S 2|log|S 2|)sort.
+(iii)Structural missingness handling:Phage score vectors frequently contain en-
+tries that are missing by design, since a phage may lack any protein annotated for
+a given functional category. We develop the envelope constructions and noncon-
+formity transformations to operate natively on these partially observed vectors via
+an explicit missingness mask, without imputation.
+We evaluated our methodology systematically on two tasks of increasing complexity.
+First, a controlled binary Gram-type classification task (N=2 classes) to validate the
+geometric envelope constructions, and then on a multi class host-level prediction task
+(N=54 bacterial genera) using real-world protein language model embeddings.
+The remainder of this report is organized as follows: Chapter 2 reviews the biological
+background of bacteriophages, computational state-of-the-art methods, and the math-
+ematical foundations of split conformal prediction and CSA. Chapter 3 formalizes the
+2
+
+PAGE 8
+prediction tasks, develops the non-convex envelopes, the nonconformity transformation,
+and the analytical derivation ofτ(s). Chapter 4 details the dataset architecture, protein
+to phage NaN aware mean pooling operators, and cross split protein cluster contamina-
+tion filtering. Chapter 5 presents synthetic experiments and empirical evaluation results
+for both gram-type and host-level classification tasks. Finally, chapter 6 summarises our
+findings, discusses the biological limitations, and outlines directions for future research.
+
+PAGE 9
+
+
+PAGE 10
+2
+Background & State of the Art
+In this section, we provide the biological, computational and mathematical background
+and context for the methods developed in this report. We will begin by introducing bac-
+teriophages and the host-prediction problem in Section 2.1, which motivates the need
+for computational approaches to find a solution. We will then go over the already exist-
+ing and state-of-the-art computational techniques in Section 2.2, progressing from the
+classical sequence similarity techniques to the much more efficient and modern protein
+embeddings techniques. We will also look at the limitations that all the currently ex-
+isting methods have in common, for example the absence of rigorous distribution-free
+uncertainty quantification. In the remaining part of the section, 2.3 and 2.4 we will
+introduce the mathematical framework of conformal prediction and the score-based ag-
+gregation method in [5], on which we will build our work.
+2.1 Bacteriophages and Host-Prediction Problem
+Bacteriophages, commonly referred to as phages, are viruses that specifically infect and
+replicate within bacteria. As discussed in Chapter 1, the growing threat of antimicrobial
+resistance and the development of phage therapy as an alternative to traditional antibi-
+otics [1] have renewed interest in the study of phages; beyond therapy, they also play a
+very important role in shaping microbial communities and evolution in the biosphere.
+One of the key characteristics of phages is their host range, which is the set of bacterial
+hosts that a phage can infect. This host range is not fixed for a phage, it is determined
+by molecular interactions between the phage and the bacterial surface structures during
+the cycle of infection [1], [6]. Each phage attaches itself to the bacterial host, injects
+its viral genetic material which are able to replicate inside the host. Therefore, some of
+the phages have a small host range as they can only infect a limited number of bacterial
+strains while there are other which are capable of infecting a broad range of bacterias.
+Identifying which phage infects which host, can have several applications in both en-
+vironmental and clinical studies. In clinical, the host range helps us determine how
+
+PAGE 11
+suitable a phage is for designing the treatment for phage therapy. In environmental
+studies it is valuable to know the host being infected to understand the ecological inter-
+actions between viruses and microbial communities and evolution in the biosphere [6].
+Precise host range knowledge is equally important for avoiding harm, an imprecise or
+overly broad host assignment risks eliminating bacteria that are not the intended target.
+This may include beneficial species, so correctly identifying a phage’s host range is as
+much about protecting non target bacteria as it is about targeting the pathogens.
+However, host range also brings its own obstacles. In phage therapy, we need to find
+the exact phage that infects the bacteria which is the cause of the infection, and for
+that we need a fast, reliable host prediction method. As noted in Chapter 1, traditional
+laboratory screening is accurate but expensive and time consuming, so realistically only
+a small portion of phage-host pairs can ever be tested, especially since many phages
+are difficult or impossible to culture in the laboratory. Metagenomic sequencing has
+bypassed this culturing barrier and revealed a vast number of new phages directly from
+the environment; as a result, the number of possible phage-host interactions has grown
+astronomically and computational predictions have become essential [2].
+We formulate the host prediction problem as follows: letX⊆R d denote the feature
+space of phage representations, and letH={h 1, . . . ,hN}be the discrete label space of
+candidate bacterial hosts.
+In a single-host classification setting, we observe random pairs(X,H)∼P X,H , where
+X∈Xis a feature vector representing a phage andH∈Hdenotes its true host. In
+a generalized multi-host setting, the target is a non-empty subsetH ∗ ⊆H, i.e.,H ∗ ∈
+P(H)\ {/ 0}, whereP(H) =2 H denotes the power set ofH.
+Our primary objective is to construct a set valued prediction mapping
+C:X− →P(H)(2.1)
+which maps an unlabelled test phageX∈Xto a prediction setC(X)⊆Hsatisfying
+the finite sample coverage guarantee at a user specified significance levelα∈(0,1):
+P(H∈C(X))≥1−α.(2.2)
+whereα∈(0,1)denotes the target error probability.
+6
+
+PAGE 12
+2.2 Current Computational Approaches and
+Limitations
+The problem of predicting which phage infects which host bacteria has been studied
+computationally for over a decade and the available methods have significantly evolved
+during this time. These methods have progressed from simple rule based alignment
+to deep representation learning. Today, this field comprises of three main families of
+methods: the sequence similarity approaches, protein content based supervised classi-
+fiers, and protein language model (pLM) embedding approaches. There exist far more
+tools than we can review here [2], so we will only look at a few representative examples
+of each family, and conclude with the common limitation they share that motivates this
+work.
+2.2.1 Sequence Similarity Methods
+The early host prediction tools rely on sequence similarity between phage and bacte-
+rial genomes in two distinct ways, assuming that genomic similarity indicates infec-
+tion compatibility. The first isphage-host similarity, sim(h,ph), we compare a phage
+genome directly against candidate host genomes, and then the host with the highest
+score is selected. The second isphage-phage similarity, sim(ph A,ph B), we compare a
+new phage against phages with already known hosts, and the host of the closest relative
+is transferred to it.
+Phage–host similarity.WIsH [7] models each candidate host genome as a Markov
+chain with parametersθ h and then selects the host that maximises the log likelihood of
+the new test phage sequenceS= (a 1, . . . ,aL):
+ˆy=argmax
+h∈H
+ℓ(S|θ h), ℓ(S|θ h) =
+L
+∑
+i=k+1
+logP(a i |a i−k, . . . ,ai−1;θ h).
+Similarity is not explicitly computed here, the log likelihoodℓ(S|θ h)is used to measure
+how well the phage sequence fits the composition of each host genome.
+Phage-phage similarity.HostPhinder [8] represents each genomegby its normalised
+k-mer frequency vectorv(g)∈R 4k
+and performs a nearest neighbour search over a ref-
+erence databaseD ref ={(g i,y i)}Nref
+i=1 of phages with known hosts:
+ˆy=y
+ 
+argmaxg∈Dref sim(v(gtest),v(g))
+
+,
+wherey(g)denotes the host label associated with reference genomeg∈D ref.
+Both approaches offer practical advantages: they both do not require any protein level
+annotation, are computationally not expensive and can be applied to any newly se-
+quenced phage or host genome. However, they share some notable limitations. Phage
+
+PAGE 13
+to phage transfer methods such as HostPhinder degrade sharply when a novel phage has
+no close relative in the reference database, since the entire prediction rests on a single
+nearest neighbour. Phage to host methods such as WIsH depend on the availability of
+well characterised host genomes. Neither of them exploits protein level functional infor-
+mation, which limits their ability to generalise beyond sequence composition patterns
+that they see in training. These two tools represent only a small sample of the methods
+developed in this space; there are works that exist beyond what is discussed here.
+2.2.2 Protein Content Based Supervised Classifiers
+To overcome the limitations of whole senome sequence alignment, protein content based
+supervised classifiers avoid sequence comparisons entirely by decomposing each phage
+into its constituent protein profile. They treat host prediction as a standard classification
+task. RaFAH [9] is an example of these type of methods, it works by clustering phage
+proteins intoMprotein clusters via MMseqs2 [10], then it represents each phage by a
+binary membership vectorx∈ {0,1} M, and trains a random forest to map this profile to
+a distribution over host genera:
+fRF :{0,1} M − →∆|H|−1 ,where ˆp=f RF(x), ∑
+h∈H
+ˆp(h|x) =1.
+Unlike the sequence similarity methods of Section 2.2.1, RaFAH uses a trained classifier
+over a fixed protein cluster representation, which lets it generalise across a broader host
+range. But at the same time it brings the cost of requiring a protein clustering step and
+a labelled training set of phage host pairs, and inheriting whatever biases are present in
+that clustering.
+2.2.3 Protein Language Models and Embedding-Based
+Methods
+The current state of the art techniques use protein language models (pLMs), which are
+neural architectures trained on millions of protein sequences through self-supervised
+learning [11, 12]. Given a protein sequenceA= (a 1, . . . ,an)∈A n over the amino acid
+alphabetAof size 20, an encoderΦ pLM produces a residue level embedding matrixZ=
+ΦpLM(A)∈R n×d, which is then mean-pooled to a fixed-length sequence representation:
+z= 1
+n
+n
+∑
+i=1
+Zi,: ∈R d.
+Building on ProtT5 [11], EMPATHI [13] uses these embeddings to classify each in-
+dividual phage protein into a functional category (e.g. capsid, tail fibre, lysin), and
+produces a per protein probability score for each candidate category. While SUBLYME
+8
+
+PAGE 14
+[14] applies a related embedding based approach to identify lysin proteins in metage-
+nomic discovery. Neither of the tools predicts the bacterial host directly. Instead, these
+functional annotations can be used as the new raw material for our own pipeline. We
+aggregate the per protein functional probabilities produced by EMPATHI (Section 4.2)
+into a phage level,K-dimensional score vectors(X) = (s 1(X), ...,s K(X)) T ∈[0,1] K,
+whereKis the total number of functional categories considered and each coordinate
+sk(X)∈[0,1]measures the aggregated evidence that phageXcarries a protein of cate-
+goryk. The resulting vector then serves as the input to our conformal framework. This
+is consistent with earlier host prediction work using protein embeddings [15, 16].
+2.2.4 Limitation: Absence of Uncertainty Quantification
+Despite their empirical success, all of the methods seen above share a fundamental
+limitation: they produce point predictions (a single host label ˆyor a scalar score ˆs(x,y)∈
+[0,1]) without any formal uncertainty quantification.
+Uncertainty Quantification (UQ)is the mathematical framework used to rigorously
+measure, propagate, and bound prediction errors. A raw scalar output ˆs(x,y) =0.87
+merely reflects an uncalibrated relative ranking statistic, not a true conditional probabil-
+ityP(Y=y|X=x). Existing host prediction tools fail to provide UQ because no tool
+offers a finite sample statistical guarantee that the true bacterial host is contained within
+a candidate prediction set with a predefined target probability 1−α.
+Existing UQ frameworks only offer partial solutions. For example, Bayesian approaches
+require strong assumptions on the distributional form of the data that are difficult to
+justify for biological score data, while post-hoc calibration methods such as Platt scaling
+provide no finite-sample guarantees on unseen test data [4].
+These limitations are consequential in phage therapy. In practice, a computational host
+prediction is not used to directly inject a phage into a patient, it is used to narrow a
+large candidate space down to a shortlist for laboratory confirmation before any clinical
+decision is made. However, an unreliable or overconfident prediction can still cause
+real harm at this trial stage. For example a false negative can exclude the true host
+from the shortlist entirely, which may delay the treatment while further candidates are
+screened, and a false positive can take up experimental validation time on a phage that
+was never going to work. This motivates the adoption of conformal prediction [3]: a
+distribution free framework that produces prediction sets which contain the true host
+with user specified probability 1−α, and require only exchangeability of calibration
+and test data. Its formal construction follows in Section 2.3.
+
+PAGE 15
+2.3 Conformal Prediction
+Conformal prediction, initially developed by V ovk, Gammerman and Shafer [3] and
+then later made accessible by Angelopoulos and Bates [4], is a framework for con-
+structing prediction sets that have a coverage guarantee. Unlike the methods seen in 2.2
+it can provide us with a set of possible outcomes (not a point prediction), have a math-
+ematical guarantee and yet requires no distributional assumptions on the data, except
+for the exchangibility condition. Here, we will formalize the framework of conformal
+prediction and analyze its finite-sample coverage properties.
+Definition 2.3.1(Exchangeability).A finite sequence of random variablesZ 1,Z 2, . . . ,Zm
+taking values in a spaceZis exchangeable if, for every permutationσof the indices
+{1,2, . . . ,m}, the joint distribution of the permuted sequence is identical to that of the
+original sequence:
+(Z1,Z 2, . . . ,Zm) d= (Zσ(1) ,Z σ(2) , . . . ,Zσ(m) )
+where d=denotes equality in distribution.
+Or, equivalently for all measurable setsA1,A 2, . . . ,Am ⊆Zand all permutationsσ∈S m:
+P(Z1 ∈A 1,Z 2 ∈A 2, . . . ,Zm ∈A m) =P(Z σ(1) ∈A 1,Z σ(2) ∈A 2, . . . ,Zσ(m) ∈A m)
+Independent and identically distributed (i.i.d.) sequences are always exchangeable, but
+the converse does not always hold. For example, if we draw two values without replace-
+ment from{0,1}we get the output(Z 1,Z 2)∈ {(0,1),(1,0)}, both with probability 1
+2.
+This pair is exchangeable as its joint distribution does not change if we swapZ1 andZ 2.
+But, the two variables are not independent, since conditioning on the first draw fully de-
+termines the second,
+ 
+P(Z2 =1|Z 1 =1) =0̸=P(Z 2 =1) = 1
+2
+
+. Thus, exchangeability
+is a weaker condition than i.i.d., as it requires the observations to not have any special
+ordering. This condition can easily be met if we split any dataset randomly [5, 3].
+2.3.1 Mathematical Setup and Prediction Set
+Let(X,H)∈X×Hbe a random input-label pair, whereXis the feature space that
+represents our object of interest (in our case it is the phage protein level score vectors)
+andH={h 1,· · ·,h N}is the discrete label space (set of candidate hosts).
+We assume that we have a calibration dataset,D cal ={(X 1,H1),· · ·,(X n,Hn)}, ofnex-
+changeable data points drawn from an unknown joint distribution,PX,H . Then, for a new
+unlabelled test input,Xn+1, our aim is to construct a prediction set functionC:X→2 H
+depending on the data which maps the test input to a subset of candidate labels, i.e.,
+C(Xn+1)⊆H, such that the true label falls in the set with a defined coverage that is:
+P(Hn+1 ∈C(X n+1))≥1−α,whereα∈(0,1)is the significance level
+10
+
+PAGE 16
+Unlike point predictors,C(X)dynamically reflects model uncertainty. It returns a sin-
+gleton|C(X)|=1 when confident, a multi-label set|C(X)| ≥2 when uncertain between
+candidates, or an empty set|C(X)|=0 for out-of-distribution inputs. The efficiency
+of the model can be quantified by the expected set sizeE[|C(X)|], an optimal predictor
+should achieve a coverage≥1−αwith the smallest possible set size.
+2.3.2 Split conformal prediction
+In split conformal prediction, the available data is divided into a training set and a dis-
+joint calibration set,D cal ={(X i,Hi)}n
+i=1. The training set is used to fit an underly-
+ing scoring model ˆf:X×H→R. We then define a nonconformity score function
+s:X×H→Rbased on ˆf. This score function quantifies how unusual a pair(x,h)
+is relative to the learned patterns, smaller values ofs(x,y)indicate stronger conformity
+betweenxand labelh.
+Then using the calibration set ,{(X i,Hi)}n
+i=1, we evaluate the nonconformity scores:
+Si =s(X i,Hi),∀i=1,· · ·,n.
+To make sure that our error rate is less thanαwe need to compute the conformal cali-
+bration quantile, ˆq, from these calibration scores.
+Definition 2.3.2(Conformal Calibration Quantile).The conformal calibration quantile
+qα is defined as the empirical ⌈(n+1)(1−α)⌉
+n -th quantile of calibration scores{S 1, . . . ,Sn}:
+qα :=Quantile
+
+{S1, . . . ,Sn}; ⌈(n+1)(1−α)⌉
+n
+
+Equivalently, expressed using the empirical cumulative distribution function:
+qα =inf
+(
+q∈R: 1
+n
+n
+∑
+i=1
+1(Si ≤q)≥ ⌈(n+1)(1−α)⌉
+n
+)
+=S (⌈(n+1)(1−α)⌉)
+whereS (1) ≤S (2) ≤ · · · ≤S (n) denote the order statistics of the calibration scores, that
+is, the values{S 1, . . . ,Sn}sorted in non decreasing order. Withk=⌈(n+1)(1−α)⌉,
+the counting function 1
+n ∑n
+i=1 1(Si ≤q)jumps from k−1
+n to k
+n exactly atq=S (k), so the
+smallest feasibleqis thek-th smallest calibration score. In words,q α is obtained by
+sorting the calibration scores and retaining the⌈(n+1)(1−α)⌉-th smallest value.
+Then, for a new input,X n+1 the conformal prediction set,C(X n+1), is constructed by
+collecting all the candidate labels inH∈Hwhose nonconformity scores do not exceed
+qα:
+C(Xn+1) =
+n
+H∈H
+ s(Xn+1,H)≤q α
+o
+(2.3)
+
+PAGE 17
+The validity of this construction follows from exchangeability. By the definition 2.3.2,
+qα =S (⌈(n+1)(1−α)⌉), whereS (1) ≤ · · · ≤S (n) are the order statistics of the calibration
+scores. Now letS n+1 :=s(X n+1,Hn+1)denote the nonconformity score of the true la-
+bel of the new test point. Since the pairs(X 1,H1), . . . ,(Xn+1,Hn+1)are exchangeable
+and the score functionsis applied identically to every pair, the sequence of scores
+(S1, . . . ,Sn,S n+1)is exchangeable as well. All(n+1)! relative orderings are equally
+likely, hence the rank ofSwithin this sequence is uniformly distributed on{1, . . . ,n+1}.
+Consequently:
+P
+ 
+S≤q α
+
+=P(rank(S)≤ ⌈(n+1)(1−α)⌉) = ⌈(n+1)(1−α)⌉
+n+1 ≥1−α.
+Theorem 2.3.1(Marginal Coverage Guarantee [3, 17]).If(X 1,H1), . . . ,(Xn+1,Hn+1)
+are exchangeable, then the prediction set C(Xn+1)defined in Equation 2.3 satisfies:
+P(Hn+1 ∈C(X n+1))≥1−α
+Furthermore, if calibration scores S1, . . . ,Sn are almost surely distinct continuous ran-
+dom variables, the coverage bound is tight:
+1−α≤P(H n+1 ∈C(X n+1))≤1−α+ 1
+n+1 (2.4)
+Crucially, theorem 2.3.1 holds strictly in finite samples without requiring parametric as-
+sumptions ons(·,·)orP X,H . While the choice of scoring functionsgoverns efficiency
+(set size), valid statistical coverage is guaranteed by construction in a single computa-
+tional pass overD cal [5].
+The score functionsis chosen so that it can separate plausible hosts from implausible
+ones.s(x,h)should take a small value whenhis likely to be the true host ofx, and
+ifh ′ is not the host,s(x,h ′)should take a high score which typically exceedsq α.h ′
+then fails the test in Equation 2.3 and is not selected into the prediction setC(X n+1).
+This discriminative behaviour is not created by conformal prediction itself, it is already
+exhibited by many standard supervised learning models. A classifier which is trained
+to output a class probability ˆp(h|x)naturally produces this pattern since 1−ˆp(h|x)
+is small for the true class and large for incorrect ones. A poorly discriminating score
+function never invalidates the method as the coverage guarantee of Theorem 2.3.1 holds
+regardless, but the resulting prediction sets become larger.
+2.3.3 Marginal & Conditional Coverage
+Standard conformal prediction satisfies marginal coverage, which means that the(1−
+α)% coverage guarantee holds on average across all possible choices of the calibration
+set,D cal, and test samples,(X n+1,Hn+1). So,
+EDcal,(Xn+1,Hn+1) [I(Hn+1 ∈C(X n+1))] =P(H n+1 ∈C(X n+1))≥1−α
+12
+
+PAGE 18
+However, the marginal coverage does not ensure the conditional coverage, given spe-
+cific features (X=x), or specific classes (H=h). So, for a dataset that has class im-
+balance, which is very common in phage-host interaction, a marginal model can satisfy
+the coverage guarantee by potentially over-covering a majority class (100%) and under-
+covering a small class (0%) [5, 18]. For instance, ifH={−1,1}with class proportion
+P(H=−1) =0.9, a predictor achieving 100% coverage onH=−1 and 0% coverage
+onY=1 still attains an overall 90%. In phage-host classification, such conditional
+under-coverage on minority host may be a problem.
+While feature-conditional coverage (P(H∈C(X)|X=x)≥1−α) is mathematically
+impossible to achieve in finite samples without strong parametric assumptions [3, 5],
+class-conditional coverage (Mondrian conformal prediction) is exact and valid in finite
+samples. We partitionD cal intoNdisjoint subsetsD (h)
+cal ={(X i,Hi)∈D cal :H i =h}and
+evaluate separate class-specific quantilesq (h)
+α , enforcing exact coverage per class:
+P
+
+Hn+1 ∈C(X n+1)
+ Hn+1 =h
+
+≥1−α,∀h∈H(2.5)
+Because exchangeability holds within each class-conditional partitionD (h)
+cal, evaluating
+per-class quantiles preserves exact finite-sample validity across every candidate host, as
+formalised in Section 3.5.2.
+2.4 Conformal Set Aggregation (CSA)
+The standard split conformal framework in 2.3.2 takes a scalar non conformity score
+S(x,h)∈R. In this report, the protein language model pipeline (Section 2.2.3) pro-
+duces a multidimensional representation, aK-dimensional score vectors∈[0,1] K for
+each phage, whose entries correspond to specific functional categories (Figure 2.1). We
+may lose the geometric structure of the score distribution if we aggregate this vector to
+a scalar value before applying conformal prediction. For such settings, Ochoa Rivera,
+Patel and Tewari [5] have proposed a score-based aggregation (CSA) method for con-
+formal prediction.
+Phage
+Proteins
+pLM Encoder
+ΦpLM
+Per-Function
+Scores s∈[0,1] K
+Figure 2.1: Construction of theK-dimensional functional score vector,s, from a phage’s
+protein sequences.
+2.4.1 Ensemble Score Vectors
+LetS⊆[0,1] K be the score space and lets= (s 1,· · ·,s K)∈Sbe the vector of scores
+produced by theKmodels, for each phage. Now, the CSA method treats the entire vector
+
+PAGE 19
+as the object of inference rather than reducing it into a single value. The main idea is
+to define a region, called an envelope,E⊆[0,1] K. This envelope consists of the region
+where the score vectors of the true hosts for that particular phage are concentrated.
+Mathematically, let{φ h}h∈H be a family of label-dependent mapsφ h :[0,1] K →[0,1] K
+such that, whenhis the true label, the transformed score vectorφ h(s)concentrates near
+the origin inR K
++. The CSA method constructs an envelopeE⊆R K
++ as the intersection
+ofMhalf-spaces induced by unit directions{u m}M
+m=1 and quantile thresholds{˜qm}M
+m=1:
+E=
+M\
+m=1
+
+s∈R K
++ :⟨s,u m⟩ ≤˜qm
+	
+.(2.6)
+By construction,Eis convex. Membership of a transformed score in the scaled envelope
+t·Eis tested coordinate-wise along each direction. The exact transformationφ h used in
+this work is formalized in Section 3.3.
+2.4.2 The CSA Framework
+The core innovation of the CSA method is in the calibration process. It splits the cal-
+ibration data into two subsets which have different roles. This is necessary for the
+exchangeability argument that provides us with the coverage guarantee. If we used the
+same calibration points to construct both, we would get overfitting which would intro-
+duce bias which would invalidate the distribution-free coverage guarantee [5].
+(i)Shape Discovery Set (S 1):Used to model the spatial distribution of scores and
+learn the geometric shape, orientation, and boundaries of the envelopeE⊂R K.
+(ii)Size Scaling Set (S 2):Used to determine the scalar scaling parameter ˆt∈R +. ˆt
+inflates or deflatesEuntil exact empirical coverage 1−αis attained overS 2:
+ˆt=inf
+(
+t>0
+ 1
+|S2| ∑
+s∈S2
+1(φ H(s)∈t·E)≥ ⌈(|S2|+1)(1−α)⌉
+|S2|
+)
+This ˆtis the smallest scaling factor such that the scaled envelope ˆt·Eachieves the
+required 1−αcoverage. The scaled envelope is defined linearly as:
+ˆt·E={t·x:x∈E}, ˆt>0
+In the original CSA paper [5], finding ˆtis presented as a root-finding problem solved
+through iterative numerical optimization or binary search over candidate scaling values
+t. At test time, a candidate labelhis included in the prediction setC(s n+1)if and only
+if its transformed score vector falls inside the scaled envelope:
+C(sn+1) ={h∈H:φ h(sn+1)∈ ˆt·E}.
+14
+
+PAGE 20
+2.4.3 Limitations of CSA in Classification
+This CSA framework was originally developed and analyzed in a regression setting [5],
+and has some major limitations when it is applied to classification problems:
+(i)Convexity of Envelope:In [5], the conformal envelopeEis constructed as an in-
+tersection of half-spaces and is therefore convex. In the original high-dimensional
+regression setting, where the score vectors concentrate in a single connected re-
+gion of the score space, this is a natural and useful design choice. But in classifi-
+cation, the score vectors for different classes concentrate in separate regions in the
+[0,1] K score space. Therefore, if we force a convex envelope across the regions,
+we will create a region that covers a large area of empty score space in between,
+which inflates the volume of the envelope and leads to over-conservative, uninfor-
+mative prediction sets, as|C(s)|becomes very large.
+(ii)Calibration Inefficiency:Originally the method uses an iterative numerical op-
+timization or a binary search to find the optimal scaling factor ˆtoverS 2, which
+is appropriate in the original regression analysis. Each trial value oft, however,
+requires evaluating every half-space constraint for every point inS 2, and in clas-
+sification this cost multiplies across candidate host labels, making the iterative
+approach prohibitively expensive and motivating the closed-form computation of
+Section 3.5.
+(iii)Only Marginal Guarantee:The scaling calculations in the original method only
+provide us with a marginal guarantee. This can lead to poor performance on the
+biological datasets, which are imbalanced.
+(iv)Handling of Missing Scores (NaN):The original CSA formulation assumes that
+every score vector is fully observed across allKdimensions. In our setting, phage
+score vectors exhibit structural missingness (Section 4.1), a phage may simply
+lack a protein annotated for a given functional category. If we naively impute
+these missing entries, for example to zero, we would get a bias the nonconfor-
+mity score toward interpreting absence as evidence against infection, and would
+invalidate the exchangeability assumption underlying Theorem 2.3.1.
+These limitations directly motivate the methodology developed in Chapter 3.
+
+PAGE 21
+
+
+PAGE 22
+3
+Methodology
+In this section, we will develop the mathematical framework used to construct predic-
+tion sets with guaranteed finite-sample phage-host classification. Section 3.1 formalises
+the prediction task and addresses missing data in our score vector. Then, building on
+the limitations of the CSA method identified in Section 2.4.3, Section 3.2 explains why
+non-convex envelopes are better suited for classification, and Section 3.3 defines the
+label-dependent nonconformity transformation used throughout this report to center
+valid score distributions near the origin. Section 3.4 then presents the three envelope
+geometries evaluated in this work, the two multi dimensional non-convex (Radial, Strip)
+and the collapsed 1D method. Finally, Section 3.5 derives the calibration scaling factor
+ˆt.
+3.1 Problem Formalization
+We will now apply the general conformal prediction setup from Section 2.3 to our host
+prediction task. Recall from Section 2.1 thatH={h 1, . . . ,hN}represents the discrete
+set ofNcandidate bacterial hosts. Our goal is to build a functionC:X→P(H)that
+outputs a set of hosts while maintaining the coverage guarantee in Equation (2.3).
+In our work, the feature space,X, does not use the raw phage sequences directly. In-
+stead it consists of fixed-length score vectors (Kdimensional) generated by the protein
+annotation process introduced in Section 2.2.3. So each scores k corresponds to a spe-
+cific functional protein category (e.g., capsid, tail, lysin), whereKis the total number
+of categories. A specific phage genome may lack proteins in different functional cate-
+gories, therefore the score vector may have structural missingness:
+s= (s 1, . . . ,sK)T ∈([0,1]∪ {NA}) K.
+Here,s k =NA is the structural absence, which means that for categorykno annotated
+protein was identified in the phage sequence, rather than a zero-evidence score or miss-
+
+PAGE 23
+ingness caused by random measurement noise. This value is missing by design, not due
+to noise, and hence we need to handle it explicitly rather than simply imputing it.
+To retain the mathematical guarantee without imputations, we attach a missingness
+mask,m, to every score vector. We represent each score observation as a paired vector
+(s,m)∈([0,1]∪ {NA}) K × {0,1}K:
+m= (m 1, . . . ,mK)T ∈ {0,1} K,m k =1(s k ̸=NA).
+Given a calibration setD cal ={(s i,m i,Hi)}n
+i=1 of exchangeable samples, and an unla-
+belled test sample(s n+1,m n+1)drawn exchangeably from an unknown joint probabil-
+ity distribution, our goal is to construct a set-valued prediction mappingC:([0,1]∪
+{NA})K × {0,1}K →P(H)at significance levelα∈(0,1)such that:
+P
+
+Hn+1 ∈C(s n+1,m n+1)
+
+≥1−α.
+The total number of observed functional dimensions for a given phage is given by the
+L1 norm of the mask,∥m∥ 1 = ∑K
+k=1 mk. Then we haves m ∈[0,1] ∥m∥1, the sub-vector
+restricted strictly to the observed dimensions wheremk =1. All prediction functions and
+nonconformity scoring operators developed in this report are defined over the product
+space of pairs(s,m), rather thansalone. This ensures our nonconformity scores and
+envelope tests remain mathematically valid for any missingness pattern, not just fully
+observed data,m=1.
+We apply this framework to two host prediction tasks:
+(i)Gram-type classification(N=2):H={gram-neg,gram-pos}, evaluated over
+Kfunctional category dimensions.
+(ii)Host-level classification(N>2):Hrepresents the full set of bacterial hosts
+in our dataset. For each hosth∈H, the score space is decomposed into host-
+specific sub-vectors of dimensionK h, and an individual envelopeE h is fitted in-
+dependently on training phages with true hosth.
+In practice, host-level classification is not evaluated over the full host spaceHat test
+time. We first obtain a gram-type prediction setC gram(s,m)⊆ {gram-neg,gram-pos}
+Section 3.3.1, and use it to restrict the candidate host set to
+Hcand(s,m) =
+[
+g∈Cgram(s,m)
+Hg ⊆H,
+whereH g ⊂Hdenotes the subset of hosts of the true gram typeg. Let(s h,m h)∈
+([0,1]∪ {NA}) Kh × {0,1}Kh denote the restriction ofsto theK h score dimensions asso-
+ciated with hosth.
+18
+
+PAGE 24
+Once we construct the per host envelopesE h and the calibration thresholds ˆth (detailed
+in Section 3.4 and 3.5), the host level prediction set is given by:
+Chost(s,m) = {h∈H cand(s,m) | φh(sh,m h)∈ ˆth ·E h} .(3.1)
+rather than a single-stage test over all ofH. This cascade reduces the number of per-
+host envelope evaluations required at test time, at the cost of makingChost dependent on
+the upstream gram-type prediction.
+The following result confirms that composing the gram type and host level stages does
+not degrade the coverage guarantee of Equation (3.1).
+Proposition 3.1.1(Cascade Validity).Under exchangeability, if gram type classification
+is class conditionally valid at levelαand each candidate host envelope satisfies validity
+levelα h, the cascaded predictor satisfies
+P
+ 
+H⋆ /∈Chost(s)
+
+≤α+max
+h∈H
+αh.(3.2)
+Proof.The miscoverage event{h ⋆ /∈Chost(s)}implies either that the true host was
+pruned by the Gram type filter (h ⋆ /∈Hcand(s), which requiresg ⋆ /∈Cgram(s)) or that
+h⋆ was admitted to the candidate pool but rejected by its host envelope (τ h⋆(s)> ˆth⋆).
+Applying the union bound:
+P
+ 
+h⋆ /∈Chost(s)
+
+≤P
+ 
+g⋆ /∈Cgram(s)
+
++P
+ 
+τh⋆(s)> ˆth⋆
+
+= ∑
+g
+P(G=g)P(g ⋆ /∈Cgram |G=g) + ∑
+h
+P(H=h)P(τ h > ˆth |H=h)
+≤α+max
+h∈H
+αh.
+3.2 Non-Convex Envelopes in Classification
+Envelope convexity was identified as one of the main limitations of standard CSA
+method [5] when applied to classification in Section 2.4.3. While convex envelopes
+naturally model continuous target spaces in regression, classification score vectors con-
+centrate in disjoint, class-specific clusters across the score space. Fitting a single shared
+convex envelope forces the boundary to bridge across empty intermediate space, result-
+ing in uninformatively large prediction sets. To prevent this over extension, we construct
+dedicated class conditional envelopesE h for each candidate host, this allows the bound-
+aries to closely adapt closely to the non linear structure of true infector scores.
+Also very importantly, dropping convexity does not violate statistical validity; the con-
+formal coverage guarantee holds for any measurable envelopeE⊆R K
++ under exchange-
+ability [5]. To ensure that the boundary is both computationally tractable and bio-
+logically sensible, the envelope must satisfy two geometric properties: star shaped-
+ness (Definiton 3.2.1) with respect to the origin (ensuring a unique, continuous scaling
+
+PAGE 25
+thresholdτ(s)) and coordinate wise monotonicity (Definition 3.2.2) which ensures con-
+vexity toward the axes, so stronger conformity vectors closer to the origin are uncondi-
+tionally included.
+Definition 3.2.1(Star-Shaped Set).A setE⊆R K is said to bestar-shaped with respect
+to the origin0∈R K if for every pointx∈Eand every scalarλ∈[0,1], the line segment
+connecting the origin toxlies entirely withinE:
+λx∈E∀x∈E,∀λ∈[0,1].
+Definition 3.2.2(Coordinate Wise Monotone Set).A setE⊆R K
++ is coordinate wise
+monotone if for allx∈Eandy∈R K
++:
+0≤y≤x=⇒y∈E,
+wherey≤xdenotesy k ≤x k for all coordinatesk∈ {1, . . . ,K}.
+3.3 Nonconformity Score Transformation
+The raw score vectors are not directly comparable across candidate labels and cannot
+be used directly as nonconformity measures. Recall from Section 2.4.1 that the CSA
+framework requires a label-dependent transformationφ h :([0,1]∪ {NA}) K × {0,1}K →
+(R+ ∪ {NA})K that maps candidate hypotheses into a nonconformity score space cen-
+tered near the origin.
+The raw functional category scoress k,h ∈[0,1]quantify evidence in favor of functional
+compatibility, therefore a raw score close to 1 reflects strong infection compatibility
+(low nonconformity), whereas a score near 0 reflects high nonconformity. Thus, the
+mapping is defined such that when a candidate hypothesish∈Hcorresponds to the
+true host label, the resulting vectorv=φ h(s,m)concentrates near0∈R K
++, whereas
+incorrect hypotheses yield vectors situated significantly further from the origin. We
+now formalizeφ h for both classification settings while explicitly preserving structural
+missingness via the mask vectorm.
+To map all the score vectors into a nonconformity space near the origin, we define class
+dependent transformationsφ h. Formally, for a single score dimensions k ∈[0,1]with
+the binary maskm k ∈ {0,1}, we define the general coordinate wise mapping:
+φh(sk,m k) =
+(
+|sk −c h|ifm k =1,
+NAifm k =0, ch ∈ {0,1},(3.3)
+where every hypothesis usesc h =1 to measure deviation from maximal evidence. For
+any observed dimension (m k =1), this simplifies directly toφ h(sk) =1−s h,k, this en-
+sures thatφ h(sk)→0 whenevers h,k →1.
+20
+
+PAGE 26
+3.3.1 Gram Type Classification Nonconformity Mapping
+In the Gram type classification setting (N=2,H={gram-neg,gram-pos}), we treat
+the task as a standard two class classification problem where each candidate hypothesis
+h∈His evaluated on a candidate score vectors h ∈([0,1]∪ {NA}) K. The functional
+models output a Gram positive evidence scores∈[0,1] K, therefore the we write the
+class specific evidence vectors ass grampos =sands gramneg =1−s. A high score repre-
+sents strong evidence in favor of hypothesish, so we havec h =1 for all classes. After
+applyingφ h(sh,m h)k =1−s h,k we get the host specific mapping acrossk∈ {1, . . . ,K}:
+vk = (φh(s,m)) k =
+
+
+
+sk ifh=gram-neg andm k =1,
+1−s k ifh=gram-pos andm k =1,
+NAifm k =0.
+(3.4)
+Using (3.4), we get a high nonconformity score if we test an incorrect hypothesis, and
+the scores for the true hypothesis are mapped near the origin0∈R K
++. This allows both
+classes to be calibrated against a shared reference envelopeE⊂R K
++.
+3.3.2 Host Level Classification Nonconformity Mapping
+In the host level setting (N>2), the candidate labels do not share the scores. Instead,
+each candidate hosth∈His evaluated on a host-specific sub-vectors h ∈([0,1]∪
+{NA})Kh. This measures the direct functional compatibility with hosth.
+A high raw scores h,k indicates high likelihood of infection,c h =1 for all hosts, using
+this we can get the following host-specific mapping acrossk∈ {1, . . . ,K h}:
+vh,k = (φh(sh,m h))k =
+(
+1−s h,k ifm h,k =1,
+NA ifm h,k =0. (3.5)
+Unlike the Gram classification task, in host level prediction we constructNseparate
+host envelopesE h ⊂R Kh
++ which are fitted independently on calibration phages with true
+labelH=h. At test time,s h is transformed using (3.5) and tested againstEh, this avoids
+forcing unrelated host signatures into a single shared coordinate system.
+Both transforms are strictly monotone fixed maps that require no parameter estima-
+tion from data. Therefore, they do not have sample dependencies that could break
+the exchangeability argument (which is necessary for the coverage guarantee, Theorem
+2.3.1). The missingness masksmpropagate unchanged asNAvalues, and the envelope
+constructions of Section 3.4 operate directly on this representation.
+
+PAGE 27
+3.4 Envelope Construction
+Here we will present the three envelope geometries that we have evaluated in this report.
+Each method follows the two-stage calibration procedure: the shape-discovery setS 1
+determines the geometric form of the envelope, and the size scaling setS 2 determines
+the scaling factor ˆt. All three envelopes are star-shaped with respect to the origin, so the
+per-point scaling function
+τ(s) =inf{t>0 :s∈t·E}(3.6)
+is well-defined as a single scalar for everys∈R K
++. For each envelope type, we derive
+a closed form expression forτ(s)that eliminates the need for iterative search. The
+scaling factor ˆtis then computed using class conditional quantile aggregation overS 2,
+as detailed in Section 3.5.
+3.4.1 Collapsed 1D Envelope Method
+The simplest envelope construction method just collapses theK-dimensional (orK h-
+dimensional) NC vector to a scalar value by taking the mean over the over observed
+dimensions,
+¯s= 1
+|m|1
+∑
+k:mk=1
+vk,
+and calibrates a single quantile onS 1:
+˜q=Quantile1−α
+ 
+{¯si}i∈S1
+
+,τ(s) = ¯s
+˜q,E={s: ¯s≤˜q}.
+This envelope is star-shaped (Section 3.2), it is unaffected by the dimensionalityK, but
+at the same time is also discards all the geometric information that theKdimensions
+provide us with. Any two vectors with the same scalar average are treated identically
+regardless of their coordinate wise distribution. Consequently, if a single functional
+dimension has a highly confident infection signal (e.g.,s h,k ≈1, sov k ≈0) while the
+others contains a small one, mean pooling dilutes this primary signal across the remain-
+ing axes. In contrast, the multidimensional non convex envelopes developed in Sections
+3.4.2 and 3.4.3 preserve the coordinate wise geometry, they are able to isolate the strong
+single dimension evidence from noisy background dimensions.
+3.4.2 Radial Envelope Method
+The Radial envelope method retains the directional structure of the scores by calibrating
+a boundary radius as a function of direction on the unit sphere which is restricted only to
+the positive orthant (since all NC values are non-negative). In this method, we drawM
+22
+
+PAGE 28
+directional vectors{u m}M
+m=1 uniformly over the orthant by samplingv m ∼ |N(0,I K)|
+coordinate-wise and normalizing:u m =v m/∥vm∥.
+For eachS 1 points i, over the observed dimensions only, we compute its magnitude and
+unit direction,r i =∥s i,mi∥,d i =s i,m/ri. For each sample directionu m, we collectn m
+calibration points within an angular sector of half-widthδ=30 ◦ (whered i ·u m ≥cosδ).
+The directional radius ˜qm is then calibrated as:
+˜qm =
+
+
+
+Quantile1−α
+ 
+{ri :d i ·u m ≥cosδ}
+
+ifn m ≥n min,
+wm ·Quantile 1−α
+ 
+{ri :d i ·u m ≥cosδ}
+
++ (1−w m)·˜qmarg if 0<n m <n min,
+˜qmarg ifn m =0,
+wheren m is the number ofS 1 points within the band of directionm,n min a minimum-
+support threshold,w m =n m/nmin, and ˜qmarg =Quantile 1−α ({ri}i∈S1)the marginal fall-
+back radius. This blend enables us to avoids a hard cutoff between sufficient and insuf-
+ficient local support (number of points in that region).
+To ensure that we get a smooth boundary, we compute the radius at an arbitrary direction
+das a directional weighted average of allMcalibrated radii:
+r(d) =
+M
+∑
+m=1
+wm(d)˜qm,w m(d) = exp(κd·u m)
+∑M
+m′=1 exp(κd·u m′),(3.7)
+whereκ>0 controls the angular smoothness of the interpolation across directions
+(largerκapproaches nearest-direction assignment). This makes the envelope bound-
+ary a continuous function of direction rather than a piecewise constant one. The scaling
+function follows directly from this:
+τ(s) = ∥sm∥
+r(d) ,d= sm
+∥sm∥,E={s:∥s m∥ ≤r(d)}.
+As established in Section 3.2, this construction is star-shaped by design. This is because
+rdepends only on direction and not on magnitude,s∈t·Efor sometimpliesλs∈t·E
+for allλ∈[0,1]. Figure 3.1 illustrates this construction, sample directionsu m collect
+calibration points within angular cones of half angleδ, establishing local radii ˜q m that
+are kernel smoothed into a continuous boundary.
+
+PAGE 29
+Figure 3.1: Geometric construction of the radial envelope in 2D score space. The score
+space is partitioned into angular sectors around reference raysθ1,θ 2,θ 3. For each sector,
+the empirical(1−α)quantile radius ˆq 1−α (θ)is computed from calibration scores (gray
+dots) to define the envelope boundaryL(θ)(solid black curve). A test score vectorv
+with polar coordinates(r,θ v)is included in the conformal region if its radial magnitude
+satisfiesr=∥v∥ ≤L(θ v).
+3.4.3 Strip Envelope Method
+The Strip envelope defines conditional bounds for each target dimensionibased on the
+bin occupied by another dimensionj. We partition the range of dimensionjintoNB
+equal-width bins. For each binncontainingn j,n calibration points, the upper limit along
+dimensioni̸=jis calibrated as:
+limits[j,i,n] =
+
+
+
+Quantile1−α
+ 
+{s·,i :s ·,j ∈binn}
+
+ifn j,n ≥n min,
+w j,n ·Quantile 1−α
+ 
+{s·,i :s ·,j ∈binn}
+
++ (1−w j,n)·˜qi if 0<n j,n <n min,
+˜qi ifn j,n =0,
+where ˜qi is the marginal(1−α)quantile for dimensionioverS 1 , andw j,n =n j,n/nmin
+shrinks underpopulated bins toward it (it mirrors the blending rule of the radial enve-
+lope).
+24
+
+PAGE 30
+Figure 3.2: Strip envelope 2D staircase construction and missing dimension handling.
+Dimensionv 1 is partitioned into equal width bins with vertical upper boundsU j, while
+dimensionv 2 defines horizontal boundsV i. The intersection of both directional con-
+straints forms the coordinate wise monotone staircase envelopeE(shaded region). If a
+coordinate is unobserved, all pairwise constraints involving that dimension are ignored,
+so the missing dimension is neither used as a target nor as a conditioning dimension.
+A windowed monotonicity pass then enforces limits[j,i,n]≥limits[j,i,n ′]forn ′ ∈(n,n+
+w]within a fixed windoww.
+limits[j,i,n]←max
+n′ ∈[n,min(n+w,NB−1)]
+limitsraw[j,i,n ′].
+This is done to ensure that a bin’s limit cannot be undercut by a bin immediately ahead
+of it in the same conditioning dimension. The monotonicity is necessary to ensure that
+a phage with a smaller value (more confident) in the conditioning dimensionj, does
+not recieve a tighter bound in dimensionithan a phage with a larger value inj, which
+makes sure that the conditional envelope is logically correct. This ensures that a single
+sparse or fallback-driven bin at one end of the range cannot set the limit for every bin
+behind it. This report usesw≥NBfor gram type classification andw=2 for host-
+level classification, reflecting the difference in how many bins (NB) each task typically
+calibrates.
+Geometrically, the strip envelope forms a coordinate wise monotone staircase region
+defined by the intersection of conditional bin regions across all dimension pairs:
+E=
+K\
+j=1
+\
+i̸=j
+NB[
+k=1
+
+v∈R K
++ :v i ≤limits[j,i,k]
+	
+.(3.8)
+
+PAGE 31
+For a score vectorvwith an observed dimension setA(v), the Strip scaling function is
+τ(v) =max
+j,i∈A(v)
+j̸=i
+vi
+limits[j,i,bin j(v j)] .
+So, a pairwise constraint contributes toτ(v)if and only if both its target and conditioning
+dimensions are observed:
+(j,i)contributes toτ(v)⇐ ⇒m j =m i =1,j̸=i.
+If either dimension is missing,m j =0 orm i =0,the corresponding pairwise con-
+straint is omitted from the maximum.
+Structural missingness is handled by dropping dimensions that are unobserved for the
+score vector under consideration. Let
+A(v) ={i∈ {1, . . . ,K}:m i =1}
+be the set of observed dimensions of a score vectorv, wheremi ∈ {0,1}is its observation
+mask.
+For a missing dimensioni/∈A(v), we discard all the conditional limits for whichiis
+the conditioning dimension:
+limits[i,j,k]is ignored for allj̸=i,k=1, . . . ,N B.
+Similarly, the limits for whichiis the target dimension are ignored because the target
+valuev i is unobserved:
+limits[j,i,k]does not contribute toτ(v),i/∈A(v).
+Therefore, the Strip construction is evaluated only over pairs of observed dimensions:
+j,i∈A(v),j̸=i.
+3.5 ˆtCalculation
+3.5.1τComputation
+For any test points∈R K, we define the inclusion threshold functionτ(s)(defined in
+3.6) as the minimum scaling factor required for the scaled envelopet·Eto contains:
+τ(s) =inf{t>0 :s∈t·E}
+26
+
+PAGE 32
+Given the computedτvalues over the scaling setS 2, the calibrated scaling factor ˆtis
+selected as the(1−α)empirical quantile:
+ˆt=τ (k) wherek=⌈(|S 2|+1)(1−α)⌉
+Here,τ (k) denotes thek-th order statistic (thek-th smallest value) of{τ(s i)}si∈S2.
+Unlike the original CSA method, which relies on a computationally expensive iterative
+binary search over candidatetvalues, our closed form expressions allowτ(s)to be
+evaluated directly for each point in a single pass overS 2. This eliminates the iterative
+search entirely, which reduces the calibration computational complexity fromO(|S 2| ·
+Niter)toO(|S 2|log|S 2|).
+3.5.2 Class Specific ˆtCalculation
+When the dataset has class imbalance (like our dataset), a single global scaling factor
+ˆtcan cause under coverage for complex classes and over coverage for simpler ones.
+To enforce exact class conditional coverage 1−α, we partitionS 2 into class-specific
+calibration setsS (c)
+2 ={s∈S 2 :h=c}for each labelc∈H.
+For each classc, the class-specific scaling threshold ˆtc is calculated independently on
+S(c)
+2 :
+ˆtc =τ (c)
+(kc),k c =⌈(|S (c)
+2 |+1)(1−α)⌉.(3.9)
+The two prediction tasks in this report differ in how envelopes are constructed, which
+determines how these per class thresholds ˆtc are applied:
+Gram Type Classification:We only fit a single envelope,Eon the shared shape dis-
+covery setS 1 containing phages of both classes. If we evaluate a single pooled threshold
+overS 2, it would only yield only marginal coverage. So, we compute the class specific
+quantiles ˆtgram-neg and ˆtgram-pos using (3.9) and scale the shared envelope by their maxi-
+mum:
+ˆt=max
+ ˆtgram-neg, ˆtgram-pos
+
+.(3.10)
+Since ˆt≥ ˆtc for both classes, scalingEby ˆtsatisfies both coverage requirements si-
+multaneously, guaranteeing class-conditional validityP(s∈ ˆt·E|H=c)≥1−αfor
+c∈ {gram-neg,gram-pos}.
+Host Level Classification:In host-level classification, each candidate hosth∈H
+has a dedicated envelopeE h fitted exclusively on phages with true hosth(Section 3.1).
+Because its calibration setS (h)
+2 is already single-class, ˆth is computed directly via 3.9
+without taking a maximum across hosts. Each scaled envelope ˆth ·E h is validated inde-
+pendently, admitting a candidate hosthifφ h(sh)∈ ˆth ·E h.
+
+PAGE 33
+3.5.3 Resolving the Empty Prediction Set
+In section 3.1 we noted thatC(s,m)may be empty when no candidate label’s trans-
+formed score falls inside ˆt·E. In both our tasks we resolve this differently.
+For gram type classification, we resolve an empty set conservatively by returning both
+labels,C(s) =H, rather than an arbitrary tie break, sinceN=2, this is the uninforma-
+tive but always valid choice. On the other hand, for host-level classification, whereN
+can be large and returning all of ˆH(s)would be uninformative, we resolve an empty
+set by forcing a singleton at the host with the closestτvalue:
+C(s) =
+n
+argmin
+h∈ ˆH(s)
+τh(sh)
+o
+.
+Both apply only when the primary rule of Equation (2.3) yields / 0. Coverage guarantee
+in Theorem 2.3.1 remains unaffected as nonempty fallback options strictly enlargeC(s),
+thus the lower boundP(H∈C(s))≥1−αtrivially holds. Consequently, the reported
+empty_rateis strictly zero by rule rather than an absence of out-of-envelope points.
+To preserve visibility of these points, Section 5 reports the pre-resolutionforced_rate
+separately.
+28
+
+PAGE 34
+4
+Data and Preprocessing Pipeline
+In this section, we describe the dataset architecture 4.1, the mathematical aggregation
+operators used to combine protein-level functional annotations into phage-level score
+vectors 4.2, and the masking strategy developed to eliminate bias caused by cross-fold
+protein cluster contamination 4.3.
+4.1 Data Description and Structural Missingness
+Our dataset comprises ofN prot =1853074 protein sequences extracted from 18474
+unique bacteriophages. The feature extraction and score generation pipeline is struc-
+tured in five stages (Figure 4.1):
+1.Genome Translation:Each phage genome sequence is decomposed into its in-
+dividual translated protein sequences.
+2.Sequence Embeddings:Protein sequences are encoded into numerical represen-
+tations using protein language models.
+3.Hierarchical Functional Annotation (EMPATHI):Using the EMPATHI archi-
+tecture [13], protein embeddings are classified to predict broad categories first
+(e.g., structural, replication, lysis) to constrain specific sub functions (e.g., tail
+fiber, capsid, lysin, DNA polymerase).
+4.Host Function Base Classifiers (M h,k):For each candidate hosth∈H(N=54)
+and functional categoryk(K h ≤40), an independent supervised classifierM h,k is
+trained on the functional embeddings. Each classifier outputs a probability score
+sp,h,k ∈[0,1]measuring the compatibility of proteinpwith hosthfor functional
+rolek, yieldingM=2,160 base models. Not every host has valid models for all
+40 categories, so the per host dimensionality is not fixed andK h ranges from 26
+to 40. SummingK h over all 54 hosts gives the final dimensionality,K tot =2,036,
+which is smaller thanM=2,160=54×40.
+
+PAGE 35
+5.Phage-Level Aggregation:For each phage genome, predictions across all its
+constituent proteins are aggregated via dimension wise, NaN aware mean pooling
+(Section 4.2), producing aK tot =2,036-dimensional phage score vector.
+In this work, these pre computed scores serve as fixed inputs to our conformal frame-
+work without retraining the underlying classifiers. Each protein sequence is linked to
+its phage accession, host genus labelH∈H(N=54 genera) and host Gram type
+G∈ {gram-neg,gram-pos}.
+Phage
+Genome
+Sequence
+Proteins
+{p1, . . . ,pL}
+pLM
+Embeddings
+()
+EMPATHI
+Model
+(Tail, Capsid,
+Lysin. . . )
+MHost 1, Tail
+MHost 1, Lysin
+...
+MHost 54, Capsid
+Host-Function Models (Mh,k)
+NaN Aware
+Mean Pooling
+(across phage
+proteins)
+Phage Score
+Vector
+s∈[0,1] 2036
+Figure 4.1: Overview of the feature extraction and score generation pipeline. Phage
+genomes are translated into proteins and encoded using protein language model embed-
+dings. The EMPATHI pipeline assigns functional categories, which are evaluated across
+M=2,160 host function base classifiers (M h,k). Finally, NaN aware mean pooling ag-
+gregates protein predictions into aK tot =2,036-dimensional phage level score vector.
+The dataset contains some structural missingness: approximately 30.6% to 36.5% of
+protein category scores are missing (NA) because any individual phage naturally only
+carries proteins for a subset of functional classes. An entrys p,m =NA indicates that
+proteinpwas not annotated with the functionm, this reflects biological absence rather
+than random measurement noise.
+Formally, we define a binary observation maskM∈ {0,1} Nprot×M such that:
+sp,m =NA⇐ ⇒M p,m =0.(4.1)
+30
+
+PAGE 36
+Because these missing entries represent biological absence, imputing them with zero
+would falsely treat unannotated proteins as evidence against infection, which would vi-
+olate the nonconformity formulation (Section 3.3). Therefore we preserve missingness
+via NaN aware aggregation (Section 4.3).
+Set Total Phages Gram-Negative Gram-Positive
+Full Dataset 18,474 10,735 7,708
+Test Split (Split 0) 4,433 2,811 1,611
+Validation Split (Split 1) 3,173 1,833 1,340
+Training Splits (Splits 2–4) 10,868 6,091 4,757
+Table 4.1: Dataset Summary and Class Distributions
+4.2 Protein to Phage Aggregation and NaN-Aware
+Pooling
+The base classifiers only score individual proteinsp∈P i, while host infection is a
+property of the phage as a whole, so we need to aggregate the protein level scores into
+a single phage-level score vector. For each phagei∈ {1, . . . ,N phage}(N phage =18,474)
+with protein setP i, letM p,k =1(proteinphas a valid prediction for functionk)denotes
+the protein-level mask. We compute the aggregation using running sums and counts per
+phage, this avoids holding the full 1.85×10 6-row protein matrix in memory.
+For each of theKfunctional dimensions, we get the aggregated phage level score using
+dimension wise, NaN aware mean pooling:
+si,k =
+
+
+
+∑p∈Pi sp,k ·M p,k
+∑p∈Pi Mp,k
+if ∑p∈Pi Mp,k >0,
+NA otherwise.
+(4.2)
+Equation (4.2) excludes missing entries (NA) from both the numerator and denominator,
+and takes the average strictly over observed proteins. A score is NA if and only if no
+protein of phageihas an observed prediction for functionk.
+The phage-level mask follows directly:
+mi,k =1
+ 
+∑
+p∈Pi
+Mp,k >0
+!
+.(4.3)
+i.e.m i,k =1 if at least one protein of phageihas an observed score for columnk,
+otherwise, it is 0. This reduces the protein data to a phage-level matrixS∈([0,1]∪
+{NA})Nphage×K paired with a binary mask for missingnessM∈ {0,1} Nphage×K.
+
+PAGE 37
+As we have already established in Section 3, our conformal envelope constructions oper-
+ate natively on the paired observation(si,m i). This preserves the structural missingness
+without fabricating values in place of it. Consequently, all conformal classification re-
+sults reported in Section 5 rely entirely on this native representation, and require no
+imputation after aggregation. The task dependent rules that determine which protein
+predictions count as valid and thus defineM p,k are detailed in Section 4.3.
+4.3 Task Specific Filtering and Data Partitioning
+The main requirement for the finite sample conformal validity (Theorem 2.3.1) is the
+exchangeability of the calibration samplesS 2 and test samplesS test. In our dataset, the
+cross validation partition is defined at the phage level (f p ∈ {0,1,2,3,4}), whereas the
+underlying base scoring models were trained at the protein-cluster (pc) level. A single
+protein cluster can span phages assigned to different genome folds, therefore a base
+model scoring proteinpfor categorykmay have observed homologous proteins from
+p’s cluster during training.
+Formally, letF p,k ∈ {0,1,2,3,4}denote the fold held out when training the base model
+for featurek. A naive aggregation which uses scores whereF p,k ̸=f p introduces op-
+timistic bias, by carrying training information into test evaluations. This breaks the
+exchangeability assumption that is a requirement of Theorem 2.3.1.
+The underlying prediction models for host level and gram type classification differ in
+structure, hence we correct for data contamination at the appropriate granularity for each
+task:
+Forhost level classification, each of theM=2160 host function models were trained
+on an independent five fold split of the protein cluster space. LetF p,k ∈ {0,1,2,3,4}
+denote the held out fold identifier for proteinpunder the model for featurek. To prevent
+homology leakage across splits, we enforce an out of fold masking operator prior to
+phage aggregation
+sp,k ←NA ifF p,k ̸=f p.(4.4)
+We replace the in fold predictions withNA, then the NaN-aware mean pooling operator
+(4.2) naturally excludes the contaminated scores without introducing imputation bias.
+This allows us to utilize the full dataset across all five folds without discarding data:
+Dtest ={i: split i =0},D val ={i: split i =1},D train ={i: split i ∈ {2,3,4}}.
+Here,D train provides us with the the shape-discovery and size-scaling calibration sets
+(S1,S 2),D val is used to tune envelope hyperparameters (e.g., bin countNB, directional
+resolutionM, and kernel smoothingκ), andD test is held out for final evaluation.
+32
+
+PAGE 38
+Forgram type classification, theK=40 functional category models used for gram
+type classification do not have per column split assignment tables. As a conservative,
+unambiguous fallback, we restrict the gram type dataset strictly to phages in Fold 0
+(spliti =0). Because Fold 0 phages are consistently held out at the genome cluster level,
+all associated protein scores are unbiased by construction. Within this Fold 0 subset,
+we partition the phages 40/30/30 into shape discovery (S 1), size-scaling (S2), and test
+(Stest) sets following the standard CSA calibration split.
+In both cases,M p,k, which is the indicator determining which protein level scores are
+treated as valid input to the pooling operator of Equation (4.2), reduces to whichever cor-
+rection each task’s models support. This is the exact fold match test of Equation (4.4) for
+host level classification, or membership in the Fold-0 subset for gram type classification.
+
+PAGE 39
+
+
+PAGE 40
+5
+Experiments and Results
+In this section we will present the experimental validation of the methods developed in
+Section 3. In section 5.1 we validate the construction of each envelope on simulated
+data, where the ground truth is known, we verify the finite sample coverage guarantees,
+geometric adaptation, and dimensionality scaling. Section 5.2 and Section 5.3 then
+report results on real phage data for gram-type and host-level classification respectively.
+5.1 Synthetic Validation
+Before applying the conformal envelope constructions of Section 3.4 to real phage data,
+we evaluated the theoretical guarantees, geometric adaptations and the efficiency scaling
+of methods on simulated scores with known ground truth.
+These experiments have four specific goals:
+(i) Verify the exact finite sample marginal coverage validity (1−α=0.900) across
+varying score dimensionsK.
+(ii) Demonstrate how class conditional calibration improves prediction set efficiency
+over shared global boundaries.
+(iii) Characterize how non-convex geometries (Radial and Strip) adapt to non Gaus-
+sian, correlated, or sparse score distributions.
+(iv) Validate the per host envelope cascade in a multi class ground truth setting.
+5.1.1 2D Geometric Proof and Class Conditional Efficiency
+We first simulatedN=400 bivariate score pairs fromN((0.15,0.15),Σ)withΣ 11 =
+Σ22 =0.01 andΣ 12 =−0.0085, clipped to[0,1] 2. Fitting a single convex envelope
+(α=0.10,M=500 directions, 50/50S 1/S2 split) confirms the two stage pipeline: the
+
+PAGE 41
+initial shape (only boundary under covers), whereas the size scaled envelope hits the
+target 90% coverage exactly.
+Next, we introduced four classes (Hosts A–D) with centroids at(0.1,0.7),(0.7,0.1),
+(0.1,0.1), and(0.7,0.7), each with variance 0.01. Fitting a single shared convex en-
+velope (α=0.10) to test a phage whose true host is Host B yields the prediction set
+C(X) ={Host A,Host B,Host C}. Because a convex hull must span the empty interior
+space between disjoint clusters, the prediction set remains overly conservative, even
+when tightening the significance level toα=0.40. This confirms that shared convex
+hull inefficiency is structural rather than an artifact of hyperparameter choice.
+Computing host specific scaling thresholds ˆth while sharing the directional shape ˜q
+yields ˆtA =0.969, ˆtB =0.980, ˆtC =0.302, and ˆtD =1.074. The large spread in ˆth re-
+flects underlying class dispersion heterogeneity (e.g., Host C requires only 30% of the
+expansion required by Host D). Applying these class conditional thresholds shrinks the
+prediction set for the same test phage toC(X) ={Host B,Host D}, reducing set size
+from 3 to 2 while preserving true label coverage.
+Similarly, we also evaluated the non convex Radial and Strip methods on this same
+2D synthetic dataset (K=2,α=0.10). The results confirmed that they both success-
+fully adapt to the negatively correlated score distribution, and achieve the exact target
+coverage of 90.0% with and have size scaling factors of ˆt=0.996 and ˆt=0.944, re-
+spectively. These are consistent with the coverage results reported for all three methods
+in Section 5.1.2.
+5.1.2 Dimensionality Scaling and Finite-Sample Coverage
+To evaluate coverage validity as the dimensionality grows, we benchmarked the refer-
+ence CSA paper method (binary search) against the Radial envelope (δ=15 ◦), and the
+Strip envelope (Mbin =20) across dimensionsK∈ {2,5,10,20}at target level 1−α=
+0.900 (α=0.10,N=1000). The scores were drawn from aK-dimensional multivari-
+ate normal distribution with mean vector0.3, variance 0.02, and off diagonal feature
+correlationρ=0.30, clipped to[0,1] K.
+As shown in Table 5.1, every method achieves exactly 90.0% empirical coverage across
+all tested dimensions. This empirically confirms the distribution free guarantee of The-
+orem 2.3.1. However, their statistical efficiency, which is reflected by the scaling factor
+ˆt, is significantly different asKincreases. For the reference CSA method, the ˆtonly
+slightly changes from 0.996 to 1.021 betweenK=2 andK=20. For the radial method
+the ˆtvalue inflates for high dimensions, it nearly triples from ˆt=0.972 atK=2 to
+ˆt=2.925 atK=20. This is due to the curse of dimensionality, the directional cones
+(δ=15 ◦) capture fewer local calibration points in sparse high dimensional spaces, so
+more directions fall back to the conservative global marginal quantile ˜qmarg, inflating ˆt.
+Finally, the strip method maintains the robust sample efficiency (reaching onlyˆt=1.212
+36
+
+PAGE 42
+atK=20), and outperforms the radial method by using axis aligned pairwise projec-
+tions.
+Reference CSA (Convex) Radial Envelope Strip Envelope
+Dimension (K) Coverage (%) ˆt Coverage (%) ˆt Coverage (%) ˆt
+K=2 90.0 0.996 90.0 0.972 90.0 0.893
+K=5 90.0 1.009 90.0 1.179 90.0 1.031
+K=10 90.0 1.016 90.0 1.920 90.0 1.107
+K=20 90.0 1.021 90.0 2.925 90.0 1.222
+Table 5.1: Dimensionality scaling experiment (K∈ {2,5,10,20}, nominal 1−α=
+0.900,N=2000). Empirical coverage and calibrated size scaling factors ˆtare reported
+across envelope geometries.
+5.1.3 Geometric Robustness Across Score Topologies
+To assess the boundary adaptation under realistic non convex or misspecified feature
+spaces, we calibrated 3D (K=3) envelopes (α=0.10,N=400) across four distinct
+score topologies: (i)Uncorrelated Gaussian(Σ=I), (ii)Correlated Gaussian(ρ=
+0.85), (iii)Multivariate Laplace(heavy-tailed), and (iv)Sparse(one feature centered
+near zero, 0.05±0.03, while others remain diffuse at 0.35).
+Table 5.2: Geometric adaptation benchmark across 3D score topologies (α=0.10,N=
+400). Both Radial (M=150) and Strip (M bin =12) envelopes achieve exact nominal
+coverage under distributional misspecification.
+Radial Envelope Strip Envelope
+Score Distribution Topology Coverage (%) ˆt Coverage (%) ˆt
+Normal (Uncorrelated,Σ=I) 90.0 1.072 90.0 1.161
+Normal (Highly Correlated,ρ=0.85) 90.0 0.995 90.0 0.861
+Multivariate Laplace (Heavy-Tailed) 90.0 1.072 90.0 1.232
+Sparse (Degenerate Dimension) 90.0 1.077 90.0 1.155
+The results in Table 5.2 highlight several key properties:
+•Distribution Free Invariance:Both Radial and Strip constructions hit the exact
+90.0% target across all four topologies. this confirms that heavy tails or feature
+sparsity do not compromise marginal validity.
+
+PAGE 43
+•Adaptation to Correlation:On highly correlated data (ρ=0.85), both methods
+require little to no inflation (ˆt≈1 for radial and ˆt≈0.861 for strip). This indicates
+that the shape discovery step already produces a well fitted envelope for diagonal
+score clouds. The Strip method’s initial conditional bounds are slightly conserva-
+tive for this geometry, so the calibration step fine tunes the scale downward.
+•Heavy-Tail Sensitivity:The heavy tailed Laplace distribution induces the largest
+inflation factor for the Strip envelope ( ˆt=1.232). This is because heavy tails
+produce extreme nonconformity values which result in higher quantile thresholds
+during the shape discovery step.
+5.1.4 Multi-Host Benchmark Verification
+Finally, we validate the per-host envelope cascade (Section 3.1) on a simulated 6-host
+system (H={Host A, . . . ,HostF },K=5,N cal =500 infectors per host,α=0.10).
+Host-specific envelopes are calibrated from true infector score distributions centered
+in[0.1,0.5] 5. A test phage matching Host B (scores in[0.1,0.4] 5 for HostB; scores in
+[0.6,0.9] 5 for all non target hosts) is evaluated against all six envelopes.
+Across the reference CSA, Radial, and Strip constructions, all three methods correctly
+isolateC(s) ={Host B}as an ideal singleton prediction set, excluding every non-target
+host. This test case serves as a sanity check under separated ground truth rather than a
+full coverage estimate, but it also confirms the per host cascade functions as intended
+prior to evaluating the substantially larger host space (N=54) in Section 5.3.
+5.2 Gram Type Classification
+We evaluated the three envelope geometries (Radial, Strip, and Collapsed 1D) on the
+real phage data for a binary Gram type classification (H={gram-neg,gram-pos}).
+We only used the 4422 phages in split 0 to ensure that all scores remain out of fold by
+construction and there is no contamination.
+5.2.1 Experimental Setup
+We partitioned the split 0 subset into shape discovery (|S1|=1768), size scaling (|S 2|=
+1326), and test evaluation (|Stest|=1328) sets using a 40/30/30 split. For each geome-
+try, we fitted a single shared envelopeEonS 1, and then calculated the class conditional
+scaling factors ˆtneg and ˆtpos onS 2 using (3.9). To ensure validity across both classes
+simultaneously, we scaled the envelope by their maximum:
+ˆt=max
+ ˆtneg, ˆtpos
+
+.(5.1)
+38
+
+PAGE 44
+At test time, we evaluated the Gram type nonconformity transformation under both
+candidate hypotheses. For an empty candidate set (/ 0), we returned both labels (C(s) =
+H) as established in Section 3.5.
+5.2.2 Coverage and Prediction Efficiency
+Figure 5.1: Gram type classification performance across Radial, Strip, and Collapsed
+1D geometries on the test split (Split 0, target 1−α=0.90). Panels show: (top-left)
+prediction set size distribution, (top-right) marginal empirical coverage, (bottom-left)
+class-conditional coverage, and (bottom-right) singleton accuracy with sample counts
+(n).
+As we can see in Figure 5.1, all three envelope geometries achieve 99.8% empirical
+coverage, which is well above the nominal 90% target (red dashed line), this is a con-
+sequence of the underlying data distribution . The class conditional breakdown con-
+firms that the coverage is balanced for both Gram negative (99.9%) and Gram positive
+(99.8%) phages. This demonstrates that the max threshold calibrationˆt=max( ˆtneg, ˆtpos)
+effectively eliminates coverage disparity between classes.
+
+PAGE 45
+We can also see that the high coverage does not compromise efficiency. The set size
+distribution chart of Figure 5.1 (left panel), shows that 94–95% of test phages receive
+singleton predictions, while only 5–6% require size 2 uncertain sets (C(s) =H). The
+empty set rate is 0% by construction due to the conservative fallback rule. When sin-
+gleton sets are produced, the prediction accuracy is 99.8% across all three geometries
+(n≥1249), which tells us that when the model is confident enough to output exactly
+one label, it is almost always correct.
+To check where this over coverage comes from, we evaluated coverage directly on the
+calibration setS 2 itself, the set on which ˆtis calibrated. All three methods already
+exceed the 90% target onS 2, Radial reaches 94.9%, Strip 93.6%, and Collapsed 1D
+94.5%. Since this gap appears before the envelope is applied to test data, we can say
+that the over coverage is a property of the calibration itself. Two factors can explain this
+• the class conditional thresholds are combined using Equation (5.1), so whichever
+class requires the smaller threshold is scaled past its own target level by construc-
+tion
+• the nonconformity scores of the two classes are extremely well separated (Sec-
+tion 5.2.3), so the(1−α)quantile of the correct class already sits far below
+where the wrong class’s scores begin, this leaves a wide margin that increases the
+coverage well past the target even at the calibration stage.
+5.2.3 Score Separation and Geometric Equivalence
+Figure 5.2: Distribution of raw scores per test phage (mean over allK=40 functional
+category dimensions), separated by true Gram type. Gram negative phages concentrate
+tightly near 0 while Gram positive phages concentrate near 1, leaving the intermediate
+ambiguous zone (0.25–0.75, dashed red lines) almost empty.
+All three envelope constructions yield nearly identical performance metrics in Fig-
+ure 5.1. This equivalence can directly be explained by the empirical raw score dis-
+40
+
+PAGE 46
+tribution in Figure 5.2: Gram negative phages concentrate tightly near the origin (mean
+0.055±0.054), whereas Gram positive phages concentrate near 1.0 (mean 0.918±
+0.066). The two classes form disjoint, well separated clusters with negligible density in
+the ambiguous zone (0.25–0.75), any sensible star shaped boundary cleanly separates
+them.
+This near identical performance across the three geometries suggests that the choice
+of envelope geometry is less critical for low dimensional task with strongly separated
+scores. The advantages of non convex can be seen more prominently in the higher
+dimensional, multi class host level classification task in Section 5.3
+5.3 Host Level Classification
+Host level prediction extends our conformal prediction framework from binary attributes
+to a multiclass task acrossN=54 candidate bacterial hosts (H={h 1, . . . ,h54}). This
+setting introduces statistical and dimensional challenges: heavy label imbalance, small
+per host calibration samples, and inference through a hierarchical two-stage cascade.
+Rather than attempting to fit a 2036 dimensional global envelope across the joint feature
+space, we constructed class conditional envelopes which were calibrated independently
+for each candidate hosth∈Hon its dedicatedK h dimensional score sub vectorss h.
+5.3.1 Experimental Protocol
+We apply the split conformal framework of Section 3 to the reconstructed score vectors
+(3.5) of theN tot =15,638 annotated phages across 54 candidate hosts (K h ∈[26,40]per
+host;K tot =2,036). We again use a three way partition of the genome cluster data:
+•D train (Split 2–4,N train =9,101): For each candidate host with sufficient training
+data (nh ≥3), the infector phages are partitioned 50/50 into shape-discovery (S(h)
+1 ,
+⌊nh/2⌋) and size-scaling (S(h)
+2 ,⌈n h/2⌉) subsets to fitE h and compute ˆth.
+•D val (Split 1,N val =2,593): used for envelope hyperparameter tuning.
+•D test (Split 0,N test =3,944): held out and evaluated once after fixing all parame-
+ters.
+Unlike Gram type classification (Section 5.2), host level scores use per model split as-
+signments (Section 4.3) to ensure the out of split validity across all five splits rather
+than restricting calibration to split 0 alone. Missing entries (NA) are handled by each
+envelope geometry without data imputation.
+At test time, the Gram type prediction set restricts the candidate hosts toH cand(s,m).
+The host prediction setC host(s,m)is evaluated via Equation 3.1. If a test phage falls
+
+PAGE 47
+outside all candidate envelopes (Chost(s,m) =/ 0), we get an empty set which is resolved
+by selecting the candidate which minimizes the normalized nonconformity:
+hforced(s) =arg min
+h∈Hcand(s,m)
+τh(sh)
+ˆth
+,(5.2)
+which selects the closest boundary without defaulting to the uninformative full label set.
+5.3.2 Hyperparameter Selection on Validation Data
+We optimized the hyperparameters onD val (Split 1) by minimizing the average set size
+subject to empirical coverage constraints at target level 1−α=0.90:
+θ ⋆ ∈argmin
+θ
+|C|val(θ)subject to ˆc val(θ)≥1−α.(5.3)
+with ties or near constraint cases resolved by minimizing the coverage discrepancy
+|ˆcval(θ)−(1−α)|.
+Validation under the unrestricted candidate space selected:
+•Strip Binning (N B):Swept overN B ∈ {3,5,8,10,15,20}with windowed mono-
+tonic smoothing (w=2).N B =10 was selected, achieving 90.5% validation cov-
+erage with an average prediction set size of 12.97 candidate hosts.
+•Radial Resolution (M,κ):Swept acrossM∈ {100,250,500}directions and con-
+centration parametersκ∈ {4.0,8.0,16.0}.M=100 withκ=4.0 provided the
+optimal trade-off closest to nominal validity (89.0% validation coverage, average
+set size 12.4).
+5.3.3 Empirical Test Results
+Table 5.3 and Figure 5.3 summarize the empirical performance metrics evaluated on the
+test split (Ntest =3,944 phages) across all 54 hosts.
+Method Coverage Avg. Set Size Singleton Rate Singleton Acc. Forced Rate
+Radial Envelope (M=100,κ=4) 0.939 15.25 0.131 0.896 0.023
+Strip Envelope (NB=10,w=2) 0.905 15.35 0.007 0.321 0.002
+Collapsed 1D 0.929 6.09 0.286 0.937 0.014
+Table 5.3: Performance metrics on the test split
+As demonstrated in Table 5.3 and Figure 5.3, all three geometries achieve empirical
+coverage close to the 90.0% target. While the binary Gram setting produced an over
+conservative coverage (99.8%) due to global max threshold, the independent per host
+envelope calibration prevents over coverage (90.5%–93.9%).
+42
+
+PAGE 48
+Figure 5.3: Host classification performance on Split 0 test phages (1−α=0.90). Left
+panel: overall empirical coverage compared against the target (red dashed line). Right
+panel: average prediction set size across candidate hosts.
+Prediction efficiency diverges sharply:
+(i)Efficiency of Collapsed 1D:Collapsed 1D achieves an average prediction set size
+of 6.09, which is less than half that of Radial (15.25) or Strip (15.35). In moderate
+to high dimensions (Kh ≥26), 1D mean pooling avoids the sample sparsity penal-
+ties that arise due to angular cones and multi dimensional bins. The complete
+per host set size distributions and boxplots across all 54 hosts are in Appendix A
+Figure figs. A.3 to A.6
+(ii)Singleton Accuracy:Collapsed 1D produces a single host for 28.6% of test
+phages and achieves 93.7% accuracy on these singletons. In contrast, Radial pro-
+duces singletons for only 13.1% of test phages (with 89.6% accuracy), while Strip
+almost never gives a singleton output (0.7%).
+(iii)Forced Decision Rate:The forced fallback rule (5.2) was only used for 1.4% of
+test phages for Collapsed 1D and 2.3% for Radial. This confirms that host specific
+envelopes reliably capture empirical infector score distributions.
+Figure figs. A.1 to A.2 in the Appendix A illustrates the class conditional validity
+across all hosts. The coverage remains well calibrated across major host types (e.g.,
+Escherichia,Pseudomonas,Staphylococcus, andMycobacterium), but we can also find
+low coverage to the host classes with sparse data.
+5.3.4 Geometric Boundary Visualization Across All Methods
+In sections 5.3.3 we have seen the aggregate metrics report which tell ushow muchthe
+three envelope construction methods differ in coverage and set size, but notwhy. To
+illustrate the structural mechanisms resulting in these differences, Figure figs. 5.4 to 5.5
+
+PAGE 49
+displays the calibrated boundary projections on a two dimensional subspace (built only
+using two of the functional dimensions while holding the values on the remainingKh −2
+dimensions fixed). Therefore, the boundary shown is just a 2D a slice of the trueK h
+dimensional envelope.
+Figure 5.4:2D Projection of Calibrated Boundaries on Good Predictors.Per host
+envelope boundary comparison for Staphylococcus projected onto the 2D plane of two
+discriminative functional features (transcriptional_activator vs. reductase). Left (Col-
+lapsed 1D): Linear boundary defined by equal weight mean nonconformity. Centre
+(Radial): Smooth angular kernel boundary (κ=4.0), closely enveloping the noncon-
+formity cluster. Right (Strip): Piecewise constant staircase boundary enforcing local
+monotonicity (w=2).
+Figure 5.5:2D Projection of Calibrated Boundaries on One Good and One Bad
+Predictor. Per host envelope boundary comparison for Staphylococcus projected onto
+one informative and one uninformative functional feature (transcriptional_activator vs.
+capsid) When one dimension contains non infector noise, Collapsed 1D’s linear projec-
+tion dilutes the strong signal across both axes. The Strip envelope isolates the noisy axis
+to wide marginal bounds along the horizontal strip, while the Radial envelope expands
+outward along the uninformative ray.
+Collapsed 1D’s boundary is the straight anti diagonal line implied by its scalar mean
+threshold (Section 3.4.1). A phage that is strong in lysin but weak in annealing is treated
+44
+
+PAGE 50
+identically to one with the reverse profile, as long as the average clears the threshold.
+This produces its smallest false positive count of the three (21,own_cov=0.94), but at
+the cost of giving us 15 false negatives. The true infectors whose evidence concentrates
+in one dimension rather than both are missed by a boundary which is blind to that
+asymmetry.
+The boundary of the Radial method is the smooth arc produced by the radius of Equa-
+tion (3.7). It curves inward for phages strong in one dimension but weak in the other.
+This recovers more true infectors (10 false negatives, vs. Collapsed’s 15) but at the cost
+of efficiency: 2,568 false positives, since a boundary calibrated from points concen-
+trated near the axes extends generously along both axes individually. So the higher
+dimensional inflation behavior anticipated in Section 5.1.2’s syntheticK-sweep, can
+now be visualized in real data.
+Strip’s staircase boundary sits between the two: it tracks the true cluster’s shape more
+tightly than Collapsed’s line, and without the smooth over extension of Radial’s arc.
+It achieves the fewest false negatives of the three (5) but at the cost of the most false
+positives (2,540). It has piecewise constant conditioning (Section 3.4.3), so it captures
+the cluster’s shape well locally, but each bin transition risks admitting points just past a
+true infector’s actual boundary.
+Across both functional feature projections, the geometric trade offs are consistent: Col-
+lapsed 1D enforces a global linear trade-off that produces tight rejection regions at the
+cost of directional blindness; the Radial envelope smoothly hugs directional density but
+expands along sparse orthant rays in higher dimensions; and the Strip envelope cap-
+tures non linear conditional dependencies along dense axes via its staircase structure,
+but becomes overly permissive in sparse bins due to marginal fallback quantile padding.
+Figure 5.6 visualizes the global inclusion topology of the Collapsed 1D predictor across
+the test set (Ntest =3,944). The clustermap confirms the gram type seperationion: Gram
+positive phages strictly activate Gram positive host columns (e.g.,Mycobacterium,Gor-
+donia,Streptomyces) with zero cross gram type false positive inclusions.
+The clustermaps for the Radial and Strip envelopes are provided in Appendix A.4 (Fig-
+ures A.10 and A.11), these visually demonstrate how high dimensional sparsity forces
+broad, uninformative multi host inclusion blocks across the entire Gram negative sub
+matrix.
+5.3.5 Effect of Gram-Type Filtering
+Table 5.4 compares the performance of of the three methods with and without Gram
+type pre filtering.
+Gram type filtering produces no change in the average set size for the collapsed 1D
+method which shows that the 1D mean score already provides strong discrimination
+
+PAGE 51
+Figure 5.6:Clustermap of Predicted Phage Host Interactions (Collapsed 1D).Bi-
+nary prediction matrix evaluated across allN test =3,944 test phages (rows) and 54 can-
+didate host genera (columns) under the Collapsed 1D method (1−α=0.90). Dark
+pixels denote host inclusion in the conformal prediction setC(s). Left sidebars indicate
+ground-truth Gram phenotype (blue: Gram-negative, orange: Gram-positive) and top
+true host genera. 46
+
+PAGE 52
+Method Configuration Coverage Avg. Set Size
+Radial Envelope Unrestricted (FullH,N=54) 0.923 39.22
+Gram-Type Filtered (Hcand) 0.939 15.25
+Strip Envelope Unrestricted (FullH,N=54) 0.905 39.35
+Gram-Type Filtered (Hcand) 0.905 15.35
+Collapsed 1D Unrestricted (FullH,N=54) 0.924 6.09
+Gram-Type Filtered (Hcand) 0.929 6.09
+Table 5.4: Impact of Gram type filtering on host prediction.
+between gram types. But it delivers a significant efficiency gain for both the multidi-
+mensional envelopes. The average prediction set size decreases by over 60% for both of
+the Radial (39.22→15.25) and the Strip envelope (39.35→15.35) and the empirical
+coverage also improves slightly.
+5.3.6 Functional Dimension Sufficiency
+The high dimensionality of the host level score space (K h ∈[26,40]per host) raises
+a natural question: how many of these dimensions are actually necessary? Here we
+checked if a single subset of functional categories, retained across all 54 hosts, can
+reproduce the performance of full dimensional. We selected the "Top N Core" most
+informative functional categories. To select the top functions, for each host we ranked
+its functional dimensions by their mean score on the phages that truly infect the host
+in the training set, then took the top 5 ranked functions per host and then finally, we
+pooled the top 5 list across the 54 hosts and selected the top 7 function names that
+occured most frequently. This yielded a core score matrix of 356 columns (17.5% of
+the originalK tot =2,036).
+Figure 5.7 summarizes the results. Collapsed1D’s coverage falls slightly from 0.929 to
+0.905 (still above the target) with a modest increase in average set size (6.09→6.43).
+Radial’s coverage falls similarly (0.939→0.915) while its average set sizedecreases
+(15.25→14.58). Strip, at its adjustedα, achieves both higher coverage (0.905→0.917)
+and a smaller average set size (15.35→13.64), the largest efficiency gain of the three
+methods.
+These results suggest that most of the discriminative signal in the 40-dimensional score
+space is concentrated in a relatively small subset of functional categories, rather than
+being spread evenly across all of them. Retaining just 7 of the 40 categories(17.5%),
+which means 356 of theK tot =2,036 total host function columns preserves nearly all of
+the predictive performance. This indicates that most discriminative functional evidence
+concentrates in a compact subspace of core categories, and gives us empirical motivation
+for the learned low dimensional projections proposed in Section 6.3.
+
+PAGE 53
+Figure 5.7: Coverage (left) and average prediction set size (right) on the full (2,036-
+column) vs. core (356-column) functional score set, across all three envelope geome-
+tries.
+5.3.7 Performance under Different Constraints
+We conducted three targeted experiments to evaluate specific operational boundaries:
+•Low Data Host Sensitivity:Restricting evaluation to the 17 host genera with
+≥100 calibration phages increases the Strip coverage from 0.905 to 0.969. This
+confirms that the slight under coverage of the strip method is driven primarily by
+low sample hosts with poorly estimated bins. Bu this ablation also reduces the
+Strip bin count fromN B =10 toN B =5 in the same step, so part of the observed
+gain may be due to coarser binning rather than host sample size alone.
+•Dimensionality Reduction:Restricting host subspaces to their top 3, 5, or 8
+most informative functional dimensions degraded empirical coverage to 86–88%.
+This indicates that secondary functional annotations provide discriminative signal
+rather than noise.
+•Two-Dimensional Functional Subspaces:Evaluating phages using only lysin
+and tail fiber dimensions (available for 51 of 54 hosts) yielded coverages of 0.857,
+0.910, and 0.928 for Collapsed 1D, Radial, and Strip, respectively. Strip outper-
+forms other geometries in this low dimensional regime, where its 2D grid avoids
+the curse of dimensionality.
+In an alternative calibration scheme in which we incorporated non infector scores, we
+evaluated to bound false positives. However, penalizing non infector overlap resulted
+in over constraining, resulting in prediction abstention (|C(s)|=0) on>99.9% of test
+phages. This invalidates conformal coverage guarantees, therefore we will document it
+as an open methodological challenge in Section 6.3
+48
+
+PAGE 54
+6
+Conclusion and Future Work
+6.1 Summary
+Existing computational phage host prediction tools output point predictions or scalar
+scores, which offer no finite sample guarantees that the true host is contained within
+the predicted candidates. This report addresses this limitation by developing a distri-
+bution free conformal prediction framework that is tailored to high dimensional, sparse
+protein score spaces. We adapted and extended the Conformal Set Aggregation (CSA)
+technique to classification, by replacing the standard convex envelopes that become un-
+necessarily large when class clusters are separated.
+The main aspects of this work are summarized as follows:
+(i)Non Convex Envelope Geometries:We introduced two non convex geometries
+(Radial and Strip) alongside a Collapsed 1D mean pooling envelope. All three
+envelope methods met the 90.0% target coverage (90.5%–93.9%) on the test split
+(Ntest =3944 phages across 54 host genera).
+(ii)Closed Form Analytical Calibration (τ(s)):We derived exact, closed form ex-
+pressions for the per point inclusion scaling functionτ(s)across all three ge-
+ometries. This eliminates the iterative numerical binary search required by stan-
+dard CSA, which reduces the calibration complexity on the scaling setS 2 from
+O(|S2| ·Niter)to a much betterO(|S 2|log|S 2|)one pass sort.
+(iii)Class Conditional Host Calibration:Rather than computing a single global
+threshold, our framework calibrates class conditional quantiles ˆth independently
+per host. This ensures finite sample coverage guarantees for individual host
+classes regardless of severe dataset imbalance (ranging from>1400 phages down
+to single-digit counts).
+
+PAGE 55
+(iv)Multi Stage Empirical Validation:
+•Synthetic Tests:Confirmed exact 1−αcoverage across varied score topolo-
+gies (Gaussian, correlated, heavy tailed, sparse) while exposing dimensional
+bottlenecks (Radial scaling factors ˆtinflated with dimensionK, whereas
+Strip remained robust).
+•Gram Type Classification:Achieved 99.8% coverage and 94–95% singleton
+efficiency across all geometries due to strong underlying score separation.
+•Host Classification:Exposed clear geometric trade offs under high dimen-
+sionality (Kh ≥26). Collapsed 1D delivered the tightest sets (mean size 6.09
+vs. 15.25 for Radial and 15.35 for Strip) and isolated single definitive hosts
+for 28.6% of test phages at 93.7% precision.
+(v)Gram to Host Cascading:We proved finite sample validity under cascade com-
+position (Proposition 3.1.1). We pre filtered hosts first by Gram type conformal
+set which pruned the candidate spaces effectively without compromising empiri-
+cal coverage.
+In summary, this framework provides exact coverage guarantees for phage host predic-
+tion using fast, closed form inference. It offers a practical trade off between compact
+prediction sets and directional sensitivity to fit different application needs.
+6.2 Limitations
+Despite the empirical results, this framework has several methodological and biological
+limitations:
+•Small Sample Host Instability:Training sample sizes vary widely across hosts
+(ranging from>1400 phages forMycobacteriumdown to fewer than 10 for rare
+genera such asSulfolobusandMicrocystis). Abundant hosts calibrate reliably near
+the 90% target, but low sample hosts show significantly higher empirical variance,
+since the quantile estimates on small calibration sets (nh <10) struggle to capture
+the tails of the true infector score distribution. If we restrict our evaluation to hosts
+with≥100 training phages, we can recover coverage for the Strip method (5.3.7),
+but this ablation also reduced the bin count from the validation-tunedN B =10 to
+NB =5 in the same step, so we cannot attribute the improvement just to sample
+size.
+•High Dimensional Sensitivity:Collapsed 1D achieves compact prediction sets
+by compressing score vectors into a scalar mean, making it unable to distinguish a
+phage whose evidence concentrates in one informative dimension from one whose
+evidence is spread thinly across many uninformative ones (Fig 5.5). Conversely,
+50
+
+PAGE 56
+the Radial and Strip envelopes preserve this directional structure but suffer asK h
+grows toward 40: sparse angular or bin-wise support forces frequent fallback to
+the conservative marginal quantile, which is the direct cause of their larger average
+prediction sets relative to Collapsed 1D.
+•Structural Missingness:Phages frequently lack entire functional protein classes,
+producing 30%−36% missing values per score vector. The Strip envelope han-
+dles these missing coordinates by removing the corresponding dimensions from
+the pairwise construction. Consequently, only pairs(j,i)for which both dimen-
+sions are observed contribute to the Strip scaling function.
+•Large Absolute Set Sizes:Even where coverage is valid, the prediction sets of
+Radial and Strip are on average of size 15+out of 54 candidate hots. A list of
+that size is of limited direct use as a clinical or laboratory shortlist, even though
+it is a large efficiency gain over the unrestricted, non Gram filtered setting (avg.
+size≈39, Table 5.4).
+•Error Propagation:Because host level prediction depends on Gram type filter-
+ing, the theoretical miscoverage is added (α+max h αh, Proposition 3.1.1). Al-
+though the empirical Gram type miscoverage was near zero in our evaluation, any
+systematic bias in the first stage classification, (for example, on phages with am-
+biguous raw scores near the 0.25–0.75 zone) prunes the true host before the host
+level envelope is even evaluated, and this cannot be corrected.
+•Conservativeness of Strip Envelopes in High Dimensions:The strip envelope
+calibrates each individual limit (each(j,i)constraint) at the 1−αquantile level
+before taking their intersection. Every direction independently discards anαfrac-
+tion of the data, therefore their intersection compounds these discarded data. This
+makes the shape discovery envelope overly tight as dimensions increase. So the
+the size scaling factor ˆtis forced to grow much larger than necessary to restore
+target coverage.
+6.3 Future Work
+The challenges identified in 6.2 point toward several avenues for future research:
+•Reducing Prediction Set Sizes Directly:Beyond the Gram type filter we already
+used, we can use a second coarser filtering stage, for example something based
+on phage morphology or a nearest neighbor prefilter could narrow the host level
+candidate space even further before the conformal envelope test is applied.
+•Pooling for Low Sample Hosts:Rather than calibrating all of the 54 host en-
+velopes independently, a hierarchical shrinkage scheme could pool information
+
+PAGE 57
+across related hosts. Shrinking quantile estimates for data scarce genera (nh <10)
+toward family or Gram level baselines would stabilize coverage without requiring
+additional data.
+•Specificity Control:The impostor experiment (5.3.7) shows that naively incor-
+porating non infector scores collapses the prediction sets to near total abstention.
+Future work may investigate two sided nonconformity functions that jointly pe-
+nalize false negatives and false positives, this may bound the false discovery rate
+and yet avoid the coverage loss.
+•Missingness Aware Envelope:The current Strip construction handles structural
+missingness by removing unobserved dimensions from the pairwise envelope. Fu-
+ture work could investigate whether the observed missingness pattern itself con-
+tains some information about the host and if it could be used to get a missingness
+aware conditional envelope construction.
+•Dimensionality ReductionAs demonstrated by our analysis of core functions
+(Section 5.3.6), most discriminative information lives in a low dimensional sub-
+space. In higher dimensions (K h ≈40), sample sparsity forces directional cones
+and grid bins to fall back onto conservative marginal bounds. Future work should
+explore linear dimensionality reduction such as class specific Principal Compo-
+nent Analysis (PCA) to extract dominant functional variance directions. Super-
+vised linear/non-linear projectionsΦ h :R Kh →R d (d∈[2,5]) optimized to max-
+imize infector/non infector separation. Calibrating Radial and Strip envelopes
+within these compact, orthogonal PCA subspaces would eliminate the curse of
+dimensionality while preserving directional sensitivity/
+•Per Direction Quantile Level:For the conservativeness of strip envelopes, a next
+step is to calibrate each individual direction at a stricter quantile level of 1−α/d
+(wheredis the number of dimensions). This would ensure each that direction
+only removes a small of data. This would allow the final intersection to match the
+target 1−αcoverage, and produce a ˆtthat is closer to 1 and is less conservative.
+52
+
+PAGE 58
+Bibliography
+[1] P. A. de Jonge, F. L. Nobrega, S. J. J. Brouns, and B. E. Dutilh. Molecular and
+evolutionary determinants of bacteriophage host range.Trends in Microbiology,
+27(1):51–63, 2019. [CellPress].
+[2] C. Coclet and S. Roux. Global overview and major challenges of host prediction
+methods for uncultivated phages.Current Opinion in Virology, 49:117–126, 2021.
+[ScienceDirect].
+[3] Vladimir V ovk, Alexander Gammerman, and Glenn Shafer.Algorithmic Learning
+in a Random World. Springer Science & Business Media, 2005.
+[4] A. N. Angelopoulos and S. Bates. Conformal prediction: A gentle introduction.
+Foundations and Trends in Machine Learning, 16(4):494–591, 2023. [FnT].
+[5] E. Ochoa Rivera, Y . Patel, and A. Tewari. Conformal prediction for ensembles:
+Improving efficiency via score-based aggregation. InAdvances in Neural Infor-
+mation Processing Systems (NeurIPS), 2024. [arXiv].
+[6] D. Holtappels, P. Alfenas-Zerbini, and B. Koskella. Drivers and consequences
+of bacteriophage host range.FEMS Microbiology Reviews, 47(4):fuad038, 2023.
+[OxfordPress].
+[7] C. Galiez, M. Siebert, F. Enault, J. Vincent, and J. Söding. Wish: who is the host?
+predicting prokaryotic hosts from metagenomic phage contigs.Bioinformatics,
+33(19):3113–3114, 2017. [OxfordPress].
+[8] J. Villarroel, K. A. Kleinheinz, V . I. Jurtz, H. Zschach, O. Lund, M. Nielsen, and
+P. Marcatili. Hostphinder: A phage host prediction tool.Viruses, 8(5):116, 2016.
+[MDPI].
+[9] F. H. Coutinho, A. Zaragoza-Solas, M. López-Pérez, J. Barylski, A. Zielezinski,
+B. E. Dutilh, R. Edwards, and F. Rodriguez-Valera. Rafah: Host prediction for
+
+PAGE 59
+viruses of bacteria and archaea based on protein content.Patterns, 2(7):100274,
+2021. [ScienceDirect].
+[10] M. Steinegger and J. Söding. Mmseqs2 enables sensitive protein sequence search-
+ing for the analysis of massive data sets.Nature Biotechnology, 35(11):1026–
+1028, 2017. [SpringerNature].
+[11] A. Elnaggar, M. Heinzinger, C. Dallago, G. Rehawi, Y . Wang, L. Jones, T. Gibbs,
+T. Feher, C. Angerer, M. Steinegger, D. Bhowmik, and B. Rost. Prottrans: Toward
+understanding the language of life through self-supervised learning.IEEE Trans-
+actions on Pattern Analysis and Machine Intelligence, 44(10):7112–7127, 2022.
+[IEEE].
+[12] Z. N. Flamholz, S. J. Biller, and L. Kelly. Large language models improve an-
+notation of prokaryotic viral proteins.Nature Microbiology, 9(2):537–549, 2024.
+[SpringerNature].
+[13] A. Boulay, A. Leprince, F. Enault, E. Rousseau, and C. Galiez. Empathi:
+embedding-based phage protein annotation tool by hierarchical assignment.Na-
+ture Communications, 16(1):9114, 2025. [SpringerNature].
+[14] A. Boulay, V . Németh, B. Criel, M. Stock, B. De Baets, C. Galiez, E. Rousseau,
+Y . Briers, and R. Vázquez. Phalp 2.0: extending the community-oriented phage
+lysin database with a sublyme pipeline for metagenomic discovery.Database,
+2026:baag033, 2026. [OxfordPress].
+[15] M. E. M. Gonzales, J. C. Ureta, and A. M. S. Shrestha. Protein embeddings
+improve phage-host interaction prediction.PLOS ONE, 18(7):e0289030, 2023.
+[PLOS].
+[16] Z. Du, M. Li tastes, K. Lin, J. Li, J. Li, and M. Xiao. High-resolution phage-host
+assignment through key proteins using large language models.Nature Communi-
+cations, 17(1):4439, 2026. [SpringerNature].
+[17] Jing Lei, Max G’Sell, Alessandro Rinaldo, Ryan J Tibshirani, and Larry Wasser-
+man. Distribution-free predictive inference for regression.Journal of the American
+Statistical Association, 113(523):1094–1111, 2018.
+[18] Yaniv Romano, Matteo Sesia, and Emmanuel Candés. Classification with valid
+and adaptive coverage. InAdvances in Neural Information Processing Systems,
+volume 33, pages 3581–3591, 2020.
+54
+
+PAGE 60
+A
+Host Classification Results
+A.1 Class Conditional Coverage Breakdown
+
+PAGE 61
+0.0 0.2 0.4 0.6 0.8 1.0 1.2
+Empirical Coverage
+Escherichia
+Mycobacterium
+Vibrio
+Staphylococcus
+Pseudomonas
+Ralstonia
+Salmonella
+Klebsiella
+Synechococcus
+Streptococcus
+Microbacterium
+Propionibacterium
+Gordonia
+Enterococcus
+Sulfolobus
+Lactococcus
+Shigella
+Erwinia
+Pelagibacter
+Clostridium
+Flavobacterium
+Halorubrum
+Yersinia
+Streptomyces
+Lactobacillus
+Caulobacter
+Rhizobium
+T arget Host
+train: 1215 | test: 856
+train: 1420 | test: 497
+train: 474 | test: 279
+train: 305 | test: 235
+train: 651 | test: 196
+train: 205 | test: 183
+train: 578 | test: 182
+train: 695 | test: 168
+train: 185 | test: 168
+train: 310 | test: 160
+train: 375 | test: 123
+train: 17 | test: 106
+train: 495 | test: 81
+train: 136 | test: 72
+train: 5 | test: 55
+train: 226 | test: 51
+train: 74 | test: 46
+train: 93 | test: 38
+train: 32 | test: 31
+train: 77 | test: 29
+train: 145 | test: 28
+train: 16 | test: 28
+train: 67 | test: 27
+train: 274 | test: 22
+train: 63 | test: 21
+train: 30 | test: 20
+train: 115 | test: 19
+Class Conditional Coverage Breakdown Per Host (All Methods)
+T arget (0.90)
+Collapsed 1D
+Radial
+Strip
+Figure A.1: Class conditional empirical coverage across all 54 candidate bacterial hosts
+on Split 0 test phages. The red dashed line denotes the nominal 1−α=0.90 target.
+56
+
+PAGE 62
+0.0 0.2 0.4 0.6 0.8 1.0 1.2
+Empirical Coverage
+Listeria
+Cronobacter
+Enterobacter
+Roseobacter
+Serratia
+Pseudoalteromonas
+Haloarcula
+Citrobacter
+Corynebacterium
+Pectobacterium
+Proteus
+Edwardsiella
+Cellulophaga
+Xanthomonas
+Microcystis
+Dickeya
+Paenibacillus
+Providencia
+Campylobacter
+Stenotrophomonas
+Lacticaseibacillus
+Shewanella
+Clostridioides
+Sinorhizobium
+Pantoea
+Prochlorococcus
+Rhodobacter
+T arget Host
+train: 48 | test: 17
+train: 21 | test: 16
+train: 52 | test: 15
+train: 17 | test: 15
+train: 36 | test: 15
+train: 13 | test: 14
+train: 9 | test: 13
+train: 35 | test: 12
+train: 26 | test: 12
+train: 26 | test: 11
+train: 37 | test: 11
+train: 5 | test: 9
+train: 22 | test: 8
+train: 95 | test: 8
+train: 3 | test: 7
+train: 14 | test: 6
+train: 84 | test: 6
+train: 18 | test: 6
+train: 50 | test: 5
+train: 56 | test: 4
+train: 11 | test: 3
+train: 16 | test: 3
+train: 14 | test: 2
+train: 8 | test: 2
+train: 15 | test: 1
+train: 40 | test: 1
+train: 52 | test: 1
+Class Conditional Coverage Breakdown Per Host (All Methods)
+T arget (0.90)
+Collapsed 1D
+Radial
+Strip
+Figure A.2: Class conditional empirical coverage across all 54 candidate bacterial hosts
+on Split 0 test phages. The red dashed line denotes the nominal 1−α=0.90 target.
+
+PAGE 63
+A.2 Set Size Distribution Per Host
+Figure A.3: Prediction set size histograms for all 54 host types across Collapsed 1D,
+Radial, and Strip envelopes.
+58
+
+PAGE 64
+Figure A.4: Prediction set size histograms for all 54 host types across Collapsed 1D,
+Radial, and Strip envelopes.
+
+PAGE 65
+0 5 10 15 20 25 30 35
+Prediction Set Size
+Sulfolobus
+Escherichia
+Prochlorococcus
+Dickeya
+Pelagibacter
+Roseobacter
+Campylobacter
+Caulobacter
+Halorubrum
+Haloarcula
+Microcystis
+Flavobacterium
+Vibrio
+Ralstonia
+Pectobacterium
+Cellulophaga
+Klebsiella
+Rhizobium
+Rhodobacter
+Shewanella
+Salmonella
+Edwardsiella
+Providencia
+Yersinia
+Pseudoalteromonas
+Synechococcus
+Pseudomonas
+True T arget Host Genus
+Prediction Set Size Distribution Per Host Across Envelope Types
+Envelope T ype
+Collapsed
+Radial
+Strip
+Threshold (Size = 1)
+Figure A.5: Prediction set size histograms for all 54 host types across Collapsed 1D,
+Radial, and Strip envelopes.
+60
+
+PAGE 66
+0 5 10 15 20 25 30 35
+Prediction Set Size
+Proteus
+Enterobacter
+Cronobacter
+Sinorhizobium
+Pantoea
+Xanthomonas
+Stenotrophomonas
+Shigella
+Citrobacter
+Erwinia
+Serratia
+Lacticaseibacillus
+Listeria
+Enterococcus
+Clostridium
+Streptococcus
+Corynebacterium
+Lactobacillus
+Lactococcus
+Clostridioides
+Gordonia
+Microbacterium
+Propionibacterium
+Mycobacterium
+Streptomyces
+Staphylococcus
+Paenibacillus
+True T arget Host Genus
+Prediction Set Size Distribution Per Host Across Envelope Types
+Envelope T ype
+Collapsed
+Radial
+Strip
+Threshold (Size = 1)
+Figure A.6: Prediction set size histograms for all 54 host types across Collapsed 1D,
+Radial, and Strip envelopes.
+
+PAGE 67
+A.3 Prediction Set Inclusion Heatmaps
+Figure A.7: Prediction set inclusion frequency heatmap for the 1D envelope across all
+54 true hosts (rows) vs. predicted candidate hosts (columns).
+62
+
+PAGE 68
+Figure A.8: Prediction set inclusion frequency heatmap for the Radial envelope across
+all 54 true hosts (rows) vs. predicted candidate hosts (columns).
+
+PAGE 69
+Figure A.9: Prediction set inclusion frequency heatmap for the Strip envelope across all
+54 true hosts (rows) vs. predicted candidate hosts (columns).
+64
+
+PAGE 70
+A.4 Phage Host Prediction Clustermaps
+Figure A.10:Clustermap of Predicted Phage Host Interactions (Radial Envelope).
+Binary prediction matrix acrossN test =3,944 test phages and 54 host genera for the
+Radial envelope (M=100,κ=4.0).
+
+PAGE 71
+Figure A.11:Clustermap of Predicted Phage Host Interactions (Strip Envelope).
+Binary prediction matrix acrossN test =3,944 test phages and 54 host genera for the
+Strip envelope (NB =10,w=2).
+66

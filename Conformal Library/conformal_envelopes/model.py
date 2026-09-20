@@ -557,7 +557,8 @@ class ConformalSetModel:
 
 #################################################################################################################################3
 
-    # def plot(self, *, x, y, label, grid_size=160, show_training=True, show_other_classes=False, ax=None,):
+    # def plot(self, *, x, y, label, grid_size=160, show_training=True, show_other_classes=False,
+    #          show_missing=True, ax=None,):
     #     """
     #        Refit a diagnostic 2D envelope for the selected label.
     #     """
@@ -567,29 +568,212 @@ class ConformalSetModel:
     #         raise ValueError(f"No fitted envelope exists for label {label!r}.")
 
     #     return _plot_2d(self, x=x, y=y, label=label, grid_size=grid_size, show_training=show_training,
-    #                     show_other_classes=show_other_classes, ax=ax,)
+    #                     show_other_classes=show_other_classes, show_missing=show_missing, ax=ax,)
 
     # plot_2d = plot
 
-    def plot(self, *, x, y, label, grid_size=160, show_training=True, show_other_classes=False,
-             show_missing=True, ax=None,):
+
+    def plot(self, *, x, y, label, test_data=None, grid_size=160, show_training=False,
+             show_other_classes=False, show_missing=True, ax=None,):
         """
-           Refit a diagnostic 2D envelope for the selected label.
+           Plot a separate 2D diagnostic envelope and optional test points.
+
+           Test membership refers to this 2D envelope, not the full model.
+           Test data is never used to fit or calibrate the envelope.
         """
         self._check_fitted()
 
         if label not in self.envelopes_:
             raise ValueError(f"No fitted envelope exists for label {label!r}.")
 
-        return _plot_2d(self, x=x, y=y, label=label, grid_size=grid_size, show_training=show_training,
-                        show_other_classes=show_other_classes, show_missing=show_missing, ax=ax,)
+        return _plot_2d(self, x=x, y=y, label=label, test_data=test_data, grid_size=grid_size,
+                        show_training=show_training, show_other_classes=show_other_classes,
+                        show_missing=show_missing, ax=ax,)
 
     plot_2d = plot
 
 #################################################################################################################################3
 
-def _plot_2d(model, *, x, y, label, grid_size, show_training, ax, show_other_classes=False, show_missing=True,):
+# def _plot_2d(model, *, x, y, label, grid_size, show_training, ax, show_other_classes=False, show_missing=True,):
+#     import matplotlib.pyplot as plt
+
+#     info = model.envelopes_[label]
+#     columns = info["columns"]
+
+#     if x == y:
+#         raise ValueError("x and y must be different columns.")
+
+#     if x not in columns or y not in columns:
+#         raise ValueError(f"x and y must be score columns used by label {label!r}. "
+#                          f"Available columns: {columns}")
+
+#     training = model.training_points_[label]
+
+#     # Transform once: both plotted points and the 2D fit use these scores.
+#     raw_2d = training[[x, y]].to_numpy(dtype=float)
+#     nc_2d = transform_scores(raw_2d, model.score_direction)
+
+#     xv = nc_2d[:, 0]
+#     yv = nc_2d[:, 1]
+
+#     finite_x = xv[np.isfinite(xv)]
+#     finite_y = yv[np.isfinite(yv)]
+
+#     if len(finite_x) == 0 or len(finite_y) == 0:
+#         raise ValueError("Selected plotting columns contain no finite training values.")
+
+
+#     def axis_bounds(values):
+#         if (values < 0).any():
+#             raise ValueError("This plot requires nonnegative nonconformity scores.")
+
+#         hi = float(np.max(values))
+#         pad = 0.08 * hi if hi > 0 else 0.1
+
+#         # Include the origin in nonconformity space.
+#         return 0.0, hi + pad
+
+#     other_points = []
+
+#     if show_other_classes:
+#         for other_label, frame in model.training_points_.items():
+#             if other_label == label:
+#                 continue
+
+#             # Class-specific column mappings may omit these columns.
+#             if x not in frame.columns or y not in frame.columns:
+#                 raise ValueError(f"Stored training data for {other_label!r} "
+#                                  f"does not contain both {x!r} and {y!r}.")
+
+#             raw_points = frame[[x, y]].to_numpy(dtype=float)
+#             points = transform_scores(raw_points, model.score_direction)
+#             points = points[np.isfinite(points).all(axis=1)]
+
+#             if len(points):
+#                 other_points.append((other_label, points))
+#                 finite_x = np.concatenate((finite_x, points[:, 0]))
+#                 finite_y = np.concatenate((finite_y, points[:, 1]))
+
+
+#     xlo, xhi = axis_bounds(finite_x)
+#     ylo, yhi = axis_bounds(finite_y)
+
+#     gx = np.linspace(xlo, xhi, int(grid_size))
+#     gy = np.linspace(ylo, yhi, int(grid_size))
+#     XX, YY = np.meshgrid(gx, gy)
+
+#     # Use exactly the same S1/S2 split that was used when fitting this class.
+#     S1_2d = nc_2d[info["idx_s1"]]
+#     S2_2d = nc_2d[info["idx_s2"]]
+
+#     # A 2D diagnostic needs at least one observed selected score per row.
+#     S1_2d = S1_2d[~np.isnan(S1_2d).all(axis=1)]
+#     S2_2d = S2_2d[~np.isnan(S2_2d).all(axis=1)]
+
+#     if len(S1_2d) == 0 or len(S2_2d) == 0:
+#         raise ValueError("Cannot plot this pair: shape discovery and calibration "
+#                          "each need samples with at least one selected score observed.")
+
+#     if np.isnan(S1_2d).all(axis=0).any():
+#         raise ValueError("Cannot fit a genuinely 2D envelope: one selected column "
+#                          "has no observed values in the shape-discovery split.")
+
+#     if model.method == "collapsed":
+#         envelope_2d = build_collapsed(S1_2d, S2_2d, model.alpha,)
+
+#     elif model.method == "radial":
+#         rng = np.random.default_rng(model.random_state)
+
+#         envelope_2d = build_radial(S1_2d, S2_2d, model.alpha,
+#                                    n_directions=model.method_params.get("n_directions", model.method_params.get("M", 250),),
+#                                    smoothing=model.method_params.get("smoothing", model.method_params.get("kappa", 8.0),),
+#                                    angle_deg=model.method_params.get("angle_deg", model.method_params.get("angular_bandwidth_deg", 30.0),),
+#                                    neighbor_fraction=model.method_params.get("neighbor_fraction", model.method_params.get("neighbor_frac", 0.2),),
+#                                    rng=rng,)
+
+#     else: envelope_2d = build_strip(S1_2d, S2_2d, model.alpha,
+#                                     n_bins=model.method_params.get("n_bins", model.method_params.get("number_of_bins", model.method_params.get("NB", 8),),),
+#                                     min_samples=model.method_params.get("min_samples", 3),)
+
+#     # The grid is already in nonconformity space. Do not transform again.
+#     probe_nc = np.column_stack((XX.ravel(), YY.ravel()))
+
+#     if model.method == "collapsed":
+#         inside = collapsed_is_in_region(probe_nc, envelope_2d)
+
+#     elif model.method == "radial":
+#         inside = radial_is_in_region(probe_nc, envelope_2d)
+
+#     else:
+#         inside = strip_is_in_region(probe_nc, envelope_2d)
+
+#     ZZ = inside.astype(float).reshape(XX.shape)
+
+#     if ax is None:
+#         _, ax = plt.subplots(figsize=(7, 6))
+
+#     # Shade only the region accepted by the fitted 2D envelope.
+#     ax.contourf(XX, YY, ZZ, levels=[0.5, 1.5], colors=["#b8dfba"], alpha=0.45,)
+
+#     # Legend entry for the shaded region.
+#     from matplotlib.patches import Patch
+#     region_handle = Patch(facecolor="#b8dfba", alpha=0.45, label=f"Accepted region for {label}",)
+
+#     if inside.any() and not inside.all():
+#         ax.contour(XX, YY, ZZ, levels=[0.5], linewidths=2,)
+#     else:
+#         message = (
+#             "All grid points accepted"
+#             if inside.all()
+#             else "All grid points rejected"
+#         )
+#         ax.text(0.02, 0.98, message + "\nNo boundary within the displayed range", transform=ax.transAxes,
+#                 ha="left", va="top", fontsize=9, bbox=dict(facecolor="white", alpha=0.85, edgecolor="none"),)
+
+#     ax.set_xlim(xlo, xhi)
+#     ax.set_ylim(ylo, yhi)
+
+#     for other_label, points in other_points:
+#         ax.scatter(points[:, 0], points[:, 1], s=24, alpha=0.55, marker="x", 
+#                    label=f"Class {other_label}",)
+
+#     if show_training:
+#         complete = np.isfinite(xv) & np.isfinite(yv)
+
+#         ax.scatter(xv[complete], yv[complete], s=24, alpha=0.8, color="tab:blue",
+#                    label=f"Class {label}", zorder=3,)
+
+#         if show_missing:
+#             x_only = np.isfinite(xv) & np.isnan(yv)
+#             y_only = np.isnan(xv) & np.isfinite(yv)
+
+#             for index, value in enumerate(xv[x_only]):
+#                 ax.axvline(value, color="tab:blue", linestyle=":", linewidth=1, alpha=0.35, 
+#                            label=(f"Class {label}: {y} missing" if index == 0 else "_nolegend_"),)
+
+#             for index, value in enumerate(yv[y_only]):
+#                 ax.axhline(value, color="tab:red", linestyle=":", linewidth=1, alpha=0.35,
+#                            label=(f"Class {label}: {x} missing" if index == 0 else "_nolegend_"),)
+
+#     handles, labels = ax.get_legend_handles_labels()
+#     ax.legend(handles=[region_handle] + handles, labels=[region_handle.get_label()] + labels,
+#               loc="best",)
+
+#     ax.set_xlabel(x)
+#     ax.set_ylabel(y)
+#     ax.set_title(f"{model.method.capitalize()} diagnostic envelope for {label}\n")
+
+#     return ax
+
+
+def _plot_2d(model, *, x, y, label, test_data, grid_size, show_training, show_other_classes, 
+             show_missing, ax,):
     import matplotlib.pyplot as plt
+    from matplotlib.patches import Patch
+
+    if (isinstance(grid_size, (bool, np.bool_)) or not isinstance(grid_size, (int, np.integer)) 
+    or grid_size < 2):
+        raise ValueError("grid_size must be an integer >= 2.")
 
     info = model.envelopes_[label]
     columns = info["columns"]
@@ -598,163 +782,178 @@ def _plot_2d(model, *, x, y, label, grid_size, show_training, ax, show_other_cla
         raise ValueError("x and y must be different columns.")
 
     if x not in columns or y not in columns:
-        raise ValueError(f"x and y must be score columns used by label {label!r}. "
+        raise ValueError(f"x and y must be columns used by label {label!r}. "
                          f"Available columns: {columns}")
 
-    training = model.training_points_[label]
+    def to_nc(frame):
+        missing = [column for column in (x, y) if column not in frame.columns]
+        if missing:
+            raise ValueError(f"Plotting data is missing columns: {missing}")
 
-    # Transform once: both plotted points and the 2D fit use these scores.
-    raw_2d = training[[x, y]].to_numpy(dtype=float)
-    nc_2d = transform_scores(raw_2d, model.score_direction)
+        raw = frame[[x, y]].to_numpy(dtype=float)
+        scores = transform_scores(raw, model.score_direction)
 
-    xv = nc_2d[:, 0]
-    yv = nc_2d[:, 1]
+        observed = scores[~np.isnan(scores)]
+        if not np.isfinite(observed).all() or (observed < 0).any():
+            raise ValueError("Plotting requires finite, nonnegative "
+                             "nonconformity scores, or NaN.")
+        return scores
 
-    finite_x = xv[np.isfinite(xv)]
-    finite_y = yv[np.isfinite(yv)]
+    # Only saved training data is used to construct the envelope.
+    train_nc = to_nc(model.training_points_[label])
 
-    if len(finite_x) == 0 or len(finite_y) == 0:
-        raise ValueError("Selected plotting columns contain no finite training values.")
+    S1 = train_nc[info["idx_s1"]]
+    S2 = train_nc[info["idx_s2"]]
 
+    # The 2D diagnostic excludes training rows missing both coordinates.
+    S1 = S1[~np.isnan(S1).all(axis=1)]
+    S2 = S2[~np.isnan(S2).all(axis=1)]
 
-    def axis_bounds(values):
-        if (values < 0).any():
-            raise ValueError("This plot requires nonnegative nonconformity scores.")
+    if len(S1) == 0 or len(S2) == 0:
+        raise ValueError("Cannot plot this pair: S1 and S2 each need samples "
+                         "with at least one selected score observed.")
 
-        hi = float(np.max(values))
-        pad = 0.08 * hi if hi > 0 else 0.1
+    if np.isnan(S1).all(axis=0).any():
+        raise ValueError("Cannot fit a 2D envelope: a selected column has no observed values in S1.")
 
-        # Include the origin in nonconformity space.
-        return 0.0, hi + pad
+    params = model.method_params
 
-    other_points = []
+    if model.method == "collapsed":
+        envelope = build_collapsed(S1, S2, model.alpha)
+        membership = collapsed_is_in_region
 
-    if show_other_classes:
+    elif model.method == "radial":
+        envelope = build_radial(S1, S2, model.alpha, n_directions=params.get("n_directions", params.get("M", 250)),
+                                smoothing=params.get("smoothing", params.get("kappa", 8.0)), 
+                                angle_deg=params.get("angle_deg", params.get("angular_bandwidth_deg", 30.0)),
+                                neighbor_fraction=params.get("neighbor_fraction", params.get("neighbor_frac", 0.2)),
+                                rng=np.random.default_rng(model.random_state),)
+        membership = radial_is_in_region
+
+    else:
+        envelope = build_strip(S1, S2, model.alpha, n_bins=params.get("n_bins", params.get("number_of_bins", 
+                                                                                           params.get("NB", 8))), 
+                               min_samples=params.get("min_samples", 3),)
+        membership = strip_is_in_region
+
+    # Test labels are not needed and do not affect acceptance.
+    test_nc = (to_nc(load_table(test_data)) if test_data is not None 
+               else np.empty((0, 2), dtype=float))
+
+    # This existing option controls OTHER CLASSES' TRAINING POINTS.
+    other_training = []
+    if show_training and show_other_classes:
         for other_label, frame in model.training_points_.items():
             if other_label == label:
                 continue
 
-            # Class-specific column mappings may omit these columns.
             if x not in frame.columns or y not in frame.columns:
-                raise ValueError(f"Stored training data for {other_label!r} "
-                                 f"does not contain both {x!r} and {y!r}.")
+                raise ValueError(f"Stored training data for {other_label!r} does not "
+                                 f"contain {x!r} and {y!r}. Use show_other_classes=False. "
+                                 "Test points from all classes can still be supplied through test_data.")
 
-            raw_points = frame[[x, y]].to_numpy(dtype=float)
-            points = transform_scores(raw_points, model.score_direction)
-            points = points[np.isfinite(points).all(axis=1)]
+            other_training.append((other_label, to_nc(frame)))
 
-            if len(points):
-                other_points.append((other_label, points))
-                finite_x = np.concatenate((finite_x, points[:, 0]))
-                finite_y = np.concatenate((finite_y, points[:, 1]))
+    # Test coordinates affect the display range, never the envelope fit.
+    bounds_points = [train_nc, test_nc]
+    bounds_points.extend(points for _, points in other_training)
+    bounds_points = np.concatenate(bounds_points, axis=0)
 
+    def upper_bound(values):
+        finite = values[np.isfinite(values)]
+        hi = float(finite.max())
+        return hi + (0.08 * hi if hi > 0 else 0.1)
 
-    xlo, xhi = axis_bounds(finite_x)
-    ylo, yhi = axis_bounds(finite_y)
+    xhi = upper_bound(bounds_points[:, 0])
+    yhi = upper_bound(bounds_points[:, 1])
 
-    gx = np.linspace(xlo, xhi, int(grid_size))
-    gy = np.linspace(ylo, yhi, int(grid_size))
+    gx = np.linspace(0.0, xhi, grid_size)
+    gy = np.linspace(0.0, yhi, grid_size)
     XX, YY = np.meshgrid(gx, gy)
 
-    # Use exactly the same S1/S2 split that was used when fitting this class.
-    S1_2d = nc_2d[info["idx_s1"]]
-    S2_2d = nc_2d[info["idx_s2"]]
-
-    # A 2D diagnostic needs at least one observed selected score per row.
-    S1_2d = S1_2d[~np.isnan(S1_2d).all(axis=1)]
-    S2_2d = S2_2d[~np.isnan(S2_2d).all(axis=1)]
-
-    if len(S1_2d) == 0 or len(S2_2d) == 0:
-        raise ValueError("Cannot plot this pair: shape discovery and calibration "
-                         "each need samples with at least one selected score observed.")
-
-    if np.isnan(S1_2d).all(axis=0).any():
-        raise ValueError("Cannot fit a genuinely 2D envelope: one selected column "
-                         "has no observed values in the shape-discovery split.")
-
-    if model.method == "collapsed":
-        envelope_2d = build_collapsed(S1_2d, S2_2d, model.alpha,)
-
-    elif model.method == "radial":
-        rng = np.random.default_rng(model.random_state)
-
-        envelope_2d = build_radial(S1_2d, S2_2d, model.alpha,
-                                   n_directions=model.method_params.get("n_directions", model.method_params.get("M", 250),),
-                                   smoothing=model.method_params.get("smoothing", model.method_params.get("kappa", 8.0),),
-                                   angle_deg=model.method_params.get("angle_deg", model.method_params.get("angular_bandwidth_deg", 30.0),),
-                                   neighbor_fraction=model.method_params.get("neighbor_fraction", model.method_params.get("neighbor_frac", 0.2),),
-                                   rng=rng,)
-
-    else: envelope_2d = build_strip(S1_2d, S2_2d, model.alpha,
-                                    n_bins=model.method_params.get("n_bins", model.method_params.get("number_of_bins", model.method_params.get("NB", 8),),),
-                                    min_samples=model.method_params.get("min_samples", 3),)
-
-    # The grid is already in nonconformity space. Do not transform again.
-    probe_nc = np.column_stack((XX.ravel(), YY.ravel()))
-
-    if model.method == "collapsed":
-        inside = collapsed_is_in_region(probe_nc, envelope_2d)
-
-    elif model.method == "radial":
-        inside = radial_is_in_region(probe_nc, envelope_2d)
-
-    else:
-        inside = strip_is_in_region(probe_nc, envelope_2d)
-
-    ZZ = inside.astype(float).reshape(XX.shape)
+    # Already in nonconformity space: no second transformation.
+    grid_nc = np.column_stack((XX.ravel(), YY.ravel()))
+    grid_inside = membership(grid_nc, envelope)
+    ZZ = grid_inside.reshape(XX.shape).astype(float)
 
     if ax is None:
-        _, ax = plt.subplots(figsize=(7, 6))
+        _, ax = plt.subplots(figsize=(8, 6))
 
-    # Shade only the region accepted by the fitted 2D envelope.
-    ax.contourf(XX, YY, ZZ, levels=[0.5, 1.5], colors=["#b8dfba"], alpha=0.45,)
+    ax.contourf(XX, YY, ZZ, levels=[0.5, 1.5], colors=["#b8dfba"], alpha=0.4,)
 
-    # Legend entry for the shaded region.
-    from matplotlib.patches import Patch
-    region_handle = Patch(facecolor="#b8dfba", alpha=0.45, label=f"Accepted region for {label}",)
+    if grid_inside.any() and not grid_inside.all():
+        ax.contour(XX, YY, ZZ, levels=[0.5], colors=["#482878"], linewidths=2,)
 
-    if inside.any() and not inside.all():
-        ax.contour(XX, YY, ZZ, levels=[0.5], linewidths=2,)
-    else:
-        message = (
-            "All grid points accepted"
-            if inside.all()
-            else "All grid points rejected"
-        )
-        ax.text(0.02, 0.98, message + "\nNo boundary within the displayed range", transform=ax.transAxes,
-                ha="left", va="top", fontsize=9, bbox=dict(facecolor="white", alpha=0.85, edgecolor="none"),)
+    def draw_points(points, name, color, marker, alpha):
+        complete = np.isfinite(points).all(axis=1)
 
-    ax.set_xlim(xlo, xhi)
-    ax.set_ylim(ylo, yhi)
-
-    for other_label, points in other_points:
-        ax.scatter(points[:, 0], points[:, 1], s=24, alpha=0.55, marker="x", 
-                   label=f"Class {other_label}",)
-
-    if show_training:
-        complete = np.isfinite(xv) & np.isfinite(yv)
-
-        ax.scatter(xv[complete], yv[complete], s=24, alpha=0.8, color="tab:blue",
-                   label=f"Class {label}", zorder=3,)
+        if complete.any():
+            ax.scatter(points[complete, 0], points[complete, 1], s=32, color=color, marker=marker,
+                       alpha=alpha, label=name, zorder=3,)
 
         if show_missing:
-            x_only = np.isfinite(xv) & np.isnan(yv)
-            y_only = np.isnan(xv) & np.isfinite(yv)
+            x_only = np.isfinite(points[:, 0]) & np.isnan(points[:, 1])
+            y_only = np.isnan(points[:, 0]) & np.isfinite(points[:, 1])
 
-            for index, value in enumerate(xv[x_only]):
-                ax.axvline(value, color="tab:blue", linestyle=":", linewidth=1, alpha=0.35, 
-                           label=(f"Class {label}: {y} missing" if index == 0 else "_nolegend_"),)
+            for index, value in enumerate(points[x_only, 0]):
+                ax.axvline(value, color=color, linestyle=":", linewidth=1, alpha=0.35,
+                           label=(f"{name}: {y} missing" if index == 0 else "_nolegend_"),)
 
-            for index, value in enumerate(yv[y_only]):
-                ax.axhline(value, color="tab:red", linestyle=":", linewidth=1, alpha=0.35,
-                           label=(f"Class {label}: {x} missing" if index == 0 else "_nolegend_"),)
+            for index, value in enumerate(points[y_only, 1]):
+                ax.axhline(value, color=color, linestyle=":", linewidth=1, alpha=0.35,
+                           label=(f"{name}: {x} missing" if index == 0 else "_nolegend_"),)
 
+    if show_training:
+        draw_points(train_nc, f"Training: {label}", "gray", ".", 0.35)
+        for other_label, points in other_training:
+            draw_points(points, f"Training: {other_label}", "silver", "x", 0.4)
+
+    notes = []
+
+    if test_data is not None:
+        usable = ~np.isnan(test_nc).all(axis=1)
+        test_inside = np.zeros(len(test_nc), dtype=bool)
+
+        # Do not pass completely missing rows to envelope functions.
+        if usable.any():
+            test_inside[usable] = membership(test_nc[usable], envelope)
+
+        accepted = usable & test_inside
+        rejected = usable & ~test_inside
+
+        draw_points(test_nc[accepted], "Test: accepted", "tab:green", "o", 0.8)
+        draw_points(test_nc[rejected], "Test: rejected", "tab:red", "x", 0.9)
+
+        notes.append(f"2D test acceptance: {accepted.sum()}/{usable.sum()} evaluable")
+
+        both_missing = int((~usable).sum())
+        if both_missing:
+            notes.append(f"{both_missing} test rows missing both coordinates "
+                         "(not drawn or evaluated)")
+
+        if not show_missing:
+            partial = usable & np.isnan(test_nc).any(axis=1)
+            if partial.any():
+                notes.append(f"{partial.sum()} partially observed test rows "
+                             "evaluated but not drawn")
+
+    if grid_inside.all():
+        notes.append("All grid points accepted; no boundary in view")
+    elif not grid_inside.any():
+        notes.append("All grid points rejected; no boundary in view")
+
+    if notes:
+        ax.text(0.02, 0.98, "\n".join(notes), transform=ax.transAxes, ha="left", va="top", 
+                fontsize=8, bbox=dict(facecolor="white", alpha=0.85, edgecolor="none"), zorder=5,)
+
+    region_handle = Patch(facecolor="#b8dfba", alpha=0.4, label=f"2D accepted region for {label}",)
     handles, labels = ax.get_legend_handles_labels()
-    ax.legend(handles=[region_handle] + handles, labels=[region_handle.get_label()] + labels,
-              loc="best",)
+    ax.legend([region_handle] + handles, [region_handle.get_label()] + labels, loc="best", fontsize=8,)
 
-    ax.set_xlabel(x)
-    ax.set_ylabel(y)
-    ax.set_title(f"{model.method.capitalize()} diagnostic envelope for {label}\n")
+    ax.set_xlim(0.0, xhi)
+    ax.set_ylim(0.0, yhi)
+    ax.set_xlabel(f"{x} — nonconformity")
+    ax.set_ylabel(f"{y} — nonconformity")
+    ax.set_title(f"{model.method.capitalize()}: 2D diagnostic for {label}")
 
     return ax

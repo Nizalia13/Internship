@@ -1,0 +1,498 @@
+# CELL 0 (code)
+from pathlib import Path
+import pandas as pd
+import pickle
+import numpy as np
+
+# CELL 1 (code)
+with open("../Data/all_random_pc_splits.pkl", "rb") as f:
+    pc_splits = pickle.load(f)
+
+# Print all unique column names that contain 'spanin'
+spanin_cols = [c for c in pc_splits.columns if 'spanin' in c.lower()]
+print(spanin_cols)
+
+# CELL 2 (code)
+with open("../Data/all_random_pc_splits.pkl", "rb") as f:
+    pc_splits = pickle.load(f)
+
+print(pc_splits.shape)
+pc_splits.head()
+
+# CELL 3 (markdown)
+#### Inspecting one split folder
+
+# CELL 4 (code)
+folder0 = Path("../Data/random_pc_r_5_da_2_bal_s_0")
+
+files = sorted(folder0.glob("*.pkl"))
+
+print(f"Number of prediction files: {len(files)}")
+
+for f in files[:10]:
+    print(f.name)
+
+# CELL 5 (markdown)
+Real prediction columns
+
+# CELL 6 (code)
+all_pred_columns = []
+
+for f in files:
+    df = pd.read_pickle(f)
+
+    all_pred_columns.extend(df.columns.tolist())
+
+all_pred_columns = list(dict.fromkeys(all_pred_columns))
+
+print("Total prediction columns:", len(all_pred_columns))
+print(all_pred_columns[:20])
+
+# CELL 7 (markdown)
+#### Verifying matching splits
+
+# CELL 8 (code)
+missing = []
+
+for col in all_pred_columns:
+
+    split_col = "split_" + col
+
+    if split_col not in pc_splits.columns:
+        missing.append(col)
+
+print("Missing:", len(missing))
+
+if len(missing):
+    print(missing[:20])
+
+# CELL 9 (markdown)
+#### Estimating the matrix size
+
+# CELL 10 (code)
+n_proteins = len(pc_splits)
+n_models = len(all_pred_columns)
+
+print(n_proteins)
+print(n_models)
+
+gb = n_proteins * n_models * 4 / 1024**3
+
+print(f"float32 matrix size ≈ {gb:.2f} GB")
+
+# CELL 11 (code)
+sample_ids = pc_splits.index[:20]
+
+for pid in sample_ids:
+    print(pid)
+
+# CELL 12 (markdown)
+#### Total proteins and phages
+
+# CELL 13 (code)
+accessions = pd.Index(
+    [pid.rsplit("_", 1)[0] for pid in pc_splits.index]
+)
+
+print("Proteins:", len(accessions))
+print("Unique phages:", accessions.nunique())
+
+# CELL 14 (code)
+meta_df = pd.read_csv(
+    "../Data/metadata.csv",
+    index_col="proteinID"
+)
+
+# CELL 15 (code)
+sample = pd.read_pickle(
+    "../Data/random_pc_r_5_da_2_bal_s_0/all_preds_gramneg_capsid.pkl"
+)
+
+print(sample.shape)
+
+sample.head()
+
+# CELL 16 (code)
+print(sample.index.equals(pc_splits.index))
+
+# CELL 17 (code)
+sample = pd.read_pickle(
+    "../Data/random_pc_r_5_da_2_bal_s_0/all_preds_gramneg_capsid.pkl"
+)
+
+print(sample.index.nunique())
+print(len(sample.index))
+
+# CELL 18 (code)
+DATA_DIR = Path("../Data")
+SPLITS_PATH = DATA_DIR / "all_random_pc_splits.pkl"
+METADATA_PATH = DATA_DIR / "metadata.csv"
+OUTPUT_DIR = DATA_DIR / "processed_chunks"
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+# CELL 19 (code)
+
+
+# # Define your safe row chunk size (adjust lower if 100k still pushes your RAM)
+# CHUNK_SIZE = 100000
+
+# print("Loading reference frameworks...")
+# with open(SPLITS_PATH, "rb") as f:
+#     pc_splits = pickle.load(f)
+
+# meta_df = pd.read_csv(METADATA_PATH, index_col="proteinID")
+# protein_ids = meta_df.index
+# total_proteins = len(meta_df)
+
+# # Dynamic column matching from split columns ('split_X' -> 'X')
+# target_models = [c.replace("split_", "") for c in pc_splits.columns if c.startswith("split_")]
+
+# # Align the split reference table with our metadata index
+# pc_splits = pc_splits.reindex(protein_ids)
+
+# # Get a unique list of prediction filenames by looking at folder s_0
+# folder_s0 = DATA_DIR / "random_pc_r_5_da_2_bal_s_0"
+# pkl_filenames = [f.name for f in folder_s0.glob("all_preds_*.pkl")]
+
+# print(f"Total Proteins: {total_proteins} | Target Models: {len(target_models)}")
+# print(f"Processing in chunks of {CHUNK_SIZE} rows across {len(pkl_filenames)} batches.")
+
+# # --- STEP 2: THE ROW-CHUNKED LOOP ---
+# for start_idx in range(0, total_proteins, CHUNK_SIZE):
+#     end_idx = min(start_idx + CHUNK_SIZE, total_proteins)
+#     chunk_ids = protein_ids[start_idx:end_idx]
+    
+#     print(f"\n--- Processing Protein Chunk {start_idx} to {end_idx} ---")
+    
+#     # 1. Isolate the split mapping for just this row chunk
+#     splits_chunk = pc_splits.loc[chunk_ids]
+    
+#     # 2. Allocate an empty DataFrame template for this chunk (uses minimal RAM)
+#     combined_chunk = pd.DataFrame(
+#         np.nan, 
+#         index=chunk_ids, 
+#         columns=target_models, 
+#         dtype=np.float32
+#     )
+    
+#     # 3. Harvest data file-by-file for this specific row chunk
+#     # 3. Populate this chunk file by file
+#     for file_name in tqdm(pkl_filenames, desc="Harvesting batches"):
+        
+#         # Loop through all 5 split folds (s_0 to s_4)
+#         for k in range(5):
+#             current_folder = DATA_DIR / f"random_pc_r_5_da_2_bal_s_{k}"
+#             file_path = current_folder / file_name
+            
+#             if not file_path.exists():
+#                 continue
+                
+#             # Load the file
+#             with open(file_path, "rb") as f:
+#                 pred_slice = pickle.load(f)
+                
+#             # Drop everything except the rows in our current chunk immediately
+#             pred_slice_chunk = pred_slice.loc[pred_slice.index.isin(chunk_ids)]
+#             del pred_slice  # Clear from RAM
+            
+#             if pred_slice_chunk.empty:
+#                 continue
+                
+#             # Process columns matching our target models
+#             for col in pred_slice_chunk.columns:
+#                 if col in combined_chunk.columns:
+#                     split_col_name = f"split_{col}"
+                    
+#                     if split_col_name in splits_chunk.columns:
+#                         # Create our boolean mask for rows belonging to fold k
+#                         mask = (splits_chunk[split_col_name].astype(float) == k)
+                        
+#                         if mask.any():
+#                             # Safely align indices to our master chunk template
+#                             aligned_series = pred_slice_chunk[col].reindex(chunk_ids)
+                            
+#                             # --- FIX: Safe Extraction & NumPy Assignment ---
+#                             # Extract raw values matching the mask as an explicit float32 numpy array.
+#                             # This bypasses the Pandas alignment type check completely.
+#                             values_to_assign = aligned_series[mask].to_numpy(dtype=np.float32)
+                            
+#                             # Double-check that we actually have values to assign
+#                             if len(values_to_assign) > 0:
+#                                 combined_chunk.loc[mask, col] = values_to_assign
+#     # 4. Save this completed chunk directly to disk as a lightweight Parquet file
+#     chunk_file_path = OUTPUT_DIR / f"master_chunk_{start_idx}_{end_idx}.parquet"
+#     combined_chunk.to_parquet(chunk_file_path, engine="pyarrow", compression="snappy")
+#     print(f"Saved chunk to {chunk_file_path}")
+    
+#     # Clean up variables before starting the next row chunk
+#     del combined_chunk
+#     del splits_chunk
+
+# print("\nAll chunks processed successfully! No crashes.")
+
+# CELL 20 (code)
+import pandas as pd
+import pickle
+from pathlib import Path
+
+with open("../Data/all_random_pc_splits.pkl", "rb") as f:
+    pc_splits = pickle.load(f)
+
+sample = pd.read_pickle("../Data/random_pc_r_5_da_2_bal_s_0/all_preds_gramneg_capsid.pkl")
+
+print("Prediction file index name:", sample.index.name)
+print("Splits file index name:", pc_splits.index.name)
+print("First 5 prediction file proteins:", sample.index[:5].tolist())
+print("Are prediction proteins a subset of splits index?",
+      sample.index.isin(pc_splits.index).all())
+
+# Check split value distribution for these proteins, one column
+split_col = "split_" + sample.columns[0]
+print(f"\nSplit values for '{split_col}' among capsid proteins:")
+print(pc_splits.loc[sample.index, split_col].value_counts().sort_index())
+
+# CELL 21 (markdown)
+---
+
+# CELL 22 (code)
+# --- Build accession lookup directly from protein IDs ---
+# No metadata needed: proteinID format is ACCESSION_PROTEINNUMBER
+protein_to_accession = pd.Series(
+    [pid.rsplit("_", 1)[0] for pid in pc_splits.index],
+    index=pc_splits.index,
+    name="accession"
+)
+print(f"Unique phages: {protein_to_accession.nunique()}")
+
+# --- Discover all prediction columns from folder s_0 ---
+# folder_s0 = DATA_DIR / "random_pc_r_5_da_2_bal_s_0"
+# pkl_files = sorted(folder_s0.glob("all_preds_*.pkl"))
+# --- Dynamic Prefixes Setup ---
+# Scan all splits to get the unique filenames across the entire run
+all_pkl_filenames = set()
+for k in range(5):
+    folder = DATA_DIR / f"random_pc_r_5_da_2_bal_s_{k}"
+    if folder.exists():
+        all_pkl_filenames.update([f.name for f in folder.glob("all_preds_*.pkl")])
+
+# Sort them to keep execution deterministic
+pkl_filenames = sorted(list(all_pkl_filenames))
+print(f"Discovered {len(pkl_filenames)} unique prediction files across all folds:")
+print(pkl_filenames)
+print(f"Prediction files per folder: {len(pkl_filenames)}")
+
+# Verify column matching before starting
+print("\nVerifying split column matching...")
+# all_pred_cols = []
+# for f in pkl_filenames:
+#     df = pd.read_pickle(f)
+#     all_pred_cols.extend(df.columns.tolist())
+# all_pred_cols = list(dict.fromkeys(all_pred_cols))
+# missing = [c for c in all_pred_cols if f"split_{c}" not in pc_splits.columns]
+# print(f"Total prediction columns: {len(all_pred_cols)}")
+# print(f"Columns missing from splits file: {len(missing)}")
+# # Must be 0 before continuing
+
+all_pred_cols = []
+for filename in pkl_filenames:
+    # Look for the file in folder 0 (or whichever folder has it)
+    file_path = DATA_DIR / "random_pc_r_5_da_2_bal_s_0" / filename
+    
+    # Fallback to check other folders if split 0 doesn't have it
+    if not file_path.exists():
+        for k in range(1, 5):
+            alternate_path = DATA_DIR / f"random_pc_r_5_da_2_bal_s_{k}" / filename
+            if alternate_path.exists():
+                file_path = alternate_path
+                break
+                
+    if file_path.exists():
+        df = pd.read_pickle(file_path)
+        all_pred_cols.extend(df.columns.tolist())
+    else:
+        print(f"Warning: Could not find {filename} in any split folder to extract column names.")
+
+all_pred_cols = list(dict.fromkeys(all_pred_cols))
+print(f"Collected {len(all_pred_cols)} unique prediction columns.")
+
+# CELL 23 (code)
+# # --- Main reconstruction loop ---
+# # Accumulate sum and count at PHAGE level immediately
+# # Never store the full protein-level matrix
+
+# sum_df = None
+# count_df = None
+
+# for k in range(5):
+#     folder = DATA_DIR / f"random_pc_r_5_da_2_bal_s_{k}"
+#     print(f"\n=== Split {k} ===")
+    
+#     for pkl_path in pkl_files:
+#         file_path = folder / pkl_path.name
+#         if not file_path.exists():
+#             print(f"  WARNING: {pkl_path.name} missing in split {k}")
+#             continue
+        
+#         preds = pd.read_pickle(file_path)
+#         # preds: rows = proteins (subset), cols = host_function names
+        
+#         file_sum = {}
+#         file_count = {}
+        
+#         for col in preds.columns:
+#             split_col = f"split_{col}"
+#             if split_col not in pc_splits.columns:
+#                 continue
+            
+#             # Proteins in this file that were held out in split k
+#             # Use only the intersection — prediction file is a subset of all proteins
+#             shared_idx = preds.index.intersection(
+#                 pc_splits.index[pc_splits[split_col] == k]
+#             )
+            
+#             if len(shared_idx) == 0:
+#                 continue
+            
+#             vals = preds.loc[shared_idx, col]
+#             accessions = protein_to_accession.loc[shared_idx]
+            
+#             # Aggregate to phage level immediately
+#             file_sum[col] = vals.groupby(accessions).sum()
+#             file_count[col] = vals.groupby(accessions).count()
+        
+#         if not file_sum:
+#             continue
+        
+#         file_sum_df = pd.DataFrame(file_sum)
+#         file_count_df = pd.DataFrame(file_count)
+        
+#         if sum_df is None:
+#             sum_df = file_sum_df
+#             count_df = file_count_df
+#         else:
+#             sum_df = sum_df.add(file_sum_df, fill_value=0)
+#             count_df = count_df.add(file_count_df, fill_value=0)
+        
+#         del preds, file_sum_df, file_count_df
+
+# print("\nReconstruction complete.")
+# print(f"Phage matrix shape: {sum_df.shape}")
+
+# CELL 24 (code)
+# --- Main reconstruction loop (ROBUST) ---
+# Accumulate sum and count at PHAGE level immediately
+
+sum_df = None
+count_df = None
+
+for k in range(5):
+    folder = DATA_DIR / f"random_pc_r_5_da_2_bal_s_{k}"
+    print(f"\n=== Processing Split {k} ===")
+    
+    for filename in pkl_filenames:
+        file_path = folder / filename
+        
+        # Check if this specific chunk variant exists in this fold
+        if not file_path.exists():
+            print(f"  Note: {filename} does not exist in Split {k} (Skipping cleanly)")
+            continue
+            
+        try:
+            preds = pd.read_pickle(file_path)
+        except Exception as e:
+            print(f"  Error reading {filename} in Split {k}: {e}")
+            continue
+            
+        file_sum = {}
+        file_count = {}
+        
+        for col in preds.columns:
+            split_col = f"split_{col}"
+            if split_col not in pc_splits.columns:
+                continue
+            
+            # Find matching index intersections for fold validation
+            shared_idx = preds.index.intersection(
+                pc_splits.index[pc_splits[split_col] == k]
+            )
+            
+            if len(shared_idx) == 0:
+                continue
+            
+            vals = preds.loc[shared_idx, col]
+            accessions = protein_to_accession.loc[shared_idx]
+            
+            # Aggregate to phage level immediately
+            file_sum[col] = vals.groupby(accessions).sum()
+            file_count[col] = vals.groupby(accessions).count()
+        
+        if not file_sum:
+            continue
+        
+        file_sum_df = pd.DataFrame(file_sum)
+        file_count_df = pd.DataFrame(file_count)
+        
+        if sum_df is None:
+            sum_df = file_sum_df
+            count_df = file_count_df
+        else:
+            sum_df = sum_df.add(file_sum_df, fill_value=0)
+            count_df = count_df.add(file_count_df, fill_value=0)
+        
+        del preds, file_sum_df, file_count_df
+
+print("\nReconstruction complete.")
+print(f"Phage matrix shape: {sum_df.shape if sum_df is not None else 'Empty'}")
+
+# CELL 25 (code)
+DATA_DIR = Path("../Data")
+
+# Load the uncontaminated, aggregated phage-level dataset
+phage_scores = pd.read_parquet(DATA_DIR / "phage_host_scores.parquet")
+print("Successfully loaded engineered dataset: phage_host_scores.parquet")
+
+# Inspect dataset dimensions and structure
+print(f"\nMatrix Shape : {phage_scores.shape}")
+print(f"Index Name   : {phage_scores.index.name} (Phage Accessions)")
+print(f"Sample Indices: {phage_scores.index[:3].tolist()}")
+print(f"Sample Columns: {phage_scores.columns[:5].tolist()}")
+
+# CELL 26 (code)
+# Cell 2 — quality checks
+nan_per_col = phage_scores.isna().mean()
+print(f"NaN fraction overall:      {nan_per_col.mean():.3f}")
+print(f"Completely empty columns:  {(nan_per_col == 1.0).sum()}")  # must be 0
+print(f"Min NaN per col:           {nan_per_col.min():.3f}")
+print(f"Max NaN per col:           {nan_per_col.max():.3f}")
+print(f"Score range:               [{phage_scores.min().min():.3f}, {phage_scores.max().max():.3f}]")
+
+# # Host names from column structure
+# hosts = sorted(set(c.rsplit("_", 1)[0] for c in phage_scores.columns))
+# print(f"\nUnique host genera: {len(hosts)}")
+# print(hosts)
+
+hosts = sorted(set(c.split("_", 1)[0] for c in phage_scores.columns))
+print(f"\nUnique host genera: {len(hosts)}")
+print(hosts)
+
+# CELL 27 (code)
+print("Checking for missing prediction files across all 5 folders...\n")
+any_missing = False
+for k in range(5):
+    folder = DATA_DIR / f"random_pc_r_5_da_2_bal_s_{k}"
+    missing = [f.name for f in pkl_files if not (folder / f.name).exists()]
+    if missing:
+        any_missing = True
+        print(f"Split {k}: {len(missing)} missing file(s): {missing}")
+    else:
+        print(f"Split {k}: complete ({len(pkl_files)} files)")
+
+if not any_missing:
+    print("\nNo other missing files — DNA-associated_1 is the only known gap.")
+
+# CELL 28 (code)
+actual_hosts = sorted(set(c.split("_")[0] for c in phage_scores.columns))
+print(f"Actual host genera: {len(actual_hosts)}")
+print(actual_hosts)
+
+# CELL 29 (code)

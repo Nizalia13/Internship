@@ -1,0 +1,389 @@
+# CELL 0 (code)
+import sys
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+from IPython.display import display
+
+INTERNSHIP_DIR = Path("/home/siddiqun/Bureau/Internship")
+
+# Parent directory containing the conformal_envelopes package.
+LIBRARY_PARENT = INTERNSHIP_DIR / "Conformal Library"
+if str(LIBRARY_PARENT) not in sys.path:
+    sys.path.insert(0, str(LIBRARY_PARENT))
+
+from conformal_envelopes import (ConformalSetModel, evaluate_prediction_sets,)
+
+DATA_DIR = INTERNSHIP_DIR / "Data"
+SCORES_PATH = DATA_DIR / "phage_host_scores.parquet"
+METADATA_PATH = DATA_DIR / "metadata.csv"
+
+GRAM_PRED_PATH = (INTERNSHIP_DIR / "Codes" / "gram_type_predictions.csv")
+
+ALPHA = 0.10
+SEED = 42
+
+print("Library imported successfully.")
+
+for path in [SCORES_PATH, METADATA_PATH, GRAM_PRED_PATH]:
+    print(f"{path} — exists: {path.is_file()}")
+    assert path.is_file(), f"File not found: {path}"
+
+# CELL 1 (markdown)
+## Load scores and metadata
+
+# CELL 2 (code)
+phage_scores = pd.read_parquet(SCORES_PATH)
+meta_df = pd.read_csv(METADATA_PATH, index_col="proteinID")
+
+print("Scores shape:", phage_scores.shape)
+print("Scores index name:", phage_scores.index.name)
+print("Scores index is unique:", phage_scores.index.is_unique)
+display(phage_scores.head(3))
+
+print("\nMetadata shape:", meta_df.shape)
+print("Metadata columns:", meta_df.columns.tolist())
+display(meta_df.head(3))
+
+# CELL 3 (markdown)
+#### Joining metadata at phage level
+
+# CELL 4 (code)
+# Collapse protein metadata to one record per phage.
+metadata_columns = ["host", "host_type", "split"]
+grouped = meta_df.groupby("accession")[metadata_columns]
+
+# Avoid silently selecting conflicting metadata.
+conflicts = grouped.nunique().gt(1).any(axis=1)
+assert not conflicts.any(), (f"Conflicting metadata for: " f"{conflicts[conflicts].index[:10].tolist()}")
+
+phage_meta = grouped.first()
+
+score_cols = phage_scores.columns.tolist()
+all_hosts = sorted({col.split("_", 1)[0] for col in score_cols})
+
+phage_df = phage_scores.join(phage_meta, how="inner", validate="one_to_one",)
+
+assert phage_df[["host", "split"]].notna().all().all()
+
+# Keep hosts represented by the predictor columns.
+phage_df = phage_df.loc[phage_df["host"].isin(all_hosts)].copy()
+phage_df["split"] = phage_df["split"].astype(int)
+phage_df = phage_df.rename_axis("ID").reset_index()
+
+# Preserve the original partition.
+train = phage_df.loc[~phage_df["split"].isin([0, 1])].copy()
+validation = phage_df.loc[phage_df["split"].eq(1)].copy()
+test = phage_df.loc[phage_df["split"].eq(0)].copy()
+
+print("Training phages:", len(train))
+print("Validation phages:", len(validation))
+print("Test phages:", len(test))
+print("Candidate hosts:", len(all_hosts))
+
+# CELL 5 (markdown)
+## Define each host’s score columns
+
+# CELL 6 (code)
+train_counts = train["host"].value_counts()
+
+fitted_hosts = [host for host in all_hosts if train_counts.get(host, 0) >= 3]
+
+skipped_hosts = sorted(set(all_hosts) - set(fitted_hosts))
+
+label_to_columns = {host: [col for col in score_cols if col.split("_", 1)[0] == host]
+                    for host in fitted_hosts}
+
+fit_train = train.loc[train["host"].isin(fitted_hosts)].copy()
+
+# Check that every training phage has a score for its true host.
+missing_true_host = 0
+
+for host, columns in label_to_columns.items():
+    assert columns, f"No score columns for {host}"
+
+    host_scores = fit_train.loc[fit_train["host"].eq(host), columns]
+    missing_true_host += int(host_scores.isna().all(axis=1).sum())
+
+print("Hosts eligible for fitting:", len(fitted_hosts))
+print("Skipped hosts:", skipped_hosts)
+print("Training rows retained:", len(fit_train))
+print("Training phages without true-host scores:", missing_true_host)
+
+assert missing_true_host == 0, "Some training rows lack true-host scores."
+
+# CELL 7 (markdown)
+### Loading the Gram predictions
+
+# CELL 8 (code)
+gram_pred_df = pd.read_csv(GRAM_PRED_PATH).set_index("accession")
+
+assert gram_pred_df.index.is_unique, "Duplicate accession IDs."
+
+# Convert CSV values explicitly to booleans.
+for column in ["pred_gramneg", "pred_grampos"]:
+    gram_pred_df[column] = (gram_pred_df[column].astype(str).str.strip().str.lower()
+                            .map({"true": True, "false": False, "1": True, "0": False,}))
+
+    assert gram_pred_df[column].notna().all(), (f"Invalid or missing values in {column}")
+
+validation_covered = validation["ID"].isin(gram_pred_df.index)
+
+print("Gram prediction file:", GRAM_PRED_PATH)
+print("Phages in export:", len(gram_pred_df))
+print("Validation IDs covered:", int(validation_covered.sum()))
+
+display(gram_pred_df[["pred_gramneg", "pred_grampos"]].value_counts().rename("phages"))
+
+assert validation_covered.all(), ("Some validation IDs are missing from the Gram prediction file.")
+
+# CELL 9 (markdown)
+#### Constructing candidates from the predicted Gram types and checking whether those candidates have usable scores.
+
+# CELL 10 (code)
+# Map candidate hosts to their Gram group.
+host_types = (phage_df[["host", "host_type"]].dropna().drop_duplicates())
+
+assert host_types.groupby("host")["host_type"].nunique().le(1).all()
+
+host_to_gram = host_types.set_index("host")["host_type"].to_dict()
+
+assert all(host_to_gram.get(host) in {"gram-neg", "gram-pos"} for host in fitted_hosts)
+
+# Select candidates using predicted Gram types.
+validation_candidates = {}
+
+for sample_id in validation["ID"]:
+    prediction = gram_pred_df.loc[sample_id]
+
+    allowed = [host for host in fitted_hosts if (host_to_gram[host] == "gram-neg"
+                                                 and prediction["pred_gramneg"]) 
+               or (host_to_gram[host] == "gram-pos" and prediction["pred_grampos"])]
+
+    # Match the original notebook's fallback.
+    validation_candidates[sample_id] = allowed or fitted_hosts.copy()
+
+# Check availability using columns the collapsed model would retain.
+missing_pairs = 0
+affected_ids = set()
+
+for host, columns in label_to_columns.items():
+    training_scores = fit_train.loc[fit_train["host"].eq(host), columns]
+    used_columns = training_scores.columns[training_scores.notna().any(axis=0)].tolist()
+
+    allowed_mask = validation["ID"].map(lambda sample_id: host in validation_candidates[sample_id])
+    missing_mask = validation[used_columns].isna().all(axis=1)
+    problematic = allowed_mask & missing_mask
+
+    missing_pairs += int(problematic.sum())
+    affected_ids.update(validation.loc[problematic, "ID"])
+
+print("Candidate lists created:", len(validation_candidates))
+print("Allowed phage–host pairs without scores:", missing_pairs)
+print("Validation phages affected:", len(affected_ids))
+
+# CELL 11 (markdown)
+## Collapsed Model
+
+# CELL 12 (code)
+collapsed_model = ConformalSetModel(method="collapsed", alpha=ALPHA, score_direction="higher_is_better",
+                                    shape_fraction=0.5, random_state=SEED, force_nonempty=False,)
+
+collapsed_model.fit(fit_train, id_col="ID", label_col="host", score_cols=score_cols, 
+                    label_to_columns=label_to_columns,)
+
+envelopes = collapsed_model.get_envelopes()
+
+print("Collapsed envelopes fitted:", len(envelopes))
+print("Infinite calibration thresholds:", sum(np.isposinf(info["envelope"]["t_hat"])
+                                              for info in envelopes.values()),)
+
+# CELL 13 (markdown)
+#### Predicting on validation data
+
+# CELL 14 (code)
+collapsed_predictions = collapsed_model.predict_per_sample(validation,
+                                                           candidates_by_id=validation_candidates,)
+
+# Align true labels with prediction IDs.
+true_labels = (validation.set_index("ID")["host"].loc[collapsed_predictions["ID"]].tolist())
+
+collapsed_metrics = evaluate_prediction_sets(collapsed_predictions["prediction_set"], true_labels,)
+
+print("Validation predictions:", len(collapsed_predictions))
+print(f"Coverage: {collapsed_metrics['coverage']:.3f}")
+print(f"Average set size: {collapsed_metrics['average_set_size']:.2f}")
+print(f"Singleton rate: {collapsed_metrics['singleton_rate']:.3f}")
+print(f"Empty-set rate: {collapsed_metrics['empty_rate']:.3f}")
+print("Forced predictions:", int(collapsed_predictions["forced"].sum()))
+
+display(collapsed_predictions[["ID", "prediction_set", "set_size", "forced"]].head())
+
+# CELL 15 (markdown)
+## Radial Envelope
+
+# CELL 16 (code)
+radial_model = ConformalSetModel(method="radial", alpha=ALPHA, score_direction="higher_is_better", 
+                                 shape_fraction=0.5, random_state=SEED, force_nonempty=False, 
+                                 n_directions=100, smoothing=4.0, angle_deg=30.0, neighbor_fraction=0.2,)
+
+radial_model.fit(fit_train, id_col="ID", label_col="host", score_cols=score_cols, label_to_columns=label_to_columns,)
+
+radial_envelopes = radial_model.get_envelopes()
+
+print("Radial envelopes fitted:", len(radial_envelopes))
+print("Infinite calibration thresholds:", sum(np.isposinf(info["envelope"]["t_hat"])
+                                              for info in radial_envelopes.values()),)
+
+# CELL 17 (code)
+radial_predictions = radial_model.predict_per_sample(validation,
+                                                     candidates_by_id=validation_candidates,)
+
+radial_true_labels = (validation.set_index("ID")["host"].loc[radial_predictions["ID"]].tolist())
+
+radial_metrics = evaluate_prediction_sets(radial_predictions["prediction_set"], radial_true_labels,)
+
+print("Validation predictions:", len(radial_predictions))
+print(f"Coverage: {radial_metrics['coverage']:.3f}")
+print(f"Average set size: {radial_metrics['average_set_size']:.2f}")
+print(f"Singleton rate: {radial_metrics['singleton_rate']:.3f}")
+print(f"Empty-set rate: {radial_metrics['empty_rate']:.3f}")
+print("Forced predictions:", int(radial_predictions["forced"].sum()))
+
+# CELL 18 (markdown)
+## Strip Envelope
+
+# CELL 19 (code)
+strip_model = ConformalSetModel(method="strip", alpha=ALPHA, score_direction="higher_is_better", 
+                                shape_fraction=0.5, random_state=SEED, force_nonempty=False, n_bins=10,
+                                min_samples=3,)
+
+strip_model.fit(fit_train, id_col="ID", label_col="host", score_cols=score_cols, 
+                label_to_columns=label_to_columns,)
+
+strip_envelopes = strip_model.get_envelopes()
+
+print("Strip envelopes fitted:", len(strip_envelopes))
+print("Infinite calibration thresholds:",sum(np.isposinf(info["envelope"]["t_hat"])
+                                             for info in strip_envelopes.values()),)
+
+# CELL 20 (code)
+from time import perf_counter
+
+start = perf_counter()
+
+strip_predictions = strip_model.predict_per_sample(validation, candidates_by_id=validation_candidates,)
+strip_prediction_seconds = perf_counter() - start
+
+strip_true_labels = (validation.set_index("ID")["host"].loc[strip_predictions["ID"]].tolist())
+
+strip_metrics = evaluate_prediction_sets(strip_predictions["prediction_set"], strip_true_labels,)
+
+print(f"Prediction time: {strip_prediction_seconds:.1f} seconds")
+print("Validation predictions:", len(strip_predictions))
+print(f"Coverage: {strip_metrics['coverage']:.3f}")
+print(f"Average set size: {strip_metrics['average_set_size']:.2f}")
+print(f"Singleton rate: {strip_metrics['singleton_rate']:.3f}")
+print(f"Empty-set rate: {strip_metrics['empty_rate']:.3f}")
+print("Forced predictions:", int(strip_predictions["forced"].sum()))
+
+display(strip_predictions[["ID", "prediction_set", "set_size", "forced"]].head())
+
+# CELL 21 (markdown)
+# Example
+
+# CELL 22 (code)
+import pandas as pd
+
+import matplotlib.pyplot as plt
+
+from conformal_envelopes import ConformalSetModel
+
+from conformal_envelopes import evaluate_prediction_sets
+
+train = pd.read_csv("train_example.csv")
+test = pd.read_csv("test_example.csv")
+
+print(train.head())
+print()
+print(test.head())
+
+# CELL 23 (code)
+###### STRIP MODEL ######
+# creating the model
+model = ConformalSetModel(method="strip", alpha=0.1, random_state=13,)
+
+# Fitting the model using training file
+# takes the training data, separates the observations by class (A and B), splits each class into S1 and S2, 
+# learns the Collapsed envelope shape from S1, and calibrates it using S2.
+model.fit(train)
+
+# inspecting the constructed envelopes
+print(model.get_envelopes())
+
+# using the learnt envelopes to make the conformal prediction sets for the test data
+predictions = model.predict(test)
+print(predictions)
+
+# comparing each set with the true label in the test data
+results = evaluate_prediction_sets(predictions["prediction_set"], test["label"])
+print(results)
+
+# plotting 2D
+model.plot(x="score_2", y="score_3", label="B")
+plt.show()
+
+
+# CELL 24 (code)
+###### RADIAL MODEL ######
+# creating the model
+model = ConformalSetModel(method="radial", alpha=0.1, random_state=13,)
+
+# Fitting the model using training file
+# takes the training data, separates the observations by class (A and B), splits each class into S1 and S2, 
+# learns the Collapsed envelope shape from S1, and calibrates it using S2.
+model.fit(train)
+
+# inspecting the constructed envelopes
+print(model.get_envelopes())
+
+# using the learnt envelopes to make the conformal prediction sets for the test data
+predictions = model.predict(test)
+print(predictions)
+
+# comparing each set with the true label in the test data
+results = evaluate_prediction_sets(predictions["prediction_set"], test["label"])
+print(results)
+
+# plotting 2D
+model.plot(x="score_2", y="score_3", label="B")
+plt.show()
+
+# CELL 25 (code)
+###### COLLAPSED MODEL ######
+# creating the model
+model = ConformalSetModel(method="collapsed", alpha=0.1, random_state=13)
+
+# Fitting the model using training file
+# takes the training data, separates the observations by class (A and B), splits each class into S1 and S2, 
+# learns the Collapsed envelope shape from S1, and calibrates it using S2.
+model.fit(train)
+
+# inspecting the constructed envelopes
+print(model.get_envelopes())
+
+# using the learnt envelopes to make the conformal prediction sets for the test data
+predictions = model.predict(test)
+print(predictions)
+
+# comparing each set with the true label in the test data
+results = evaluate_prediction_sets(predictions["prediction_set"], test["label"])
+print(results)
+
+# CELL 26 (code)
+# plotting 2D
+model.plot(x="score_2", y="score_3", label="B")
+plt.show()
+
+# CELL 27 (code)

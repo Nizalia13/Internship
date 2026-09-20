@@ -1,0 +1,1328 @@
+{
+  "collapsed": {
+    "unfiltered_coverage": 0.8719629772464327,
+    "filtered_coverage": 0.87157732356344,
+    "filter_only_losses": 1,
+    "unfiltered_size": 11.308137292711145,
+    "filtered_size": 11.296182028538373,
+    "seconds": 10.205398559570312,
+    "classes": [
+      {
+        "host": "Campylobacter",
+        "n_cal": 25,
+        "n_val": 46,
+        "cal_coverage": 0.96,
+        "val_coverage": 0.9782608695652174,
+        "t_hat": 1.001982912728977
+      },
+      {
+        "host": "Caulobacter",
+        "n_cal": 15,
+        "n_val": 1,
+        "cal_coverage": 1.0,
+        "val_coverage": 0.0,
+        "t_hat": 0.9710646801997832
+      },
+      {
+        "host": "Cellulophaga",
+        "n_cal": 11,
+        "n_val": 23,
+        "cal_coverage": 1.0,
+        "val_coverage": 0.391304347826087,
+        "t_hat": 0.9906803579585034
+      },
+      {
+        "host": "Citrobacter",
+        "n_cal": 18,
+        "n_val": 4,
+        "cal_coverage": 1.0,
+        "val_coverage": 0.75,
+        "t_hat": 0.9802033991714594
+      },
+      {
+        "host": "Clostridioides",
+        "n_cal": 7,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Clostridium",
+        "n_cal": 39,
+        "n_val": 13,
+        "cal_coverage": 0.9487179487179487,
+        "val_coverage": 0.8461538461538461,
+        "t_hat": 0.9822149528194448
+      },
+      {
+        "host": "Corynebacterium",
+        "n_cal": 13,
+        "n_val": 1,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.0237857675568507
+      },
+      {
+        "host": "Cronobacter",
+        "n_cal": 11,
+        "n_val": 11,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.0319219000671722
+      },
+      {
+        "host": "Dickeya",
+        "n_cal": 7,
+        "n_val": 20,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Edwardsiella",
+        "n_cal": 3,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Enterobacter",
+        "n_cal": 26,
+        "n_val": 5,
+        "cal_coverage": 0.9615384615384616,
+        "val_coverage": 0.8,
+        "t_hat": 1.005416040288566
+      },
+      {
+        "host": "Enterococcus",
+        "n_cal": 68,
+        "n_val": 28,
+        "cal_coverage": 0.9264705882352942,
+        "val_coverage": 1.0,
+        "t_hat": 1.0788641425722854
+      },
+      {
+        "host": "Erwinia",
+        "n_cal": 47,
+        "n_val": 35,
+        "cal_coverage": 0.9361702127659575,
+        "val_coverage": 0.8571428571428571,
+        "t_hat": 1.001963574506102
+      },
+      {
+        "host": "Escherichia",
+        "n_cal": 608,
+        "n_val": 183,
+        "cal_coverage": 0.9029605263157895,
+        "val_coverage": 0.9016393442622951,
+        "t_hat": 1.0022281327738485
+      },
+      {
+        "host": "Flavobacterium",
+        "n_cal": 73,
+        "n_val": 74,
+        "cal_coverage": 0.9178082191780822,
+        "val_coverage": 0.16216216216216217,
+        "t_hat": 0.9636775080926148
+      },
+      {
+        "host": "Gordonia",
+        "n_cal": 248,
+        "n_val": 81,
+        "cal_coverage": 0.907258064516129,
+        "val_coverage": 0.7407407407407407,
+        "t_hat": 1.0950349613897168
+      },
+      {
+        "host": "Haloarcula",
+        "n_cal": 5,
+        "n_val": 8,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Halorubrum",
+        "n_cal": 8,
+        "n_val": 6,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Klebsiella",
+        "n_cal": 348,
+        "n_val": 103,
+        "cal_coverage": 0.9051724137931034,
+        "val_coverage": 0.44660194174757284,
+        "t_hat": 1.000813383179007
+      },
+      {
+        "host": "Lacticaseibacillus",
+        "n_cal": 6,
+        "n_val": 6,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Lactobacillus",
+        "n_cal": 32,
+        "n_val": 12,
+        "cal_coverage": 0.9375,
+        "val_coverage": 1.0,
+        "t_hat": 1.010649519773528
+      },
+      {
+        "host": "Lactococcus",
+        "n_cal": 113,
+        "n_val": 111,
+        "cal_coverage": 0.911504424778761,
+        "val_coverage": 0.9459459459459459,
+        "t_hat": 1.038621046969675
+      },
+      {
+        "host": "Listeria",
+        "n_cal": 24,
+        "n_val": 10,
+        "cal_coverage": 0.9583333333333334,
+        "val_coverage": 1.0,
+        "t_hat": 1.0583195051861107
+      },
+      {
+        "host": "Microbacterium",
+        "n_cal": 188,
+        "n_val": 47,
+        "cal_coverage": 0.9095744680851063,
+        "val_coverage": 0.9574468085106383,
+        "t_hat": 1.0274717562722333
+      },
+      {
+        "host": "Microcystis",
+        "n_cal": 2,
+        "n_val": 4,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Mycobacterium",
+        "n_cal": 710,
+        "n_val": 435,
+        "cal_coverage": 0.9014084507042254,
+        "val_coverage": 0.9103448275862069,
+        "t_hat": 0.9995577331091482
+      },
+      {
+        "host": "Paenibacillus",
+        "n_cal": 42,
+        "n_val": 6,
+        "cal_coverage": 0.9285714285714286,
+        "val_coverage": 0.6666666666666666,
+        "t_hat": 1.0669673443268874
+      },
+      {
+        "host": "Pantoea",
+        "n_cal": 8,
+        "n_val": 8,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Pectobacterium",
+        "n_cal": 13,
+        "n_val": 58,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.0418941586120989
+      },
+      {
+        "host": "Pelagibacter",
+        "n_cal": 16,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.1928110499402462
+      },
+      {
+        "host": "Prochlorococcus",
+        "n_cal": 20,
+        "n_val": 10,
+        "cal_coverage": 0.95,
+        "val_coverage": 0.7,
+        "t_hat": 1.0111035480594623
+      },
+      {
+        "host": "Propionibacterium",
+        "n_cal": 9,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.0250208880066796
+      },
+      {
+        "host": "Proteus",
+        "n_cal": 19,
+        "n_val": 5,
+        "cal_coverage": 0.9473684210526315,
+        "val_coverage": 0.8,
+        "t_hat": 1.0233444453897638
+      },
+      {
+        "host": "Providencia",
+        "n_cal": 9,
+        "n_val": 2,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.0103873689946954
+      },
+      {
+        "host": "Pseudoalteromonas",
+        "n_cal": 7,
+        "n_val": 11,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Pseudomonas",
+        "n_cal": 326,
+        "n_val": 176,
+        "cal_coverage": 0.9049079754601227,
+        "val_coverage": 0.9318181818181818,
+        "t_hat": 0.9907698691566802
+      },
+      {
+        "host": "Ralstonia",
+        "n_cal": 103,
+        "n_val": 24,
+        "cal_coverage": 0.912621359223301,
+        "val_coverage": 0.7916666666666666,
+        "t_hat": 1.0129048371189504
+      },
+      {
+        "host": "Rhizobium",
+        "n_cal": 58,
+        "n_val": 20,
+        "cal_coverage": 0.9310344827586207,
+        "val_coverage": 1.0,
+        "t_hat": 1.019352123986829
+      },
+      {
+        "host": "Rhodobacter",
+        "n_cal": 26,
+        "n_val": 1,
+        "cal_coverage": 0.9615384615384616,
+        "val_coverage": 1.0,
+        "t_hat": 0.9939916682985841
+      },
+      {
+        "host": "Roseobacter",
+        "n_cal": 9,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.0716167766580091
+      },
+      {
+        "host": "Salmonella",
+        "n_cal": 289,
+        "n_val": 198,
+        "cal_coverage": 0.903114186851211,
+        "val_coverage": 0.9848484848484849,
+        "t_hat": 1.0075595523415195
+      },
+      {
+        "host": "Serratia",
+        "n_cal": 18,
+        "n_val": 31,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.0276533807692663
+      },
+      {
+        "host": "Shewanella",
+        "n_cal": 8,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Shigella",
+        "n_cal": 37,
+        "n_val": 19,
+        "cal_coverage": 0.9459459459459459,
+        "val_coverage": 0.8947368421052632,
+        "t_hat": 1.0275304882384397
+      },
+      {
+        "host": "Sinorhizobium",
+        "n_cal": 4,
+        "n_val": 5,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Staphylococcus",
+        "n_cal": 153,
+        "n_val": 112,
+        "cal_coverage": 0.9084967320261438,
+        "val_coverage": 0.8660714285714286,
+        "t_hat": 1.0245231529836951
+      },
+      {
+        "host": "Stenotrophomonas",
+        "n_cal": 28,
+        "n_val": 7,
+        "cal_coverage": 0.9642857142857143,
+        "val_coverage": 0.8571428571428571,
+        "t_hat": 1.044027050446371
+      },
+      {
+        "host": "Streptococcus",
+        "n_cal": 155,
+        "n_val": 270,
+        "cal_coverage": 0.9096774193548387,
+        "val_coverage": 0.9814814814814815,
+        "t_hat": 0.9710234101796655
+      },
+      {
+        "host": "Streptomyces",
+        "n_cal": 137,
+        "n_val": 58,
+        "cal_coverage": 0.9124087591240876,
+        "val_coverage": 0.9655172413793104,
+        "t_hat": 0.997713753700006
+      },
+      {
+        "host": "Sulfolobus",
+        "n_cal": 3,
+        "n_val": 19,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Synechococcus",
+        "n_cal": 93,
+        "n_val": 39,
+        "cal_coverage": 0.9139784946236559,
+        "val_coverage": 0.7948717948717948,
+        "t_hat": 1.1040987115808663
+      },
+      {
+        "host": "Vibrio",
+        "n_cal": 237,
+        "n_val": 164,
+        "cal_coverage": 0.9071729957805907,
+        "val_coverage": 0.9329268292682927,
+        "t_hat": 1.0301880300087174
+      },
+      {
+        "host": "Xanthomonas",
+        "n_cal": 48,
+        "n_val": 24,
+        "cal_coverage": 0.9375,
+        "val_coverage": 0.8333333333333334,
+        "t_hat": 0.9646105903998633
+      },
+      {
+        "host": "Yersinia",
+        "n_cal": 34,
+        "n_val": 41,
+        "cal_coverage": 0.9411764705882353,
+        "val_coverage": 0.3170731707317073,
+        "t_hat": 0.9907796412061433
+      }
+    ]
+  },
+  "radial": {
+    "unfiltered_coverage": 0.8943308908600077,
+    "filtered_coverage": 0.8935595834940223,
+    "filter_only_losses": 2,
+    "unfiltered_size": 42.61203239490937,
+    "filtered_size": 16.456613960663326,
+    "seconds": 21.441752910614014,
+    "classes": [
+      {
+        "host": "Campylobacter",
+        "n_cal": 25,
+        "n_val": 46,
+        "cal_coverage": 0.96,
+        "val_coverage": 0.9565217391304348,
+        "t_hat": 1.0517156281299365
+      },
+      {
+        "host": "Caulobacter",
+        "n_cal": 15,
+        "n_val": 1,
+        "cal_coverage": 1.0,
+        "val_coverage": 0.0,
+        "t_hat": 0.9841295314114811
+      },
+      {
+        "host": "Cellulophaga",
+        "n_cal": 11,
+        "n_val": 23,
+        "cal_coverage": 1.0,
+        "val_coverage": 0.9130434782608695,
+        "t_hat": 1.031522250355029
+      },
+      {
+        "host": "Citrobacter",
+        "n_cal": 18,
+        "n_val": 4,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.0168684951749558
+      },
+      {
+        "host": "Clostridioides",
+        "n_cal": 7,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Clostridium",
+        "n_cal": 39,
+        "n_val": 13,
+        "cal_coverage": 0.9230769230769231,
+        "val_coverage": 0.9230769230769231,
+        "t_hat": 0.9991067967847554
+      },
+      {
+        "host": "Corynebacterium",
+        "n_cal": 13,
+        "n_val": 1,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.0050006498791986
+      },
+      {
+        "host": "Cronobacter",
+        "n_cal": 11,
+        "n_val": 11,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.0218223443027035
+      },
+      {
+        "host": "Dickeya",
+        "n_cal": 7,
+        "n_val": 20,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Edwardsiella",
+        "n_cal": 3,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Enterobacter",
+        "n_cal": 26,
+        "n_val": 5,
+        "cal_coverage": 0.9615384615384616,
+        "val_coverage": 1.0,
+        "t_hat": 0.9991839594955563
+      },
+      {
+        "host": "Enterococcus",
+        "n_cal": 68,
+        "n_val": 28,
+        "cal_coverage": 0.9264705882352942,
+        "val_coverage": 0.9285714285714286,
+        "t_hat": 1.0068670242882822
+      },
+      {
+        "host": "Erwinia",
+        "n_cal": 47,
+        "n_val": 35,
+        "cal_coverage": 0.9361702127659575,
+        "val_coverage": 0.9142857142857143,
+        "t_hat": 1.02389228432092
+      },
+      {
+        "host": "Escherichia",
+        "n_cal": 608,
+        "n_val": 183,
+        "cal_coverage": 0.9029605263157895,
+        "val_coverage": 0.9234972677595629,
+        "t_hat": 0.9996402693508525
+      },
+      {
+        "host": "Flavobacterium",
+        "n_cal": 73,
+        "n_val": 74,
+        "cal_coverage": 0.9178082191780822,
+        "val_coverage": 0.16216216216216217,
+        "t_hat": 0.9980516248093401
+      },
+      {
+        "host": "Gordonia",
+        "n_cal": 248,
+        "n_val": 81,
+        "cal_coverage": 0.907258064516129,
+        "val_coverage": 0.7160493827160493,
+        "t_hat": 0.994400615343367
+      },
+      {
+        "host": "Haloarcula",
+        "n_cal": 5,
+        "n_val": 8,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Halorubrum",
+        "n_cal": 8,
+        "n_val": 6,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Klebsiella",
+        "n_cal": 348,
+        "n_val": 103,
+        "cal_coverage": 0.9051724137931034,
+        "val_coverage": 0.7669902912621359,
+        "t_hat": 0.9978348557831445
+      },
+      {
+        "host": "Lacticaseibacillus",
+        "n_cal": 6,
+        "n_val": 6,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Lactobacillus",
+        "n_cal": 32,
+        "n_val": 12,
+        "cal_coverage": 0.9375,
+        "val_coverage": 1.0,
+        "t_hat": 1.0421710075257835
+      },
+      {
+        "host": "Lactococcus",
+        "n_cal": 113,
+        "n_val": 111,
+        "cal_coverage": 0.911504424778761,
+        "val_coverage": 0.9009009009009009,
+        "t_hat": 0.9437456926998281
+      },
+      {
+        "host": "Listeria",
+        "n_cal": 24,
+        "n_val": 10,
+        "cal_coverage": 0.9583333333333334,
+        "val_coverage": 1.0,
+        "t_hat": 0.9981817262955918
+      },
+      {
+        "host": "Microbacterium",
+        "n_cal": 188,
+        "n_val": 47,
+        "cal_coverage": 0.9095744680851063,
+        "val_coverage": 0.8936170212765957,
+        "t_hat": 1.0029553353976122
+      },
+      {
+        "host": "Microcystis",
+        "n_cal": 2,
+        "n_val": 4,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Mycobacterium",
+        "n_cal": 710,
+        "n_val": 435,
+        "cal_coverage": 0.9014084507042254,
+        "val_coverage": 0.9586206896551724,
+        "t_hat": 0.9927151008140425
+      },
+      {
+        "host": "Paenibacillus",
+        "n_cal": 42,
+        "n_val": 6,
+        "cal_coverage": 0.9285714285714286,
+        "val_coverage": 0.6666666666666666,
+        "t_hat": 1.0596212253534438
+      },
+      {
+        "host": "Pantoea",
+        "n_cal": 8,
+        "n_val": 8,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Pectobacterium",
+        "n_cal": 13,
+        "n_val": 58,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.082345264084631
+      },
+      {
+        "host": "Pelagibacter",
+        "n_cal": 16,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.2887254560488113
+      },
+      {
+        "host": "Prochlorococcus",
+        "n_cal": 20,
+        "n_val": 10,
+        "cal_coverage": 0.95,
+        "val_coverage": 0.6,
+        "t_hat": 0.8738836127715023
+      },
+      {
+        "host": "Propionibacterium",
+        "n_cal": 9,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 0.9798330604789979
+      },
+      {
+        "host": "Proteus",
+        "n_cal": 19,
+        "n_val": 5,
+        "cal_coverage": 0.9473684210526315,
+        "val_coverage": 0.8,
+        "t_hat": 1.0004693537238107
+      },
+      {
+        "host": "Providencia",
+        "n_cal": 9,
+        "n_val": 2,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.0530113726788304
+      },
+      {
+        "host": "Pseudoalteromonas",
+        "n_cal": 7,
+        "n_val": 11,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Pseudomonas",
+        "n_cal": 326,
+        "n_val": 176,
+        "cal_coverage": 0.9049079754601227,
+        "val_coverage": 0.9431818181818182,
+        "t_hat": 1.0063504038108453
+      },
+      {
+        "host": "Ralstonia",
+        "n_cal": 103,
+        "n_val": 24,
+        "cal_coverage": 0.912621359223301,
+        "val_coverage": 0.75,
+        "t_hat": 1.0224256291651141
+      },
+      {
+        "host": "Rhizobium",
+        "n_cal": 58,
+        "n_val": 20,
+        "cal_coverage": 0.9310344827586207,
+        "val_coverage": 1.0,
+        "t_hat": 1.0360702158451267
+      },
+      {
+        "host": "Rhodobacter",
+        "n_cal": 26,
+        "n_val": 1,
+        "cal_coverage": 0.9615384615384616,
+        "val_coverage": 1.0,
+        "t_hat": 1.0146813954601097
+      },
+      {
+        "host": "Roseobacter",
+        "n_cal": 9,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 0.9777021452675331
+      },
+      {
+        "host": "Salmonella",
+        "n_cal": 289,
+        "n_val": 198,
+        "cal_coverage": 0.903114186851211,
+        "val_coverage": 0.9191919191919192,
+        "t_hat": 0.9988015711408876
+      },
+      {
+        "host": "Serratia",
+        "n_cal": 18,
+        "n_val": 31,
+        "cal_coverage": 1.0,
+        "val_coverage": 0.8387096774193549,
+        "t_hat": 1.0008742016248124
+      },
+      {
+        "host": "Shewanella",
+        "n_cal": 8,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Shigella",
+        "n_cal": 37,
+        "n_val": 19,
+        "cal_coverage": 0.9459459459459459,
+        "val_coverage": 0.8421052631578947,
+        "t_hat": 1.0073488946573073
+      },
+      {
+        "host": "Sinorhizobium",
+        "n_cal": 4,
+        "n_val": 5,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Staphylococcus",
+        "n_cal": 153,
+        "n_val": 112,
+        "cal_coverage": 0.9084967320261438,
+        "val_coverage": 0.7678571428571429,
+        "t_hat": 0.980684003995036
+      },
+      {
+        "host": "Stenotrophomonas",
+        "n_cal": 28,
+        "n_val": 7,
+        "cal_coverage": 0.9642857142857143,
+        "val_coverage": 0.8571428571428571,
+        "t_hat": 0.9975700923153871
+      },
+      {
+        "host": "Streptococcus",
+        "n_cal": 155,
+        "n_val": 270,
+        "cal_coverage": 0.9096774193548387,
+        "val_coverage": 0.9666666666666667,
+        "t_hat": 0.9936960000549858
+      },
+      {
+        "host": "Streptomyces",
+        "n_cal": 137,
+        "n_val": 58,
+        "cal_coverage": 0.9124087591240876,
+        "val_coverage": 0.8275862068965517,
+        "t_hat": 0.9914810469208017
+      },
+      {
+        "host": "Sulfolobus",
+        "n_cal": 3,
+        "n_val": 19,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Synechococcus",
+        "n_cal": 93,
+        "n_val": 39,
+        "cal_coverage": 0.9139784946236559,
+        "val_coverage": 0.8205128205128205,
+        "t_hat": 0.9432286864419006
+      },
+      {
+        "host": "Vibrio",
+        "n_cal": 237,
+        "n_val": 164,
+        "cal_coverage": 0.9071729957805907,
+        "val_coverage": 0.9878048780487805,
+        "t_hat": 1.0277649246138671
+      },
+      {
+        "host": "Xanthomonas",
+        "n_cal": 48,
+        "n_val": 24,
+        "cal_coverage": 0.9375,
+        "val_coverage": 0.9583333333333334,
+        "t_hat": 0.9959766296442287
+      },
+      {
+        "host": "Yersinia",
+        "n_cal": 34,
+        "n_val": 41,
+        "cal_coverage": 0.9411764705882353,
+        "val_coverage": 0.926829268292683,
+        "t_hat": 1.0009579345136508
+      }
+    ]
+  },
+  "strip": {
+    "unfiltered_coverage": 0.7562668723486309,
+    "filtered_coverage": 0.7554955649826456,
+    "filter_only_losses": 2,
+    "unfiltered_size": 39.05746239876591,
+    "filtered_size": 12.905129193983802,
+    "seconds": 182.304190158844,
+    "classes": [
+      {
+        "host": "Campylobacter",
+        "n_cal": 25,
+        "n_val": 46,
+        "cal_coverage": 0.96,
+        "val_coverage": 0.9782608695652174,
+        "t_hat": 1.4582539582680707
+      },
+      {
+        "host": "Caulobacter",
+        "n_cal": 15,
+        "n_val": 1,
+        "cal_coverage": 1.0,
+        "val_coverage": 0.0,
+        "t_hat": 2.03827207999929
+      },
+      {
+        "host": "Cellulophaga",
+        "n_cal": 11,
+        "n_val": 23,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 43.53200558091414
+      },
+      {
+        "host": "Citrobacter",
+        "n_cal": 18,
+        "n_val": 4,
+        "cal_coverage": 1.0,
+        "val_coverage": 0.5,
+        "t_hat": 1.1154791691595782
+      },
+      {
+        "host": "Clostridioides",
+        "n_cal": 7,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Clostridium",
+        "n_cal": 39,
+        "n_val": 13,
+        "cal_coverage": 0.9230769230769231,
+        "val_coverage": 0.9230769230769231,
+        "t_hat": 6.316090805732513
+      },
+      {
+        "host": "Corynebacterium",
+        "n_cal": 13,
+        "n_val": 1,
+        "cal_coverage": 1.0,
+        "val_coverage": 0.0,
+        "t_hat": 1.4317206788780434
+      },
+      {
+        "host": "Cronobacter",
+        "n_cal": 11,
+        "n_val": 11,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.315549081728768
+      },
+      {
+        "host": "Dickeya",
+        "n_cal": 7,
+        "n_val": 20,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Edwardsiella",
+        "n_cal": 3,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Enterobacter",
+        "n_cal": 26,
+        "n_val": 5,
+        "cal_coverage": 0.9615384615384616,
+        "val_coverage": 1.0,
+        "t_hat": 1.2354940344690548
+      },
+      {
+        "host": "Enterococcus",
+        "n_cal": 68,
+        "n_val": 28,
+        "cal_coverage": 0.9264705882352942,
+        "val_coverage": 0.6428571428571429,
+        "t_hat": 1.1836473322949064
+      },
+      {
+        "host": "Erwinia",
+        "n_cal": 47,
+        "n_val": 35,
+        "cal_coverage": 0.9361702127659575,
+        "val_coverage": 0.5428571428571428,
+        "t_hat": 1.1108079514261975
+      },
+      {
+        "host": "Escherichia",
+        "n_cal": 608,
+        "n_val": 183,
+        "cal_coverage": 0.9029605263157895,
+        "val_coverage": 0.6830601092896175,
+        "t_hat": 1.0230841374735975
+      },
+      {
+        "host": "Flavobacterium",
+        "n_cal": 73,
+        "n_val": 74,
+        "cal_coverage": 0.9178082191780822,
+        "val_coverage": 0.013513513513513514,
+        "t_hat": 1.59858221260253
+      },
+      {
+        "host": "Gordonia",
+        "n_cal": 248,
+        "n_val": 81,
+        "cal_coverage": 0.907258064516129,
+        "val_coverage": 0.654320987654321,
+        "t_hat": 1.2935193534215517
+      },
+      {
+        "host": "Haloarcula",
+        "n_cal": 5,
+        "n_val": 8,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Halorubrum",
+        "n_cal": 8,
+        "n_val": 6,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Klebsiella",
+        "n_cal": 348,
+        "n_val": 103,
+        "cal_coverage": 0.9051724137931034,
+        "val_coverage": 0.4854368932038835,
+        "t_hat": 1.0148296522164983
+      },
+      {
+        "host": "Lacticaseibacillus",
+        "n_cal": 6,
+        "n_val": 6,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Lactobacillus",
+        "n_cal": 32,
+        "n_val": 12,
+        "cal_coverage": 0.9375,
+        "val_coverage": 0.75,
+        "t_hat": 11.556009585650756
+      },
+      {
+        "host": "Lactococcus",
+        "n_cal": 113,
+        "n_val": 111,
+        "cal_coverage": 0.911504424778761,
+        "val_coverage": 0.9099099099099099,
+        "t_hat": 1.5287213448599177
+      },
+      {
+        "host": "Listeria",
+        "n_cal": 24,
+        "n_val": 10,
+        "cal_coverage": 0.9583333333333334,
+        "val_coverage": 1.0,
+        "t_hat": 1.4661408176905357
+      },
+      {
+        "host": "Microbacterium",
+        "n_cal": 188,
+        "n_val": 47,
+        "cal_coverage": 0.9095744680851063,
+        "val_coverage": 0.9361702127659575,
+        "t_hat": 1.421041250981299
+      },
+      {
+        "host": "Microcystis",
+        "n_cal": 2,
+        "n_val": 4,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Mycobacterium",
+        "n_cal": 710,
+        "n_val": 435,
+        "cal_coverage": 0.9014084507042254,
+        "val_coverage": 0.6896551724137931,
+        "t_hat": 1.0317817004389964
+      },
+      {
+        "host": "Paenibacillus",
+        "n_cal": 42,
+        "n_val": 6,
+        "cal_coverage": 0.9285714285714286,
+        "val_coverage": 0.0,
+        "t_hat": 1.1564001400610024
+      },
+      {
+        "host": "Pantoea",
+        "n_cal": 8,
+        "n_val": 8,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Pectobacterium",
+        "n_cal": 13,
+        "n_val": 58,
+        "cal_coverage": 1.0,
+        "val_coverage": 0.9310344827586207,
+        "t_hat": 1.33377674990804
+      },
+      {
+        "host": "Pelagibacter",
+        "n_cal": 16,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 22.849223797606946
+      },
+      {
+        "host": "Prochlorococcus",
+        "n_cal": 20,
+        "n_val": 10,
+        "cal_coverage": 0.95,
+        "val_coverage": 1.0,
+        "t_hat": 1.9950157285959504
+      },
+      {
+        "host": "Propionibacterium",
+        "n_cal": 9,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.9997225457167085
+      },
+      {
+        "host": "Proteus",
+        "n_cal": 19,
+        "n_val": 5,
+        "cal_coverage": 0.9473684210526315,
+        "val_coverage": 1.0,
+        "t_hat": 1.461781981856161
+      },
+      {
+        "host": "Providencia",
+        "n_cal": 9,
+        "n_val": 2,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.4655729807877738
+      },
+      {
+        "host": "Pseudoalteromonas",
+        "n_cal": 7,
+        "n_val": 11,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Pseudomonas",
+        "n_cal": 326,
+        "n_val": 176,
+        "cal_coverage": 0.9049079754601227,
+        "val_coverage": 0.8068181818181818,
+        "t_hat": 1.023795755123951
+      },
+      {
+        "host": "Ralstonia",
+        "n_cal": 103,
+        "n_val": 24,
+        "cal_coverage": 0.912621359223301,
+        "val_coverage": 0.7083333333333334,
+        "t_hat": 1.2207139777787626
+      },
+      {
+        "host": "Rhizobium",
+        "n_cal": 58,
+        "n_val": 20,
+        "cal_coverage": 0.9310344827586207,
+        "val_coverage": 0.95,
+        "t_hat": 2.262945796945856
+      },
+      {
+        "host": "Rhodobacter",
+        "n_cal": 26,
+        "n_val": 1,
+        "cal_coverage": 0.9615384615384616,
+        "val_coverage": 1.0,
+        "t_hat": 7.247560743137542
+      },
+      {
+        "host": "Roseobacter",
+        "n_cal": 9,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 4.4316114386816166
+      },
+      {
+        "host": "Salmonella",
+        "n_cal": 289,
+        "n_val": 198,
+        "cal_coverage": 0.903114186851211,
+        "val_coverage": 0.8535353535353535,
+        "t_hat": 1.0114903580710104
+      },
+      {
+        "host": "Serratia",
+        "n_cal": 18,
+        "n_val": 31,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": 1.5949601313580677
+      },
+      {
+        "host": "Shewanella",
+        "n_cal": 8,
+        "n_val": 3,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Shigella",
+        "n_cal": 37,
+        "n_val": 19,
+        "cal_coverage": 0.9459459459459459,
+        "val_coverage": 0.8947368421052632,
+        "t_hat": 1.2166429344158505
+      },
+      {
+        "host": "Sinorhizobium",
+        "n_cal": 4,
+        "n_val": 5,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Staphylococcus",
+        "n_cal": 153,
+        "n_val": 112,
+        "cal_coverage": 0.9084967320261438,
+        "val_coverage": 0.8125,
+        "t_hat": 2.038329243407329
+      },
+      {
+        "host": "Stenotrophomonas",
+        "n_cal": 28,
+        "n_val": 7,
+        "cal_coverage": 0.9642857142857143,
+        "val_coverage": 0.8571428571428571,
+        "t_hat": 1.3894686029717025
+      },
+      {
+        "host": "Streptococcus",
+        "n_cal": 155,
+        "n_val": 270,
+        "cal_coverage": 0.9096774193548387,
+        "val_coverage": 0.8037037037037037,
+        "t_hat": 2.126921551702247
+      },
+      {
+        "host": "Streptomyces",
+        "n_cal": 137,
+        "n_val": 58,
+        "cal_coverage": 0.9124087591240876,
+        "val_coverage": 0.9827586206896551,
+        "t_hat": 1.4702214551966417
+      },
+      {
+        "host": "Sulfolobus",
+        "n_cal": 3,
+        "n_val": 19,
+        "cal_coverage": 1.0,
+        "val_coverage": 1.0,
+        "t_hat": Infinity
+      },
+      {
+        "host": "Synechococcus",
+        "n_cal": 93,
+        "n_val": 39,
+        "cal_coverage": 0.9139784946236559,
+        "val_coverage": 0.8461538461538461,
+        "t_hat": 2.194890726110328
+      },
+      {
+        "host": "Vibrio",
+        "n_cal": 237,
+        "n_val": 164,
+        "cal_coverage": 0.9071729957805907,
+        "val_coverage": 0.7317073170731707,
+        "t_hat": 1.2390151691183333
+      },
+      {
+        "host": "Xanthomonas",
+        "n_cal": 48,
+        "n_val": 24,
+        "cal_coverage": 0.9375,
+        "val_coverage": 0.3333333333333333,
+        "t_hat": 1.1593706060038693
+      },
+      {
+        "host": "Yersinia",
+        "n_cal": 34,
+        "n_val": 41,
+        "cal_coverage": 0.9411764705882353,
+        "val_coverage": 0.7073170731707317,
+        "t_hat": 1.1840038118519802
+      }
+    ]
+  }
+}
