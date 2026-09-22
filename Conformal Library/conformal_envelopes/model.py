@@ -795,9 +795,9 @@ def _plot_2d(model, *, x, y, label, test_data, grid_size, show_training, show_ot
             draw_points(test_nc[true_reject], "Test: true reject", "tab:blue", "x", 0.65,)
 
         both_missing = int((~usable).sum())
-        if both_missing:
-            notes.append(f"{both_missing} test rows missing both coordinates "
-                         "(not drawn or evaluated)")
+        # if both_missing:
+        #     notes.append(f"{both_missing} test rows missing both coordinates "
+        #                  "(not drawn or evaluated)")
 
         if not show_missing:
             partial = usable & np.isnan(test_nc).any(axis=1)
@@ -964,15 +964,23 @@ def _plot_envelope_slice(model, *, x, y, label, test_data, show_training=False, 
             x_only = np.isfinite(px) & np.isnan(py)
             y_only = np.isnan(px) & np.isfinite(py)
 
-            for i, value in enumerate(px[x_only]):
-                ax.axvline(value, color=color, linestyle=":", linewidth=1, alpha=0.35,
-                           label=(f"{name}: {y} missing ({x_only.sum()})" if i == 0 else "_nolegend_"),
-                             zorder=1,)
+        #     for i, value in enumerate(px[x_only]):
+        #         ax.axvline(value, color=color, linestyle=":", linewidth=1, alpha=0.35,
+        #                    label=(f"{name}: {y} missing ({x_only.sum()})" if i == 0 else "_nolegend_"),
+        #                      zorder=1,)
 
-            for i, value in enumerate(py[y_only]):
+        #     for i, value in enumerate(py[y_only]):
+        #         ax.axhline(value, color=color, linestyle=":", linewidth=1, alpha=0.35,
+        #                     label=(f"{name}: {x} missing ({y_only.sum()})" if i == 0 else "_nolegend_"), 
+        #                     zorder=1,)
+
+            for value in px[x_only]:
+                ax.axvline(value, color=color, linestyle=":", linewidth=1, alpha=0.35,
+                           label="_nolegend_", zorder=1)
+
+            for value in py[y_only]:
                 ax.axhline(value, color=color, linestyle=":", linewidth=1, alpha=0.35,
-                            label=(f"{name}: {x} missing ({y_only.sum()})" if i == 0 else "_nolegend_"), 
-                            zorder=1,)
+                           label="_nolegend_", zorder=1)
 
     if show_training:
         draw_points(train_nc, f"Training: {label}", "gray", ".", 0.3,)
