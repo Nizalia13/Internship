@@ -42,19 +42,8 @@ def transform_scores(values, score_direction="higher_is_better") -> np.ndarray:
         out = np.asarray(score_direction(arr.copy()), dtype=float)
         if out.shape != arr.shape:
             raise ValueError("A custom score transformation must preserve shape.")
-        # Preserve originally missing scores.
-        missing = np.isnan(arr)
-        out[missing] = np.nan
-
-        # Originally observed scores must remain finite and nonnegative.
-        observed_output = out[~missing]
-
-        if not np.isfinite(observed_output).all():
-            raise ValueError("A custom transformation must return finite values " 
-                              "for observed input scores.")
-
-        if (observed_output < 0).any():
-            raise ValueError("A custom transformation must return nonnegative nonconformity scores.")
+        # ensures that any position that was NaN remains NaN
+        out[np.isnan(arr)] = np.nan
         return out
 
     # Case1: when raw score is a probability for we do 1-score
@@ -70,12 +59,6 @@ def transform_scores(values, score_direction="higher_is_better") -> np.ndarray:
 
     # when raw score is a error metric, we just keep it as is
     if score_direction == "lower_is_better":
-        observed = arr[~np.isnan(arr)]
-
-        if (observed < 0).any():
-            raise ValueError("'lower_is_better' requires nonnegative nonconformity scores. Use a "
-                             "custom transformation for scores that can be negative.")
-
         return arr.copy()
 
     raise ValueError("score_direction must be 'higher_is_better'," "'lower_is_better', or a callable.")

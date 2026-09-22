@@ -51,8 +51,7 @@ class ConformalSetModel:
             Fraction of each class used for shape discovery S1. The remainder is S2 and is used for conformal scaling.
 
         - force_nonempty:
-            If True and no label is accepted, select the candidate with the smallest finite normalized tau.
-            If no finite candidate exists, leave the set empty.
+            If True (when no label is accepted) return the class with the smallest normalized tau.
 
         - random_state:
             Reproducible S1/S2 splitting and radial directions.
@@ -409,20 +408,10 @@ class ConformalSetModel:
 
             forced = False
 
-            # if len(prediction_set) == 0 and self.force_nonempty:
-            #     forced = True
-            #     best = min(active_classes, key=lambda cls: float(tau_by_label[cls][i]),)
-            #     prediction_set = [best]
-
             if len(prediction_set) == 0 and self.force_nonempty:
-                finite_candidates = [cls for cls in active_classes if np.isfinite(tau_by_label[cls][i])]
-
-                if finite_candidates:
-                    best = min(finite_candidates, key=lambda cls: float(tau_by_label[cls][i]),)
-                    prediction_set = [best]
-                    forced = True
-
-
+                forced = True
+                best = min(active_classes, key=lambda cls: float(tau_by_label[cls][i]),)
+                prediction_set = [best]
 
             records.append({self.id_col_: df.iloc[i][self.id_col_], "prediction_set": prediction_set,
                             "set_size": len(prediction_set), "forced": forced,

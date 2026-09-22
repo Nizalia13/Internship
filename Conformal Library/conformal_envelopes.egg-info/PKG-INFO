@@ -1,0 +1,13 @@
+Metadata-Version: 2.4
+Name: conformal-envelopes
+Version: 0.2.0
+Summary: Class-specific conformal envelopes with missing-score handling.
+Requires-Python: >=3.10
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Provides-Extra: examples
+Requires-Dist: scikit-learn; extra == "examples"
+Requires-Dist: ipykernel; extra == "examples"

@@ -1,0 +1,10 @@
+numpy
+pandas
+matplotlib
+
+[examples]
+scikit-learn
+ipykernel
+
+[test]
+pytest
