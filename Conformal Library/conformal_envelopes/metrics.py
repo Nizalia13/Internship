@@ -1,3 +1,5 @@
+# Calculates coverage, prediction-set sizes, and other evaluation results.
+
 from __future__ import annotations
 
 import numpy as np

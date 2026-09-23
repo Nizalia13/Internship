@@ -1,4 +1,5 @@
 # HOW DO WE TRANSFORM SCORES AND HANDLE THE MISSING VALUES
+# Converts scores to nonconformity scores and provides utilities for handling NaNs.
 
 from __future__ import annotations
 

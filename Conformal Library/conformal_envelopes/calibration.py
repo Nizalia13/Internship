@@ -1,4 +1,5 @@
 # TURNS CALIBRATION NONCONFROMITY SCORES (TAU VALUES) INTO CONFORMAL THRESHOLDS (T_HAT)
+# Calculates the conformal acceptance threshold from calibration samples.
 
 from __future__ import annotations
 

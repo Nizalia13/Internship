@@ -3,6 +3,9 @@
 # Then:
 #   - look at all the columns --> remove ID column --> Remove label columns 
 #          --> everything else is assumned to be the score column --> check if numeric
+
+# Loads input tables and identifies score columns.
+
 from __future__ import annotations
 
 from pathlib import Path
