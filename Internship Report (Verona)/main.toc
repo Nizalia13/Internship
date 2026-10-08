@@ -55,9 +55,9 @@
 \contentsline {section}{\numberline {6.1}Summary}{49}{section.6.1}%
 \contentsline {section}{\numberline {6.2}Limitations}{50}{section.6.2}%
 \contentsline {section}{\numberline {6.3}Future Work}{51}{section.6.3}%
-\contentsline {chapter}{Bibliography}{53}{chapter*.21}%
-\contentsline {chapter}{Host Classification Results}{56}{appendix*.22}%
-\contentsline {section}{Class Conditional Coverage Breakdown}{56}{section*.23}%
-\contentsline {section}{Set Size Distribution Per Host}{58}{section*.26}%
-\contentsline {section}{Prediction Set Inclusion Heatmaps}{62}{section*.31}%
-\contentsline {section}{Phage Host Prediction Clustermaps}{65}{section*.35}%
+\contentsline {chapter}{Bibliography}{53}{chapter*.24}%
+\contentsline {chapter}{Host Classification Results}{56}{chapter*.26}%
+\contentsline {section}{Class Conditional Coverage Breakdown}{56}{section*.27}%
+\contentsline {section}{Set Size Distribution Per Host}{58}{section*.30}%
+\contentsline {section}{Prediction Set Inclusion Heatmaps}{62}{section*.35}%
+\contentsline {section}{Phage Host Prediction Clustermaps}{65}{section*.39}%
